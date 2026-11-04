@@ -1,14 +1,53 @@
 # Railway viewer deployment
 
-**Live:** [Four-world gallery](https://groundshift-viewer-production.up.railway.app/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
-The user explicitly requested Railway hosting after local M0/M1 acceptance and now instructs that verified viewer changes and authorized usable scenes ship in the same workflow. Only the static viewer and selected scene artifacts are hosted. Reconstruction, camera estimation, training, original inputs and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
-## Current catalog release — PASS, 2026-11-05
+## Observation release — 2026-11-05
+
+The observation catalog contains **13 distinct scenes**: the previous four and
+nine additional exports, including all four Mapillary Gaussian variants, early
+dozer trials, the proof rerun, partial-pose failure and initial desk trial. The
+unchanged dozer camera-path re-export is represented by its existing scene and
+explicit duplicate lineage. The comparison report publishes 10 licensed source /
+warp / mask / gray-control / diffusion images, 72 summarized stage records and
+per-image attribution. Visual quality does not exclude a result.
+
+| Item | Value |
+| --- | --- |
+| Viewer source | `0870435a1367327dfe45e78331a505adb9d9608d` |
+| Release | [viewer-observations-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-observations-2026-11-05) |
+| Archive | `groundshift-observations-20261105.tar.gz`, 147,359,576 bytes |
+| SHA-256 | `8cbb3335f30127be05f81904e792ae2190d5483bf3c9a564b6d25358c38ebb20` |
+| Static payload | 89 files, 159,297,244 bytes |
+| Deployment | Pending public verification; see follow-up evidence below |
+
+**Local PASS:** TypeScript, lint, 165 viewer/packager tests, production build,
+22 headed Chrome tests in 1.9 minutes, and 102 distinct native-adapter tests
+across their required environments. The OpenCV environment ran 102 with 19
+missing-dependency skips; supplemental Pillow, PyCOLMAP and HDR-FFmpeg runs
+executed every skipped test successfully (5 inpaint, 11 augmentation, 6 rig,
+20 video tests, with overlap). This is 102 unique cases, not the sum of runs.
+All 13 scene renders, desktop/mobile gallery, search/filter, report images,
+sliders, history and return navigation were checked. The nine new canvas
+previews were captured and visually inspected. No GPU training or inference
+was repeated for publication; the measured existing binaries are unchanged.
+
+The complete archive was read back locally: all 89 members exactly match their
+public file inventory. Every new Gaussian PLY matches the existing local job
+SHA-256, and coordinates/navigation are unchanged. The report is rebuilt from
+explicit selected fields and an image allowlist; raw job logs, private footage,
+private frames, model weights and local paths are not included.
+
+See [observation workflow](OBSERVATIONS.md) and [the comparison report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html).
+The four-world release below remains a rollback package and historical evidence.
+
+## Previous four-world catalog release — PASS, 2026-11-05
 
 The catalog release collects four usable worlds: Houseplant, the original supplied-pose dozer, the independently estimated 120-view dozer, and the user's reconstructed desk. Local checks, the curated package, downloaded release checksum, Railway deployment, all 31 public file hashes, and actual public rendering of all four scenes are **PASS**. The gallery and scene navigation were exercised on the public origin.
 
-| Current package | Verified value |
+| Historical package | Verified value |
 | --- | --- |
 | Viewer source | `f78bd6b476cbd5369597ac42f77fee8264957c4e` |
 | Deployment-pointer commit | `c2516d6bb8867e3b7151acb8223feb73ae4d2706` |
@@ -42,11 +81,11 @@ Local verification passed TypeScript, lint, **143 viewer/packager tests**, **47 
 | Dozer · estimated cameras | 120 raw photos, supplied lens calibration only; locally recovered poses/points and Metal training | Separate independently estimated pose result; supplied lens calibration is explicit |
 | My desk | 99 locally estimated views from one user recording, estimated intrinsics and new Metal training | Recognizable desk/computers; peripheral smearing, thin-object streaks and blurred screen text remain |
 
-The smaller 24-view dozer and initial 15-second desk trials are preserved locally and excluded from this catalog. They are superseded experiments, not additional accepted scenes. A second independent original recording and an actual walking-route capture remain **NOT RUN**.
+The earlier four-world release excluded the smaller 24-view dozer and initial 15-second desk trials. The observation release now includes them as experiments, retaining their measured limitations. A second independent original recording and an actual walking-route capture remain **NOT RUN**.
 
 ### Desk publication permission
 
-The creator has explicitly authorized **public display of the derived desk world and its selected viewer preview** in Groundshift. **All rights reserved; no open redistribution license is granted.** This permission covers the selected Gaussian scene, necessary camera/world metadata, provenance and preview. It does not publish or license the original MOV, extracted frames, private iCloud URL, location/probe metadata, absolute local paths or reconstruction logs. The public artifact cites this permission statement; no private source link or access token is exposed. [Local reconstruction evidence and limits](ORIGINAL_VIDEO.md).
+The creator has explicitly authorized **public display of the derived desk worlds and their rendered viewer previews**, including earlier trials under the later instruction to publish every experiment in Groundshift. **All rights reserved; no open redistribution license is granted.** This permission covers the selected Gaussian scene, necessary camera/world metadata, provenance and preview. It does not publish or license the original MOV, extracted frames, private iCloud URL, location/probe metadata, absolute local paths or reconstruction logs. The public artifact cites this permission statement; no private source link or access token is exposed. [Local reconstruction evidence and limits](ORIGINAL_VIDEO.md).
 
 ## Earlier revisit deployed revision
 
@@ -100,15 +139,15 @@ acceptance is still NOT RUN.
 
 ## Standing release workflow
 
-Complete this sequence for verified viewer changes and selected scenes already authorized for publication. Routine approval is not needed again; preserve explicit privacy and licensing limits.
+Complete this sequence for viewer changes and all experiment outcomes already authorized for observation. Routine approval is not needed again; preserve explicit privacy and licensing limits.
 
-1. Finish the change and run the relevant TypeScript, lint, automated, production-build and browser checks. New reconstructed scenes require actual local rendering/quality inspection in addition to native execution evidence.
-2. Select the usable worlds and their public metadata/previews. Keep scene provenance honest: downloaded sample, supplied-pose reconstruction, estimated-pose reconstruction, and original-video reconstruction are different evidence categories.
-3. Build the curated static package locally using the explicit inclusion flags below. Inspect its complete inventory for private source paths, URLs, footage, frames and logs. Do not upload the repository or raw `dist/` directory.
+1. Finish the change and run relevant TypeScript, lint, automated, production-build and browser checks. Verify actual rendering for exported scenes. Inspect and report quality separately; FAIL quality is published rather than filtered out.
+2. Inventory all exported worlds and experimental outcomes. Publish each distinct scene with public metadata and an actual render preview. Record failed/cancelled/unexecuted stages and duplicate-export lineage in the report. Keep downloaded samples, measured/supplied-pose reconstructions, original video and generated-input trials distinct.
+3. Build the curated static package locally using the explicit inclusion flags below. Inspect its complete inventory for private source paths, URLs, footage, frames and raw logs. Only explicitly allowlisted licensed public crops/comparisons belong in the report. Do not upload the repository or raw `dist/` directory.
 4. Archive only `www/`, record its SHA-256, publish it under a fresh GitHub release tag, then download it and compare the hash. Keep the prior archive available.
 5. Update the release URL/checksum in `deploy/Dockerfile.github`, commit the reviewable deployment pointer, and push it to the connected branch as part of the same workflow. A source-code push without this step leaves the old package live.
 6. Observe Railway's deployment history, revision and healthcheck. A source-connection response is insufficient evidence of push-triggered deployment. If the expected new deployment does not appear, explicitly trigger the latest intended branch revision through the connector, continue validation, and record which trigger actually worked. The standing instruction already authorizes this routine fallback.
-7. Compare every public file against the curated inventory. Verify missing/private paths return 404. Open the public viewer, visually inspect all four selected worlds, and exercise changed navigation/catalog behavior.
+7. Compare every public file against the curated inventory. Verify missing/private paths return 404. Open the public viewer, visually inspect all included worlds, and exercise changed navigation/catalog behavior.
 8. Record the release tag, source/deployment revisions, archive hash, Railway deployment ID and public-browser evidence here. Report any failed or unexecuted gate accurately; completion requires a verified live result.
 
 ### Branch request and explicit deployment fallback
@@ -121,42 +160,54 @@ The working release procedure must observe a new deployment and use an explicit 
 
 ## Restore scene assets in a fresh checkout
 
-The catalog is tracked in Git; Gaussian assets and generated previews are not. `npm run sample` downloads the Houseplant splat but does not supply gallery previews or the other three worlds. Restore the exact selected assets from the immutable release archive before running the full catalog or packaging it.
-
-From the repository root of a **fresh checkout**, run the following. It downloads to a new temporary directory, verifies the pinned checksum before extracting, and copies only the four named world folders and catalog into `public/worlds/`. Existing versions of those selected paths would be replaced, so use a fresh checkout if you have your own artifacts there. It neither downloads source footage nor runs reconstruction.
+The catalog and preparation recipe are tracked; generated scenes and comparison
+images are ignored. `npm run sample` supplies only Houseplant's Gaussian asset.
+For the complete observation surface, restore this immutable release in a
+**fresh checkout**. The commands verify the archive before copying the 13 named
+world folders and the public comparison report. Existing files in these paths
+would be replaced; keep any personal variants elsewhere.
 
 ```sh
 (
   set -e
   gs_release_dir=$(mktemp -d)
-  gs_archive=groundshift-viewer-f78bd6b.tar.gz
+  gs_archive=groundshift-observations-20261105.tar.gz
   curl --fail --location --output "$gs_release_dir/$gs_archive" \
-    "https://github.com/neocjmix/groundshift/releases/download/viewer-gallery-2026-11-05/$gs_archive"
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-observations-2026-11-05/$gs_archive"
   printf '%s  %s\n' \
-    '75d14a661283a9c5ca24e48de9b491d5d06cb7c3171a2dfd36dd4d5cffd012ff' \
+    '8cbb3335f30127be05f81904e792ae2190d5483bf3c9a564b6d25358c38ebb20' \
     "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
   tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
-  for gs_world in sample reconstructed independent desk; do
+  for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-20k beijing-2k dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s; do
     mkdir -p "public/worlds/$gs_world"
     cp -R "$gs_release_dir/www/worlds/$gs_world/." "public/worlds/$gs_world/"
   done
+  mkdir -p public/experiments/mapillary
+  cp -R "$gs_release_dir/www/experiments/mapillary/." public/experiments/mapillary/
   cp "$gs_release_dir/www/worlds/catalog.json" public/worlds/catalog.json
 )
 npm ci
 npm run dev
 ```
 
-The extraction/copy portion was executed against the downloaded, checksum-verified archive in an isolated temporary checkout: all four world manifests, previews and assets were restored, 22 files / 31,603,817 bytes. This restoration check did not start a viewer or reconstruct anything; evidence is `data/validation/deployment/fresh-world-restore.json`. The source snapshot for this package is `f78bd6b476cbd5369597ac42f77fee8264957c4e`. The archive contains the same desktop desk PLY as the accepted Metal export: SHA-256 `0bd9192ab07b3f67ed990ed8584a6cb3ee76a54f412fd81c9e522ff5f9f0b4ba`. Loading that artifact does not repeat or independently prove reconstruction. Its creator-authorized display terms above remain separate from the open sample licenses.
+The extraction/copy procedure was executed in an isolated fresh directory: all
+13 worlds and the report restored with 80 files / 155,723,181 bytes matching
+the release inventory. Evidence: `data/validation/deployment/observation-fresh-restore.json`.
+
+This restores display assets only. It neither downloads the private original
+video nor repeats reconstruction. Desk creator-authorized display terms remain
+separate from the open sample licenses. The earlier four-world archive remains
+available in its historical release entry above.
 
 ## Prepare a curated package locally
 
-After restoring the assets above, or generating and checking the same selected public artifacts locally, build the full four-world release:
+After restoring the assets above, or generating and checking the same selected public artifacts locally, build the full observation release:
 
 ```sh
-npm run package:viewer -- --include-reconstruction --include-independent --include-desk
+npm run package:viewer -- --include-reconstruction --include-independent --include-desk --include-experiments
 ```
 
-Each flag selects one explicit artifact under `public/worlds/reconstructed/`, `independent/`, or `desk/`. The default `npm run package:viewer` includes only Houseplant and still requires its `preview.jpg`. The catalog is filtered to included scenes, so a smaller curated package does not advertise missing worlds.
+The first three flags select the existing worlds; `--include-experiments` includes every world and report file explicitly listed in `scripts/observation-worlds.json`. See `python3 scripts/prepare-observations.py --render-previews` for regeneration from local jobs. The default `npm run package:viewer` includes only Houseplant and still requires its `preview.jpg`. The catalog is filtered to included scenes, so a smaller curated package does not advertise missing worlds or an absent report.
 
 The command builds locally and prints a fresh staging directory under `data/deploy/viewer-<timestamp>/`. It copies only HTML, hashed bundles, icon, runtime notices, the selected catalog, scene assets, previews, manifests, camera metadata and credits. It checks ordinary files/directories and public provenance, rejects symlink escapes and common private references, and preflights inputs before creating output. This is a practical publication boundary, not a substitute for inspecting scene content. Source datasets, native tools, private footage and job logs are excluded. A SHA-256 inventory stays beside the staging directory, outside any upload.
 
