@@ -8,9 +8,11 @@ import { parseWorldManifest } from '../src/world.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const includeReconstruction = process.argv.includes('--include-reconstruction');
-if (process.argv.slice(2).some(arg => arg !== '--include-reconstruction')) {
-  throw new Error('Usage: node scripts/package-viewer.mjs [--include-reconstruction]');
+const includeIndependent = process.argv.includes('--include-independent');
+if (process.argv.slice(2).some(arg => !['--include-reconstruction', '--include-independent'].includes(arg))) {
+  throw new Error('Usage: node scripts/package-viewer.mjs [--include-reconstruction] [--include-independent]');
 }
+const worlds = ['sample', ...(includeReconstruction ? ['reconstructed'] : []), ...(includeIndependent ? ['independent'] : [])];
 const output = path.join(root, 'data', 'deploy', `viewer-${Date.now()}`);
 const www = path.join(output, 'www');
 const files = [];
@@ -32,7 +34,7 @@ for (const filename of await readdir(path.join(root, 'dist/assets'))) {
   await copy(path.join(root, 'dist/assets', filename), path.join(www, 'assets', filename));
 }
 
-for (const worldName of includeReconstruction ? ['sample', 'reconstructed'] : ['sample']) {
+for (const worldName of worlds) {
   const source = path.join(root, 'dist/worlds', worldName);
   const manifest = parseWorldManifest(JSON.parse(await readFile(path.join(source, 'world.json'), 'utf8')));
   if ([manifest.provenance.sourceUrl, manifest.provenance.licenseUrl].some(url => !url.startsWith('https://'))) {
@@ -50,4 +52,4 @@ for (const name of ['Dockerfile', 'Caddyfile']) {
 await writeFile(path.join(output, '.dockerignore'), '*\n!Dockerfile\n!Caddyfile\n!www\n!www/**\n');
 // Inventory stays local; Railway needs only the curated files in this directory.
 await writeFile(`${output}.inventory.json`, JSON.stringify({ output, files, totalBytes: files.reduce((sum, file) => sum + file.bytes, 0) }, null, 2) + '\n');
-console.log(JSON.stringify({ output, fileCount: files.length, totalBytes: files.reduce((sum, file) => sum + file.bytes, 0), worlds: includeReconstruction ? ['sample', 'reconstructed'] : ['sample'] }, null, 2));
+console.log(JSON.stringify({ output, fileCount: files.length, totalBytes: files.reduce((sum, file) => sum + file.bytes, 0), worlds }, null, 2));
