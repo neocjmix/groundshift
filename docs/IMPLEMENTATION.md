@@ -19,6 +19,21 @@ Implementation decisions: use the official Brush arm64 release, optional PyCOLMA
 
 The 2026-11-05 catalog update adds the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passes 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. Source footage and superseded trials remain local; the creator has authorized public display of the derived desk scene. The new Railway release, all 31 public file hashes, all four scene renders and public gallery controls pass. GitHub push autodeploy was not observed; the explicit connector trigger completed deployment. These regression checks do not imply another native reconstruction execution.
 
+## User-directed panorama experiment
+
+The next priority is the user-directed Mapillary panorama experiment, not an
+iOS capture app. Acquire a small consecutive licensed 360° sample, report actual
+spacing without claiming a global density maximum, and reconstruct observed
+pixels first. Then evaluate locally executable diffusion gap completion against
+withheld real views. A 2D inpainting run does not prove pose-conditioned novel-view
+synthesis, multi-view consistency, or improved Gaussian quality. Each boundary
+is tracked separately in [MAPILLARY_EXPERIMENT.md](MAPILLARY_EXPERIMENT.md).
+The first nine-panorama experiment has executed that complete local chain,
+including generated-image retraining and browser viewing. The 2D completion and
+larger Gaussian trial did not produce an accepted scene. Current panorama work
+is blocked on useful geometry/appearance consistency, not on an unexecuted GPU
+pipeline; the evidence and next bounded experiment are recorded in that report.
+
 ## M0 — Viewer
 Create React + TypeScript + Vite viewer using Three.js and Spark. Load a licensed sample splat, support orbit/reset and errors. Verify actual rendering on M2 MacBook Air (16 GB), record FPS, browser, asset size.
 
@@ -38,4 +53,5 @@ Video path -> frame preparation -> reconstruction -> artifact validation -> view
 Record machine, OS, tool versions, capture duration/resolution, frame count, alignment, training time, total time, peak memory, artifact size, browser FPS, visual issues and PASS/FAIL/NOT RUN.
 
 ## Deferred
-Unrestricted navigation, missing-view generation, connecting places, sharing, cloud CUDA workers, privacy redaction.
+Unrestricted navigation, connecting places, sharing, cloud CUDA workers, privacy
+redaction. Missing-view generation is now the bounded experiment described above.

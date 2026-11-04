@@ -37,6 +37,21 @@ lens calibration or poses. See [actual evidence](ORIGINAL_VIDEO.md).
 The strict schema in `src/world.ts` and [world format reference](WORLD_FORMAT.md) replace the illustrative shape below for real artifacts. Version 1 supports one Gaussian asset, orbit and optional camera-path navigation. The viewer world is right-handed, +Y-up with arbitrary or meter units, an explicit uniform asset transform and camera position/target/up/clipping. Three.js cameras look along local −Z. The manifest never silently assumes an asset's up-axis or invents a safe origin. Native exports retain genuine world-space camera matrices in `cameras.json`; the viewer must not apply the asset transform to them again. Explicit sequence edges permit interpolated movement; unknown edges and different components stop it. Free look changes orientation without moving off the selected camera route.
 
 ## Reconstruction backend boundary
+
+The public-panorama experiment adds an input preparation step: verified licensed
+equirectangular photos are reprojected to overlapping pinhole crops with known
+projection intrinsics. Crop rotations are relative to an individual panorama;
+they do not establish camera translations, compass orientation, metric scale,
+or a new measured baseline. World poses still need reconstruction. The prototype
+does not pretend that ordinary perspective trainers understand an equirectangular
+image directly.
+
+Diffusion completion is an experimental local preprocessing/refinement process,
+not part of the viewer or a cloud worker. Keep source images, generated pixels,
+mask semantics, model revision/seed and camera evidence distinct. Evaluate
+against real withheld views before admitting generated images into an accepted
+world. [Experiment and status](MAPILLARY_EXPERIMENT.md).
+
 Treat the reconstruction tool as a process invoked with input path, output directory and backend-specific options. Capture exit code, logs, elapsed time and cancellation. The backend owns its internal steps: COLMAP is not a universal requirement and future neural reconstruction may estimate camera poses itself. Do not abstract Metal/CUDA kernels, training hyperparameters or internal cache.
 
 Conceptual contract:

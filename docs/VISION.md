@@ -5,11 +5,22 @@ Groundshift turns pedestrian memories into places people can revisit. Someone wa
 The product is not a precise digital twin. Accept approximations, incomplete unseen geometry and imperfect texture when the place still feels recognizable. Maintain the continuity of paths, turns, and landmarks.
 
 ## Prototype scope
-Input: 10–15 seconds of steady, original pedestrian footage, increasing duration after success.
-Output: a browser-viewable reconstructed scene with camera rotation, movement along the recovered route and reset.
+The user redirected the next experiment to dense consecutive Mapillary 360°
+imagery, followed by diffusion-assisted filling of missing viewpoints and
+Gaussian reconstruction. Begin with a small, licensed, reproducibly acquired
+sequence. Compare an observed-image baseline with the generated-view experiment;
+do not assume that plausible generated pixels improve multi-view geometry.
+
+The existing original-video workflow remains a validated input path. An iOS
+capture app is deferred while the public-panorama experiment is evaluated.
+Output remains a browser-viewable reconstructed scene with explicit coordinates,
+source attribution, and an honest distinction between captured and generated
+content. See [the current experiment](MAPILLARY_EXPERIMENT.md).
 
 ## Deferred
-Free off-path walking, plausible unseen-view generation, scene connections, shared worlds, automatic uploads, accounts, mobile capture app, cloud compute, GIS alignment, real-time reconstruction.
+Free off-path walking, scene connections, shared worlds, automatic uploads,
+accounts, mobile capture app, cloud compute, GIS alignment, real-time reconstruction.
+Missing-view generation is now a bounded experiment, not an accepted capability.
 
 ## Priorities
 1. Reproducible end-to-end operation.

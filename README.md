@@ -12,6 +12,18 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
+## Current experiment: public 360° sequences
+
+The next user-directed experiment uses a small licensed Mapillary panorama
+sequence, tests an observed-image Gaussian baseline, and then evaluates local
+diffusion-assisted gap completion. Generated views are hypotheses, not new
+measurements. Acquisition, actual hardware results, limits and reproducible
+commands are recorded in [MAPILLARY_EXPERIMENT.md](docs/MAPILLARY_EXPERIMENT.md).
+The original-video path and the four accepted public worlds remain available.
+Actual fixed-rig SfM, Metal Gaussian training, local MPS inpainting and generated-
+image retraining have executed. The resulting Mapillary scenes remain local
+experiments: the new gap-filled world has **not passed visual-quality acceptance**.
+
 ## Constraints
 - Free and open-source tools; no paid API or cloud GPU.
 - Optimize for Apple Silicon and Metal today, not hypothetical CUDA parity.
