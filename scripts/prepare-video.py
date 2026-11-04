@@ -179,6 +179,34 @@ def optional_number(value):
         return None
 
 
+def color_conversion(stream):
+    """Select a documented CPU pixel conversion; never relabel HDR as SDR."""
+    source = {key: stream.get(key) for key in
+              ("pix_fmt", "color_range", "color_space", "color_transfer", "color_primaries")}
+    dolby = [item for item in stream.get("side_data_list", [])
+             if item.get("side_data_type") == "DOVI configuration record"]
+    hdr = source["color_transfer"] in {"arib-std-b67", "smpte2084"}
+    if not hdr and not dolby:
+        return {"mode": "sdr-or-unspecified", "source": source,
+                "method": "Existing SDR pixel conversion; no HDR tone mapping requested"}
+    if (not hdr or source["color_primaries"] != "bt2020"
+            or source["color_space"] != "bt2020nc"):
+        raise ValueError("Unsupported HDR color metadata: require a tagged BT.2020 HLG/PQ compatible base layer")
+    if dolby and any(item.get("dv_bl_signal_compatibility_id") not in {1, 4} for item in dolby):
+        raise ValueError("Unsupported Dolby Vision base layer; no HDR colors were guessed")
+    return {
+        "mode": "zscale-mobius-hdr-to-sdr", "source": source, "dolbyVision": dolby,
+        "method": "FFmpeg zscale (zimg) linearization/gamut conversion and float32 Mobius tone mapping on CPU",
+        "toneMap": {"operator": "mobius", "transition": 0.3, "desaturation": 0,
+                    "referenceWhiteNits": 100,
+                    "assumedSourcePeakNits": 1000 if source["color_transfer"] == "arib-std-b67" else 10000,
+                    "peakPolicy": "Fixed reference HLG 1000 nits / PQ 10000 nits, not measured scene luminance or camera calibration"},
+        "output": {"primaries": "BT.709 / sRGB", "transfer": "IEC 61966-2-1 (sRGB)",
+                   "jpegMatrix": "BT.601", "range": "full", "bitsPerChannel": 8},
+        "limitations": "Global reference tone map of the tagged HLG/PQ compatible base layer, not Dolby Vision dynamic RPU grading or a calibrated color reference. Saturated colors outside the SDR gamut can clip; desaturation is disabled to preserve measured neutral-ramp highlight separation. Fixed reference peak assumptions are recorded explicitly.",
+    }
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("video", type=Path, help="Local video file (no upload)")
@@ -245,6 +273,7 @@ def main(argv=None):
         if not streams:
             raise ValueError("Input has no video stream (attached cover images are excluded)")
         stream = streams[0]
+        conversion = color_conversion(stream)
         width, height = stream.get("width", 0), stream.get("height", 0)
         if width < 1 or height < 1:
             raise ValueError("Input video has invalid dimensions")
@@ -260,21 +289,41 @@ def main(argv=None):
                     "maxFrames": args.max_frames, "effectiveFrameLimit": frame_limit,
                     "maxEdge": args.max_edge, "timestampMeaning": TIMESTAMP_MEANING,
                     "orientation": "FFmpeg autorotation applied before scaling; output pixels are display-oriented",
-                    "scaling": "Fit within source pixel dimensions and maxEdge; square pixels, preserve display aspect ratio"}
+                    "scaling": "Fit within source pixel dimensions and maxEdge; square pixels, preserve display aspect ratio",
+                    "colorConversion": conversion}
         report["sampling"] = sampling
         report["input"].update({"durationSeconds": duration, "width": width, "height": height,
                                 "sampleAspectRatio": stream.get("sample_aspect_ratio"),
                                 "streamStartTimeSeconds": optional_number(stream.get("start_time")),
                                 "sideData": stream.get("side_data_list", [])})
-        filters = (f"fps=fps={args.fps}:start_time=0:round=near,"
-                   f"scale=w='min({args.max_edge},iw)':h='min({args.max_edge},ih)':"
-                   "force_original_aspect_ratio=decrease:reset_sar=1")
+        filters = f"fps=fps={args.fps}:start_time=0:round=near,"
+        color_options = []
+        if conversion["mode"] == "zscale-mobius-hdr-to-sdr":
+            run_tool([ffmpeg, "-hide_banner", "-filters"], "hdr-filter-capability", output, report)
+            help_text = ((output / "logs/hdr-filter-capability.stdout.log").read_text()
+                         + (output / "logs/hdr-filter-capability.stderr.log").read_text())
+            filters_present = {parts[1] for line in help_text.splitlines()
+                               if len(parts := line.split()) >= 3 and "->" in parts[2]}
+            if not {"zscale", "tonemap"}.issubset(filters_present):
+                raise ValueError("This FFmpeg build lacks zscale/tonemap; supply a zimg-enabled --ffmpeg. HDR frames were not relabeled as SDR.")
+            peak = conversion["toneMap"]["assumedSourcePeakNits"] / conversion["toneMap"]["referenceWhiteNits"]
+            filters += ("zscale=transfer=linear:primaries=bt709:npl=100,format=gbrpf32le,"
+                        f"tonemap=tonemap=mobius:param=0.3:desat=0:peak={peak:g},"
+                        "zscale=transfer=iec61966-2-1:matrix=bt470bg:range=full,format=yuvj444p,")
+            color_options = ["-color_primaries", "bt709", "-color_trc", "iec61966-2-1", "-colorspace", "bt470bg"]
+            provenance["notes"] += " HDR pixels were converted locally through FFmpeg zscale and Mobius to SDR sRGB before JPEG encoding. " + conversion["limitations"]
+            write_json(output / "provenance.json", provenance)
+        filters += (f"scale=w='min({args.max_edge},iw)':h='min({args.max_edge},ih)':"
+                    "force_original_aspect_ratio=decrease:reset_sar=1")
+        if conversion["mode"] == "zscale-mobius-hdr-to-sdr":
+            filters += ",sidedata=mode=delete"
         command = [ffmpeg, "-hide_banner", "-nostdin", "-n", "-loglevel", "info",
                    "-filter_threads", "2", "-hwaccel", "none", "-threads", "2",
                    "-protocol_whitelist", "file,pipe", "-autorotate", "-ss", str(args.start),
                    "-i", str(video), "-map", "0:V:0", "-an", "-sn", "-dn", "-t", str(effective_duration),
                    "-vf", filters, "-fps_mode", "passthrough", "-frames:v", str(frame_limit),
                    "-c:v", "mjpeg", "-q:v", "2", "-pix_fmt", "yuvj444p", "-threads", "2",
+                   *color_options,
                    "-map_metadata", "-1", "-start_number", "1", str(output / "images/frame_%06d.jpg")]
         run_tool(command, "ffmpeg-extract", output, report)
         frames = []

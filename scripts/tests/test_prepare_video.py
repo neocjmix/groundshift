@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import struct
 import subprocess
 import sys
 import tempfile
@@ -19,6 +20,9 @@ VIDEO = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VIDEO)
 FFMPEG = shutil.which("ffmpeg")
 FFPROBE = shutil.which("ffprobe")
+HDR_FFMPEG = shutil.which(os.environ.get("GROUNDSHIFT_HDR_FFMPEG", "ffmpeg"))
+HDR_FILTERS = subprocess.run([HDR_FFMPEG, "-hide_banner", "-filters"], capture_output=True, text=True).stdout if HDR_FFMPEG else ""
+HDR_AVAILABLE = " zscale " in HDR_FILTERS and " tonemap " in HDR_FILTERS
 
 
 class VideoInputTests(unittest.TestCase):
@@ -70,6 +74,105 @@ class VideoInputTests(unittest.TestCase):
             self.assertEqual(result.returncode, 2)
             self.assertTrue(output.is_symlink())
             self.assertFalse((root / "missing").exists())
+
+
+class VideoColorPolicyTests(unittest.TestCase):
+    def test_hdr_policy_records_reference_assumptions(self):
+        for transfer, peak in (("arib-std-b67", 1000), ("smpte2084", 10000)):
+            policy = VIDEO.color_conversion({"color_transfer": transfer, "color_primaries": "bt2020",
+                                             "color_space": "bt2020nc"})
+            self.assertEqual(policy["mode"], "zscale-mobius-hdr-to-sdr")
+            self.assertEqual(policy["toneMap"]["referenceWhiteNits"], 100)
+            self.assertEqual(policy["toneMap"]["assumedSourcePeakNits"], peak)
+            self.assertIn("not measured", policy["toneMap"]["peakPolicy"])
+
+    def test_unsupported_hdr_base_layer_is_rejected(self):
+        for stream in ({"color_transfer": "arib-std-b67"},
+                       {"color_transfer": "smpte2084", "color_primaries": "bt709", "color_space": "bt2020nc"},
+                       {"color_transfer": "arib-std-b67", "color_primaries": "bt2020", "color_space": "bt2020nc",
+                        "side_data_list": [{"side_data_type": "DOVI configuration record", "dv_bl_signal_compatibility_id": 0}]}):
+            with self.subTest(stream=stream), self.assertRaises(ValueError):
+                VIDEO.color_conversion(stream)
+
+    def test_sdr_or_unspecified_is_not_claimed_tone_mapped(self):
+        self.assertEqual(VIDEO.color_conversion({})["mode"], "sdr-or-unspecified")
+
+
+@unittest.skipUnless(HDR_AVAILABLE and FFPROBE, "zimg-enabled FFmpeg required; set GROUNDSHIFT_HDR_FFMPEG. HDR pixel checks NOT RUN")
+class VideoHdrPixelTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        levels = [64, 192, 320, 448, 576, 704, 832, 940]
+        y = [levels[x // 20] for _ in range(96) for x in range(160)]
+        samples = y + [512] * (160 * 96 // 2)
+        self.raw = self.root / "ramp.yuv"
+        self.raw.write_bytes(struct.pack("<%dH" % len(samples), *samples) * 4)
+
+    def ffmpeg(self, args):
+        return subprocess.run([HDR_FFMPEG, "-hide_banner", "-nostdin", "-n", "-loglevel", "error", *args],
+                              capture_output=True, check=True).stdout
+
+    def source(self, transfer, mov=False):
+        source = self.root / (transfer + (".mov" if mov else ".mkv"))
+        codec = (["-c:v", "libx265", "-preset", "ultrafast", "-x265-params",
+                  "lossless=1:pools=2:frame-threads=1:log-level=error", "-tag:v", "hvc1"] if mov else ["-c:v", "ffv1"])
+        # Set frame tags, then verify container+decoder readback; encoder options
+        # alone did not preserve transfer/primaries in the rejected early fixture.
+        self.ffmpeg(["-f", "rawvideo", "-pixel_format", "yuv420p10le", "-video_size", "160x96",
+                     "-framerate", "4", "-i", str(self.raw), "-vf",
+                     f"setparams=range=limited:color_primaries=bt2020:color_trc={transfer}:colorspace=bt2020nc",
+                     *codec, str(source)])
+        probe = json.loads(subprocess.check_output([FFPROBE, "-v", "error", "-show_streams", "-of", "json", str(source)]))
+        self.assertEqual(probe["streams"][0]["color_transfer"], transfer)
+        self.assertEqual(probe["streams"][0]["color_primaries"], "bt2020")
+        return source
+
+    def prepare(self, source, name="prepared", ffmpeg=None, expected=0):
+        output = self.root / name
+        result = subprocess.run([sys.executable, str(SCRIPT), str(source), str(output), "--fps", "1",
+                                 "--max-frames", "1", "--ffmpeg", ffmpeg or HDR_FFMPEG,
+                                 "--ffprobe", FFPROBE], capture_output=True)
+        self.assertEqual(result.returncode, expected, result.stderr.decode())
+        return output, json.loads((output / "report.json").read_text())
+
+    def test_hlg_and_pq_change_pixels_and_keep_highlight_order(self):
+        for transfer in ("arib-std-b67", "smpte2084"):
+            with self.subTest(transfer=transfer):
+                output, report = self.prepare(self.source(transfer), transfer)
+                self.assertEqual(report["sampling"]["colorConversion"]["mode"], "zscale-mobius-hdr-to-sdr")
+                self.assertFalse(report["gpuUsed"])
+                image = output / "images/frame_000001.jpg"
+                pixels = self.ffmpeg(["-i", str(image), "-f", "rawvideo", "-pix_fmt", "rgb24", "pipe:1"])
+                levels = [pixels[(48 * 160 + 10 + i * 20) * 3] for i in range(8)]
+                self.assertTrue(all(a < b for a, b in zip(levels, levels[1:])), levels)
+                self.assertGreater(max(abs(a-b) for a, b in zip(levels, [0, 37, 75, 112, 149, 186, 224, 255])), 15)
+                if transfer == "arib-std-b67":
+                    for actual, expected in zip(levels, [0, 45, 104, 162, 202, 231, 248, 255]):
+                        self.assertLessEqual(abs(actual - expected), 3)
+
+    def test_hdr_rotation_is_baked_before_tone_mapping(self):
+        source = self.source("arib-std-b67", mov=True)
+        rotated = self.root / "rotated.mov"
+        self.ffmpeg(["-display_rotation", "-90", "-i", str(source), "-c", "copy", str(rotated)])
+        output, report = self.prepare(rotated)
+        self.assertEqual(report["result"]["dimensions"], ["96x160"])
+        pixels = self.ffmpeg(["-i", str(output / "images/frame_000001.jpg"), "-f", "rawvideo", "-pix_fmt", "rgb24", "pipe:1"])
+        # Clockwise rotation moves original left-to-right ramp to top-to-bottom.
+        levels = [pixels[((10 + i * 20) * 96 + 48) * 3] for i in range(8)]
+        self.assertTrue(all(a < b for a, b in zip(levels, levels[1:])), levels)
+
+    def test_missing_zscale_fails_before_hdr_extraction(self):
+        source = self.source("arib-std-b67")
+        tool = self.root / "ffmpeg-without-zscale"
+        tool.write_text("#!/usr/bin/env python3\nimport sys\nprint('fixture: no filters')\n")
+        tool.chmod(0o755)
+        output, report = self.prepare(source, ffmpeg=str(tool), expected=1)
+        self.assertEqual(report["status"], "FAIL")
+        self.assertIn("lacks zscale/tonemap", report["error"])
+        self.assertFalse((output / "sequence.json").exists())
+        self.assertEqual(list((output / "images").iterdir()), [])
 
 
 @unittest.skipUnless(FFMPEG and FFPROBE, "FFmpeg/ffprobe not installed; real media checks NOT RUN")

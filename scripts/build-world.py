@@ -64,6 +64,8 @@ def main():
     parser.add_argument("--start", type=float, default=0)
     parser.add_argument("--duration", type=float, default=15)
     parser.add_argument("--fps", type=float, default=4)
+    parser.add_argument("--ffmpeg", default="ffmpeg", help="FFmpeg executable for video preparation; HDR requires zscale/tonemap")
+    parser.add_argument("--ffprobe", default="ffprobe", help="ffprobe executable for video preparation")
     parser.add_argument("--max-edge", type=int, default=960)
     parser.add_argument("--max-frames", type=int, default=120)
     parser.add_argument("--steps", type=int, default=1500)
@@ -131,7 +133,8 @@ def main():
         if is_video:
             command = [sys.executable, ROOT / "scripts/prepare-video.py", source, output / "frames",
                        "--start", str(args.start), "--duration", str(args.duration), "--fps", str(args.fps),
-                       "--max-edge", str(args.max_edge), "--max-frames", str(args.max_frames)]
+                       "--max-edge", str(args.max_edge), "--max-frames", str(args.max_frames),
+                       "--ffmpeg", args.ffmpeg, "--ffprobe", args.ffprobe]
             if args.provenance:
                 command.extend(["--provenance", args.provenance.resolve()])
             run_stage("prepare-video", command)
