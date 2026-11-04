@@ -1,0 +1,188 @@
+{
+  "recordedAt": "2026-11-04",
+  "machine": {
+    "model": "MacBook Air 2022",
+    "chip": "Apple M2",
+    "memoryBytes": 17179869184,
+    "os": "macOS26.6.2",
+    "build": "25G83"
+  },
+  "acquisition": {
+    "status": "PASS",
+    "elapsedSeconds": 58.158513957983814,
+    "frames": 40,
+    "width": 752,
+    "height": 500,
+    "initialPoints": 165875,
+    "maxCameraTransformError": 5.329070518200751e-15,
+    "opencvVersion": "5.0.0",
+    "numpyVersion": "2.5.4"
+  },
+  "acquisitionReproduction": {
+    "status": "PASS",
+    "cachedElapsedSeconds": 3.1125258329557255,
+    "identicalPreparedFiles": 45
+  },
+  "runs": [
+    {
+      "status": "PASS",
+      "startedAt": "2026-11-04T10:48:33.489328+00:00",
+      "dataset": "data/datasets/dozer-small",
+      "output": "data/jobs/dozer-smoke",
+      "command": [
+        "data/tools/brush-0.3.0/brush-app-aarch64-apple-darwin/brush_app",
+        "data/datasets/dozer-small",
+        "--total-steps",
+        "30",
+        "--max-resolution",
+        "384",
+        "--max-splats",
+        "200000",
+        "--export-every",
+        "30",
+        "--export-path",
+        "data/jobs/dozer-smoke/world",
+        "--export-name",
+        "scene.ply",
+        "--sh-degree",
+        "1",
+        "--seed",
+        "42"
+      ],
+      "toolVersion": "brush-cli 0.3.0",
+      "imageCount": 40,
+      "options": {
+        "steps": 30,
+        "resolution": 384,
+        "maxSplats": 200000
+      },
+      "exitCode": 0,
+      "maximumResidentSetBytes": 190824448,
+      "artifact": {
+        "splats": 165875,
+        "bytes": 15261152,
+        "sha256": "fde097a56407be3529354f697c7a2bc95d51f296c1376ab87dc5c1a39ce19c00"
+      },
+      "browserRendering": "NOT RUN",
+      "manifestPath": "data/jobs/dozer-smoke/world/world.json",
+      "elapsedSeconds": 7.31294108403381,
+      "finishedAt": "2026-11-04T10:48:40.802909+00:00",
+      "peakMemoryFootprintBytes": 857490176,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "rawResources": "data/jobs/dozer-smoke/resources.txt",
+      "rawLog": "data/jobs/dozer-smoke/training.log"
+    },
+    {
+      "status": "PASS",
+      "startedAt": "2026-11-04T10:49:10.829038+00:00",
+      "dataset": "data/datasets/dozer-small",
+      "output": "data/jobs/dozer-1500",
+      "command": [
+        "data/tools/brush-0.3.0/brush-app-aarch64-apple-darwin/brush_app",
+        "data/datasets/dozer-small",
+        "--total-steps",
+        "1500",
+        "--max-resolution",
+        "512",
+        "--max-splats",
+        "200000",
+        "--export-every",
+        "1500",
+        "--export-path",
+        "data/jobs/dozer-1500/world",
+        "--export-name",
+        "scene.ply",
+        "--sh-degree",
+        "1",
+        "--seed",
+        "42"
+      ],
+      "toolVersion": "brush-cli 0.3.0",
+      "imageCount": 40,
+      "options": {
+        "steps": 1500,
+        "resolution": 512,
+        "maxSplats": 200000
+      },
+      "exitCode": 0,
+      "maximumResidentSetBytes": 194805760,
+      "artifact": {
+        "splats": 194789,
+        "bytes": 17921240,
+        "sha256": "ed28becf4e5a5ee1e238660e58f120f69c1e7786b1cda23f2a5943f341bffa72"
+      },
+      "browserRendering": "NOT RUN",
+      "manifestPath": "data/jobs/dozer-1500/world/world.json",
+      "publishedManifestPath": "public/worlds/reconstructed/world.json",
+      "elapsedSeconds": 80.34711604099721,
+      "finishedAt": "2026-11-04T10:50:31.177290+00:00",
+      "peakMemoryFootprintBytes": 956449608,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "rawResources": "data/jobs/dozer-1500/resources.txt",
+      "rawLog": "data/jobs/dozer-1500/training.log"
+    },
+    {
+      "status": "PASS",
+      "startedAt": "2026-11-04T10:54:06.421838+00:00",
+      "dataset": "data/validation/colmap/dozer-40/dataset",
+      "output": "data/jobs/dozer-estimated-1500",
+      "command": [
+        "data/tools/brush-0.3.0/brush-app-aarch64-apple-darwin/brush_app",
+        "data/validation/colmap/dozer-40/dataset",
+        "--total-steps",
+        "1500",
+        "--max-resolution",
+        "512",
+        "--max-splats",
+        "100000",
+        "--export-every",
+        "1500",
+        "--export-path",
+        "data/jobs/dozer-estimated-1500/world",
+        "--export-name",
+        "scene.ply",
+        "--sh-degree",
+        "1",
+        "--seed",
+        "42"
+      ],
+      "toolVersion": "brush-cli 0.3.0",
+      "imageCount": 16,
+      "options": {
+        "steps": 1500,
+        "resolution": 512,
+        "maxSplats": 100000
+      },
+      "exitCode": 0,
+      "maximumResidentSetBytes": 176193536,
+      "peakMemoryFootprintBytes": 232850104,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "artifact": {
+        "splats": 1048,
+        "bytes": 97066,
+        "sha256": "e2bf457ba0cd4ab70b9ec56075460884ccda206a4cb8a126dff4d48c6258cc75"
+      },
+      "browserRendering": "NOT RUN",
+      "manifestPath": "data/jobs/dozer-estimated-1500/world/world.json",
+      "elapsedSeconds": 22.509040292003192,
+      "finishedAt": "2026-11-04T10:54:28.931675+00:00",
+      "rawResources": "data/jobs/dozer-estimated-1500/resources.txt",
+      "rawLog": "data/jobs/dozer-estimated-1500/training.log"
+    }
+  ],
+  "automatedTests": {
+    "status": "PASS",
+    "count": 15,
+    "command": "python3 -m unittest discover -s scripts/tests -v",
+    "scope": "CPU adapter invariants and mock backend failure/cancellation only; hardware runs above are separate",
+    "reconstructionAdapterCount": 13,
+    "poseEstimationCancellationCount": 2
+  },
+  "limitations": [
+    "Primary 40-view run obtains supplied camera poses; these were not re-estimated locally.",
+    "Estimated-pose training covers only 16 of 40 images; complete registration failed.",
+    "Process RSS and peak memory footprint are macOS time measurements; GPU memory was not separately measured.",
+    "Browser status is in separate production browser evidence, not inferred from export.",
+    "Video input and held-out quantitative quality were not run."
+  ]
+}

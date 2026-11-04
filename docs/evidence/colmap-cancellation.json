@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "recordedAt": "2026-11-04T10:57:09.873494+00:00",
+  "test": "Independent real PyCOLMAP SIGTERM during feature extraction",
+  "script": "scripts/estimate-poses.py",
+  "inputImages": "data/datasets/dozer-small/images",
+  "inputImageCount": 40,
+  "threads": 1,
+  "maxImageSize": 512,
+  "signal": "SIGTERM",
+  "trigger": "Sent as soon as initial report.json existed",
+  "exitCode": 143,
+  "finalJobStatus": "CANCELLED",
+  "stage": {
+    "name": "feature-extraction",
+    "status": "CANCELLED",
+    "error": "Received SIGTERM",
+    "elapsedSeconds": 1.4103396659484133
+  },
+  "signalToExitSeconds": 1.4056975829880685,
+  "terminalSummaryIncludedCancelled": true,
+  "beforeFix": {
+    "exitCode": -15,
+    "finalJobStatus": "RUNNING"
+  },
+  "retention": "Observed summary retained here. Raw report and execution log were read from a disposable TemporaryDirectory and removed automatically after the test.",
+  "scope": "CPU native PyCOLMAP cancellation only; not a mocked stage, GPU training, completed pose recovery, or browser rendering test."
+}

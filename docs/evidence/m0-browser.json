@@ -1,0 +1,28 @@
+{
+  "time": "2026-11-04T10:53:10.499Z",
+  "browser": "156.0.8078.81",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "mode": "headed",
+  "fpsSamplesRounded": [
+    60,
+    60,
+    60,
+    60,
+    60
+  ],
+  "centralNonBackgroundPixels": 54024,
+  "details": "Render details\n60 fps\nGaussians\n113,648\nScene file\n3.64 MB\nLoad + decode\n0.62 s\nDrawing buffer\n1076 × 862\nRenderer\nANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)\nFrame rate\nRolling 1 s, includes browser scheduling",
+  "checks": [
+    "pixel occupancy",
+    "orbit",
+    "immediate reset settles",
+    "zoom buttons",
+    "wheel zoom",
+    "local folder replacement",
+    "mobile overflow"
+  ],
+  "visualReview": "Requires separate screenshot inspection; automated pixel check does not prove quality."
+}

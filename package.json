@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=24"
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "sample": "node scripts/fetch-sample.mjs",
-    "test:browser": "npm run build && playwright test"
+    "test:browser": "npm run build && playwright test",
+    "test:native": "python3 -m unittest discover -s scripts/tests -v"
   },
   "dependencies": {
     "@sparkjsdev/spark": "2.4.0",

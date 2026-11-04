@@ -1,0 +1,6 @@
+{
+  "time": "2026-11-04T10:57:13.909Z",
+  "browser": "156.0.8078.81",
+  "details": "Render details\n60 fps\nGaussians\n1,048\nScene file\n0.10 MB\nLoad + decode\n0.01 s\nDrawing buffer\n1076 × 862\nRenderer\nANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)\nFrame rate\nRolling 1 s, includes browser scheduling",
+  "visualReview": "Pending screenshot inspection"
+}

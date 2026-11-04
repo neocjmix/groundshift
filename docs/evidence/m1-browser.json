@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-04T10:53:20.035Z",
+  "browser": "156.0.8078.81",
+  "details": "Render details\n60 fps\nGaussians\n194,789\nScene file\n17.92 MB\nLoad + decode\n1.37 s\nDrawing buffer\n1076 × 862\nRenderer\nANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)\nFrame rate\nRolling 1 s, includes browser scheduling",
+  "fps": [
+    "52 fps",
+    "60 fps",
+    "60 fps",
+    "60 fps",
+    "60 fps"
+  ],
+  "errors": [],
+  "visualReview": "Requires separate screenshot inspection."
+}

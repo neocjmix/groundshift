@@ -17,7 +17,7 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 
 ## Run the M0 viewer
 
-Requires Node.js 22.12+ and a WebGL2-capable browser. The validation machine uses Node 25.6.1 and Chrome 156 on Apple M2.
+Requires Node.js 24+ and a WebGL2-capable browser. The validation machine uses Node 25.6.1 and Chrome 156 on Apple M2.
 
 ```sh
 npm ci
@@ -37,18 +37,29 @@ The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loadi
 npm run typecheck
 npm run lint
 npm test
+npm run test:native
 npm run build
 npm run test:browser
 ```
 
 Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Run `npm run sample` first. The optional reconstruction test is explicitly skipped until `public/worlds/reconstructed/scene.ply` exists. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
 
-M0 has been rendered and visually verified on the target M2. Native reconstruction integration is the next milestone.
+## Native reconstruction (M1)
+
+The first local reconstruction is working: **40 licensed images → supplied measured camera poses → Brush on M2 Metal → PLY → this viewer**. A 1,500-step run took 80.35 seconds and exported 194,789 Gaussians (17.92 MB). The actual result was visually inspected in Chrome. See [installation, dataset acquisition and exact commands](docs/M1.md).
+
+The backend is a local Python process adapter; the portable output is a directory of scene, manifest, camera metadata and provenance. No server, database or GPU abstraction is involved. An optional [CPU PyCOLMAP image-to-pose path](docs/COLMAP.md) also runs locally, but its first experiment connected only 16/40 views. Full new pose recovery is **FAIL** for that input; the main M1 run uses the dataset's real provided poses.
+
+**M0: PASS. M1: PASS for the small supplied-pose reconstruction.** See [validation and remaining limitations](docs/VALIDATION.md) for hardware evidence, screenshots and separately marked PASS / FAIL / NOT RUN results. Image quality is an early prototype: the excavator and surroundings are recognizable, with soft peripheral geometry. Original walking video and route-following are still deferred.
 
 ## Documentation
 - [Vision](docs/VISION.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Milestones](docs/IMPLEMENTATION.md)
+- [Measured validation](docs/VALIDATION.md)
+- [Local reconstruction](docs/M1.md)
+- [Optional CPU camera estimation](docs/COLMAP.md)
+- [Portable world format](docs/WORLD_FORMAT.md)
 - [Agent instructions](AGENTS.md)
 
 Groundshift source license selection remains pending; third-party code and samples retain their respective licenses. Large assets, datasets, generated output and local tools are excluded from Git. Use original or appropriately licensed images and review privacy before publishing footage or scenes.
