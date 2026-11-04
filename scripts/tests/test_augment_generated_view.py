@@ -44,7 +44,9 @@ class AugmentationTests(unittest.TestCase):
             'input':{'originalSize':[512,512],'workingSize':[512,512],'syntheticPixels':4096,'syntheticFraction':1/64,
                 'workingReferenceSha256':self.hash(self.job/'reference.png'),'workingMaskSha256':self.hash(self.job/'mask.png')},
             'output':{'file':'completed.png','sha256':self.hash(self.job/'completed.png')},
-            'model':{'repository':'synthetic-fixture','revision':'no-model-executed'},'settings':{'prompt':'fixture','seed':0}}
+            'model':{'repository':'synthetic-fixture','revision':'no-model-executed',
+                     'license':'Synthetic fixture model license','licenseUrl':'https://example.com/model-license'},
+            'settings':{'prompt':'fixture','seed':0}}
         self.write(self.job/'report.json',self.report)
         self.args=argparse.Namespace(dataset=self.train,poses=self.pose,target='images/frame2.png',inpaint=self.job,
             output=self.out,source_reference=None,source_mask=None)
@@ -72,6 +74,17 @@ class AugmentationTests(unittest.TestCase):
         self.assertEqual(synthetic['views'][0]['maskFraction'],1/64)
         self.assertFalse(report['targetPhotographPixelsRead'])
         self.assertEqual(report['geometryValidation'],'NOT RUN')
+
+    def test_portable_world_preserves_synthetic_model_and_image_provenance(self):
+        AUGMENT.augment(self.args)
+        transforms,provenance=AUGMENT.RECONSTRUCT.validate_dataset(self.out)
+        world,_=AUGMENT.RECONSTRUCT.artifact(transforms,provenance,'Synthetic fixture','fixture')
+        notes=world['provenance']['notes']
+        for value in ('images/frame2.png','synthetic-fixture','no-model-executed',
+                      'Synthetic fixture model license','https://example.com/model-license',
+                      'seed: 0','diffusion mask fraction: 0.015625',self.report['output']['sha256']):
+            with self.subTest(value=value):self.assertIn(value,notes)
+        self.assertEqual(world['provenance']['license'],'Synthetic test')
 
     def test_corrupted_completed_is_rejected(self):
         (self.job/'completed.png').write_bytes(b'corrupt')

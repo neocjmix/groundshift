@@ -179,8 +179,16 @@ def augment(args):
             transforms['ply_file_path'] = 'init.ply'
             RECONSTRUCT.write_json(dst/'transforms.json',transforms)
             (dst/'source-provenance.json').write_bytes((src/'provenance.json').read_bytes())
+            model = result['model']
+            portable_synthetic_note = (
+                f" Synthetic training view: {args.target}; model repository: {model['repository']};"
+                f" revision: {model['revision']}; model license: {model['license']};"
+                f" model license URL: {model['licenseUrl']}; seed: {result['settings']['seed']};"
+                f" diffusion mask fraction: {fraction:.17g}; completed image SHA-256: {sha(completed_bytes)}."
+                ' Model terms are recorded separately from the source imagery license; no new redistribution license is inferred.'
+            )
             provenance['notes'] = ('Source training dataset notes before augmentation: '+provenance.get('notes','')
-                                   +' Current augmented dataset: '+LIMITS)
+                                   +' Current augmented dataset: '+LIMITS+portable_synthetic_note)
             RECONSTRUCT.write_json(dst/'provenance.json',provenance)
             for name in ('LICENSE','ATTRIBUTION.txt'):
                 if (src/name).is_file(): shutil.copyfile(src/name,dst/name)
