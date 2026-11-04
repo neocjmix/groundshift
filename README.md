@@ -2,9 +2,9 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Independently reconstructed dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Browse all four worlds](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
-The next catalog release makes four usable worlds easy to select: **My desk**, **Dozer · estimated cameras**, **Dozer · supplied cameras**, and **Houseplant**. The desk is a newly reconstructed user recording; the two dozer scenes remain separately identified by their camera inputs, and Houseplant is the licensed viewer sample. This catalog update is **PENDING** public deployment verification. Superseded low-quality trials remain local.
+The catalog makes four usable worlds easy to select: **My desk**, **Dozer · estimated cameras**, **Dozer · supplied cameras**, and **Houseplant**. The desk is a newly reconstructed user recording; the two dozer scenes remain separately identified by their camera inputs, and Houseplant is the licensed viewer sample. Deployment, the complete public file inventory, all four actual scene renders, gallery filters/search and desk path playback have been verified. Superseded low-quality trials remain local.
 
 ## Vision
 Anyone can record a memorable walk, reconstruct an explorable place, and revisit it later. Eventually separately recorded places can connect into a growing shared world. Pedestrian paths, alleys, corners and stairs matter more than driving routes. Recognizability and spatial continuity matter more than survey accuracy or geometric precision.
@@ -23,13 +23,14 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 
 Requires Node.js 24+ and a WebGL2-capable browser. The validation machine uses Node 25.6.1 and Chrome 156 on Apple M2.
 
+For the complete four-world gallery, first [restore the scene assets and previews from the pinned release](docs/DEPLOYMENT.md#restore-scene-assets-in-a-fresh-checkout). The catalog is tracked; generated assets are ignored. Then run:
+
 ```sh
 npm ci
-npm run sample
 npm run dev
 ```
 
-Open **http://127.0.0.1:4317**. Drag to orbit, scroll or use the buttons to zoom, right-drag to pan, and use **Reset view** to return to the manifest camera. The Houseplant example is a real captured Gaussian scene, licensed CC-BY-4.0; its downloader pins and checks the exact asset. See [sample provenance](docs/SAMPLES.md).
+Open **http://127.0.0.1:4317** and select a scene card. The gallery loads previews; the 3D viewer starts only after selection. For a minimal Houseplant-only M0 check, `npm run sample` supplies that splat and `http://127.0.0.1:4317/?world=/worlds/sample/world.json` opens it directly; this does not restore the full gallery. Once inside a scene, drag to orbit, scroll or use the buttons to zoom, right-drag to pan, and use **Reset view** to return to the manifest camera. The Houseplant example is a real captured Gaussian scene, licensed CC-BY-4.0; its downloader pins and checks the exact asset. See [sample provenance](docs/SAMPLES.md).
 
 To replace the scene, choose **Open world folder** and select a folder containing `world.json` and its asset. Nothing is uploaded. Alternatively put an artifact under `public/worlds/my-world/` and open `/?world=/worlds/my-world/world.json`. See the [world format](docs/WORLD_FORMAT.md) for explicit axes, transform, orbit camera and attribution. No floor, collision or safe walking spawn is inferred.
 
@@ -48,7 +49,9 @@ npm run build
 npm run test:browser
 ```
 
-Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Run `npm run sample` first. The optional reconstruction test is explicitly skipped until `public/worlds/reconstructed/scene.ply` exists. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
+Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Restore the four-world assets and previews above for the complete gallery suite. Optional native-scene checks are explicitly skipped when their artifacts are absent; `npm run sample` alone supplies only the original sample splat. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
+
+The catalog release passed TypeScript, lint, **143 viewer/packager tests**, **47 Python tests** including actual HDR pixels, the production build, and **11 headed Chrome tests**. Manual desktop/mobile inspection supplemented the automated checks. These checks reuse measured scene artifacts and do not rerun Metal training. The hosted release was separately verified through all 31 public file hashes and actual public rendering of every selected scene.
 
 ## Native reconstruction (M1)
 
@@ -64,8 +67,8 @@ The first **user-recorded original video** now works locally: a 24.8-second
 indoor capture produced 99/99 estimated cameras and a 28,496-Gaussian scene in
 4 min 38 s, with actual browser rendering and path playback verified. No sample
 model, supplied poses or calibrated lens values were used. The original footage and processing evidence remain private. The creator has
-authorized public display of the derived desk scene and preview; the four-world
-catalog release is **PENDING** public verification. [Evidence and remaining
+authorized public display of the derived desk scene and preview; the desk now
+renders in the public four-world catalog, with path playback verified. [Evidence and remaining
 visual limits](docs/ORIGINAL_VIDEO.md).
 
 After installing the native tools, run the new [local pipeline command](docs/PIPELINE.md):

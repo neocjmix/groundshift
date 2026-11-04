@@ -1,12 +1,39 @@
 # Railway viewer deployment
 
-**Last verified public release:** [Independent 120-view reconstruction](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/)
+**Live:** [Four-world gallery](https://groundshift-viewer-production.up.railway.app/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly requested Railway hosting after local M0/M1 acceptance and now instructs that verified viewer changes and authorized usable scenes ship in the same workflow. Only the static viewer and selected scene artifacts are hosted. Reconstruction, camera estimation, training, original inputs and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
-## Current catalog release — PENDING
+## Current catalog release — PASS, 2026-11-05
 
-The next release collects four usable worlds: Houseplant, the original supplied-pose dozer, the independently estimated 120-view dozer, and the user's reconstructed desk. The desk's local reconstruction and browser controls passed; its public package, updated catalog and Railway release are still **PENDING** until separately verified. The last confirmed deployment is recorded below. A release upload or a local screenshot is not public-deployment acceptance.
+The catalog release collects four usable worlds: Houseplant, the original supplied-pose dozer, the independently estimated 120-view dozer, and the user's reconstructed desk. Local checks, the curated package, downloaded release checksum, Railway deployment, all 31 public file hashes, and actual public rendering of all four scenes are **PASS**. The gallery and scene navigation were exercised on the public origin.
+
+| Current package | Verified value |
+| --- | --- |
+| Viewer source | `f78bd6b476cbd5369597ac42f77fee8264957c4e` |
+| Deployment-pointer commit | `c2516d6bb8867e3b7151acb8223feb73ae4d2706` |
+| Railway deployment | `638cd8cb-9a99-45bf-95dd-0d2700e33fa9` — SUCCESS |
+| Deployment timing | Created 2026-11-04 15:52:43 UTC; succeeded 15:53:14 UTC (2026-11-05 KST) |
+| Actual trigger | Explicit latest-branch connector trigger; GitHub push autodeploy was not observed |
+| Release | [viewer-gallery-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-gallery-2026-11-05) |
+| Archive | `groundshift-viewer-f78bd6b.tar.gz`, 31,014,851 bytes |
+| Archive SHA-256 | `75d14a661283a9c5ca24e48de9b491d5d06cb7c3171a2dfd36dd4d5cffd012ff` |
+| Static payload | 31 files, 35,174,566 bytes |
+
+| Public check | Result | Observed evidence |
+| --- | --- | --- |
+| Build, service and integrity | PASS | Archive checksum verified in build logs; healthcheck passes; `/healthz` returns 200/`ok`; all 31 public file bytes and hashes match |
+| Missing/private paths | PASS | Four tested paths return actual 404s |
+| Four-scene gallery and rendering | PASS | All previews and all four actual scenes visually inspected; each selected scene reaches ready with one canvas |
+| Desk playback and scene switching | PASS | Path advances to progress 16.316 with changed camera position/orientation; pause works; sidebar switches all four scenes |
+| Return, category and search | PASS | Back to scenes leaves zero canvases; reconstruction category returns two cards; desk search returns one; clearing returns four |
+| Captured console | PASS | No warnings or errors in the captured public-browser console |
+| GitHub push-triggered autodeploy | NOT VERIFIED | No new deployment observed after the push; explicit connector trigger completed this release |
+
+The public viewer showed a rolling 60 fps label for each scene on this M2 Mac. Those are observations with uncontrolled cache/session conditions, not a controlled benchmark. Public evidence is retained in `data/validation/deployment/railway-gallery-{http,browser}.json`, with inspected screenshots `railway-gallery.jpg` and `railway-gallery-{desk,independent,reconstructed,sample}.jpg`. These are public-origin captures; original private video frames were not copied into the repository. Final Railway status had no pending work or staged changes.
+
+
+Local verification passed TypeScript, lint, **143 viewer/packager tests**, **47 Python tests** including real HDR pixel checks, the production build, and **11 headed Chrome tests in 48.9 seconds**. Desktop/mobile layouts and all selected previews were visually inspected. Home loads 321,212 uncompressed JavaScript bytes and makes no WebGL context or PLY request; viewer, camera-path and world-loading chunks load only after a scene is selected. These are local execution observations, not a claim about a fresh public client or hosted performance. This release reuses the previously verified native exports; it does not imply a new reconstruction run.
 
 | Selected world | What it demonstrates | Quality / evidence boundary |
 | --- | --- | --- |
@@ -21,7 +48,7 @@ The smaller 24-view dozer and initial 15-second desk trials are preserved locall
 
 The creator has explicitly authorized **public display of the derived desk world and its selected viewer preview** in Groundshift. **All rights reserved; no open redistribution license is granted.** This permission covers the selected Gaussian scene, necessary camera/world metadata, provenance and preview. It does not publish or license the original MOV, extracted frames, private iCloud URL, location/probe metadata, absolute local paths or reconstruction logs. The public artifact cites this permission statement; no private source link or access token is exposed. [Local reconstruction evidence and limits](ORIGINAL_VIDEO.md).
 
-## Last verified deployed revision
+## Earlier revisit deployed revision
 
 | Item | Value |
 | --- | --- |
@@ -37,7 +64,7 @@ The creator has explicitly authorized **public display of the derived desk world
 
 `deploy/Dockerfile.github` downloads the locally built archive, checks its SHA-256, and copies only `www/` into the pinned official Caddy image. Runtime notices, world provenance, camera metadata and dataset licenses are included. Large assets are release attachments, not Git commits. Root `.dockerignore` excludes everything except the deployment files.
 
-This earlier deployment was pinned to the listed commit. The existing service has now been connected to `feat/local-viewer-reconstruction` without a commit pin (`commitSha: null`), with watch paths `/deploy/**` and `/.dockerignore`. The connector accepted and returned these settings. Reconnecting initially builds the previous archive; it does not publish the new catalog. Observing the new release-pointer push trigger and complete its deployment remains **PENDING**. Source or documentation edits alone do not replace the archive consumed by `deploy/Dockerfile.github`; every viewer/scene release must update that archive URL and checksum. Retain each previous archive and deployment pointer for rollback.
+This earlier deployment was pinned to the listed commit. The connector accepted a new source request for `feat/local-viewer-reconstruction` without a commit pin (`commitSha: null`), and watch patterns `/deploy/**` and `/.dockerignore` are confirmed by settings readback. However, service configuration only returned the source repository, and no new deployment appeared for more than 90 seconds after the release-pointer push. **Push-triggered autodeploy is NOT VERIFIED.** The agent therefore explicitly triggered the latest branch revision through the connector; deployment `638cd8cb-9a99-45bf-95dd-0d2700e33fa9` succeeded and its full static inventory matches publicly. No cause for the missing push trigger has been established. Source or documentation edits alone do not replace the archive consumed by `deploy/Dockerfile.github`; every viewer/scene release must update that archive URL and checksum. Retain each previous archive and deployment pointer for rollback.
 
 The previous [viewer-2026-11-04 release](https://github.com/neocjmix/groundshift/releases/tag/viewer-2026-11-04)
 and source `81adf61858673dedf9367196f4430ba8c5f24b16` remain available for rollback.
@@ -47,7 +74,7 @@ Its deployment was `00a9186e-8ae1-48b4-8371-a30072c65015`; archive
 
 ## Earlier revisit release verification
 
-The new release adds camera-path navigation and the separately identified
+The earlier revisit release added camera-path navigation and the separately identified
 [120-photo independent reconstruction](INDEPENDENT_RECONSTRUCTION.md). The
 original Dozer PLY is unchanged; only its camera sequence metadata was added.
 All 40 original camera matrices are unchanged. The smaller 24-view pipeline
@@ -80,42 +107,58 @@ Complete this sequence for verified viewer changes and selected scenes already a
 3. Build the curated static package locally using the explicit inclusion flags below. Inspect its complete inventory for private source paths, URLs, footage, frames and logs. Do not upload the repository or raw `dist/` directory.
 4. Archive only `www/`, record its SHA-256, publish it under a fresh GitHub release tag, then download it and compare the hash. Keep the prior archive available.
 5. Update the release URL/checksum in `deploy/Dockerfile.github`, commit the reviewable deployment pointer, and push it to the connected branch as part of the same workflow. A source-code push without this step leaves the old package live.
-6. Observe Railway's deployment result and healthcheck. Read back the connected branch, watch patterns and deployed commit instead of assuming a push triggered the right deployment.
+6. Observe Railway's deployment history, revision and healthcheck. A source-connection response is insufficient evidence of push-triggered deployment. If the expected new deployment does not appear, explicitly trigger the latest intended branch revision through the connector, continue validation, and record which trigger actually worked. The standing instruction already authorizes this routine fallback.
 7. Compare every public file against the curated inventory. Verify missing/private paths return 404. Open the public viewer, visually inspect all four selected worlds, and exercise changed navigation/catalog behavior.
 8. Record the release tag, source/deployment revisions, archive hash, Railway deployment ID and public-browser evidence here. Report any failed or unexecuted gate accurately; completion requires a verified live result.
 
-### Branch-following configuration
+### Branch request and explicit deployment fallback
 
-The configured source is the existing service connected to `feat/local-viewer-reconstruction` without a commit pin, with autodeploy enabled and watch paths `/deploy/**` and `/.dockerignore`. Keep repository root as the build context and `deploy/Dockerfile.github` as the Dockerfile path. Native reconstruction and the production web build stay local; Railway downloads the already validated static archive and runs Caddy.
+The requested source is `feat/local-viewer-reconstruction` without a commit pin, with watch paths `/deploy/**` and `/.dockerignore`. Keep repository root as the build context and `deploy/Dockerfile.github` as the Dockerfile path. Native reconstruction and the production web build stay local; Railway downloads the already validated static archive and runs Caddy.
 
-Railway deploys pushes to its connected branch, while watch patterns limit which changed paths trigger it. This keeps ordinary source/docs work from redeploying an unchanged package. The release-pointer commit under `deploy/` is the deliberate trigger; it must follow local verification and archive publication. See [GitHub autodeploys](https://docs.railway.com/deployments/github-autodeploys) and [watch paths](https://docs.railway.com/deployments/monorepo#watch-paths). The branch/watch changes were accepted and returned by the Railway connector. A new release-pointer push and its successful public deployment remain **PENDING** for this transition; configuration acceptance alone does not prove that trigger.
+Railway documents branch autodeploy and watch patterns, but this service did not visibly deploy the release-pointer push during observation. The connector accepted the branch request and returned `commitSha: null`; later settings readback confirmed the watch patterns but only exposed `source.repo`. That does not prove a functioning GitHub push trigger. Its cause is not diagnosed. See [GitHub autodeploys](https://docs.railway.com/deployments/github-autodeploys) and [watch paths](https://docs.railway.com/deployments/monorepo#watch-paths).
+
+The working release procedure must observe a new deployment and use an explicit latest-revision connector trigger when needed. Record that fallback rather than calling webhook autodeploy successful. The standing user instruction is to finish verified deployment in the same workflow; it does not depend on this unverified automatic trigger. Ordinary source/docs work must still produce a fresh archive and update the deployment pointer before any release is complete.
+
+## Restore scene assets in a fresh checkout
+
+The catalog is tracked in Git; Gaussian assets and generated previews are not. `npm run sample` downloads the Houseplant splat but does not supply gallery previews or the other three worlds. Restore the exact selected assets from the immutable release archive before running the full catalog or packaging it.
+
+From the repository root of a **fresh checkout**, run the following. It downloads to a new temporary directory, verifies the pinned checksum before extracting, and copies only the four named world folders and catalog into `public/worlds/`. Existing versions of those selected paths would be replaced, so use a fresh checkout if you have your own artifacts there. It neither downloads source footage nor runs reconstruction.
+
+```sh
+(
+  set -e
+  gs_release_dir=$(mktemp -d)
+  gs_archive=groundshift-viewer-f78bd6b.tar.gz
+  curl --fail --location --output "$gs_release_dir/$gs_archive" \
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-gallery-2026-11-05/$gs_archive"
+  printf '%s  %s\n' \
+    '75d14a661283a9c5ca24e48de9b491d5d06cb7c3171a2dfd36dd4d5cffd012ff' \
+    "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
+  tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
+  for gs_world in sample reconstructed independent desk; do
+    mkdir -p "public/worlds/$gs_world"
+    cp -R "$gs_release_dir/www/worlds/$gs_world/." "public/worlds/$gs_world/"
+  done
+  cp "$gs_release_dir/www/worlds/catalog.json" public/worlds/catalog.json
+)
+npm ci
+npm run dev
+```
+
+The extraction/copy portion was executed against the downloaded, checksum-verified archive in an isolated temporary checkout: all four world manifests, previews and assets were restored, 22 files / 31,603,817 bytes. This restoration check did not start a viewer or reconstruct anything; evidence is `data/validation/deployment/fresh-world-restore.json`. The source snapshot for this package is `f78bd6b476cbd5369597ac42f77fee8264957c4e`. The archive contains the same desktop desk PLY as the accepted Metal export: SHA-256 `0bd9192ab07b3f67ed990ed8584a6cb3ee76a54f412fd81c9e522ff5f9f0b4ba`. Loading that artifact does not repeat or independently prove reconstruction. Its creator-authorized display terms above remain separate from the open sample licenses.
 
 ## Prepare a curated package locally
 
-```sh
-npm ci
-npm run sample
-npm run package:viewer
-```
-
-To include the already reconstructed, licensed dozer result:
+After restoring the assets above, or generating and checking the same selected public artifacts locally, build the full four-world release:
 
 ```sh
-npm run package:viewer -- --include-reconstruction
+npm run package:viewer -- --include-reconstruction --include-independent --include-desk
 ```
 
-To include the separately verified independent sample as well:
+Each flag selects one explicit artifact under `public/worlds/reconstructed/`, `independent/`, or `desk/`. The default `npm run package:viewer` includes only Houseplant and still requires its `preview.jpg`. The catalog is filtered to included scenes, so a smaller curated package does not advertise missing worlds.
 
-```sh
-npm run package:viewer -- --include-reconstruction --include-independent
-```
-
-`--include-independent` requires the measured world copied into
-`public/worlds/independent/`. Both generated scene directories are ignored by
-Git. This flag selects that one explicit licensed artifact, not arbitrary
-folders under `public/worlds/`.
-
-The option requires `public/worlds/reconstructed/` from the local M1 run. The default includes only Houseplant. The command builds locally and prints a fresh staging directory under `data/deploy/viewer-<timestamp>/`. It copies only HTML, hashed bundles, icon, runtime notices, explicitly selected manifests/assets/camera metadata and dataset credits. It excludes source datasets, native tools, private footage and job logs. A SHA-256 inventory stays beside the staging directory, outside any upload.
+The command builds locally and prints a fresh staging directory under `data/deploy/viewer-<timestamp>/`. It copies only HTML, hashed bundles, icon, runtime notices, the selected catalog, scene assets, previews, manifests, camera metadata and credits. It checks ordinary files/directories and public provenance, rejects symlink escapes and common private references, and preflights inputs before creating output. This is a practical publication boundary, not a substitute for inspecting scene content. Source datasets, native tools, private footage and job logs are excluded. A SHA-256 inventory stays beside the staging directory, outside any upload.
 
 The staging directory contains `Dockerfile`, `Caddyfile`, `.dockerignore` and `www/`. To prepare the release attachment, substitute the exact printed path and a fresh archive name:
 

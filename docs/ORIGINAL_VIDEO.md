@@ -79,9 +79,7 @@ public or grant an open redistribution license. All rights remain reserved.
 The release uses only a curated scene asset, necessary camera/world metadata,
 public provenance and preview, with private paths/source URLs removed.
 
-**Public release: PENDING.** Local execution and browser acceptance above are
-complete; the selected artifact is being packaged for the four-world Railway
-catalog. See [publication permission and deployment evidence](DEPLOYMENT.md).
+**Public desk release: PASS.** The [derived desk world](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) is now in the four-world Railway catalog. Its public bytes match the accepted native export; actual public rendering and camera-path playback were verified. The release does not rerun reconstruction or change the quality limitations above. See [publication permission and deployment evidence](DEPLOYMENT.md).
 Public docs record aggregate measurements and implementation decisions; the
 original MOV, extracted images and full processing evidence are not included
 in Git or the static release.
