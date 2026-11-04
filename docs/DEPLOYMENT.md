@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Houseplant viewer](https://groundshift-viewer-production.up.railway.app/) · [Locally reconstructed dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json)
+**Live:** [Independent 120-view reconstruction](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/)
 
 The user explicitly requested Railway hosting after local M0/M1 acceptance. Only the static viewer and selected licensed examples are hosted. Reconstruction, camera estimation, training, original input and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -11,16 +11,48 @@ The user explicitly requested Railway hosting after local M0/M1 acceptance. Only
 | Project | Groundshift — `db649cd6-49db-4750-b86d-c3c4d14b213d` |
 | Environment | production — `43346592-217f-414e-b2ad-334e09b37599` |
 | Service | groundshift-viewer — `2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69` |
-| Deployment | `00a9186e-8ae1-48b4-8371-a30072c65015` — SUCCESS, 2026-11-04 |
-| Pinned deployment source | `81adf61858673dedf9367196f4430ba8c5f24b16` on `feat/local-viewer-reconstruction` |
-| Locally built viewer source | `8c806e7e803ba0ea0bd62876d932b06cfa72939d` |
-| Public package | [viewer-2026-11-04 prerelease](https://github.com/neocjmix/groundshift/releases/tag/viewer-2026-11-04) |
-| Archive | `groundshift-viewer-8c806e7.tar.gz`, 21,644,081 bytes, 14 static files |
-| Archive SHA-256 | `33b5e2c1ac2f4176cafc0593e43bd1d525dab8e0550f9a10046f2c8ee3e3dbf9` |
+| Deployment | `40916425-e59e-4d5c-b6f8-38fd90bc2750` — SUCCESS, 2026-11-04 13:37 UTC |
+| Pinned deployment source | `16f943b6a5c6ed4242a63589208ed9de81aa8d66` on `feat/local-viewer-reconstruction` |
+| Locally built viewer source | `b06d583535599ca911b8efb601069c7775a1ca73` |
+| Public package | [viewer-revisit-2026-11-04 prerelease](https://github.com/neocjmix/groundshift/releases/tag/viewer-revisit-2026-11-04) |
+| Archive | `groundshift-viewer-b06d583.tar.gz`, 28,259,801 bytes, 18 static files |
+| Archive SHA-256 | `2e26d090d378540530677083de5167ba484c7551fee2f9b94ee7380fa85d2025` |
 
 `deploy/Dockerfile.github` downloads the locally built archive, checks its SHA-256, and copies only `www/` into the pinned official Caddy image. Runtime notices, world provenance, camera metadata and dataset licenses are included. Large assets are release attachments, not Git commits. Root `.dockerignore` excludes everything except the deployment files.
 
 The source is pinned to the listed commit. Pushing documentation or application changes alone does **not** update this deployment. For a new viewer version, build and validate a fresh local package, publish it under a new release tag, update the URL/checksum in `deploy/Dockerfile.github`, push that commit, then reconnect the Railway service to that exact commit. Retain the previous release for rollback.
+
+The previous [viewer-2026-11-04 release](https://github.com/neocjmix/groundshift/releases/tag/viewer-2026-11-04)
+and source `81adf61858673dedf9367196f4430ba8c5f24b16` remain available for rollback.
+Its deployment was `00a9186e-8ae1-48b4-8371-a30072c65015`; archive
+`groundshift-viewer-8c806e7.tar.gz`, SHA-256
+`33b5e2c1ac2f4176cafc0593e43bd1d525dab8e0550f9a10046f2c8ee3e3dbf9`.
+
+## Revisit release verification
+
+The new release adds camera-path navigation and the separately identified
+[120-photo independent reconstruction](INDEPENDENT_RECONSTRUCTION.md). The
+original Dozer PLY is unchanged; only its camera sequence metadata was added.
+All 40 original camera matrices are unchanged. The smaller 24-view pipeline
+experiment was not selected for publication because of its poor visual quality.
+
+**PASS:** Railway build checksum, container health, all 18 public file hashes,
+real 404s for missing/private paths, actual rendering of all three scenes, and
+the new scene's play/pause, keyboard view selection and free look. Free look
+changed camera rotation while preserving position. Actual public rendering is
+shown in the [inspected screenshot](evidence/railway-independent-120.jpg).
+
+The new scene displayed 75,397 Gaussians, 6.94 MB, 2.53 s load/decode and a
+60 fps rolling label in the in-app Chromium browser on M2 Metal. This is one
+observation with no native training active, not a controlled cold-cache or
+GPU-only benchmark. The public file's SHA-256 matches the local native export:
+`67f64ebeea5fc8cdae8ea65f01e0f4d060291d120bb5656311cad6bdd0b67229`.
+Raw evidence: `data/validation/deployment/railway-revisit-{http,browser,logs}.json`.
+
+Preparation passed TypeScript, lint, 118 viewer unit tests, 41 Python tests,
+production build and four headed Chrome tests. Native image pipeline and
+Metal training have separate execution reports; original walking-video
+acceptance is still NOT RUN.
 
 ## Prepare a curated package locally
 
@@ -35,6 +67,17 @@ To include the already reconstructed, licensed dozer result:
 ```sh
 npm run package:viewer -- --include-reconstruction
 ```
+
+To include the separately verified independent sample as well:
+
+```sh
+npm run package:viewer -- --include-reconstruction --include-independent
+```
+
+`--include-independent` requires the measured world copied into
+`public/worlds/independent/`. Both generated scene directories are ignored by
+Git. This flag selects that one explicit licensed artifact, not arbitrary
+folders under `public/worlds/`.
 
 The option requires `public/worlds/reconstructed/` from the local M1 run. The default includes only Houseplant. The command builds locally and prints a fresh staging directory under `data/deploy/viewer-<timestamp>/`. It copies only HTML, hashed bundles, icon, runtime notices, explicitly selected manifests/assets/camera metadata and dataset credits. It excludes source datasets, native tools, private footage and job logs. A SHA-256 inventory stays beside the staging directory, outside any upload.
 
@@ -76,7 +119,7 @@ railway up data/deploy/viewer-<timestamp> --path-as-root --no-gitignore \
 
 `--no-gitignore` is only appropriate with the curated staging directory and `--path-as-root`. Never apply it to the repository root. The current deployment used the connector/GitHub route, not this CLI upload.
 
-## Actual public verification — 2026-11-04
+## Initial public verification — 2026-11-04
 
 | Check | Result | Evidence |
 | --- | --- | --- |
