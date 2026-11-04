@@ -70,3 +70,54 @@ The 2026-11-04 acquisition completed in 73.045 seconds. It saved 120 JPEGs total
 Both acquisition modes now finalize all output images, metadata, point references, and license files before hashing. The schema-version-2 report is written last and excludes itself. In particular, a posed dataset's `ply_file_path` is written before `transforms.json` is hashed. This fixes future acquisition bookkeeping; the original historical report discrepancy described in [the reconstruction audit](RECONSTRUCTION_PROOF.md) is preserved rather than rewritten.
 
 The upstream archive contains image sequences at four resolutions and COLMAP metadata, but no original video. Its image filenames do not provide capture timestamps or a frame rate. A photo slideshow assembled from these images must be labeled as such; it is not an original-video M2 validation.
+
+## Mapillary consecutive 360 experiment (2026-11-05)
+
+The first street-panorama sample is **9 consecutive photographs by Cicero101**,
+captured in a Beijing residential courtyard on 2025-05-27 from 05:11:05 through
+05:11:13 (the source title does not specify a timezone). They belong to Mapillary
+sequence `m4ks1Y6pR3fcIjBz9wXxWt` and are publicly redistributed in a
+[Wikimedia Commons sequence category](https://commons.wikimedia.org/wiki/Category:Photographs_of_Beijing_from_Mapillary_(m4ks1Y6pR3fcIjBz9wXxWt)).
+This avoids needing a Mapillary API token or creating an account.
+
+```sh
+python3 scripts/fetch-mapillary-sample.py
+```
+
+The [pinned source manifest](../scripts/samples/mapillary-beijing.json) records
+each original filename, Mapillary image ID, source and Commons URLs, author,
+license, timestamps, GPS metadata, byte count, SHA-1 and SHA-256. The command
+saves unchanged 7680 × 3840 equirectangular JPEGs to
+`data/samples/mapillary-beijing/images/`, with `provenance.json`,
+`ATTRIBUTION.txt` and `acquisition.json`. It checks every cached or downloaded
+source against the pinned hashes and preserves failures in its report.
+No source photographs are committed or included in the static viewer release.
+
+**Acquisition PASS:** 9 originals, 34,937,629 bytes; all hashes reverified from
+the local cache. An initial 12-image attempt stopped after 9 because Wikimedia
+returned HTTP 429. Its failure is retained in
+`data/research/acquisition-planned12-failure.json`; no alternate host or
+credential was used to bypass that limit. A fresh acquisition can encounter
+upstream throttling and should be retried later; it is not guaranteed by the
+successful cached validation.
+
+These images are **CC-BY-SA-4.0**, credited to **Cicero101 / Mapillary**, with
+Wikimedia Commons as the redistribution source. Individual file descriptions
+confirm this license; [Mapillary's official license guidance](https://help.mapillary.com/hc/en-us/articles/115001770409-CC-BY-SA-license-for-open-data)
+also requires photographer attribution. Keep the source links, credit, license
+link and modification notice with any derivative, and preserve applicable
+[ShareAlike terms](https://creativecommons.org/licenses/by-sa/4.0/).
+
+The first 24 category records were inspected for acquisition candidates, with
+one-second timestamp intervals and approximate GPS spacing of 1.36–1.45 m
+(median 1.447 m). **This is a bounded dense sample, not a claim to have found
+Mapillary's globally densest region.** Source GPS coordinates are not measured
+full camera poses and must not be substituted for reconstruction extrinsics.
+No supplied camera poses or sparse geometry are included.
+
+Inspected previews show quiet paths, building facades, parked bicycles/scooters
+and trees. The yellow nadir band and camera operator obstruction must be
+excluded from reconstruction views. Moving foliage, any people and panorama
+stitching remain potential inconsistencies. Acquisition does not establish
+camera-estimation, diffusion, Gaussian training or rendering success; report
+those separately after actual execution.
