@@ -15,14 +15,35 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 - Do not prematurely build cloud services, user accounts, GIS, social features or automatic scene stitching.
 - No fabricated benchmarks, camera poses, collision geometry or hardware test results.
 
-## Candidate stack
-- FFmpeg for frames.
-- COLMAP for camera estimation where needed; CPU matching on macOS as necessary.
-- Brush (Rust/WebGPU) for 3D Gaussian Splatting training, subject to actual Metal build/export validation.
-- React, TypeScript, Vite, Three.js and Spark for the viewer.
-- Local CLI and filesystem for orchestration and assets.
+## Run the M0 viewer
 
-These are candidates, not a verified end-to-end pipeline.
+Requires Node.js 22.12+ and a WebGL2-capable browser. The validation machine uses Node 25.6.1 and Chrome 156 on Apple M2.
+
+```sh
+npm ci
+npm run sample
+npm run dev
+```
+
+Open **http://127.0.0.1:4317**. Drag to orbit, scroll or use the buttons to zoom, right-drag to pan, and use **Reset view** to return to the manifest camera. The Houseplant example is a real captured Gaussian scene, licensed CC-BY-4.0; its downloader pins and checks the exact asset. See [sample provenance](docs/SAMPLES.md).
+
+To replace the scene, choose **Open world folder** and select a folder containing `world.json` and its asset. Nothing is uploaded. Alternatively put an artifact under `public/worlds/my-world/` and open `/?world=/worlds/my-world/world.json`. See the [world format](docs/WORLD_FORMAT.md) for explicit axes, transform, orbit camera and attribution. No floor, collision or safe walking spawn is inferred.
+
+The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loading, download progress, missing or corrupt files, invalid manifests, and graphics-context loss have visible states. Scene switches cancel fetches and release rendering resources. All runtime code and scene assets are served locally.
+
+## Checks
+
+```sh
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm run test:browser
+```
+
+Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Run `npm run sample` first. The optional reconstruction test is explicitly skipped until `public/worlds/reconstructed/scene.ply` exists. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
+
+M0 has been rendered and visually verified on the target M2. Native reconstruction integration is the next milestone.
 
 ## Documentation
 - [Vision](docs/VISION.md)
@@ -30,4 +51,4 @@ These are candidates, not a verified end-to-end pipeline.
 - [Milestones](docs/IMPLEMENTATION.md)
 - [Agent instructions](AGENTS.md)
 
-Status: design only. License selection pending. Use original or appropriately licensed images and review privacy before publishing footage or scenes.
+Groundshift source license selection remains pending; third-party code and samples retain their respective licenses. Large assets, datasets, generated output and local tools are excluded from Git. Use original or appropriately licensed images and review privacy before publishing footage or scenes.

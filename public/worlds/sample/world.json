@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "houseplant",
+  "title": "Houseplant",
+  "assets": [
+    {
+      "kind": "gaussian-splat",
+      "format": "splat",
+      "path": "plant.splat"
+    }
+  ],
+  "coordinates": {
+    "handedness": "right",
+    "upAxis": "y",
+    "unit": "arbitrary",
+    "assetToWorld": {
+      "position": [0, 0, 0],
+      "quaternion": [1, 0, 0, 0],
+      "scale": 1
+    }
+  },
+  "navigation": {
+    "mode": "orbit",
+    "camera": {
+      "position": [0.9, 0.45, 1.7],
+      "target": [0, 0, 0],
+      "up": [0, 1, 0],
+      "fov": 50,
+      "near": 0.01,
+      "far": 100
+    }
+  },
+  "provenance": {
+    "sourceType": "sample",
+    "sourceUrl": "https://github.com/marcelpadilla/splats/tree/c3e5ec0a8ddb3ab26f28a067a29d272fe1a23411/data/plant",
+    "license": "CC-BY-4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Houseplant by Marcel Padilla, Gaussian Splat Objects Dataset, CC-BY-4.0. Asset bytes unchanged; viewer applies an explicit axis rotation.",
+    "backend": "upstream photographic capture; training engine unspecified",
+    "notes": "Upstream metadata identifies -Y as asset up and nonmetric COLMAP reconstruction scale. The quaternion rotates 180 degrees around X to map -Y to viewer +Y. The orbit camera is an authored inspection view around the measured splat-center bounds; it is not a recovered capture pose or a safe walking spawn. SH degree 0: no view-dependent shading."
+  }
+}
