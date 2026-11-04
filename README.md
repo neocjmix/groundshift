@@ -48,7 +48,7 @@ Browser tests launch installed **Google Chrome with a visible window**, serve th
 
 ## Native reconstruction (M1)
 
-The first local reconstruction is working: **40 licensed images → supplied measured camera poses → Brush on M2 Metal → PLY → this viewer**. A 1,500-step run took 80.35 seconds and exported 194,789 Gaussians (17.92 MB). The actual result was visually inspected in Chrome. See [installation, dataset acquisition and exact commands](docs/M1.md).
+The first local reconstruction is working: **40 licensed images + supplied measured camera poses and sparse point initialization → Brush on M2 Metal → PLY → this viewer**. A 1,500-step run took 80.35 seconds and exported 194,789 Gaussians (17.92 MB). The actual result was visually inspected in Chrome. See [installation, dataset acquisition and exact commands](docs/M1.md).
 
 The backend is a local Python process adapter; the portable output is a directory of scene, manifest, camera metadata and provenance. No server, database or GPU abstraction is involved. An optional [CPU PyCOLMAP image-to-pose path](docs/COLMAP.md) also runs locally, but its first experiment connected only 16/40 views. Full new pose recovery is **FAIL** for that input; the main M1 run uses the dataset's real provided poses.
 
@@ -59,6 +59,7 @@ The backend is a local Python process adapter; the portable output is a director
 - [Architecture](docs/ARCHITECTURE.md)
 - [Milestones](docs/IMPLEMENTATION.md)
 - [Measured validation](docs/VALIDATION.md)
+- [Reconstruction provenance and rerun evidence](docs/RECONSTRUCTION_PROOF.md)
 - [Local reconstruction](docs/M1.md)
 - [Optional CPU camera estimation](docs/COLMAP.md)
 - [Portable world format](docs/WORLD_FORMAT.md)
