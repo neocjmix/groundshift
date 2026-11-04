@@ -151,12 +151,39 @@ def ply_info(path):
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
-def artifact(transforms, provenance, title, world_id):
+def ordered_frames(frames, sequence, component_id):
+    """Order measured poses by an explicit capture sequence, preserving holes."""
+    if sequence is None:
+        return frames, {}
+    if not component_id or not component_id.strip():
+        raise ValueError("An explicit reconstruction component ID is required with a sequence")
+    entries = sequence.get("frames", [])
+    names = [entry.get("file") for entry in entries]
+    if not names or any(not isinstance(name, str) or not name for name in names) or len(set(names)) != len(names):
+        raise ValueError("Sequence requires unique, nonempty frame file paths")
+    positions = {name: index for index, name in enumerate(names)}
+    recovered = [frame["file_path"] for frame in frames]
+    if len(set(recovered)) != len(recovered) or any(name not in positions for name in recovered):
+        raise ValueError("Every recovered camera must match exactly one source sequence frame")
+    ordered = sorted(frames, key=lambda frame: positions[frame["file_path"]])
+    metadata = {}
+    previous = None
+    for frame in ordered:
+        index = positions[frame["file_path"]]
+        metadata[frame["file_path"]] = {
+            "componentId": component_id,
+            "continuousFromPrevious": previous is not None and index == previous + 1,
+        }
+        previous = index
+    return ordered, metadata
+
+
+def artifact(transforms, provenance, title, world_id, sequence=None, component_id=None):
     for key, value in (("title", title), ("id", world_id)):
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"World {key} must not be blank")
     validate_provenance(provenance)
-    frames = transforms["frames"]
+    frames, route_metadata = ordered_frames(transforms["frames"], sequence, component_id)
     up = [sum(f["transform_matrix"][i][1] for f in frames) for i in range(3)]
     quaternion = align_up(up)
     first = frames[0]["transform_matrix"]
@@ -178,9 +205,9 @@ def artifact(transforms, provenance, title, world_id):
     for frame in frames:
         matrix = frame["transform_matrix"]
         columns = [rotate([matrix[i][j] for i in range(3)], quaternion) for j in range(4)]
-        cameras.append({"image": frame["file_path"], "cameraToWorld":
+        cameras.append({"image": frame["file_path"], **route_metadata.get(frame["file_path"], {}), "cameraToWorld":
                         [[columns[j][i] for j in range(4)] for i in range(3)] + [[0, 0, 0, 1]]})
-    notes = provenance.get("notes", "") + " Asset coordinates are unchanged Brush output. World orientation aligns mean supplied camera up with +Y; gravity and metric scale are not measured. Spawn is the first supplied camera; orbit focus uses median camera baseline."
+    notes = provenance.get("notes", "") + " Asset coordinates are unchanged Brush output. World orientation aligns mean input camera up with +Y; gravity and metric scale are not measured. Spawn is the first input camera; orbit focus uses median camera baseline."
     manifest = {
         "schemaVersion": 1, "id": world_id, "title": title,
         "assets": [{"kind": "gaussian-splat", "format": "ply", "path": "scene.ply"}],
@@ -193,8 +220,15 @@ def artifact(transforms, provenance, title, world_id):
                           ("sourceType", "sourceUrl", "license", "licenseUrl", "attribution")},
                        "backend": "Brush 0.3.0 / native WebGPU (Metal on macOS)", "notes": notes},
     }
-    return manifest, {"schemaVersion": 1, "cameraConvention": "OpenGL: +X right, +Y up, -Z forward",
-                      "worldConvention": "right-handed Y-up, arbitrary units", "frames": cameras}
+    camera_document = {"schemaVersion": 1, "cameraConvention": "OpenGL: +X right, +Y up, -Z forward",
+                       "worldConvention": "right-handed Y-up, arbitrary units", "frames": cameras}
+    if sequence is not None:
+        camera_document["sequenceNotes"] = (
+            "Ordered source views in one reconstructed component. Movement between consecutive recovered views "
+            "interpolates straight positions and camera rotations; this is not a measured continuous walking trajectory. "
+            "Omitted source views break playback. Speed is views per second, not meters per second."
+        )
+    return manifest, camera_document
 
 
 def main():
@@ -208,6 +242,8 @@ def main():
     parser.add_argument("--publish", type=Path, help="Copy successful artifact to a new viewer directory")
     parser.add_argument("--title", default="Dozer · local reconstruction")
     parser.add_argument("--id", default="dozer-local")
+    parser.add_argument("--sequence", type=Path, help="Explicit ordered source frames JSON; omitted poses break playback")
+    parser.add_argument("--component-id", help="ID of the single reconstructed component containing these poses")
     args = parser.parse_args()
     if args.steps < 1 or args.resolution < 64 or args.max_splats < 1000:
         parser.error("Invalid training budget")
@@ -231,7 +267,12 @@ def main():
     signal.signal(signal.SIGTERM, stop)
     try:
         transforms, provenance = validate_dataset(dataset)
-        world, cameras = artifact(transforms, provenance, args.title, args.id)
+        sequence = json.loads(args.sequence.read_text()) if args.sequence else None
+        world, cameras = artifact(transforms, provenance, args.title, args.id, sequence, args.component_id)
+        if args.sequence:
+            report["sourceSequence"] = {"path": str(args.sequence.resolve()),
+                                        "sha256": hashlib.sha256(args.sequence.read_bytes()).hexdigest(),
+                                        "componentId": args.component_id}
         brush = args.brush.resolve()
         if not brush.is_file():
             raise FileNotFoundError("Brush missing: run python3 scripts/install-brush.py")
@@ -284,6 +325,8 @@ def main():
         if (dataset / "LICENSE").exists():
             shutil.copy2(dataset / "LICENSE", artifact_dir / "SOURCE_LICENSE")
         report.update(status="PASS", browserRendering="NOT RUN", manifestPath=str(artifact_dir / "world.json"))
+        if cancelled:
+            raise RuntimeError("Reconstruction cancelled before publication; completed local artifacts preserved")
         if args.publish:
             shutil.copytree(artifact_dir, args.publish.resolve())
             report["publishedManifestPath"] = str(args.publish.resolve() / "world.json")
@@ -293,6 +336,8 @@ def main():
         report["error"] = str(error)
         print(str(error), file=sys.stderr)
     finally:
+        if cancelled:
+            report.update(status="CANCELLED", error="Reconstruction cancelled; logs and any completed files are preserved")
         report["elapsedSeconds"] = time.monotonic() - started
         report["finishedAt"] = datetime.now(timezone.utc).isoformat()
         write_json(output / "job.json", report)

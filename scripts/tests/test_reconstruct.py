@@ -1,5 +1,7 @@
 """Adapter tests only. These do not claim GPU or browser validation."""
 import importlib.util
+from contextlib import redirect_stdout, redirect_stderr
+import io
 import json
 from pathlib import Path
 import signal
@@ -8,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 SCRIPT = Path(__file__).resolve().parents[1] / "reconstruct.py"
 spec = importlib.util.spec_from_file_location("reconstruct", SCRIPT)
@@ -34,6 +37,77 @@ def dataset_at(root):
 
 
 class ReconstructionTests(unittest.TestCase):
+    def test_mock_hardware_late_publish_cancellation_never_reports_pass(self):
+        """No GPU executes: mock the backend/export and cancel during file copy."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            dataset, _, _ = dataset_at(root)
+            output, publish = root / "job", root / "published"
+            brush = root / "mock-brush"
+            brush.write_text("test only; never executed")
+            handlers = {}
+            original_copy = reconstruct.shutil.copytree
+
+            class MockProcess:
+                def __init__(self, _command, **kwargs):
+                    kwargs["stdout"].write("TEST ONLY mocked training\n")
+
+                def poll(self):
+                    return 0
+
+                def wait(self):
+                    (output / "resources.txt").write_text("TEST ONLY mocked resource report\n")
+                    (output / "world/scene.ply").write_text("TEST ONLY; not a Gaussian scene")
+                    return 0
+
+            def mock_tool(command, **_kwargs):
+                return subprocess.CompletedProcess(command, 0,
+                    stdout="brush-cli 0.3.0\n" if "--version" in command else "TEST ONLY mocked CLI help\n")
+
+            def cancel_during_copy(src, dst):
+                handlers[signal.SIGTERM](signal.SIGTERM, None)
+                return original_copy(src, dst)
+
+            with (patch.object(sys, "argv", [str(SCRIPT), str(dataset), str(output),
+                                             "--brush", str(brush), "--publish", str(publish)]),
+                  patch.object(reconstruct.subprocess, "run", side_effect=mock_tool),
+                  patch.object(reconstruct.subprocess, "Popen", MockProcess),
+                  patch.object(reconstruct, "ply_info", return_value={"testOnly": True}),
+                  patch.object(reconstruct.signal, "signal", side_effect=lambda signum, handler: handlers.update({signum: handler})),
+                  patch.object(reconstruct.shutil, "copytree", side_effect=cancel_during_copy),
+                  redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO())):
+                code = reconstruct.main()
+            report = json.loads((output / "job.json").read_text())
+            self.assertNotEqual(code, 0)
+            self.assertEqual(report["status"], "CANCELLED")
+            self.assertEqual(report["browserRendering"], "NOT RUN")
+            self.assertTrue((publish / "world.json").is_file(), "Completed copy is preserved after cancellation")
+            self.assertIn("TEST ONLY mocked training", (output / "training.log").read_text())
+
+    def test_route_orders_real_cameras_and_stops_at_missing_source_views(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            _, transforms, provenance = dataset_at(Path(temporary))
+            first, last = transforms["frames"]
+            first["file_path"], last["file_path"] = "images/a.jpg", "images/c.jpg"
+            transforms["frames"] = [last, first]
+            sequence = {"frames": [{"file": f"images/{name}.jpg"} for name in "abc"]}
+            world, cameras = reconstruct.artifact(transforms, provenance, "test", "test", sequence, "colmap-0")
+            self.assertEqual(world["navigation"]["camera"]["position"], [0, 0, 3])
+            self.assertEqual([frame["image"] for frame in cameras["frames"]], ["images/a.jpg", "images/c.jpg"])
+            self.assertFalse(cameras["frames"][1]["continuousFromPrevious"])
+            self.assertEqual(cameras["frames"][1]["componentId"], "colmap-0")
+            sequence["frames"].pop(1)
+            _, cameras = reconstruct.artifact(transforms, provenance, "test", "test", sequence, "colmap-0")
+            self.assertTrue(cameras["frames"][1]["continuousFromPrevious"])
+
+    def test_ambiguous_or_unmapped_sequence_is_rejected(self):
+        frames = [{"file_path": "images/a.jpg"}]
+        for sequence in ({"frames": [{"file": "images/a.jpg"}] * 2}, {"frames": [{"file": "images/other.jpg"}]}):
+            with self.assertRaises(ValueError):
+                reconstruct.ordered_frames(frames, sequence, "colmap-0")
+        with self.assertRaisesRegex(ValueError, "component ID"):
+            reconstruct.ordered_frames(frames, {"frames": [{"file": "images/a.jpg"}]}, None)
+
     def test_sample_acquisition_refuses_any_existing_output(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
