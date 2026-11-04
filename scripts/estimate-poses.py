@@ -7,6 +7,7 @@ No supplied camera extrinsics are read. See docs/COLMAP.md.
 import argparse
 from contextlib import contextmanager
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -14,6 +15,7 @@ import platform
 import resource
 import shutil
 import signal
+import sqlite3
 import sys
 import time
 import traceback
@@ -70,6 +72,55 @@ def native_log(path):
             os.close(stderr)
 
 
+def database_diagnostics(database):
+    """Describe actual feature/match coverage, including disconnected images."""
+    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as connection:
+        images = dict(connection.execute("SELECT image_id, name FROM images"))
+        features = dict(connection.execute("SELECT image_id, rows FROM keypoints"))
+        raw_pairs = [row[0] for row in connection.execute("SELECT rows FROM matches WHERE rows > 0")]
+        pairs = list(connection.execute("SELECT pair_id, rows FROM two_view_geometries WHERE rows > 0"))
+    neighbors = {key: set() for key in images}
+    for pair, _ in pairs:
+        first, second = divmod(pair, 2147483647)
+        if first in neighbors and second in neighbors:
+            neighbors[first].add(second)
+            neighbors[second].add(first)
+    unseen, components = set(images), []
+    while unseen:
+        todo, component = [unseen.pop()], []
+        while todo:
+            item = todo.pop()
+            component.append(images[item])
+            new = neighbors[item] & unseen
+            unseen -= new
+            todo.extend(new)
+        components.append(sorted(component))
+    return {"featuresByImage": {images[key]: value for key, value in features.items()},
+            "rawMatchedPairs": len(raw_pairs),
+            "rawPairMatches": {"min": min(raw_pairs, default=0), "max": max(raw_pairs, default=0),
+                               "mean": sum(raw_pairs) / max(len(raw_pairs), 1)},
+            "verifiedPairs": len(pairs),
+            "verifiedPairInliers": {"min": min((row[1] for row in pairs), default=0),
+                                   "max": max((row[1] for row in pairs), default=0),
+                                   "mean": sum(row[1] for row in pairs) / max(len(pairs), 1)},
+            "matchGraphComponents": sorted(components, key=len, reverse=True)}
+
+
+def reconstruction_note(camera_params, fixed_intrinsics, frames, points):
+    calibration = (
+        "Provided lens calibration was supplied through --camera-params and "
+        + ("kept fixed during SfM." if fixed_intrinsics else "allowed to refine during SfM.")
+        if camera_params else
+        "No lens parameters were supplied through --camera-params; intrinsics used image metadata/default initialization and local estimation."
+    )
+    return (
+        f"For this output, {frames} camera poses and {points} sparse points were estimated locally from input images. "
+        "No supplied extrinsics, sparse geometry, Gaussian model or checkpoint was used by pose estimation. "
+        + calibration
+        + " COLMAP camera-to-world axes were converted to OpenGL by negating camera Y/Z; world gravity and metric scale are not measured."
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--images", required=True, type=Path)
@@ -83,12 +134,22 @@ def main():
     parser.add_argument("--fix-intrinsics", action="store_true",
                         help="Keep provided calibrated intrinsics fixed during pose estimation")
     parser.add_argument("--max-image-size", type=int, default=1280)
+    parser.add_argument("--max-features", type=int, default=8192,
+                        help="Maximum SIFT features per image")
+    parser.add_argument("--matching", choices=("exhaustive", "sequential"), default="exhaustive",
+                        help="Sequential uses filename order; choose it only for ordered captures")
+    parser.add_argument("--overlap", type=int, default=10,
+                        help="Sequential neighboring images, with quadratic neighbors also enabled")
+    parser.add_argument("--guided-matching", action="store_true",
+                        help="Use verified geometry to find additional feature correspondences")
+    parser.add_argument("--affine-features", action="store_true",
+                        help="Use slower affine shape estimation and domain-size pooling (DSP-SIFT)")
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--provenance", type=Path,
                         help="Source provenance.json to retain for the reconstruction adapter")
     args = parser.parse_args()
-    if args.threads < 1 or args.max_image_size < 64:
-        parser.error("--threads must be positive and --max-image-size at least 64")
+    if args.threads < 1 or args.max_image_size < 64 or args.max_features < 128 or args.overlap < 1:
+        parser.error("Require positive threads/overlap, image size at least 64 and at least 128 features")
     if args.fix_intrinsics and not args.camera_params:
         parser.error("--fix-intrinsics requires calibrated --camera-params")
     images, output = args.images.resolve(), args.output.resolve()
@@ -119,12 +180,22 @@ def main():
     report = {
         "schemaVersion": 1, "status": "RUNNING",
         "startedAt": datetime.now(timezone.utc).isoformat(),
+        "command": [sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]],
+        "scriptSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "pycolmapVersion": pycolmap.__version__, "architecture": platform.machine(),
         "device": "cpu", "hasCuda": pycolmap.has_cuda,
         "input": str(images), "inputImages": names,
+        "registeredImages": [], "unregisteredImages": names,
+        "registrationCoverage": 0.0, "fullRegistration": "NOT RUN",
         "cameraModel": args.camera_model, "cameraParams": args.camera_params,
         "singleCamera": args.single_camera, "maxImageSize": args.max_image_size,
         "fixedIntrinsics": args.fix_intrinsics,
+        "providedCameraCalibrationUsed": bool(args.camera_params),
+        "providedCameraPosesUsed": False, "providedSparseGeometryUsed": False,
+        "intrinsicsSource": "Provided calibrated parameters" if args.camera_params else "Estimated from image metadata and local bundle adjustment; no calibration file read",
+        "matching": args.matching, "sequentialOverlap": args.overlap if args.matching == "sequential" else None,
+        "maxFeatures": args.max_features, "guidedMatching": args.guided_matching,
+        "affineFeatures": args.affine_features,
         "threads": args.threads, "stages": [],
         "poses": "Estimated from images by this run; no provided extrinsics read",
     }
@@ -136,6 +207,7 @@ def main():
         record = {"name": name, "status": "RUNNING"}
         report["stages"].append(record)
         stage_started = time.monotonic()
+        report_path.write_text(json.dumps(report, indent=2) + "\n")
         try:
             result = operation()
             record["status"] = "PASS"
@@ -145,12 +217,15 @@ def main():
             raise
         finally:
             record["elapsedSeconds"] = time.monotonic() - stage_started
+            report_path.write_text(json.dumps(report, indent=2) + "\n")
 
     print(f"Estimating poses for {len(names)} images on CPU. Log: {output / 'execution.log'}", flush=True)
     with native_log(output / "execution.log"), cancellation_signals():
         try:
             # The first RUNNING report is only written after handlers exist.
             report_path.write_text(json.dumps(report, indent=2) + "\n")
+            report["inputFileHashes"] = {name: hashlib.sha256((images / name).read_bytes()).hexdigest()
+                                        for name in names}
             print(json.dumps(report, indent=2), flush=True)
             database = output / "database.db"
             sparse = output / "sparse"
@@ -160,27 +235,45 @@ def main():
             extraction = pycolmap.FeatureExtractionOptions({
                 "num_threads": args.threads, "use_gpu": False,
                 "max_image_size": args.max_image_size,
+                "sift": {"max_num_features": args.max_features,
+                         "estimate_affine_shape": args.affine_features,
+                         "domain_size_pooling": args.affine_features},
             })
             stage("feature-extraction", lambda: pycolmap.extract_features(
                 database, images, image_names=names,
                 camera_mode=pycolmap.CameraMode.SINGLE if args.single_camera else pycolmap.CameraMode.AUTO,
                 reader_options=reader, extraction_options=extraction, device=pycolmap.Device.cpu))
-            matching = pycolmap.FeatureMatchingOptions({"num_threads": args.threads, "use_gpu": False})
-            stage("exhaustive-matching", lambda: pycolmap.match_exhaustive(
-                database, matching_options=matching, device=pycolmap.Device.cpu))
+            matching = pycolmap.FeatureMatchingOptions({"num_threads": args.threads, "use_gpu": False,
+                                                        "guided_matching": args.guided_matching})
+            if args.matching == "sequential":
+                pairing = pycolmap.SequentialPairingOptions({
+                    "overlap": args.overlap, "quadratic_overlap": True,
+                    "loop_detection": False, "num_threads": args.threads,
+                })
+                stage("sequential-matching", lambda: pycolmap.match_sequential(
+                    database, matching_options=matching, pairing_options=pairing, device=pycolmap.Device.cpu))
+            else:
+                stage("exhaustive-matching", lambda: pycolmap.match_exhaustive(
+                    database, matching_options=matching, device=pycolmap.Device.cpu))
+            report["matchingDiagnostics"] = database_diagnostics(database)
             mapping = pycolmap.IncrementalPipelineOptions({
                 "num_threads": args.threads, "ba_use_gpu": False, "random_seed": 0,
             })
+            mapping.mapper.num_threads = args.threads
             if args.fix_intrinsics:
                 mapping.ba_refine_focal_length = False
                 mapping.ba_refine_principal_point = False
                 mapping.ba_refine_extra_params = False
                 mapping.mapper.abs_pose_refine_focal_length = False
                 mapping.mapper.abs_pose_refine_extra_params = False
-            models = stage("incremental-mapping", lambda: pycolmap.incremental_mapping(
-                database, images, sparse, options=mapping))
-            if not models:
-                raise RuntimeError("COLMAP produced no reconstruction. Inspect execution.log; no poses were exported.")
+            def recover_models():
+                result = pycolmap.incremental_mapping(database, images, sparse, options=mapping)
+                if not result:
+                    report["fullRegistration"] = "FAIL"
+                    raise RuntimeError("COLMAP produced no reconstruction. Inspect execution.log; no poses were exported.")
+                return result
+
+            models = stage("incremental-mapping", recover_models)
             model_id, model = max(models.items(), key=lambda item: item[1].num_reg_images())
             registered = sorted(image.name for image in model.images.values() if image.has_pose)
             report.update(models=[{"id": key, "registeredImages": value.num_reg_images(),
@@ -189,7 +282,12 @@ def main():
                           unregisteredImages=sorted(set(names) - set(registered)),
                           registrationCoverage=len(registered) / len(names),
                           fullRegistration="PASS" if len(registered) == len(names) else "FAIL",
-                          meanReprojectionErrorPixels=model.compute_mean_reprojection_error())
+                          meanReprojectionErrorPixels=model.compute_mean_reprojection_error(),
+                          meanTrackLength=model.compute_mean_track_length(),
+                          cameras=[{"id": camera.camera_id, "model": camera.model_name,
+                                    "width": camera.width, "height": camera.height,
+                                    "parameters": camera.params.tolist()}
+                                   for camera in model.cameras.values()])
             stage("undistortion", lambda: pycolmap.undistort_images(
                 output / "dataset", sparse / str(model_id), images,
                 image_names=registered, output_type="COLMAP", num_threads=args.threads,
@@ -217,10 +315,22 @@ def main():
             (dataset / "transforms.json").write_text(json.dumps({
                 "camera_model": "OPENCV", "ply_file_path": "init.ply", "frames": frames,
             }, indent=2) + "\n")
+            # Sequence metadata describes the source capture, not recovered
+            # geometry. Keep omitted frames in it so route consumers can stop at
+            # registration gaps rather than inventing a continuous path.
+            sequence = images.parent / "sequence.json"
+            if sequence.is_file():
+                shutil.copyfile(sequence, dataset / "sequence.json")
+                report["sourceSequence"] = {"path": str(sequence),
+                                            "sha256": hashlib.sha256(sequence.read_bytes()).hexdigest()}
             if args.provenance:
                 provenance = source_provenance
                 provenance["backend"] = f"PyCOLMAP {pycolmap.__version__} CPU SfM"
-                provenance["notes"] = "Source acquisition notes: " + provenance.get("notes", "") + " For this output, camera poses were re-estimated locally from input images; no supplied extrinsics used. COLMAP camera-to-world axes converted to OpenGL by negating camera Y/Z."
+                provenance["notes"] = (
+                    "Source acquisition notes: " + provenance.get("notes", "") + " "
+                    + reconstruction_note(args.camera_params, args.fix_intrinsics,
+                                          len(frames), undistorted.num_points3D())
+                )
                 (dataset / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
                 license_path = args.provenance.parent / "LICENSE"
                 if license_path.is_file():
