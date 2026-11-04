@@ -43,7 +43,8 @@ for (const worldName of includeReconstruction ? ['sample', 'reconstructed'] : ['
   const credits = worldName === 'sample' ? ['ATTRIBUTION.md', 'upstream-LICENSE.txt', 'upstream-meta.json'] : ['SOURCE_LICENSE'];
   for (const name of [...names, ...credits]) await copy(path.join(source, name), path.join(www, 'worlds', worldName, name));
 }
-for (const name of ['Dockerfile', 'Caddyfile', 'railway.json']) {
+// Configure the Railway service directly; legacy railway.json/toml is deprecated.
+for (const name of ['Dockerfile', 'Caddyfile']) {
   await copy(path.join(root, 'deploy', name), path.join(output, name));
 }
 await writeFile(path.join(output, '.dockerignore'), '*\n!Dockerfile\n!Caddyfile\n!www\n!www/**\n');

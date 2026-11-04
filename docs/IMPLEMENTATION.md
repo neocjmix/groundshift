@@ -9,6 +9,7 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 | M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 86 automated schema/loader tests; production Chrome tests and inspected screenshots in [VALIDATION.md](VALIDATION.md) |
 | M1 local image input, obtained real camera poses, native Metal training, PLY export and viewer rendering | PASS | 40-image dozer dataset, 1,500 steps, 80.35-second job, 194,789 splats; [M1.md](M1.md) |
 | New CPU pose estimation on all 40 images | FAIL for full registration | Largest component 16/40; runnable PyCOLMAP pipeline and honest partial coverage in [COLMAP.md](COLMAP.md) |
+| User-requested static Railway viewer | PASS | Public HTTPS, 14 file hashes, both scene renders and controls; [DEPLOYMENT.md](DEPLOYMENT.md) |
 | M2 original walking video | NOT RUN | No original footage processed |
 | M3 route-following / M4 full video command | NOT RUN | Deferred |
 

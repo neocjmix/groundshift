@@ -1,8 +1,28 @@
 # Railway viewer deployment
 
-The user explicitly requested Railway hosting after local M0/M1 acceptance. Only the static viewer and selected licensed examples are hosted. Reconstruction, camera estimation, training, original input and job logs remain on the local Mac. The hosted viewer can still open a private world folder directly in the browser, without uploading it.
+**Live:** [Houseplant viewer](https://groundshift-viewer-production.up.railway.app/) · [Locally reconstructed dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json)
 
-## Prepare a curated upload locally
+The user explicitly requested Railway hosting after local M0/M1 acceptance. Only the static viewer and selected licensed examples are hosted. Reconstruction, camera estimation, training, original input and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Deployed revision
+
+| Item | Value |
+| --- | --- |
+| Project | Groundshift — `db649cd6-49db-4750-b86d-c3c4d14b213d` |
+| Environment | production — `43346592-217f-414e-b2ad-334e09b37599` |
+| Service | groundshift-viewer — `2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69` |
+| Deployment | `00a9186e-8ae1-48b4-8371-a30072c65015` — SUCCESS, 2026-11-04 |
+| Pinned deployment source | `81adf61858673dedf9367196f4430ba8c5f24b16` on `feat/local-viewer-reconstruction` |
+| Locally built viewer source | `8c806e7e803ba0ea0bd62876d932b06cfa72939d` |
+| Public package | [viewer-2026-11-04 prerelease](https://github.com/neocjmix/groundshift/releases/tag/viewer-2026-11-04) |
+| Archive | `groundshift-viewer-8c806e7.tar.gz`, 21,644,081 bytes, 14 static files |
+| Archive SHA-256 | `33b5e2c1ac2f4176cafc0593e43bd1d525dab8e0550f9a10046f2c8ee3e3dbf9` |
+
+`deploy/Dockerfile.github` downloads the locally built archive, checks its SHA-256, and copies only `www/` into the pinned official Caddy image. Runtime notices, world provenance, camera metadata and dataset licenses are included. Large assets are release attachments, not Git commits. Root `.dockerignore` excludes everything except the deployment files.
+
+The source is pinned to the listed commit. Pushing documentation or application changes alone does **not** update this deployment. For a new viewer version, build and validate a fresh local package, publish it under a new release tag, update the URL/checksum in `deploy/Dockerfile.github`, push that commit, then reconnect the Railway service to that exact commit. Retain the previous release for rollback.
+
+## Prepare a curated package locally
 
 ```sh
 npm ci
@@ -16,32 +36,63 @@ To include the already reconstructed, licensed dozer result:
 npm run package:viewer -- --include-reconstruction
 ```
 
-That option requires `public/worlds/reconstructed/` from the local M1 run. The default package only includes Houseplant. `package:viewer` builds locally and prints a new staging directory under `data/deploy/viewer-<timestamp>/`. It copies only the HTML, hashed bundles, icon, runtime license notices, explicitly selected manifests/assets/camera metadata and dataset credits. It excludes source datasets, native tools, private footage and job logs. A SHA-256 inventory stays beside the staging directory, outside the upload.
+The option requires `public/worlds/reconstructed/` from the local M1 run. The default includes only Houseplant. The command builds locally and prints a fresh staging directory under `data/deploy/viewer-<timestamp>/`. It copies only HTML, hashed bundles, icon, runtime notices, explicitly selected manifests/assets/camera metadata and dataset credits. It excludes source datasets, native tools, private footage and job logs. A SHA-256 inventory stays beside the staging directory, outside any upload.
 
-The staging directory contains `Dockerfile`, `Caddyfile`, `railway.json`, `.dockerignore` and `www/`. Railway only packages these prebuilt files into the pinned official Caddy image. The server listens on Railway's `PORT` on all interfaces, serves `/healthz`, and leaves missing manifests and assets as real HTTP 404s. Railway terminates HTTPS. Hashed bundles use immutable caching; manifests and scene paths revalidate.
+The staging directory contains `Dockerfile`, `Caddyfile`, `.dockerignore` and `www/`. To prepare the release attachment, substitute the exact printed path and a fresh archive name:
 
-## Upload with an authenticated Railway CLI
+```sh
+COPYFILE_DISABLE=1 tar -czf data/deploy/groundshift-viewer-<revision>.tar.gz \
+  -C data/deploy/viewer-<timestamp> www
+shasum -a 256 data/deploy/groundshift-viewer-<revision>.tar.gz
+```
 
-Use an explicitly selected project/service and the exact staging path printed above:
+Compare the archive contents against the staging inventory before publishing. The current release includes `SHA256SUMS` and `viewer-files.json` as independently readable checksums. Re-download the published archive and verify the checksum before connecting Railway.
+
+## Railway configuration
+
+The Railway connector created the project/service, configured it, and attached `neocjmix/groundshift` at the pinned commit. The local Railway CLI token and saved login were expired; this did not block the connector. GitHub CLI authentication was valid, so a GitHub release supplied the curated files without requiring another login.
+
+Apply these settings through the Railway connector or service settings:
+
+- Dockerfile path: `deploy/Dockerfile.github`; repository root as build context.
+- Healthcheck: `/healthz`, timeout 60 seconds.
+- Restart: `ON_FAILURE`, maximum 3 retries.
+- Public domain target: port 8080. Caddy listens on Railway's `PORT` (default 8080), on all interfaces.
+- No custom start/build command, volume, database, bucket, secret or GPU service is required.
+
+Railway rejected configuring a `railway.json` path for this new service. Its current [Infrastructure as Code documentation](https://docs.railway.com/infrastructure-as-code) says Config as Code is deprecated, unavailable to new services, and stops being read for legacy services on 2026-12-01. The unused JSON configuration was removed; this one service uses direct settings without adding an IaC dependency.
+
+Railway terminates HTTPS. Missing manifests/assets return genuine HTTP 404s. Hashed bundles use immutable caching; HTML, manifests and scene paths revalidate. Use **Open world folder** for private local artifacts. Loading arbitrary localhost HTTP URLs from an HTTPS website is subject to browser mixed-content, CORS and local-network restrictions.
+
+### Alternative: authenticated CLI upload
+
+This path is available for a future session with valid CLI authentication. Set the service's Dockerfile path to `Dockerfile` before uploading the curated directory, keeping the healthcheck/restart/domain settings above:
 
 ```sh
 railway up data/deploy/viewer-<timestamp> --path-as-root --no-gitignore \
-  --project <project-id> --environment production --service <service-id>
-railway domain --service <service-id>
+  --project db649cd6-49db-4750-b86d-c3c4d14b213d \
+  --environment production --service 2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69
 ```
 
-`--no-gitignore` is only appropriate with this curated staging directory and `--path-as-root`. Do not apply it to the repository root: Git deliberately ignores reconstruction files, source captures and tools. Do not run the CLI from the repository without the explicit staging path.
+`--no-gitignore` is only appropriate with the curated staging directory and `--path-as-root`. Never apply it to the repository root. The current deployment used the connector/GitHub route, not this CLI upload.
 
-This workflow does not connect GitHub auto-deployment: the checked-in repository excludes large trained scene assets, so a source-only deploy cannot reproduce the dozer without the local reconstruction step. A future deploy uses a fresh curated package and the same selected service.
+## Actual public verification — 2026-11-04
 
-Open `/` for Houseplant, and `/?world=/worlds/reconstructed/world.json` for the optional dozer. Use **Open world folder** for private local artifacts. Loading arbitrary localhost HTTP URLs from an HTTPS website is subject to browser mixed-content, CORS and local-network restrictions.
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Railway container build/start/health | PASS | Build log verifies archive checksum, starts Caddy and passes `/healthz`; deployment SUCCESS |
+| HTTPS and static file integrity | PASS | All 14 decoded public files match the local SHA-256 inventory; root and health return 200 |
+| Licenses, manifests, cache headers | PASS | JSON parses; credits/notices reachable; immutable hashed bundles and no-cache world/HTML responses |
+| Missing/private paths | PASS | Missing JSON/PLY, `/.env`, `/data/jobs/dozer-1500/job.json` return 404 |
+| Houseplant actual rendering | PASS | Leaves and pot visible in [public-origin screenshot](evidence/railway-houseplant.jpg) |
+| Local dozer actual rendering | PASS | Excavator, road and cones visible in [public-origin screenshot](evidence/railway-dozer.jpg); direct deep link also verified |
+| Orbit, zoom, reset, scene replacement | PASS | Actual camera-position changes and return to initial coordinates; one canvas after replacement |
+| Browser errors | PASS | No errors in captured browser console |
+| Railway CLI upload | NOT RUN | Invalid local authentication; deployment used the connected Railway plugin |
+| Other devices and load/stress testing | NOT RUN | No cross-device or capacity claim |
 
-## Verification
+Public-browser checks used the Codex in-app Chromium browser on this M2 Mac, 1280 × 720 CSS viewport. Runtime reported `ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)`. Observed rolling frame-rate labels were 60 fps for both scenes. Load + decode displayed 2.54 seconds for Houseplant and 5.14 seconds for dozer; these are single observations, not controlled cold-cache benchmarks. Browser/edge caches were not forcibly cleared, and dozer loaded after Houseplant. These measurements are separate from the original localhost Chrome results.
 
-Check deployment health, HTTP status and asset hashes, then open both scene URLs in a real WebGL2 browser and inspect screenshots. Confirm orbit, zoom and reset; a successful container start alone is not visual acceptance. Keep cloud results separate from the original local M2 benchmark.
+Raw HTTP hashes, browser details/camera positions and Railway build/runtime logs are retained locally in `data/validation/deployment/railway-{http,browser,logs}.json`. Earlier local Caddy validation remains in `local.json`. TypeScript, lint, 86 unit tests and the production build passed during package preparation; the subsequent packaging-only adjustment passed syntax and inventory checks, with unchanged `www/` hashes.
 
-Preparation on 2026-11-04: TypeScript, lint, 86 tests and production build PASS. Curated two-scene package: 17 listed files, approximately 25.16 MB (plus `.dockerignore`). Actual Railway deployment and public-browser checks remain **NOT RUN** until the target account is selected and authentication succeeds; both the environment token and saved local CLI login returned Unauthorized. The connected Railway tool exposes two account links and requires an explicit account selection when ambiguous.
-
-Local native Caddy 2.11.7 configuration validation **PASS**. Serving the curated package on port 4320 passed health, manifest, license notice, byte-for-byte asset hash, cache and genuine 404 checks. Both worlds rendered in headed Chrome 156, screenshots were inspected, zoom/reset worked and no page exceptions were reported. Evidence is retained in `data/validation/deployment/`. This is local server validation, not a Railway container or public URL result. The native Caddy download was checked against upstream's SHA-512 checksum list.
-
-Current upstream references: [Railway CLI upload/root/ignore behavior](https://docs.railway.com/cli/up), [Railway Caddy deployment](https://railway.com/guides/caddy), [config-as-code](https://docs.railway.com/config-as-code/reference), [Caddy file server](https://caddyserver.com/docs/caddyfile/directives/file_server). The Docker image is pinned to the verified available `2.11.7-alpine` manifest digest; Caddy's current release was 2.11.8 when checked, but that Docker tag was not yet available.
+Current references: [Railway CLI root/ignore behavior](https://docs.railway.com/cli/up), [Railway Caddy deployment](https://railway.com/guides/caddy), [IaC and Config as Code deprecation](https://docs.railway.com/infrastructure-as-code), [Caddy file server](https://caddyserver.com/docs/caddyfile/directives/file_server). The Docker image is pinned to the verified available `2.11.7-alpine` manifest digest; Caddy's current release was 2.11.8 when checked, but that Docker tag was not yet available.

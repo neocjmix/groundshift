@@ -2,6 +2,8 @@
 
 Revisit real places as explorable 3D worlds.
 
+**Live demo:** [Houseplant](https://groundshift-viewer-production.up.railway.app/) · [M2-reconstructed dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json). [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+
 ## Vision
 Anyone can record a memorable walk, reconstruct an explorable place, and revisit it later. Eventually separately recorded places can connect into a growing shared world. Pedestrian paths, alleys, corners and stairs matter more than driving routes. Recognizability and spatial continuity matter more than survey accuracy or geometric precision.
 

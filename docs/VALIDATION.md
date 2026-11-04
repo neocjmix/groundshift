@@ -6,7 +6,11 @@
 
 2022 MacBook Air (Mac14,2), Apple M2, 8 CPU / 10 GPU cores, 16 GB unified memory, macOS 26.6.2 (25G83), Metal 4. Node 25.6.1, npm 11.9.0, Chrome 156.0.8078.81. Web rendering reports `ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)`. Brush separately reports an Apple M2 integrated adapter with `backend: Metal`.
 
-All computation was local. Remote operations acquired open-source dependencies and licensed sample files. No hosted reconstruction, paid APIs or background services were introduced.
+The original M0/M1 reconstruction and viewer validation below ran locally. Remote operations in that phase acquired open-source dependencies and licensed sample files. The later user-requested Railway deployment serves static files only; no hosted reconstruction or paid API was introduced.
+
+## Subsequent static hosting verification
+
+Railway deployment and public-origin browser rendering both passed on 2026-11-04. All 14 published files matched local hashes, both scenes visibly rendered, and orbit/zoom/reset/replacement worked. See [deployment identifiers, fresh measurements, screenshots and limitations](DEPLOYMENT.md). This separate result does not replace the original local hardware evidence below.
 
 ## Executed checks
 
