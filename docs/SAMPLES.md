@@ -39,3 +39,34 @@ The sample has only SH degree 0, so it has no view-dependent shading. It is an o
 - [Spark loading documentation](https://sparkjs.dev/docs/loading-splats/): `.splat` file-type inference from the extension and the documented loader error path.
 
 These are integration references. Successful decoding, GPU rendering, and visual quality must be measured separately and recorded in the validation report.
+
+## M1: raw images for independent pose estimation
+
+The first dozer reconstruction used supplied poses and sparse geometry, as documented in [M1](M1.md). A separate acquisition mode provides source JPEGs for an independent image-to-pose experiment:
+
+```sh
+python3 scripts/fetch-reconstruction-sample.py \
+  --unposed --frames 120 --image-scale 2 \
+  --output data/datasets/dozer-unposed-120
+```
+
+This path needs only the Python standard library. It selects 120 evenly spaced filenames from the 359 upstream `dozer/images_2` images, including both endpoints. The source files are 1504 × 1000. It copies each decoded ZIP member byte-for-byte, preserving its original lens distortion and any JPEG/EXIF metadata. These are the distribution's half-resolution source photographs, not sensor-raw files or Groundshift-undistorted training images.
+
+The selection comes directly from the ZIP directory. This mode never loads or copies the archive's camera calibration, `transforms.json`, COLMAP camera models, supplied extrinsics, or sparse points. The previously downloaded posed dataset and its cache remain separate; their presence is not an input to this selection. Pass only the new `images/` folder and its `provenance.json` to [local pose estimation](COLMAP.md) when testing unknown poses and intrinsics.
+
+The new directory contains:
+
+- `images/`: unchanged source JPEGs, each checked against its archive byte count and CRC.
+- `selected-frames.json`: ordered filenames, zero-based indices in the full sorted source list, original filename sequence numbers, archive member paths, CRCs, sizes, and SHA-256 hashes.
+- `provenance.json` and `LICENSE`: source and license information; no camera data.
+- `acquisition.json`: settings, measured acquisition duration, resolution, input-byte totals, and final file hashes. It explicitly records that supplied poses, calibration, and geometry were not used.
+
+Acquisition remains pinned to [NerfBaselines revision `6a638951a007c8b47eb8a0301d48b04d18e955cf`](https://huggingface.co/datasets/nerfbaselines/nerfbaselines-data/tree/6a638951a007c8b47eb8a0301d48b04d18e955cf/nerfstudio). The distribution provides a dataset-level [Apache-2.0 license](https://huggingface.co/datasets/nerfbaselines/nerfbaselines-data/blob/6a638951a007c8b47eb8a0301d48b04d18e955cf/nerfstudio/LICENSE), retained locally. HTTP ranges retrieve the selected JPEGs without downloading the full 1.35 GB ZIP. Use a new output directory; existing directories are preserved and rejected.
+
+`--unposed` allows 4–359 images and source scale factors 1, 2, 4, or 8. Its default scale is 2. The existing posed mode remains the default and retains its 4–100-image range and scale factor 4. The unposed path does not imply successful alignment, training, or browser quality; those require separate execution and verification.
+
+The 2026-11-04 acquisition completed in 73.045 seconds. It saved 120 JPEGs totaling 11,590,078 bytes at 1504 × 1000, selecting source sequence numbers 1 through 359 at intervals of three or four. **PASS:** all 120 saved JPEGs match their ZIP CRCs and unchanged cached member bytes, all 123 prepared-file SHA-256 values match `acquisition.json`, and the output contains no camera-transform or sparse-geometry file. Logs are retained in `data/acquisition/dozer-unposed-120.log`; settings and the selected order are in the dataset's acquisition and selection reports. This is acquisition evidence only.
+
+Both acquisition modes now finalize all output images, metadata, point references, and license files before hashing. The schema-version-2 report is written last and excludes itself. In particular, a posed dataset's `ply_file_path` is written before `transforms.json` is hashed. This fixes future acquisition bookkeeping; the original historical report discrepancy described in [the reconstruction audit](RECONSTRUCTION_PROOF.md) is preserved rather than rewritten.
+
+The upstream archive contains image sequences at four resolutions and COLMAP metadata, but no original video. Its image filenames do not provide capture timestamps or a frame rate. A photo slideshow assembled from these images must be labeled as such; it is not an original-video M2 validation.

@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""Acquire a small, posed and undistorted Nerfstudio dozer image dataset.
+"""Acquire a small Nerfstudio dozer image dataset.
 
 Uses HTTP ranges to avoid downloading the original 1.35 GB ZIP. No cloud
-computation: undistortion and point-cloud coordinate conversion run locally.
-Requires numpy and opencv-python-headless (see docs/M1.md).
+computation. Default: posed, undistorted images (requires numpy and OpenCV).
+--unposed: unchanged source JPEGs only, with no camera or sparse-point data;
+uses Python's standard library. See docs/SAMPLES.md and docs/M1.md.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
 from pathlib import Path
+import re
 import struct
 import time
 import urllib.request
@@ -19,6 +21,110 @@ REVISION = "6a638951a007c8b47eb8a0301d48b04d18e955cf"
 BASE = f"https://huggingface.co/datasets/nerfbaselines/nerfbaselines-data/resolve/{REVISION}/nerfstudio"
 ARCHIVE_SIZE = 1347483375
 ARCHIVE = BASE + "/dozer.zip"
+
+
+def write_acquisition_report(output, report):
+    """Hash only finalized output files, then write the report last.
+
+    Callers must finish every image/metadata/license write first. The report
+    excludes itself; adding a field to a prepared manifest requires a new run.
+    """
+    files = {str(p.relative_to(output)): {"bytes": p.stat().st_size,
+             "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
+             for p in sorted(output.rglob("*"))
+             if p.is_file() and p.name not in {"acquisition.json", "acquisition.json.tmp"}}
+    report.update(reportSchemaVersion=2, files=files,
+                  hashScope="Final prepared files; acquisition.json excluded. No files modified after hashing.")
+    temporary = output / "acquisition.json.tmp"
+    temporary.write_text(json.dumps(report, indent=2) + "\n")
+    temporary.replace(output / "acquisition.json")
+    return report
+
+
+def jpeg_dimensions(data):
+    """Read JPEG dimensions without decoding/re-encoding pixels or EXIF."""
+    if not data.startswith(b"\xff\xd8"):
+        raise ValueError("Expected JPEG source bytes")
+    offset = 2
+    while offset + 3 < len(data):
+        if data[offset] != 0xFF:
+            raise ValueError("Invalid JPEG marker")
+        while data[offset] == 0xFF:
+            offset += 1
+        marker = data[offset]
+        offset += 1
+        if marker == 0xDA:
+            break
+        if marker in {0x01, 0xD8, 0xD9, *range(0xD0, 0xD8)}:
+            continue
+        length, = struct.unpack_from(">H", data, offset)
+        if length < 2 or offset + length > len(data):
+            raise ValueError("Invalid JPEG segment length")
+        if marker in {0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7,
+                      0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF}:
+            height, width = struct.unpack_from(">HH", data, offset + 3)
+            return width, height
+        offset += length
+    raise ValueError("JPEG has no supported frame dimensions")
+
+
+def fetch_unposed(output, cache, index, frame_count, image_scale, started):
+    directory = "images" if image_scale == 1 else f"images_{image_scale}"
+    pattern = re.compile(rf"^dozer/{directory}/frame_\d+\.jpeg$")
+    all_members = sorted(name for name in index if pattern.fullmatch(name))
+    if frame_count > len(all_members):
+        raise ValueError(f"Only {len(all_members)} source images are available")
+    indices = [round(i * (len(all_members) - 1) / (frame_count - 1))
+               for i in range(frame_count)]
+    if len(set(indices)) != frame_count:
+        raise ValueError("Image selection contains duplicate indices")
+    expected_size = (3008 // image_scale, 2000 // image_scale)
+
+    def fetch_image(source_index):
+        name = all_members[source_index]
+        encoded = member(index, name, cache)
+        dimensions = jpeg_dimensions(encoded)
+        if dimensions != expected_size:
+            raise ValueError(f"Unexpected source image dimensions for {name}: {dimensions}")
+        filename = Path(name).name
+        # Preserve original member bytes, including any EXIF; no undistortion.
+        (output / "images" / filename).write_bytes(encoded)
+        return {"sourceIndex": source_index,
+                "sourceSequence": int(Path(filename).stem.split("_")[-1]),
+                "file": f"images/{filename}", "archiveMember": name,
+                "bytes": len(encoded), "zipCrc32": index[name]["crc"],
+                "sha256": hashlib.sha256(encoded).hexdigest()}
+
+    print(f"Downloading {frame_count} unchanged {directory} JPEGs; no camera/point data", flush=True)
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        selected = list(pool.map(fetch_image, indices))
+    selection = {
+        "sourceImageDirectory": f"dozer/{directory}",
+        "sourceImageCount": len(all_members), "selectedImageCount": len(selected),
+        "selection": "Sorted source filenames; evenly spaced indices including both endpoints, using round(i*(N-1)/(n-1))",
+        "indicesAreZeroBased": True, "frames": selected,
+    }
+    (output / "selected-frames.json").write_text(json.dumps(selection, indent=2) + "\n")
+    with urllib.request.urlopen(BASE + "/LICENSE", timeout=30) as response:
+        (output / "LICENSE").write_bytes(response.read())
+    provenance = {
+        "sourceType": "images", "sourceUrl": ARCHIVE, "license": "Apache-2.0",
+        "licenseUrl": BASE.replace("/resolve/", "/blob/") + "/LICENSE",
+        "attribution": "Nerfstudio team and contributors; dozer dataset distributed by NerfBaselines",
+        "backend": "source JPEG acquisition only; camera estimation not yet run",
+        "notes": f"{len(selected)} of {len(all_members)} upstream {directory} JPEGs copied byte-for-byte, with original lens distortion and any EXIF preserved. No source camera calibration, extrinsics, transforms.json, COLMAP model, or sparse geometry was read or copied by this acquisition. No video or timestamps are provided.",
+    }
+    (output / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
+    return write_acquisition_report(output, {
+        "status": "PASS", "mode": "unposed", "elapsedSeconds": time.monotonic() - started,
+        "revision": REVISION, "archive": ARCHIVE, "archiveBytes": ARCHIVE_SIZE,
+        "frames": len(selected), "sourceFrames": len(all_members),
+        "width": expected_size[0], "height": expected_size[1], "sourceImageScale": image_scale,
+        "sourceBytesUnmodified": True, "providedCameraPosesUsed": False,
+        "providedCameraCalibrationUsed": False, "providedSparseGeometryUsed": False,
+        "sourceImageBytes": sum(frame["bytes"] for frame in selected),
+        "selectedSourceIndices": indices,
+    })
 
 
 def get_range(start, end):
@@ -115,21 +221,34 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("data/datasets/dozer-small"))
     parser.add_argument("--frames", type=int, default=40)
+    parser.add_argument("--unposed", action="store_true",
+                        help="Copy unchanged source JPEGs; do not load calibration, poses or points")
+    parser.add_argument("--image-scale", type=int, choices=[1, 2, 4, 8],
+                        help="Source downsampling factor (default: 2 for unposed, 4 for posed)")
     args = parser.parse_args()
-    if not 4 <= args.frames <= 100:
-        parser.error("--frames must be between 4 and 100")
+    maximum = 359 if args.unposed else 100
+    if not 4 <= args.frames <= maximum:
+        parser.error(f"--frames must be between 4 and {maximum}")
+    image_scale = args.image_scale or (2 if args.unposed else 4)
+    if not args.unposed and image_scale != 4:
+        parser.error("Posed mode currently supports only --image-scale 4")
     started = time.monotonic()
     output = args.output.resolve()
     if output.exists():
         raise SystemExit(f"Output already exists: {output}; choose a fresh --output")
-    import cv2
-    import numpy as np
-
     cache = output.parent / ".dozer-download-cache"
     cache.mkdir(parents=True, exist_ok=True)
     output.mkdir(parents=True, exist_ok=False)
     (output / "images").mkdir()
     index = archive_index()
+    if args.unposed:
+        report = fetch_unposed(output, cache, index, args.frames, image_scale, started)
+        print(json.dumps({k: v for k, v in report.items() if k not in ("files", "selectedSourceIndices")}, indent=2))
+        print(output)
+        return
+    import cv2
+    import numpy as np
+
     transforms = json.loads(member(index, "dozer/transforms.json", cache))
     original = json.loads(json.dumps(transforms))
     all_frames = transforms["frames"]
@@ -196,15 +315,12 @@ def main():
         "notes": "Subset of 359 supplied posed views; images_4 undistorted locally. Original camera transforms preserved. Dataset license is from the NerfBaselines distribution, separately from software licenses.",
     }
     (output / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
-    report = {"status": "PASS", "elapsedSeconds": time.monotonic()-started,
+    report = {"status": "PASS", "mode": "posed", "elapsedSeconds": time.monotonic()-started,
               "frames": len(chosen), "width": size[0], "height": size[1],
               "initialPoints": len(points), "maxCameraTransformError": max(errors),
               "colmapToNerfstudio": world_transform.tolist(),
-              "opencvVersion": cv2.__version__, "numpyVersion": np.__version__,
-              "files": {str(p.relative_to(output)): {"bytes": p.stat().st_size,
-                         "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
-                        for p in sorted(output.rglob("*")) if p.is_file()}}
-    (output / "acquisition.json").write_text(json.dumps(report, indent=2) + "\n")
+              "opencvVersion": cv2.__version__, "numpyVersion": np.__version__}
+    report = write_acquisition_report(output, report)
     print(json.dumps({k: v for k, v in report.items() if k not in ("files", "colmapToNerfstudio")}, indent=2))
     print(output)
 
