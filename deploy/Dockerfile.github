@@ -1,8 +1,8 @@
-# The viewer and licensed worlds were built locally from commit 8c806e7.
+# The viewer and licensed worlds were built locally from commit b06d583.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-2026-11-04/groundshift-viewer-8c806e7.tar.gz \
-    && echo '33b5e2c1ac2f4176cafc0593e43bd1d525dab8e0550f9a10046f2c8ee3e3dbf9  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-revisit-2026-11-04/groundshift-viewer-b06d583.tar.gz \
+    && echo '2e26d090d378540530677083de5167ba484c7551fee2f9b94ee7380fa85d2025  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
