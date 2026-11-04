@@ -6,12 +6,13 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
-| M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 86 automated schema/loader tests; production Chrome tests and inspected screenshots in [VALIDATION.md](VALIDATION.md) |
+| M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 118 automated viewer tests; 4 production Chrome tests and inspected screenshots in [VALIDATION.md](VALIDATION.md) |
 | M1 local image input, obtained real camera poses, native Metal training, PLY export and viewer rendering | PASS | 40-image dozer dataset, 1,500 steps, 80.35-second job, 194,789 splats; [M1.md](M1.md) |
-| New CPU pose estimation on all 40 images | FAIL for full registration | Largest component 16/40; runnable PyCOLMAP pipeline and honest partial coverage in [COLMAP.md](COLMAP.md) |
+| New CPU pose estimation and training on raw images | PASS with supplied lens calibration | 120/120 newly estimated poses, 30,468 new sparse points, 3,000 Metal steps and actual browser inspection; [evidence](INDEPENDENT_RECONSTRUCTION.md). Earlier 16/40 failure remains recorded |
 | User-requested static Railway viewer | PASS | Public HTTPS, 14 file hashes, both scene renders and controls; [DEPLOYMENT.md](DEPLOYMENT.md) |
-| M2 original walking video | NOT RUN | No original footage processed |
-| M3 route-following / M4 full video command | NOT RUN | Deferred |
+| M2 original walking video | NOT RUN | FFmpeg preparation implemented and exercised on fixtures; no original footage processed |
+| M3 camera-path controls on real sample | PASS for sample behavior | Actual supplied camera poses, interpolation/free look and gap tests; [REVISIT.md](REVISIT.md). Original walking-route continuity remains NOT RUN |
+| M4 local video/image command | PASS for 24-image execution; full milestone NOT RUN | All 24 poses, Metal training and export in 54.54 s; two original recordings have not been processed; [PIPELINE.md](PIPELINE.md) |
 
 Implementation decisions: use the official Brush arm64 release, optional PyCOLMAP CPU wheels instead of requiring the Homebrew executable, and supplied measured poses for the first M1 acceptance run. Undistort the sample's actual fisheye images before Brush because its released importer does not handle their distortion. Preserve reconstruction internals in the native process and use the explicit v1 world format at the viewer boundary. These decisions keep the initial local-only design intact.
 

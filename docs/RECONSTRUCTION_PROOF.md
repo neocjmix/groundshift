@@ -1,5 +1,10 @@
 # Reconstruction provenance audit — 2026-11-04
 
+This audit concerns the original `/worlds/reconstructed/` scene. A subsequent
+[`/worlds/independent/` scene](INDEPENDENT_RECONSTRUCTION.md) uses 120 raw photos
+and supplied lens calibration, with every camera pose, sparse point and Gaussian
+newly computed locally. Keep the two artifacts and their evidence distinct.
+
 **The deployed Dozer Gaussian model was trained locally on this Mac.** Its inputs came from the public example dataset: 40 photographs, supplied camera calibration/poses, and a supplied sparse SfM point cloud. It is not a demonstration of recovering everything from 40 unposed photographs. The separate Houseplant viewer sample is a downloaded, already reconstructed Gaussian model.
 
 ## What came from upstream, and what was generated here

@@ -1,6 +1,29 @@
 # Validation — 2026-11-04
 
-**M0 PASS. M1 PASS for the supplied-pose image dataset.** Both have actual GPU execution and visually inspected browser screenshots. Newly estimated poses have partial coverage; they are not substituted for the supplied-pose result.
+**M0 PASS. M1 PASS for both supplied and independently estimated camera poses.** The later 120-photo result uses supplied lens calibration, while all camera positions, sparse points and Gaussians are computed locally. Both results have actual GPU execution and inspected browser screenshots. The earlier 16/40 failure below is preserved as history.
+
+## Follow-up implementation and validation
+
+| Check | Result | Actual scope |
+| --- | --- | --- |
+| Raw-image CPU camera estimation | PASS | 120/120 views, 30,468 new points, 351.298 s; supplied lens calibration only |
+| Independent-pose Metal training/export | PASS | 3,000 steps, 155.061 s, 75,397 splats, 6,937,175 bytes |
+| Independent scene rendering/inspection | PASS | Actual first and side views; [screenshot](evidence/m1-independent-120.jpg); recognizable excavator/road with soft peripheral geometry |
+| Camera-path interface | PASS on sample | Forward/backward, pause/speed, free look, reset, checkpoint jumps, explicit gap stops; [actual and fixture distinctions](REVISIT.md) |
+| TypeScript, lint and production build | PASS | Re-executed after viewer changes |
+| Viewer unit tests | PASS | 118 tests across three files |
+| Python native-adapter tests | PASS | 41 tests; hardware executions are listed separately |
+| Headed Chrome regression suite | PASS | Four tests, 52.9 s; actual sample/scene rendering and synthetic continuity-gap behavior |
+| Video preparation | PASS on fixtures | Actual FFmpeg extraction, orientation/SAR/order, no-overwrite, hashes, cancellation; [14 focused tests and measurements](VIDEO.md) |
+| Whole-command image pipeline | PASS execution/rendering; FAIL clean revisit quality | 24/24 raw views, CPU poses → Metal training → artifact; 54.538 s; sparse/blurred [inspected output](evidence/pipeline-24.jpg); 120-view result is the useful example |
+| Native pipeline cancellation | PASS | Actual SIGTERM during PyCOLMAP, parent and pose reports CANCELLED, 1.994 s to exit, no training started |
+| Late publication cancellation | PASS adapter tests | Mocked native stages plus actual signal/file copy; final status cannot incorrectly remain PASS |
+| Original walking capture / second recording | NOT RUN | No original walking video supplied; fixture extraction does not satisfy M2 or full M4 |
+
+Detailed source provenance, failed self-calibration attempts, hardware memory,
+commands and hashes are in [independent reconstruction](INDEPENDENT_RECONSTRUCTION.md)
+and [COLMAP](COLMAP.md). The original dated measurements below are retained;
+they are not measurements of the new 120-view scene.
 
 ## Environment
 
