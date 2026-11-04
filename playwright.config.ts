@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/browser',
   testMatch: '**/*.pw.mjs',
   workers: 1,
-  timeout: 60_000,
+  timeout: process.env.GS_BASE_URL ? 180_000 : 60_000,
   use: {
     channel: 'chrome',
     headless: process.env.HEADLESS === '1',

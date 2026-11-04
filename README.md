@@ -80,7 +80,7 @@ indoor capture produced 99/99 estimated cameras and a 28,496-Gaussian scene in
 4 min 38 s, with actual browser rendering and path playback verified. No sample
 model, supplied poses or calibrated lens values were used. The original footage and processing evidence remain private. The creator has
 authorized public display of the derived desk scene and preview; the desk now
-renders in the public four-world catalog, with path playback verified. [Evidence and remaining
+renders in the public observation catalog, with path playback verified. [Evidence and remaining
 visual limits](docs/ORIGINAL_VIDEO.md).
 
 After installing the native tools, run the new [local pipeline command](docs/PIPELINE.md):

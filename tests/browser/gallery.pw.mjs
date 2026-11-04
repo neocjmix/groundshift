@@ -6,7 +6,11 @@ const catalog = JSON.parse(await readFile('public/worlds/catalog.json', 'utf8'))
 const experiments = catalog.scenes.filter(scene => scene.category === 'experiment');
 const sceneUrl = scene => `/?world=${encodeURIComponent(scene.manifestPath)}`;
 const collection = page => page.getByRole('region', { name: 'Scene collection' });
-const ready = page => expect(page.locator('.scene-shell')).toHaveAttribute('data-phase', 'ready', { timeout: 30_000 });
+// Public observation assets include a 69 MB trial. Download time is separate
+// from rendering acceptance; keep the tighter localhost regression limit.
+const ready = page => expect(page.locator('.scene-shell')).toHaveAttribute('data-phase', 'ready', {
+  timeout: process.env.GS_BASE_URL ? 90_000 : 30_000,
+});
 const card = (page, scene) => collection(page).getByRole('link').filter({ has: page.getByRole('heading', { name: scene.title, exact: true }) });
 
 test('gallery shows real previews, filters and mobile layout without starting WebGL or loading scene assets', async ({ page, browser }, info) => {
@@ -173,7 +177,7 @@ for (const scene of catalog.scenes) {
     expect(errors).toEqual([]);
     await writeFile(info.outputPath('render-checks.json'), JSON.stringify({
       time: new Date().toISOString(), browser: browser.version(), mode: process.env.HEADLESS === '1' ? 'headless' : 'headed',
-      scene: scene.id, manifest: scene.manifestPath, centralBrightPixels: brightPixels, brightCanvasPixels, errors,
+      scene: scene.id, manifest: scene.manifestPath, url: page.url(), centralBrightPixels: brightPixels, brightCanvasPixels, errors,
       checks: ['direct URL actual asset render', 'nonempty rendered pixels', 'one canvas', 'reload preserves selected scene'],
       visualReview: 'Separate human/model screenshot review is required; pixels alone do not prove scene quality.',
     }, null, 2));

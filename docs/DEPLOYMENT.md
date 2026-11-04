@@ -21,7 +21,10 @@ per-image attribution. Visual quality does not exclude a result.
 | Archive | `groundshift-observations-20261105.tar.gz`, 147,359,576 bytes |
 | SHA-256 | `8cbb3335f30127be05f81904e792ae2190d5483bf3c9a564b6d25358c38ebb20` |
 | Static payload | 89 files, 159,297,244 bytes |
-| Deployment | Pending public verification; see follow-up evidence below |
+| Deployment-pointer commit | `85bdd37e2fa1e9d26c803656e8dbaad63facd653` |
+| Railway deployment | `f8f8c010-8774-4079-86e8-8ad138856424` — SUCCESS; public-browser verification recorded below |
+| Deployment timing | Created 2026-11-04 23:48:04 UTC; SUCCESS 23:48:49 UTC (2026-11-05 KST) |
+| Actual trigger | Explicit latest-branch connector trigger; push autodeploy remains unverified |
 
 **Local PASS:** TypeScript, lint, 165 viewer/packager tests, production build,
 22 headed Chrome tests in 1.9 minutes, and 102 distinct native-adapter tests
@@ -35,10 +38,48 @@ previews were captured and visually inspected. No GPU training or inference
 was repeated for publication; the measured existing binaries are unchanged.
 
 The complete archive was read back locally: all 89 members exactly match their
-public file inventory. Every new Gaussian PLY matches the existing local job
+public file inventory. The published archive was downloaded again and its
+SHA-256 matched the local file. Every new Gaussian PLY matches the existing local job
 SHA-256, and coordinates/navigation are unchanged. The report is rebuilt from
 explicit selected fields and an image allowlist; raw job logs, private footage,
 private frames, model weights and local paths are not included.
+
+| Public observation check | Result | Evidence |
+| --- | --- | --- |
+| Railway build and health | PASS | Exact pointer commit deployed; archive checksum OK in build log; Caddy server starts and healthcheck succeeds |
+| Public file integrity | PASS | All 89 files match expected byte length and SHA-256; `/healthz` returns 200/`ok` |
+| Missing/private paths | PASS | Five probes return genuine 404s, including private job/video paths and an unshipped inference log |
+| Source/comparison display | PASS | Public report manually inspected; GS case switch visibly updates input, mask, generated output and metrics |
+| Full public render regression | PASS after one targeted retry | 18 distinct cases covered: initial run 17 PASS / 1 download-timeout FAIL; the 69 MB scene passes render and reload with a longer public-download wait |
+| Individual visual inspection | PASS | All 13 public-origin scene screenshots inspected; visible output and quality limitations recorded separately |
+| Report and gallery interactions | PASS | Both comparison cases, actual images/masks, slider endpoints, 72 history records, all 13 scene links, search/filter, return/history and 390px mobile layout |
+
+The initial public headed Chrome run finished with **17 PASS / 1 FAIL** in
+4.8 minutes. The 69 MB `beijing-20k` scene was still downloading at 52.4 MB when
+the 30-second readiness assertion expired; it had not reached a render result.
+Only that case was rerun, with a 90-second public readiness wait and 180-second
+test limit. It passed actual rendering and reload in **55.5 seconds** (58.5-second
+runner duration). Localhost retains its original 30/60-second limits. These
+durations include network transfer, rendering and test actions; they are not
+GPU or cold-cache benchmarks. No application code or scene bytes changed for
+the retry. All 13 scene captures were individually inspected. No page errors
+were captured by the scene/report tests. TypeScript and lint passed again after
+the test-only change.
+
+Raw evidence is retained locally under `data/validation/deployment/`:
+`railway-observations-http.json`, `railway-observations-status.json`,
+`railway-observations-final-logs.json`, `observations-public-browser.log`,
+`observations-public-large-retry.log`, both corresponding browser output folders,
+and `observation-public-visual-review.json`. The original failed attempt and trace
+remain preserved. The public report screenshot is
+`data/validation/deployment/railway-observations-overview.png`; these local
+evidence files are excluded from Git. Final service readback reports live,
+the same successful deployment, and no staged changes.
+
+**Quality remains FAIL** for the Mapillary reconstruction/completion experiment;
+generated-view multi-view consistency remains **NOT RUN**. Publication and browser
+rendering PASS do not change those acceptance results. The final documentation
+and test-timeout commit does not replace the immutable viewer archive above.
 
 See [observation workflow](OBSERVATIONS.md) and [the comparison report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html).
 The four-world release below remains a rollback package and historical evidence.
