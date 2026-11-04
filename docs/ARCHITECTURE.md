@@ -26,6 +26,14 @@ process with its own logs. Source sequence order is separate from camera
 geometry; omitted registered views become playback gaps. The command does not
 claim visual acceptance or original-video success merely because export passed.
 
+For tagged phone HDR, preparation uses an explicitly selected FFmpeg with zimg:
+CPU transfer/gamut conversion and a recorded reference tone map produce SDR
+training images. Missing filters or unsupported base-layer metadata fail before
+extraction. This remains preprocessing within the local reconstruction boundary;
+the viewer consumes the same world format. A private original indoor video has
+now passed the full command and separate browser inspection without supplied
+lens calibration or poses. See [actual evidence](ORIGINAL_VIDEO.md).
+
 The strict schema in `src/world.ts` and [world format reference](WORLD_FORMAT.md) replace the illustrative shape below for real artifacts. Version 1 supports one Gaussian asset, orbit and optional camera-path navigation. The viewer world is right-handed, +Y-up with arbitrary or meter units, an explicit uniform asset transform and camera position/target/up/clipping. Three.js cameras look along local −Z. The manifest never silently assumes an asset's up-axis or invents a safe origin. Native exports retain genuine world-space camera matrices in `cameras.json`; the viewer must not apply the asset transform to them again. Explicit sequence edges permit interpolated movement; unknown edges and different components stop it. Free look changes orientation without moving off the selected camera route.
 
 ## Reconstruction backend boundary

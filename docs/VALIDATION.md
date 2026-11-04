@@ -1,8 +1,26 @@
-# Validation — 2026-11-04
+# Validation — updated 2026-11-05
 
 **M0 PASS. M1 PASS for both supplied and independently estimated camera poses.** The later 120-photo result uses supplied lens calibration, while all camera positions, sparse points and Gaussians are computed locally. Both results have actual GPU execution and inspected browser screenshots. The earlier 16/40 failure below is preserved as history.
 
-## Follow-up implementation and validation
+## Original user video — 2026-11-05
+
+**PASS for the actual indoor video-to-world experiment:** 24.8-second private
+HDR clip → 99 frames → 99 newly estimated camera poses / 16,318 points → 4,000
+Metal steps → 28,496-splat scene → inspected browser rendering and path controls.
+The command took 277.572 s. Input, screenshots and outputs remain local; no
+private footage was added to Git or Railway. [Exact measurements, limitations,
+initial unverified color attempt and reproducible command](ORIGINAL_VIDEO.md).
+
+Current checks: TypeScript, lint, 118 viewer unit tests, production build,
+47 Python tests (including actual HLG/PQ pixels and rotation), and four headed
+Chrome regression tests all **PASS**. The browser regression run took 36.7 s;
+Python tests took 6.619 s with the pinned HDR FFmpeg enabled. An independent
+11-gate readback checked source/frame hashes, color evidence, coordinates,
+camera sequence, Metal logs and PLY identity. Actual private-scene browser
+inspection was a separate PASS. Walking-route and second-recording acceptance
+remain **NOT RUN**; this indoor capture does not silently redefine M2/M4.
+
+## Earlier sample implementation and validation — 2026-11-04
 
 | Check | Result | Actual scope |
 | --- | --- | --- |

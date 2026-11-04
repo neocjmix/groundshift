@@ -58,6 +58,12 @@ The backend is a local Python process adapter; the portable output is a director
 
 ## Local video/image pipeline
 
+The first **user-recorded original video** now works locally: a 24.8-second
+indoor capture produced 99/99 estimated cameras and a 28,496-Gaussian scene in
+4 min 38 s, with actual browser rendering and path playback verified. No sample
+model, supplied poses or calibrated lens values were used. The private footage
+and output remain on this Mac. [Evidence and remaining visual limits](docs/ORIGINAL_VIDEO.md).
+
 After installing the native tools, run the new [local pipeline command](docs/PIPELINE.md):
 
 ```sh
@@ -71,8 +77,11 @@ failures are preserved. Video provenance can be supplied with `--provenance`;
 otherwise the artifact explicitly records an unspecified license and local file
 source. Image directories require provenance. This is an implemented workflow,
 not a claim that arbitrary footage reconstructs successfully. The FFmpeg checks
-used synthetic fixtures and a licensed photo slideshow; no original walking
-recording has been processed yet. [Frame extraction evidence](docs/VIDEO.md).
+initially used synthetic fixtures and a licensed photo slideshow; the later
+original indoor capture validates the full command. Walking-route acceptance
+and a second independent recording remain outstanding. Tagged phone HDR needs
+the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
+unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
 - [Vision](docs/VISION.md)
@@ -84,6 +93,8 @@ recording has been processed yet. [Frame extraction evidence](docs/VIDEO.md).
 - [Local reconstruction](docs/M1.md)
 - [Optional CPU camera estimation](docs/COLMAP.md)
 - [One-command local pipeline](docs/PIPELINE.md)
+- [Original private video experiment](docs/ORIGINAL_VIDEO.md)
+- [HDR-capable local FFmpeg](docs/HDR_TOOL.md)
 - [Video preparation](docs/VIDEO.md)
 - [Camera-path revisit](docs/REVISIT.md)
 - [Portable world format](docs/WORLD_FORMAT.md)

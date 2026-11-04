@@ -7,6 +7,11 @@ new directory and keeps stage commands, logs, exit codes and measurements in
 
 Install the [M1 tools](M1.md) and [PyCOLMAP environment](COLMAP.md) first. Video
 also needs local `ffmpeg` and `ffprobe`; see [video preparation](VIDEO.md).
+Tagged HLG/PQ recordings need a build containing `zscale` and `tonemap`. The
+[pinned Apple Silicon tool](HDR_TOOL.md) can be selected with
+`--ffmpeg data/tools/hdr-ffmpeg/ffmpeg-macos-aarch64-v9.0`
+and `--ffprobe /opt/homebrew/bin/ffprobe`. Unsupported HDR metadata or missing
+filters fail with a retained log instead of silently treating HDR pixels as SDR.
 
 ```sh
 python3 scripts/build-world.py /absolute/path/to/walk.mov data/jobs/my-first-walk \
@@ -62,8 +67,10 @@ continuous physical walking trajectory. [World contract](WORLD_FORMAT.md).
 
 ## Acceptance limits
 
-The original-video milestone requires an actual short walking recording. A
-video made from existing sample photos is useful for extraction checks but
-does not satisfy that requirement. A complete second-recording run is also
+M2 acceptance still requires an actual short walking recording. A video made
+from existing sample photos is useful for extraction checks but does not satisfy
+that requirement. The first [private original-video experiment](ORIGINAL_VIDEO.md)
+is an indoor desk capture: it exercises the real video-to-world path without
+establishing walking-route acceptance. A complete second-recording run is still
 required before claiming M4 acceptance. See [current validation](VALIDATION.md)
 for executed checks and remaining blockers.
