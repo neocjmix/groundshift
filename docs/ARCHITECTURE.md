@@ -10,6 +10,8 @@ Original video/images
 
 Initial implementation is a local CLI and static web app, not a service.
 
+The subsequent user-requested Railway deployment packages the already built static viewer and selected licensed examples. It adds a static file server only. Native reconstruction and datasets remain local; no cloud worker or reconstruction API is introduced. See [deployment](DEPLOYMENT.md).
+
 ## Implemented boundaries (2026-11-04)
 
 `scripts/reconstruct.py` invokes pinned Brush 0.3.0 as a local process. It accepts a local posed, undistorted image directory and a new output directory, owns process cancellation/logging, checks the export and writes the portable artifact. GPU kernels and optimization remain inside Brush. The official arm64 release uses Metal on this Mac; no Rust build or general backend/plugin framework is introduced.

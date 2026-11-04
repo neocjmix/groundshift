@@ -72,7 +72,7 @@ export default function App() {
           </span>
         </a>
         <span className="local-badge">
-          <span className="live-dot" /> On your Mac
+          <span className="live-dot" /> On your device
         </span>
       </header>
       <main>
@@ -124,7 +124,7 @@ export default function App() {
             Files stay on this device.
           </p>
           <details className="source-picker">
-            <summary>Load from a local server</summary>
+          <summary>Load from a URL</summary>
             <form
               onSubmit={(event) => {
                 event.preventDefault();

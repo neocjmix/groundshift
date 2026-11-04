@@ -29,7 +29,7 @@ Open **http://127.0.0.1:4317**. Drag to orbit, scroll or use the buttons to zoom
 
 To replace the scene, choose **Open world folder** and select a folder containing `world.json` and its asset. Nothing is uploaded. Alternatively put an artifact under `public/worlds/my-world/` and open `/?world=/worlds/my-world/world.json`. See the [world format](docs/WORLD_FORMAT.md) for explicit axes, transform, orbit camera and attribution. No floor, collision or safe walking spawn is inferred.
 
-The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loading, download progress, missing or corrupt files, invalid manifests, and graphics-context loss have visible states. Scene switches cancel fetches and release rendering resources. All runtime code and scene assets are served locally.
+The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loading, download progress, missing or corrupt files, invalid manifests, and graphics-context loss have visible states. Scene switches cancel fetches and release rendering resources. Local development serves code and scenes from this Mac. The optional [Railway deployment](docs/DEPLOYMENT.md) hosts a curated static viewer; reconstruction remains local.
 
 ## Checks
 
@@ -60,6 +60,7 @@ The backend is a local Python process adapter; the portable output is a director
 - [Local reconstruction](docs/M1.md)
 - [Optional CPU camera estimation](docs/COLMAP.md)
 - [Portable world format](docs/WORLD_FORMAT.md)
+- [Railway deployment](docs/DEPLOYMENT.md)
 - [Agent instructions](AGENTS.md)
 
 Groundshift source license selection remains pending; third-party code and samples retain their respective licenses. Large assets, datasets, generated output and local tools are excluded from Git. Use original or appropriately licensed images and review privacy before publishing footage or scenes.

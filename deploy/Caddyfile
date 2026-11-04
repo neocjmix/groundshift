@@ -1,0 +1,20 @@
+{
+  admin off
+  auto_https off
+  persist_config off
+}
+
+:{$PORT:8080} {
+  root * {$SITE_ROOT:/srv}
+  encode zstd gzip
+
+  respond /healthz "ok" 200
+
+  @bundles path /assets/*
+  header @bundles Cache-Control "public, max-age=31536000, immutable"
+  @mutable not path /assets/*
+  header @mutable Cache-Control "no-cache"
+
+  # Missing manifests/assets must return 404, never the HTML entry point.
+  file_server
+}

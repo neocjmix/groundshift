@@ -262,7 +262,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     <div className="scene-shell" data-phase={status.phase}>
       <div ref={mount} className="canvas-mount" />
       <div className="scene-topline">
-        <span className="live-dot" /> LOCAL WORLD{" "}
+        <span className="live-dot" /> WORLD VIEW{" "}
         <span className="topline-separator">/</span> {world.manifest.id}
       </div>
       {status.phase !== "ready" && (
