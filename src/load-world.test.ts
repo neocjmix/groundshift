@@ -36,6 +36,22 @@ function jsonResponse(body: unknown, url: string): Response {
   return response;
 }
 
+function cameraFile() {
+  return {
+    schemaVersion: 1,
+    cameraConvention: 'OpenGL: +X right, +Y up, -Z forward',
+    worldConvention: 'right-handed Y-up, arbitrary units',
+    frames: [{ image: 'synthetic.png', cameraToWorld: [[1, 0, 0, 6], [0, 1, 0, 7], [0, 0, 1, 8], [0, 0, 0, 1]] }],
+  };
+}
+
+function pathManifest(): WorldManifest {
+  const input = manifest();
+  input.navigation.mode = 'camera-path';
+  input.navigation.camerasPath = 'metadata/cameras.json';
+  return input;
+}
+
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
@@ -105,6 +121,59 @@ describe('HTTP world loading', () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(aborted));
     await expect(loadWorld('/world.json', new AbortController().signal)).rejects.toBe(aborted);
   });
+
+  it('loads camera metadata beside the redirected manifest without applying the asset transform again', async () => {
+    const input = pathManifest();
+    input.coordinates.assetToWorld = { position: [9, 8, 7], quaternion: [1, 0, 0, 0], scale: 3 };
+    vi.stubGlobal('window', { location: { href: browserUrl } });
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(jsonResponse(input, 'https://example.com/redirected/world.json'))
+      .mockResolvedValueOnce(Response.json(cameraFile()));
+    vi.stubGlobal('fetch', fetchMock);
+    const controller = new AbortController();
+    const loaded = await loadWorld('/world.json', controller.signal);
+    expect(fetchMock).toHaveBeenNthCalledWith(2, 'https://example.com/redirected/metadata/cameras.json', { signal: controller.signal });
+    expect(loaded.cameraPath?.poses[0].position.toArray()).toEqual([6, 7, 8]);
+    expect(loaded.cameraPathError).toBeUndefined();
+  });
+
+  it.each([
+    { response: () => new Response('missing', { status: 404 }), message: 'HTTP 404' },
+    { response: () => new Response('<html>fallback</html>'), message: 'Camera path unavailable' },
+    { response: () => Response.json({ ...cameraFile(), cameraConvention: 'unconverted axes' }), message: 'Camera path unavailable' },
+  ])('retains orbit when optional camera metadata fails: $message', async ({ response, message }) => {
+    vi.stubGlobal('window', { location: { href: browserUrl } });
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(jsonResponse(pathManifest(), 'https://example.com/world.json'))
+      .mockResolvedValueOnce(response()));
+    const loaded = await loadWorld('/world.json', new AbortController().signal);
+    expect(loaded.cameraPath).toBeUndefined();
+    expect(loaded.cameraPathError).toContain(message);
+    expect(loaded.assetUrl).toBe('https://example.com/assets/scene.ply');
+  });
+
+  it('propagates camera-fetch abort rather than downgrading it to an optional warning', async () => {
+    vi.stubGlobal('window', { location: { href: browserUrl } });
+    const aborted = new DOMException('cancelled', 'AbortError');
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(jsonResponse(pathManifest(), 'https://example.com/world.json'))
+      .mockRejectedValueOnce(aborted));
+    await expect(loadWorld('/world.json', new AbortController().signal)).rejects.toBe(aborted);
+  });
+
+  it('rejects stale completion when cancellation occurs during camera JSON decoding', async () => {
+    vi.stubGlobal('window', { location: { href: browserUrl } });
+    const controller = new AbortController();
+    const response = Response.json(cameraFile());
+    vi.spyOn(response, 'json').mockImplementation(async () => {
+      controller.abort();
+      return cameraFile();
+    });
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(jsonResponse(pathManifest(), 'https://example.com/world.json'))
+      .mockResolvedValueOnce(response));
+    await expect(loadWorld('/world.json', controller.signal)).rejects.toMatchObject({ name: 'AbortError' });
+  });
 });
 
 describe('local world folder loading', () => {
@@ -170,6 +239,44 @@ describe('local world folder loading', () => {
       localFile('capture/world.json', JSON.stringify(invalid)),
       localFile('scene.ply', 'outside artifact'),
     ])).rejects.toThrow();
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('reads only the referenced local camera file and keeps world coordinates', async () => {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:local-path');
+    const loaded = await loadLocalWorld([
+      localFile('capture/world.json', JSON.stringify(pathManifest())),
+      localFile('capture/assets/scene.ply', 'synthetic bytes'),
+      localFile('capture/cameras.json', 'wrong file with the same basename'),
+      localFile('capture/metadata/cameras.json', JSON.stringify(cameraFile())),
+    ]);
+    expect(loaded.cameraPath?.poses[0].position.toArray()).toEqual([6, 7, 8]);
+    loaded.release?.();
+  });
+
+  it('offers orbit when the selected folder has no referenced camera file', async () => {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:local-path');
+    const loaded = await loadLocalWorld([
+      localFile('capture/world.json', JSON.stringify(pathManifest())),
+      localFile('capture/assets/scene.ply', 'synthetic bytes'),
+    ]);
+    expect(loaded.cameraPathError).toContain('missing metadata/cameras.json');
+    expect(loaded.cameraPath).toBeUndefined();
+    loaded.release?.();
+  });
+
+  it('does not create a scene blob when cancelled during local camera decoding', async () => {
+    const create = vi.spyOn(URL, 'createObjectURL');
+    const controller = new AbortController();
+    const cameras = localFile('capture/metadata/cameras.json', JSON.stringify(cameraFile()));
+    vi.spyOn(cameras, 'text').mockImplementation(async () => {
+      controller.abort();
+      return JSON.stringify(cameraFile());
+    });
+    await expect(loadLocalWorld([
+      localFile('capture/world.json', JSON.stringify(pathManifest())),
+      localFile('capture/assets/scene.ply', 'synthetic bytes'), cameras,
+    ], controller.signal)).rejects.toMatchObject({ name: 'AbortError' });
     expect(create).not.toHaveBeenCalled();
   });
 });

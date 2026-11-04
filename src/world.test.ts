@@ -26,6 +26,13 @@ function fixture(): WorldManifest {
 }
 
 describe('parseWorldManifest', () => {
+  it('supports camera-path mode with a camera reference and keeps the orbit fallback', () => {
+    const manifest = fixture();
+    manifest.navigation.mode = 'camera-path';
+    expect(parseWorldManifest(manifest)).toEqual(manifest);
+    delete manifest.navigation.camerasPath;
+    expect(() => parseWorldManifest(manifest)).toThrow('requires camerasPath');
+  });
   it('preserves explicit coordinates and accepts the complete v1 contract', () => {
     const manifest = fixture();
     expect(parseWorldManifest(manifest)).toEqual(manifest);

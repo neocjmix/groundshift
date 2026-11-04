@@ -3,6 +3,30 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
 import type { LoadedWorld } from "./load-world";
+import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-path";
+import "./Viewer.css";
+
+type NavigationState = {
+  mode: 'orbit' | 'camera-path';
+  cursor: number;
+  playing: boolean;
+  speed: number;
+  direction: 1 | -1;
+};
+type NavigationAction =
+  | { type: 'mode'; mode: NavigationState['mode'] }
+  | { type: 'seek'; cursor: number }
+  | { type: 'step'; direction: 1 | -1 }
+  | { type: 'play' }
+  | { type: 'speed'; speed: number }
+  | { type: 'direction'; direction: 1 | -1 };
+
+function initialNavigation(world: LoadedWorld): NavigationState {
+  return {
+    mode: world.cameraPath ? world.manifest.navigation.mode : 'orbit',
+    cursor: 0, playing: false, speed: 1, direction: 1,
+  };
+}
 
 type Status = {
   phase: "loading" | "ready" | "error";
@@ -23,6 +47,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const mount = useRef<HTMLDivElement>(null);
   const reset = useRef<() => void>(() => {});
   const zoom = useRef<(direction: number) => void>(() => {});
+  const navigate = useRef<(action: NavigationAction) => void>(() => {});
+  const [navigation, setNavigation] = useState(() => initialNavigation(world));
   const [status, setStatus] = useState<Status>({
     phase: "loading",
     message: "Loading scene…",
@@ -42,6 +68,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let meshPending = false;
     let resize: ResizeObserver | undefined;
     let failCleanup: (() => void) | undefined;
+    let navigationCleanup: (() => void) | undefined;
     const started = performance.now();
     const fail = (error: unknown) => {
       if (!disposed && !failed) {
@@ -93,7 +120,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       controls.dampingFactor = 0.08;
       controls.minDistance = pose.near * 2;
       controls.maxDistance = pose.far * 0.8;
-      reset.current = () => {
+      const resetOrbit = () => {
         if (!controls) return;
         // OrbitControls.reset() does not clear pending damping deltas.
         const damping = controls.enableDamping;
@@ -102,14 +129,131 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         controls.reset();
         camera.position.fromArray(pose.position);
         camera.up.fromArray(pose.up).normalize();
+        camera.fov = pose.fov;
+        camera.updateProjectionMatrix();
         controls.target.fromArray(pose.target);
         controls.update();
         controls.enableDamping = damping;
       };
-      reset.current();
+      resetOrbit();
       controls.saveState();
+      const path = world.cameraPath;
+      const nav = initialNavigation(world);
+      let yaw = 0;
+      let pitch = 0;
+      const look = new THREE.Quaternion();
+      const lookEuler = new THREE.Euler(0, 0, 0, 'YXZ');
+      const publishNavigation = () => {
+        if (!disposed && !failed) setNavigation({ ...nav });
+      };
+      const applyPath = () => {
+        if (!path || nav.mode !== 'camera-path') return;
+        const sample = sampleCameraPath(path, nav.cursor);
+        nav.cursor = sample.cursor;
+        camera.position.copy(sample.position);
+        look.setFromEuler(lookEuler.set(pitch, yaw, 0, 'YXZ'));
+        camera.quaternion.copy(sample.quaternion).multiply(look);
+      };
+      controls.enabled = nav.mode === 'orbit';
+      applyPath();
+      reset.current = () => {
+        if (disposed || failed) return;
+        if (nav.mode === 'orbit') resetOrbit();
+        else {
+          nav.cursor = 0;
+          nav.playing = false;
+          yaw = pitch = 0;
+          camera.fov = pose.fov;
+          camera.updateProjectionMatrix();
+          applyPath();
+          publishNavigation();
+        }
+      };
+      navigate.current = (action) => {
+        if (disposed || failed || !path || !controls) return;
+        if (action.type === 'mode') {
+          nav.mode = action.mode;
+          nav.playing = false;
+          controls.enabled = nav.mode === 'orbit';
+          if (nav.mode === 'orbit') resetOrbit();
+        } else if (action.type === 'seek') {
+          nav.cursor = sampleCameraPath(path, Math.round(action.cursor)).cursor;
+          nav.playing = false;
+        } else if (action.type === 'step') {
+          nav.cursor = Math.max(0, Math.min(path.poses.length - 1,
+            action.direction > 0 ? Math.floor(nav.cursor) + 1 : Math.ceil(nav.cursor) - 1));
+          nav.playing = false;
+        } else if (action.type === 'play') {
+          const next = nav.direction > 0 ? Math.floor(nav.cursor) + 1 : Math.ceil(nav.cursor);
+          nav.playing = !nav.playing && !cameraPathGap(path, next);
+        } else if (action.type === 'speed') nav.speed = action.speed;
+        else if (action.type === 'direction') {
+          nav.direction = action.direction;
+          nav.playing = false;
+        }
+        applyPath();
+        publishNavigation();
+      };
+      const canvas = renderer.domElement;
+      let drag: { id: number; x: number; y: number } | undefined;
+      const pointerDown = (event: PointerEvent) => {
+        if (nav.mode !== 'camera-path' || event.button !== 0 || drag || failed) return;
+        event.preventDefault();
+        canvas.focus();
+        canvas.setPointerCapture(event.pointerId);
+        drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      };
+      const pointerMove = (event: PointerEvent) => {
+        if (!drag || drag.id !== event.pointerId || nav.mode !== 'camera-path') return;
+        yaw -= (event.clientX - drag.x) * 0.004;
+        pitch = THREE.MathUtils.clamp(pitch - (event.clientY - drag.y) * 0.004, -Math.PI * 0.45, Math.PI * 0.45);
+        drag = { id: drag.id, x: event.clientX, y: event.clientY };
+        applyPath();
+      };
+      const pointerUp = (event: PointerEvent) => {
+        if (drag?.id === event.pointerId) {
+          drag = undefined;
+          if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+        }
+      };
+      const keyDown = (event: KeyboardEvent) => {
+        if (nav.mode !== 'camera-path' || failed) return;
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault();
+        if (event.key === 'ArrowLeft') yaw += 0.05;
+        if (event.key === 'ArrowRight') yaw -= 0.05;
+        if (event.key === 'ArrowUp') pitch += 0.05;
+        if (event.key === 'ArrowDown') pitch -= 0.05;
+        pitch = THREE.MathUtils.clamp(pitch, -Math.PI * 0.45, Math.PI * 0.45);
+        applyPath();
+      };
+      const visibilityChange = () => {
+        if (document.hidden) {
+          nav.playing = false;
+          publishNavigation();
+        }
+      };
+      canvas.addEventListener('pointerdown', pointerDown);
+      canvas.addEventListener('pointermove', pointerMove);
+      canvas.addEventListener('pointerup', pointerUp);
+      canvas.addEventListener('pointercancel', pointerUp);
+      canvas.addEventListener('keydown', keyDown);
+      document.addEventListener('visibilitychange', visibilityChange);
+      navigationCleanup = () => {
+        canvas.removeEventListener('pointerdown', pointerDown);
+        canvas.removeEventListener('pointermove', pointerMove);
+        canvas.removeEventListener('pointerup', pointerUp);
+        canvas.removeEventListener('pointercancel', pointerUp);
+        canvas.removeEventListener('keydown', keyDown);
+        document.removeEventListener('visibilitychange', visibilityChange);
+      };
       zoom.current = (direction) => {
         if (!controls) return;
+        if (nav.mode === 'camera-path') {
+          camera.fov = THREE.MathUtils.clamp(camera.fov * (direction > 0 ? 0.8 : 1.25), 15, 110);
+          camera.updateProjectionMatrix();
+          return;
+        }
         const offset = camera.position.clone().sub(controls.target);
         offset.setLength(
           THREE.MathUtils.clamp(
@@ -205,19 +349,34 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         : String(gl.getParameter(gl.RENDERER));
       const loadMs = performance.now() - started;
       let last = performance.now();
+      let lastFrame = last;
+      let lastNavigationUpdate = last;
       let frames = 0;
       let totalFrames = 0;
       renderer.setAnimationLoop(() => {
         if (!renderer || disposed || failed) return;
         try {
-          controls?.update();
+          const now = performance.now();
+          const elapsed = Math.min((now - lastFrame) / 1000, 0.1);
+          lastFrame = now;
+          if (nav.mode === 'camera-path' && path) {
+            if (nav.playing) {
+              const next = advanceCameraPath(path, nav.cursor, elapsed * nav.speed * nav.direction);
+              nav.cursor = next.cursor;
+              if (next.stopped) nav.playing = false;
+              if (next.stopped || now - lastNavigationUpdate >= 100) {
+                publishNavigation();
+                lastNavigationUpdate = now;
+              }
+            }
+            applyPath();
+          } else controls?.update();
           renderer.render(scene, camera);
           totalFrames++;
           // A render submission is not visual acceptance; acceptance uses screenshots.
           if (totalFrames === 3)
             setStatus({ phase: "ready", message: "Scene loaded" });
           frames++;
-          const now = performance.now();
           if (now - last >= 1000) {
             setMetrics({
               fps: (frames * 1000) / (now - last),
@@ -235,6 +394,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             .toArray()
             .join(",");
           renderer.domElement.dataset.frameCount = String(totalFrames);
+          renderer.domElement.dataset.cameraQuaternion = camera.quaternion.toArray().join(',');
+          renderer.domElement.dataset.navigationMode = nav.mode;
+          renderer.domElement.dataset.pathProgress = String(nav.cursor);
         } catch (error) {
           fail(error);
         }
@@ -247,6 +409,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       renderer?.setAnimationLoop(null);
       resize?.disconnect();
       controls?.dispose();
+      navigationCleanup?.();
       if (!meshPending) mesh?.dispose();
       spark?.dispose();
       failCleanup?.();
@@ -255,8 +418,12 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       renderer?.domElement.remove();
       reset.current = () => {};
       zoom.current = () => {};
+      navigate.current = () => {};
     };
   }, [world, attempt]);
+
+  const pathGap = world.cameraPath ? cameraPathGap(world.cameraPath,
+    navigation.direction > 0 ? Math.floor(navigation.cursor) + 1 : Math.ceil(navigation.cursor)) : null;
 
   return (
     <div className="scene-shell" data-phase={status.phase}>
@@ -265,6 +432,53 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         <span className="live-dot" /> WORLD VIEW{" "}
         <span className="topline-separator">/</span> {world.manifest.id}
       </div>
+      {world.cameraPath && (
+        <div className="path-panel" aria-label="Camera path controls">
+          <div className="path-mode" role="group" aria-label="Navigation mode">
+            <button aria-pressed={navigation.mode === 'orbit'} disabled={status.phase !== 'ready'}
+              onClick={() => navigate.current({ type: 'mode', mode: 'orbit' })}>Orbit</button>
+            <button aria-pressed={navigation.mode === 'camera-path'} disabled={status.phase !== 'ready'}
+              onClick={() => navigate.current({ type: 'mode', mode: 'camera-path' })}>Camera path</button>
+          </div>
+          {navigation.mode === 'camera-path' && (
+            <>
+              <label className="path-progress">Jump to recorded view
+                <input type="range" min={0} max={world.cameraPath.poses.length - 1} step={1}
+                  aria-label="Recorded camera view" value={Math.floor(navigation.cursor)}
+                  disabled={status.phase !== 'ready' || world.cameraPath.poses.length < 2}
+                  onChange={(event) => navigate.current({ type: 'seek', cursor: Number(event.target.value) })} />
+              </label>
+              <div className="path-actions">
+                <button aria-label="Previous recorded view" disabled={status.phase !== 'ready' || navigation.cursor <= 0}
+                  onClick={() => navigate.current({ type: 'step', direction: -1 })}>← Previous</button>
+                <button disabled={status.phase !== 'ready' || (!navigation.playing && Boolean(pathGap))}
+                  onClick={() => navigate.current({ type: 'play' })}>{navigation.playing ? 'Pause path' : 'Play path'}</button>
+                <button aria-label="Next recorded view" disabled={status.phase !== 'ready' || navigation.cursor >= world.cameraPath.poses.length - 1}
+                  onClick={() => navigate.current({ type: 'step', direction: 1 })}>Next →</button>
+              </div>
+              <div className="path-options">
+                <label>Direction <select aria-label="Path direction" value={navigation.direction}
+                  onChange={(event) => navigate.current({ type: 'direction', direction: Number(event.target.value) as 1 | -1 })}>
+                  <option value={1}>Forward</option><option value={-1}>Backward</option>
+                </select></label>
+                <label>Speed <select aria-label="Path speed" value={navigation.speed}
+                  onChange={(event) => navigate.current({ type: 'speed', speed: Number(event.target.value) })}>
+                  <option value={0.25}>0.25 views/s</option><option value={0.5}>0.5 views/s</option>
+                  <option value={1}>1 view/s</option><option value={2}>2 views/s</option>
+                </select></label>
+              </div>
+              <p className="path-position">View {(navigation.cursor + 1).toFixed(1)} / {world.cameraPath.poses.length}
+                {' · '}{Number.isInteger(navigation.cursor) ? 'Recorded pose' : 'Interpolated pose'}</p>
+              <p className="path-note">
+                {pathGap ?? 'Straight segments between estimated poses; no recovered walking surface.'}
+                {pathGap && '. Use Previous / Next to jump between recorded views.'}
+              </p>
+              {world.cameraPath.sequenceNotes && <details className="path-provenance"><summary>Sequence evidence</summary><p>{world.cameraPath.sequenceNotes}</p></details>}
+            </>
+          )}
+        </div>
+      )}
+      {world.cameraPathError && <p className="path-warning" role="status">{world.cameraPathError}</p>}
       {status.phase !== "ready" && (
         <div
           className="scene-overlay"
@@ -295,6 +509,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
                     message: "Downloading scene…",
                   });
                   setMetrics(null);
+                  setNavigation(initialNavigation(world));
                   setAttempt((value) => value + 1);
                 }}
               >
@@ -309,8 +524,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           <span className="eyebrow">A PLACE TO RETURN TO</span>
           <h2>{world.manifest.title}</h2>
           <p>
-            Drag to orbit <span>·</span> Scroll to explore <span>·</span>{" "}
-            Right-drag to pan
+            {navigation.mode === 'camera-path' ? 'Drag or use arrow keys on the scene to look around · Position follows camera poses' : <>
+              Drag to orbit <span>·</span> Scroll to explore <span>·</span>{" "}Right-drag to pan
+            </>}
           </p>
         </div>
         <div className="camera-controls" aria-label="Camera controls">

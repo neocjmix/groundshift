@@ -83,10 +83,14 @@ const worldManifestSchema = z.object({
     }).strict(),
   }).strict(),
   navigation: z.object({
-    mode: z.literal('orbit'),
+    mode: z.enum(['orbit', 'camera-path']),
     camera: cameraSchema,
     camerasPath: relativePath.optional(),
-  }).strict(),
+  }).strict().superRefine((navigation, context) => {
+    if (navigation.mode === 'camera-path' && !navigation.camerasPath) {
+      context.addIssue({ code: 'custom', path: ['camerasPath'], message: 'Camera-path mode requires camerasPath' });
+    }
+  }),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
     sourceUrl: provenanceUrl,

@@ -1,6 +1,6 @@
 # World artifact v1
 
-A world is a directory with `world.json`, one Gaussian Splatting asset, and optionally original camera metadata. Serve this directory over local HTTP alongside the viewer. Asset URLs resolve relative to the manifest URL, so replacing a scene does not require changing viewer code.
+A world is a directory with `world.json`, one Gaussian Splatting asset, and optionally camera metadata. Serve this directory over HTTP alongside the viewer or select it with **Open world folder**. Asset and camera URLs resolve relative to the manifest URL, so replacing a scene does not require changing viewer code.
 
 `src/world.ts` is the executable contract. The parser rejects missing required fields, unknown fields, unsupported versions, nonfinite numbers, invalid camera bases, and unsafe relative paths. Validation checks metadata structure; it does not establish the accuracy of camera poses, the asset's license, or successful rendering.
 
@@ -60,7 +60,40 @@ For asset-space point `p`, the viewer applies `worldPoint = position + rotate(qu
 
 The navigation camera `position`, `target`, and `up` are in world coordinates, **after** the asset transform. Three.js cameras look along their local negative Z axis toward `target`; local positive Y is the image-up direction. `up` must be nonzero and nonparallel to the viewing direction. `fov` is vertical field of view in degrees, strictly between 0 and 180. The clipping planes use world units and must satisfy `0 < near < far`. Choose a view from a verified source camera or a visually checked orbit view; an orbit camera is not a claim of a safe walking spawn.
 
-`camerasPath` is optional and refers to preserved camera metadata. It does not enable path navigation or make that data interchangeable across reconstruction engines. The file should retain its own original coordinate conventions and calibration details. A future trajectory contract can be defined when path navigation is implemented; v1 does not invent one.
+`navigation.mode` accepts `orbit` or `camera-path`. The latter requires `camerasPath` and starts at its first actual camera pose. The authored `navigation.camera` remains required as the orbit fallback and supplies the viewer's vertical FOV and clipping planes in either mode. Path playback does not infer per-frame focal lengths. An orbit world with valid camera metadata also offers a **Camera path** switch. Missing or invalid camera metadata produces a visible warning and leaves the scene usable in orbit; cancellation still cancels the whole load.
+
+## Optional camera sequence v1
+
+`src/camera-path.ts` validates `camerasPath`. Existing native `cameras.json` files remain compatible. Its required fields are:
+
+- `schemaVersion: 1`.
+- `cameraConvention: "OpenGL: +X right, +Y up, -Z forward"`.
+- `worldConvention: "right-handed Y-up, arbitrary units"`, or `"right-handed Y-up, meters"` when the manifest uses meters.
+- A nonempty `frames` array, each with `image` (the source image identifier) and `cameraToWorld` (a row-major 4×4 rigid transform). The upper-left 3×3 rotation must be orthonormal and right handed; translation is the last column, and the last row is `[0, 0, 0, 1]`. Validation allows `0.0001` floating-point tolerance, rejects nonfinite values, and never derives a pose from an image filename.
+
+Camera matrices are already in **world coordinates**, after the source-to-world conversion. The viewer does **not** apply `assetToWorld` to these matrices again. The native exporter transforms camera rotation columns and centers into the same frame as the displayed asset. Another backend must explicitly export this convention; unconverted OpenCV matrices are rejected. Preserve source calibration and the derivation in the reconstruction logs/provenance; this small viewing contract is not a full calibration archive.
+
+Optional continuity fields are backward compatible:
+
+```json
+{
+  "sequenceNotes": "Describe actual capture ordering, component evidence, omissions and limitations.",
+  "frames": [
+    { "image": "first-image.png", "componentId": "reconstruction-component-0", "continuousFromPrevious": false, "cameraToWorld": "4x4 numeric matrix required here" },
+    { "image": "second-image.png", "componentId": "reconstruction-component-0", "continuousFromPrevious": true, "cameraToWorld": "4x4 numeric matrix required here" }
+  ]
+}
+```
+
+This is an **illustrative field excerpt**, not valid camera JSON or measured data. `sequenceNotes` is optional nonblank text. Per-frame `componentId` is an optional nonblank identifier; `continuousFromPrevious` is an optional boolean describing the edge from the preceding array entry. Its first entry has no incoming edge. Different explicit component IDs always prevent interpolation, even if a continuity flag is true. A missing or false flag also prevents interpolation. Legacy files without these flags therefore provide checkpoints only. Do not label disconnected SfM components as one component: their separate coordinate frames require explicit registration before a shared-world export.
+
+An exporter may mark an edge only when the two poses belong to the same aligned reconstruction component and follow a verified acquisition/extraction sequence without omitted selected views between them. The flag authorizes a straight interpolation for viewing; it does not prove that the camera physically traveled along that segment or that the space is traversable. Never infer continuity merely from sorted filenames or proximity. Record the supporting evidence and uncertainty in `sequenceNotes`.
+
+The viewer linearly interpolates camera centers and uses shortest-arc quaternion interpolation for orientation between marked adjacent poses. **Play path** can run forward or backward, pauses at every unknown/disconnected edge and at endpoints, and pauses when the browser tab becomes hidden. **Previous**, **Next**, and the labeled checkpoint slider explicitly jump between actual camera poses, including across a flagged gap. They do not synthesize the missing path. Speed is measured in camera intervals (views) per second, because capture timestamps and metric scale may be unavailable; it is not walking speed or original video timing.
+
+Drag on the scene, or focus it and use arrow keys, to look around while the position remains on the chosen camera sequence. **Reset view** returns to the first pose and clears free look. Zoom buttons change the viewing field of view in path mode. Switching back to **Orbit** restores the authored orbit camera. No floor, collision, unseen geometry, or free walking is introduced.
+
+Tests of interpolation and camera loading use explicitly synthetic fixtures. The browser control test renders the actual reconstructed asset and actual exported poses, but adds **test-only continuity markers** to intercepted JSON to exercise gap handling. Passing that test proves the controls operate; actual capture-sequence and route-quality acceptance must be recorded separately.
 
 ## Asset and provenance constraints
 

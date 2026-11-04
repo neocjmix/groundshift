@@ -179,7 +179,7 @@ export default function App() {
                   ? "Meters"
                   : "Unscaled capture"}
                 <br />
-                Orbit view · No collision geometry
+                Camera views · No collision geometry
               </div>
             </section>
           )}

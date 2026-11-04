@@ -1,0 +1,49 @@
+.path-panel, .path-warning {
+  position: absolute;
+  z-index: 2;
+  left: 28px;
+  top: 58px;
+  width: min(360px, calc(100% - 56px));
+  border: 1px solid #4a554b;
+  border-radius: 12px;
+  padding: 12px;
+  background: #152019ee;
+  color: #eff3eb;
+  font-size: 12px;
+}
+.path-mode, .path-actions, .path-options { display: flex; align-items: center; gap: 8px; }
+.path-mode button, .path-actions button {
+  padding: 7px 10px;
+  border: 1px solid #60745e;
+  border-radius: 7px;
+  background: #253a29;
+  color: #f1f5ed;
+  font: inherit;
+  cursor: pointer;
+}
+.path-mode button[aria-pressed="true"] { background: #d4e3ac; color: #1a2a19; }
+.path-panel button:disabled { opacity: .45; cursor: default; }
+.path-panel :focus-visible { outline: 2px solid #e7ffc3; outline-offset: 3px; }
+.path-progress { display: grid; gap: 7px; margin: 14px 0 10px; }
+.path-progress input { width: 100%; accent-color: #d4e3ac; }
+.path-actions { justify-content: space-between; }
+.path-options { justify-content: space-between; margin-top: 12px; }
+.path-options label { display: grid; gap: 4px; }
+.path-options select { color: #eff3eb; background: #253a29; border: 1px solid #60745e; border-radius: 5px; padding: 5px; font: inherit; }
+.path-position { margin: 12px 0 6px; font-variant-numeric: tabular-nums; }
+.path-note { margin: 0; line-height: 1.5; color: #c1cebd; }
+.path-provenance { margin-top: 8px; color: #c1cebd; }
+.path-provenance summary { cursor: pointer; }
+.path-provenance p { line-height: 1.5; max-height: 90px; overflow: auto; }
+.path-warning { max-height: 150px; overflow: auto; line-height: 1.5; }
+@media (max-width: 700px) {
+  .path-panel, .path-warning { left: 16px; top: 58px; width: min(340px, calc(100% - 32px)); padding: 10px; font-size: 11px; }
+  .path-mode button, .path-actions button { padding: 5px 8px; }
+  .path-progress { margin: 8px 0; gap: 4px; }
+  .path-options { margin-top: 8px; }
+  .path-options label { display: flex; align-items: center; }
+  .path-options select { padding: 3px; }
+  .path-position { margin: 8px 0 4px; }
+  .path-note { font-size: 10px; line-height: 1.4; }
+  .path-provenance { margin-top: 6px; }
+}
