@@ -10,7 +10,7 @@ Original video/images
 
 Initial implementation is a local CLI and static web app, not a service.
 
-The subsequent user-requested Railway deployment packages the already built static viewer and selected licensed examples. It adds a static file server only. Native reconstruction and datasets remain local; no cloud worker or reconstruction API is introduced. See [deployment](DEPLOYMENT.md).
+The subsequent user-requested Railway deployment packages the already built static viewer and authorized world artifacts and experiment observations. It adds a static file server only. Native reconstruction, private datasets and model weights remain local; no cloud worker or reconstruction API is introduced. See [deployment](DEPLOYMENT.md).
 
 ## Implemented boundaries (2026-11-04)
 
@@ -49,8 +49,9 @@ image directly.
 Diffusion completion is an experimental local preprocessing/refinement process,
 not part of the viewer or a cloud worker. Keep source images, generated pixels,
 mask semantics, model revision/seed and camera evidence distinct. Evaluate
-against real withheld views before admitting generated images into an accepted
-world. [Experiment and status](MAPILLARY_EXPERIMENT.md).
+against real withheld views and distinguish experimental publication from quality
+acceptance. Railway displays failed and successful experiments alike, including
+explicitly licensed public comparison crops. [Experiment and status](MAPILLARY_EXPERIMENT.md).
 
 Treat the reconstruction tool as a process invoked with input path, output directory and backend-specific options. Capture exit code, logs, elapsed time and cancellation. The backend owns its internal steps: COLMAP is not a universal requirement and future neural reconstruction may estimate camera poses itself. Do not abstract Metal/CUDA kernels, training hyperparameters or internal cache.
 

@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "worlds": [
+    {
+      "id": "beijing-10k",
+      "source": "data/jobs/mapillary-beijing-rig-baseline-10000/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "beijing-generated",
+      "source": "data/jobs/mapillary-beijing-generated-gs-smoke/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "beijing-20k",
+      "source": "data/jobs/mapillary-beijing-rig-baseline-20000/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "beijing-2k",
+      "source": "data/jobs/mapillary-beijing-rig-baseline/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "dozer-smoke",
+      "source": "data/jobs/dozer-smoke/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "dozer-proof",
+      "source": "data/jobs/dozer-proof-20261104/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "dozer-partial",
+      "source": "data/jobs/dozer-estimated-1500/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "dozer-24",
+      "source": "data/jobs/dozer-pipeline-24/training/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "desk-15s",
+      "source": "data/jobs/desk-video-15s/training/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    }
+  ],
+  "files": [
+    "experiments/mapillary/index.html",
+    "experiments/mapillary/summary.json",
+    "experiments/mapillary/sources.json",
+    "experiments/mapillary/images/real-02.png",
+    "experiments/mapillary/images/real-04.png",
+    "experiments/mapillary/images/stereo-input.png",
+    "experiments/mapillary/images/stereo-mask.png",
+    "experiments/mapillary/images/stereo-completed.png",
+    "experiments/mapillary/images/stereo-gray.png",
+    "experiments/mapillary/images/gs-input.png",
+    "experiments/mapillary/images/gs-mask.png",
+    "experiments/mapillary/images/gs-completed.png",
+    "experiments/mapillary/images/gs-gray.png"
+  ]
+}

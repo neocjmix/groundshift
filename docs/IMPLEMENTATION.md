@@ -17,7 +17,16 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 Implementation decisions: use the official Brush arm64 release, optional PyCOLMAP CPU wheels instead of requiring the Homebrew executable, and supplied measured poses for the first M1 acceptance run. Undistort the sample's actual fisheye images before Brush because its released importer does not handle their distortion. Preserve reconstruction internals in the native process and use the explicit v1 world format at the viewer boundary. These decisions keep the initial local-only design intact.
 
-The 2026-11-05 catalog update adds the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passes 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. Source footage and superseded trials remain local; the creator has authorized public display of the derived desk scene. The new Railway release, all 31 public file hashes, all four scene renders and public gallery controls pass. GitHub push autodeploy was not observed; the explicit connector trigger completed deployment. These regression checks do not imply another native reconstruction execution.
+The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passes 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator has authorized public display of the derived desk scene. The new Railway release, all 31 public file hashes, all four scene renders and public gallery controls pass. GitHub push autodeploy was not observed; the explicit connector trigger completed deployment. These regression checks do not imply another native reconstruction execution.
+
+## Observation publication policy — 2026-11-05
+
+The user's latest instruction replaces the earlier usable-scene release filter.
+Railway is an observation surface: all distinct exported trials are published,
+including poor-quality or superseded results, with failed/cancelled stage evidence
+and real/generated image comparisons. Execution, rendering and quality remain
+separate PASS / FAIL / NOT RUN boundaries. Reconstruction remains local and private
+inputs/model weights are not release files. See [current deployment evidence](DEPLOYMENT.md).
 
 ## User-directed panorama experiment
 

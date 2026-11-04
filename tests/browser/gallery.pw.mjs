@@ -3,6 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { PNG } from 'pngjs';
 
 const catalog = JSON.parse(await readFile('public/worlds/catalog.json', 'utf8'));
+const experiments = catalog.scenes.filter(scene => scene.category === 'experiment');
 const sceneUrl = scene => `/?world=${encodeURIComponent(scene.manifestPath)}`;
 const collection = page => page.getByRole('region', { name: 'Scene collection' });
 const ready = page => expect(page.locator('.scene-shell')).toHaveAttribute('data-phase', 'ready', { timeout: 30_000 });
@@ -25,23 +26,33 @@ test('gallery shows real previews, filters and mobile layout without starting We
   });
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Places worth returning to.');
-  await expect(collection(page).getByRole('link')).toHaveCount(4);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Groundshift observation room.');
+  await expect(collection(page).getByRole('link')).toHaveCount(catalog.scenes.length);
   for (const scene of catalog.scenes) {
     await expect(card(page, scene)).toHaveAttribute('href', sceneUrl(scene));
+    // A growing catalog puts lazy previews below the viewport. Request each one
+    // through normal scrolling before checking its actual decoded pixels.
+    await card(page, scene).scrollIntoViewIfNeeded();
     await expect.poll(() => card(page, scene).locator('img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
   }
+  await page.getByRole('heading', { level: 1 }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('gallery-desktop.png'), fullPage: true });
   await page.getByRole('button', { name: 'Local reconstruction', exact: true }).click();
-  await expect(collection(page).getByRole('link')).toHaveCount(2);
+  await expect(collection(page).getByRole('link')).toHaveCount(catalog.scenes.filter(scene => scene.category === 'reconstruction').length);
+  await page.getByRole('button', { name: 'Experiments', exact: true }).click();
+  await expect(collection(page).getByRole('link')).toHaveCount(experiments.length);
+  if (experiments.length) {
+    await expect(page.getByRole('link', { name: 'Compare source, warp & diffusion' })).toHaveAttribute('href', '/experiments/mapillary/index.html');
+    for (const scene of experiments) await expect(card(page, scene)).toContainText(scene.detail);
+  }
   await page.getByRole('button', { name: 'All scenes', exact: true }).click();
   await page.getByRole('searchbox', { name: 'Search scenes' }).fill('desk');
-  await expect(collection(page).getByRole('link')).toHaveCount(1);
+  await expect(collection(page).getByRole('link')).toHaveCount(catalog.scenes.filter(scene => `${scene.title} ${scene.description} ${scene.detail}`.toLowerCase().includes('desk')).length);
   await expect(card(page, catalog.scenes.find(scene => scene.id === 'desk'))).toBeVisible();
   await page.getByRole('searchbox', { name: 'Search scenes' }).fill('no-such-place');
   await expect(page.getByRole('status')).toContainText('No scenes match');
   await page.getByRole('button', { name: 'Show all scenes' }).click();
-  await expect(collection(page).getByRole('link')).toHaveCount(4);
+  await expect(collection(page).getByRole('link')).toHaveCount(catalog.scenes.length);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: info.outputPath('gallery-mobile.png'), fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -51,9 +62,21 @@ test('gallery shows real previews, filters and mobile layout without starting We
   expect(errors).toEqual([]);
   await writeFile(info.outputPath('gallery-checks.json'), JSON.stringify({
     time: new Date().toISOString(), browser: browser.version(), mode: process.env.HEADLESS === '1' ? 'headless' : 'headed',
-    checks: ['four catalog links and loaded preview images', 'category filter', 'search and empty-state recovery', '390px mobile overflow', 'zero WebGL context requests on gallery', 'zero Gaussian asset requests on gallery'],
+    checks: [`${catalog.scenes.length} catalog links and loaded preview images`, 'category and experiment filters', 'experiment report discovery', 'search and empty-state recovery', '390px mobile overflow', 'zero WebGL context requests on gallery', 'zero Gaussian asset requests on gallery'],
     sceneAssetsRequested: assets, webglContextRequests: 0, errors,
   }, null, 2));
+});
+
+test('a reduced catalog does not advertise an experiment report that was not packaged', async ({ page }) => {
+  const sample = catalog.scenes.find(scene => scene.id === 'sample');
+  await page.route('**/worlds/catalog.json', route => route.fulfill({
+    contentType: 'application/json', body: JSON.stringify({ version: 1, scenes: [sample] }),
+  }));
+  await page.goto('/');
+  await expect(collection(page).getByRole('link')).toHaveCount(1);
+  await expect(page.getByRole('link', { name: 'Experiment report' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Compare source, warp & diffusion' })).toHaveCount(0);
+  await expect(page.locator('canvas')).toHaveCount(0);
 });
 
 test('card, saved-scene links, back to scenes and browser history preserve the selected scene', async ({ page }) => {
@@ -118,18 +141,30 @@ for (const scene of catalog.scenes) {
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(sceneUrl(scene));
     await ready(page);
+    if (scene.category === 'experiment') {
+      await expect(page.getByRole('region', { name: 'Experiment status' })).toContainText(scene.detail);
+      await expect(page.getByRole('region', { name: 'Experiment status' })).toContainText('Inclusion does not imply visual-quality acceptance.');
+    }
     const canvas = page.locator('canvas');
     await expect(canvas).toHaveCount(1);
     await expect.poll(() => canvas.getAttribute('data-frame-count').then(Number)).toBeGreaterThan(5);
     const png = PNG.sync.read(await canvas.screenshot());
     let brightPixels = 0;
-    for (let y = Math.floor(png.height * .2); y < png.height * .75; y++) {
-      for (let x = Math.floor(png.width * .2); x < png.width * .8; x++) {
+    let brightCanvasPixels = 0;
+    for (let y = 0; y < png.height; y++) {
+      for (let x = 0; x < png.width; x++) {
         const i = (y * png.width + x) * 4;
-        if (Math.max(png.data[i], png.data[i+1], png.data[i+2]) > 65) brightPixels++;
+        if (Math.max(png.data[i], png.data[i+1], png.data[i+2]) > 65) {
+          brightCanvasPixels++;
+          if (y >= Math.floor(png.height * .2) && y < png.height * .75 &&
+              x >= Math.floor(png.width * .2) && x < png.width * .8) brightPixels++;
+        }
       }
     }
-    expect(brightPixels).toBeGreaterThan(10_000);
+    // Experimental exports can be extremely sparse. Require visible rendered
+    // pixels, while retaining the existing occupancy regression for known scenes.
+    if (scene.category === 'experiment') expect(brightCanvasPixels).toBeGreaterThan(0);
+    else expect(brightPixels).toBeGreaterThan(10_000);
     await page.screenshot({ path: info.outputPath(`${scene.id}-viewer.png`) });
     await page.reload();
     await ready(page);
@@ -138,8 +173,8 @@ for (const scene of catalog.scenes) {
     expect(errors).toEqual([]);
     await writeFile(info.outputPath('render-checks.json'), JSON.stringify({
       time: new Date().toISOString(), browser: browser.version(), mode: process.env.HEADLESS === '1' ? 'headless' : 'headed',
-      scene: scene.id, manifest: scene.manifestPath, centralBrightPixels: brightPixels, errors,
-      checks: ['direct URL actual asset render', 'nonempty central pixels', 'one canvas', 'reload preserves selected scene'],
+      scene: scene.id, manifest: scene.manifestPath, centralBrightPixels: brightPixels, brightCanvasPixels, errors,
+      checks: ['direct URL actual asset render', 'nonempty rendered pixels', 'one canvas', 'reload preserves selected scene'],
       visualReview: 'Separate human/model screenshot review is required; pixels alone do not prove scene quality.',
     }, null, 2));
   });

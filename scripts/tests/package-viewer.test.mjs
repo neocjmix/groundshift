@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { mkdtemp, mkdir, readFile, writeFile, rm, symlink, rename, access } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { packageViewer, selectedWorlds } from '../package-viewer.mjs';
+import { packageViewer, selectedWorlds, parseObservationSpec } from '../package-viewer.mjs';
 
 const temporary = [];
 afterEach(async () => { await Promise.all(temporary.splice(0).map(root => rm(root, { recursive: true, force: true }))); });
@@ -41,6 +41,32 @@ async function fixture() {
   return { root, output, put, catalog, manifests };
 }
 
+async function observationFixture() {
+  const setup = await fixture();
+  const { put, catalog, manifests } = setup;
+  const world = 'observed-trial';
+  const spec = {
+    version: 1,
+    worlds: [{ id: world, source: 'data/jobs/observed-trial/world', asset: 'scene.ply', format: 'ply', credits: ['SOURCE_LICENSE'] }],
+    files: ['experiments/mapillary/index.html', 'experiments/mapillary/comparison.png', 'experiments/mapillary/results.json'],
+  };
+  const manifest = structuredClone(manifests.independent);
+  manifest.id = world;
+  manifest.title = 'Observation fixture';
+  catalog.scenes.push({ ...catalog.scenes[1], id: world, title: 'Observation fixture', category: 'experiment', manifestPath: `/worlds/${world}/world.json`, thumbnailPath: `/worlds/${world}/preview.jpg` });
+  await put(`dist/worlds/${world}/world.json`, manifest);
+  for (const name of ['scene.ply', 'cameras.json', 'preview.jpg', 'SOURCE_LICENSE']) await put(`dist/worlds/${world}/${name}`, `synthetic ${name}`);
+  await put('dist/worlds/catalog.json', catalog);
+  await put('dist/experiments/mapillary/index.html', '<html><img src="comparison.png"><p>Quality FAIL; execution PASS.</p></html>');
+  await put('dist/experiments/mapillary/comparison.png', 'synthetic comparison image, not pixel evidence');
+  await put('dist/experiments/mapillary/results.json', { status: 'FAIL', notes: 'Fixture status only' });
+  await put('dist/experiments/mapillary/private.log', 'do not publish');
+  await put('dist/experiments/mapillary/unlisted.png', 'do not publish');
+  await put(`dist/worlds/${world}/job.json`, { source: '/Users/person/private.mov' });
+  await put('scripts/observation-worlds.json', spec);
+  return { ...setup, spec, manifest, world };
+}
+
 describe('curated viewer packaging', () => {
   it('defaults to only the sample, filters discovery and excludes arbitrary files', async () => {
     const { root, output } = await fixture();
@@ -68,6 +94,7 @@ describe('curated viewer packaging', () => {
   it('rejects unknown selection and flags', () => {
     expect(() => selectedWorlds(['--include-everything'])).toThrow('Usage');
     expect(selectedWorlds(['--include-desk', '--include-desk'])).toEqual(['sample', 'desk']);
+    expect(selectedWorlds(['--include-experiments', '--include-desk'])).toEqual(['sample', 'desk']);
   });
 
   it('requires a real preview before creating output', async () => {
@@ -122,5 +149,117 @@ describe('curated viewer packaging', () => {
     await writeFile(path.join(output, 'keep.txt'), 'preserve');
     await expect(packageViewer({ root, output })).rejects.toThrow();
     expect(await readFile(path.join(output, 'keep.txt'), 'utf8')).toBe('preserve');
+  });
+});
+
+describe('explicit observation packaging', () => {
+  it('adds all listed experimental worlds and only explicitly listed comparison files', async () => {
+    const { root, output, world } = await observationFixture();
+    const result = await packageViewer({ root, output, includeExperiments: true });
+    expect(result.worlds).toEqual(['sample', world]);
+    const inventory = JSON.parse(await readFile(`${output}.inventory.json`, 'utf8'));
+    const paths = inventory.files.map(file => file.path);
+    expect(paths).toContain(`www/worlds/${world}/scene.ply`);
+    expect(paths).toContain('www/experiments/mapillary/index.html');
+    expect(paths).toContain('www/experiments/mapillary/comparison.png');
+    expect(paths).toContain('www/experiments/mapillary/results.json');
+    expect(paths.some(file => /private|job\.json|unlisted|data\/jobs|observation-worlds\.json/u.test(file))).toBe(false);
+    const catalog = JSON.parse(await readFile(path.join(output, 'www/worlds/catalog.json'), 'utf8'));
+    expect(catalog.scenes.some(scene => scene.category === 'experiment')).toBe(true);
+  });
+
+  it('omits experimental discovery and reports from a reduced package', async () => {
+    const { root, output } = await observationFixture();
+    const result = await packageViewer({ root, output });
+    expect(result.worlds).toEqual(['sample']);
+    const catalog = JSON.parse(await readFile(path.join(output, 'www/worlds/catalog.json'), 'utf8'));
+    expect(catalog.scenes.some(scene => scene.category === 'experiment')).toBe(false);
+    await expect(access(path.join(output, 'www/experiments'))).rejects.toThrow();
+  });
+
+  it('requires the report linked by experimental catalog entries', async () => {
+    const { root, output, spec } = await observationFixture();
+    spec.files = spec.files.filter(file => !file.endsWith('/index.html'));
+    await expect(packageViewer({ root, output, includeExperiments: true, observationSpec: spec })).rejects.toThrow('linked public report');
+  });
+
+  it('requires explicit experimental labeling for observation worlds', async () => {
+    const { root, output, catalog, put } = await observationFixture();
+    catalog.scenes.at(-1).category = 'reconstruction';
+    await put('dist/worlds/catalog.json', catalog);
+    await expect(packageViewer({ root, output, includeExperiments: true })).rejects.toThrow('labeled as an experiment');
+  });
+
+  it('supports an injected specification without reading a job source', async () => {
+    const { root, output, spec } = await observationFixture();
+    await rm(path.join(root, 'scripts/observation-worlds.json'));
+    await expect(packageViewer({ root, output, includeExperiments: true, observationSpec: spec })).resolves.toMatchObject({ worlds: ['sample', 'observed-trial'] });
+  });
+
+  it.each([
+    '/experiments/mapillary/index.html',
+    'experiments/mapillary/../private.json',
+    'experiments/mapillary/./index.html',
+    'experiments/mapillary/secret.log',
+    'experiments/mapillary/footage.mov',
+    'experiments/mapillary/%2e%2e/private.json',
+    'experiments/mapillary\\private.json',
+    'worlds/sample/world.json',
+  ])('rejects unsafe or out-of-scope report path %s', async file => {
+    const { root, output, spec } = await observationFixture();
+    spec.files = [file];
+    await expect(packageViewer({ root, output, includeExperiments: true, observationSpec: spec })).rejects.toThrow();
+    await expect(access(output)).rejects.toThrow();
+  });
+
+  it('rejects duplicate report paths and duplicate or reserved world identifiers', async () => {
+    const { spec } = await observationFixture();
+    expect(() => parseObservationSpec({ ...spec, files: [...spec.files, spec.files[0]] })).toThrow('Duplicate observation report path');
+    expect(() => parseObservationSpec({ ...spec, worlds: [...spec.worlds, spec.worlds[0]] })).toThrow('duplicate observation world identifier');
+    expect(() => parseObservationSpec({ ...spec, worlds: [{ ...spec.worlds[0], id: 'sample' }] })).toThrow('duplicate observation world identifier');
+    expect(() => parseObservationSpec({ ...spec, worlds: [{ ...spec.worlds[0], id: '../escape' }] })).toThrow('world identifier');
+  });
+
+  it('rejects source traversal, unsupported assets and duplicate metadata names', async () => {
+    const { spec } = await observationFixture();
+    const altered = patch => ({ ...spec, worlds: [{ ...spec.worlds[0], ...patch }] });
+    expect(() => parseObservationSpec(altered({ source: 'data/jobs/../private/world' }))).toThrow('Invalid package source path');
+    expect(() => parseObservationSpec(altered({ source: 'dist/worlds/private' }))).toThrow('local job world');
+    expect(() => parseObservationSpec(altered({ asset: 'private.mov' }))).toThrow('scene asset');
+    expect(() => parseObservationSpec(altered({ credits: ['SOURCE_LICENSE', 'SOURCE_LICENSE'] }))).toThrow('duplicate observation credits');
+    expect(() => parseObservationSpec(altered({ credits: ['world.json'] }))).toThrow('credit filename');
+    expect(() => parseObservationSpec(altered({ credits: ['training.log'] }))).toThrow('credit filename');
+  });
+
+  it.each(['html', 'json'])('rejects private references in public %s report text', async extension => {
+    const { root, output, spec, put } = await observationFixture();
+    const file = spec.files.find(name => name.endsWith(`.${extension}`));
+    await put(`dist/${file}`, extension === 'json' ? { source: '/Users/person/private.mov' } : '<a href="http://127.0.0.1:4317/data/jobs/private/world/world.json">local source</a>');
+    await expect(packageViewer({ root, output, includeExperiments: true })).rejects.toThrow('Private source reference');
+    await expect(access(output)).rejects.toThrow();
+  });
+
+  it('checks catalog publication text as well as world metadata', async () => {
+    const { root, output, catalog, put } = await observationFixture();
+    catalog.scenes.at(-1).detail = 'Source is /Users/person/private.mov';
+    await put('dist/worlds/catalog.json', catalog);
+    await expect(packageViewer({ root, output, includeExperiments: true })).rejects.toThrow('Private source reference');
+  });
+
+  it.each(['file', 'directory'])('rejects report %s symlinks', async kind => {
+    const { root, output } = await observationFixture();
+    const target = path.join(root, kind === 'file' ? 'dist/experiments/mapillary/index.html' : 'dist/experiments/mapillary');
+    const saved = path.join(root, `saved-report-${kind}`);
+    await rename(target, saved);
+    await symlink(saved, target, kind === 'file' ? 'file' : 'dir');
+    await expect(packageViewer({ root, output, includeExperiments: true })).rejects.toThrow('Only ordinary');
+    await expect(access(output)).rejects.toThrow();
+  });
+
+  it('preflights every report before making a package', async () => {
+    const { root, output } = await observationFixture();
+    await rm(path.join(root, 'dist/experiments/mapillary/comparison.png'));
+    await expect(packageViewer({ root, output, includeExperiments: true })).rejects.toThrow();
+    await expect(access(output)).rejects.toThrow();
   });
 });

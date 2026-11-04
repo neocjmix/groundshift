@@ -36,6 +36,87 @@
       "manifestPath": "/worlds/sample/world.json",
       "thumbnailPath": "/worlds/sample/preview.jpg",
       "detail": "113,648 splats · 3.6 MB · CC BY 4.0"
+    },
+    {
+      "id": "beijing-10k",
+      "title": "Beijing · observed 10k",
+      "description": "Real photographs only; fixed panorama rigs. Blurred structures and stretched geometry remain.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-10k/world.json",
+      "thumbnailPath": "/worlds/beijing-10k/preview.jpg",
+      "detail": "48 real crops · 150,000 splats · Quality FAIL"
+    },
+    {
+      "id": "beijing-generated",
+      "title": "Beijing · generated input",
+      "description": "Local diffusion output was included in Metal training. An integration experiment, not evidence of improved reconstruction.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-generated/world.json",
+      "thumbnailPath": "/worlds/beijing-generated/preview.jpg",
+      "detail": "48 real + 1 generated view · 2,000 steps · Quality FAIL"
+    },
+    {
+      "id": "beijing-20k",
+      "title": "Beijing · capacity 20k",
+      "description": "Longer training and larger capacity together; held-view PSNR fell from 14.72 to 12.68 dB.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-20k/world.json",
+      "thumbnailPath": "/worlds/beijing-20k/preview.jpg",
+      "detail": "750,000 splats · 69 MB · Quality FAIL"
+    },
+    {
+      "id": "beijing-2k",
+      "title": "Beijing · observed 2k",
+      "description": "The first constrained-rig Gaussian baseline. Training and export worked, while the reconstructed appearance remained blurry.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-2k/world.json",
+      "thumbnailPath": "/worlds/beijing-2k/preview.jpg",
+      "detail": "48 real crops · 7,015 splats · Quality FAIL"
+    },
+    {
+      "id": "dozer-smoke",
+      "title": "Dozer · 30-step smoke",
+      "description": "Initial native execution test with only 30 training steps. This is a separate exported result, not the accepted 1,500-step scene.",
+      "category": "experiment",
+      "manifestPath": "/worlds/dozer-smoke/world.json",
+      "thumbnailPath": "/worlds/dozer-smoke/preview.jpg",
+      "detail": "40 supplied cameras · 165,875 splats · early trial"
+    },
+    {
+      "id": "dozer-proof",
+      "title": "Dozer · fresh proof rerun",
+      "description": "A fresh local 1,500-step Metal run retained as reconstruction evidence; this PLY differs from the original export.",
+      "category": "experiment",
+      "manifestPath": "/worlds/dozer-proof/world.json",
+      "thumbnailPath": "/worlds/dozer-proof/preview.jpg",
+      "detail": "40 supplied cameras · 194,871 splats · rerun"
+    },
+    {
+      "id": "dozer-partial",
+      "title": "Dozer · partial 16/40 poses",
+      "description": "The early pose-estimation attempt registered only 16 of 40 photographs. Its sparse Gaussian output is retained for observation.",
+      "category": "experiment",
+      "manifestPath": "/worlds/dozer-partial/world.json",
+      "thumbnailPath": "/worlds/dozer-partial/preview.jpg",
+      "detail": "16 of 40 cameras · 1,048 splats · Quality FAIL"
+    },
+    {
+      "id": "dozer-24",
+      "title": "Dozer · 24-view trial",
+      "description": "A small end-to-end local pipeline run using supplied lens calibration and newly estimated camera positions.",
+      "category": "experiment",
+      "manifestPath": "/worlds/dozer-24/world.json",
+      "thumbnailPath": "/worlds/dozer-24/preview.jpg",
+      "detail": "24 estimated cameras · 9,662 splats · early trial"
+    },
+    {
+      "id": "desk-15s",
+      "title": "My desk · initial 15s trial",
+      "description": "The first 15-second crop of the creator recording, with the earlier system HDR conversion. The later full capture is separately available.",
+      "category": "experiment",
+      "manifestPath": "/worlds/desk-15s/world.json",
+      "thumbnailPath": "/worlds/desk-15s/preview.jpg",
+      "detail": "60 estimated cameras · 11,450 splats · early trial"
     }
   ]
 }

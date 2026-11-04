@@ -10,10 +10,10 @@ export default defineConfig({
     headless: process.env.HEADLESS === '1',
     viewport: { width: 1440, height: 1000 },
     deviceScaleFactor: 1,
-    baseURL: 'http://127.0.0.1:4318',
+    baseURL: process.env.GS_BASE_URL || 'http://127.0.0.1:4318',
     trace: 'retain-on-failure',
   },
-  webServer: {
+  webServer: process.env.GS_BASE_URL ? undefined : {
     command: 'npm run preview -- --port 4318',
     url: 'http://127.0.0.1:4318',
     reuseExistingServer: false,

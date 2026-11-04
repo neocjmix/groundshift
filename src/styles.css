@@ -736,10 +736,15 @@ a {
 .collection-page { max-width: 1440px; margin: 0 auto; padding: 54px 40px 24px; }
 .collection-intro { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 36px; }
 .collection-intro h1 { font-family: Georgia, serif; font-weight: 400; font-size: clamp(34px, 3.5vw, 52px); letter-spacing: -1.8px; margin: 14px 0; }
-.collection-intro p { font-size: 13px; line-height: 1.8; color: #75816e; margin: 0; }
+.collection-intro p { max-width: 720px; font-size: 13px; line-height: 1.8; color: #75816e; margin: 0; }
 .collection-count { display: grid; gap: 5px; text-align: right; flex-shrink: 0; }
 .collection-count strong { font-family: Georgia, serif; font-weight: 400; font-size: 44px; color: #829273; line-height: 1; }
 .collection-count span { font-size: 10px; color: #819075; }
+.experiment-overview { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 26px 28px; border: 1px solid #c8d3b9; border-radius: 10px; background: #e8eddf; margin-bottom: 28px; }
+.experiment-overview h2 { font-family: Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: -.5px; margin: 11px 0; }
+.experiment-overview p { max-width: 700px; font-size: 12px; color: #65725c; line-height: 1.8; margin: 0; }
+.experiment-overview > a { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; flex-shrink: 0; border: 1px solid #415d35; border-radius: 6px; padding: 15px 18px; background: #3b5135; color: #f4f7ef; text-decoration: none; font-size: 12px; }
+.experiment-overview > a:hover { background: #2d4127; }
 .collection-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid #d9ded1; padding: 20px 0 24px; }
 .collection-filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .collection-filters button { font-size: 11px; padding: 9px 12px; border: 1px solid transparent; border-radius: 20px; background: transparent; color: #718066; }
@@ -756,6 +761,8 @@ a {
 .scene-card-copy { padding: 21px 18px 18px; display: flex; flex-direction: column; flex: 1; }
 .scene-category { font-size: 8px; text-transform: uppercase; font-weight: 650; letter-spacing: 1.1px; color: #7c8c6d; }
 .category-capture { color: #547d41; }
+.category-experiment { color: #916426; }
+.scene-card:has(.category-experiment) { border-color: #d9cfb9; }
 .scene-card h2 { display: flex; justify-content: space-between; gap: 6px; font-size: 21px; line-height: 1.2; font-family: Georgia, serif; font-weight: 400; letter-spacing: -.3px; margin: 11px 0; }
 .scene-card h2 span { font-size: 17px; color: #9ca98c; }
 .scene-card p { color: #738069; font-size: 11px; line-height: 1.65; margin: 0 0 18px; }
@@ -770,26 +777,36 @@ a {
 .collection-bottom .source-picker { border: 0; padding-bottom: 0; }
 .collection-footer { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid #d9ded1; padding-top: 22px; font-size: 8px; letter-spacing: 1.2px; color: #96a08b; }
 .collection-footer span:last-child { font-family: Georgia, serif; font-style: italic; font-size: 11px; letter-spacing: 0; }
-.saved-scenes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.saved-scenes { display: flex; flex-direction: column; gap: 8px; margin: 0 -8px 20px; padding: 0 8px; max-height: 360px; overflow-y: auto; overscroll-behavior-y: contain; }
 .saved-scenes a { display: flex; align-items: center; gap: 10px; border: 1px solid transparent; padding: 7px; margin: 0 -7px; border-radius: 7px; text-decoration: none; }
 .saved-scenes a:hover { background: #e9eddf; }
 .saved-scenes a[aria-current="page"] { border-color: #bbc9ac; background: #e9eddf; }
 .saved-scenes img { width: 58px; height: 49px; border-radius: 4px; object-fit: cover; background: #242e26; flex-shrink: 0; }
 .saved-scenes strong { display: block; font-size: 11px; font-weight: 600; }
 .saved-scenes small { display: block; font-size: 9px; line-height: 1.5; margin-top: 5px; color: #819075; }
+.experiment-context { background: #f2eddf; border: 1px solid #d9cfb9; border-radius: 7px; padding: 14px; margin-bottom: 16px; }
+.experiment-context strong { display: block; color: #81602d; text-transform: uppercase; font-size: 9px; letter-spacing: 1px; }
+.experiment-context p { color: #716b58; font-size: 11px; line-height: 1.7; margin: 10px 0; }
+.experiment-context .experiment-detail { padding-top: 10px; border-top: 1px solid #ddd4c1; font-size: 10px; }
+.experiment-context small { display: block; font-size: 10px; line-height: 1.6; color: #716b58; }
+.experiment-context a { display: inline-block; font-size: 10px; line-height: 1.6; margin-top: 10px; color: #65552e; }
 @media (max-width: 1149px) {
   .scene-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .scene-preview { aspect-ratio: 16 / 9; }
   .collection-bottom { gap: 40px; }
+  .experiment-overview { align-items: flex-start; flex-direction: column; gap: 18px; }
 }
 @media (max-width: 700px) {
-  .header-right { gap: 0; }
+  .header-right { gap: 12px; }
   .header-right .local-badge { display: none; }
   .collection-link { font-size: 10px; }
   .collection-page { padding: 34px 20px 24px; }
   .collection-intro { margin-bottom: 24px; }
   .collection-intro h1 { font-size: 36px; line-height: 1.12; max-width: 300px; }
   .collection-intro p { font-size: 12px; }
+  .experiment-overview { padding: 22px; }
+  .experiment-overview h2 { font-size: 24px; }
+  .experiment-overview > a { max-width: 100%; padding: 13px; font-size: 11px; }
   .collection-count { display: none; }
   .collection-toolbar { align-items: stretch; flex-direction: column; padding: 16px 0 20px; }
   .collection-filters { gap: 3px; }
@@ -800,11 +817,12 @@ a {
   .scene-card h2 { font-size: 22px; }
   .collection-bottom { grid-template-columns: 1fr; gap: 24px; margin-top: 30px; }
   .collection-footer { line-height: 1.6; }
-  .saved-scenes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; }
+  .saved-scenes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; max-height: 250px; }
   .saved-scenes a { min-width: 0; }
   .saved-scenes img { width: 48px; height: 44px; }
 }
 @media (max-width: 480px) {
+  .header-right { flex-direction: column; align-items: flex-end; gap: 7px; }
   .scene-grid { grid-template-columns: 1fr; gap: 20px; }
   .scene-preview { aspect-ratio: 16 / 10; }
   .collection-footer { flex-direction: column; gap: 8px; }

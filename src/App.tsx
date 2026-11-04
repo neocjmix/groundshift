@@ -6,10 +6,12 @@ const Viewer = lazy(() => import("./Viewer"));
 const samplePath = "/worlds/sample/world.json";
 const locationPath = () => new URLSearchParams(window.location.search).get("world");
 const sceneUrl = (path: string) => `/?world=${encodeURIComponent(path)}`;
+const experimentReport = "/experiments/mapillary/index.html";
 const categories = {
   capture: "Personal capture",
   reconstruction: "Local reconstruction",
   sample: "Sample scene",
+  experiment: "Experiments",
 };
 const plainClick = (event: MouseEvent<HTMLAnchorElement>) =>
   event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -30,6 +32,8 @@ export default function App() {
   const sequence = useRef(0);
   const folderInput = useRef<HTMLInputElement>(null);
   const viewerOpen = Boolean(request.path) || localMode;
+  const experimentCount = scenes.filter((scene) => scene.category === "experiment").length;
+  const selectedScene = scenes.find((scene) => scene.manifestPath === request.path);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -161,6 +165,7 @@ export default function App() {
       </a>
       <div className="header-right">
         {viewerOpen && <a className="collection-link" href="/" onClick={(event) => follow(event, null)}>← Back to scenes</a>}
+        {experimentCount > 0 && <a className="collection-link experiment-report-link" href={experimentReport}>Experiment report ↗</a>}
         <span className="local-badge"><span className="live-dot" /> Renders on your device</span>
       </div>
     </header>
@@ -168,12 +173,19 @@ export default function App() {
       onChange={(event) => { void openFolder(Array.from(event.target.files || [])); event.target.value = ""; }} />
     {!viewerOpen ? <main className="collection-page">
       <div className="collection-intro">
-        <div><span className="eyebrow">THE COLLECTION</span>
-          <h1>Places worth returning to.</h1>
-          <p>A desk, a little greenery, a place outdoors. Pick a scene and take a look around.</p>
+        <div><span className="eyebrow">LOCAL RECONSTRUCTION / LIVE OBSERVATIONS</span>
+          <h1>Groundshift observation room.</h1>
+          <p>Explore the scenes we have made, including rough experiments. Visibility here does not mean visual-quality acceptance.</p>
         </div>
-        <div className="collection-count"><strong>{String(scenes.length).padStart(2, "0")}</strong><span>scenes to explore</span></div>
+        <div className="collection-count"><strong>{String(scenes.length).padStart(2, "0")}</strong><span>exported scenes</span></div>
       </div>
+      {experimentCount > 0 && <section className="experiment-overview" aria-labelledby="experiment-heading">
+        <div><span className="eyebrow">CURRENT EXPERIMENT · MAPILLARY 360°</span>
+          <h2 id="experiment-heading">Real photos, generated gaps, actual results.</h2>
+          <p>Compare the source photos, stereo warps, diffusion completions and Gaussian trials. Failed, cancelled and unrun stages stay visible in the report, with their evidence and limits.</p>
+        </div>
+        <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
+      </section>}
       <div className="collection-toolbar">
         <div className="collection-filters" role="group" aria-label="Filter scenes">
           <button aria-pressed={filter === "all"} onClick={() => setFilter("all")}>All scenes</button>
@@ -193,10 +205,10 @@ export default function App() {
       </section>
       {!catalogLoading && !catalogError && visibleScenes.length === 0 && <div className="collection-empty" role="status"><p>No scenes match this view.</p><button onClick={() => { setFilter("all"); setSearch(""); }}>Show all scenes</button></div>}
       <div className="collection-bottom">
-        <div className="collection-note"><span className="eyebrow">CAPTURED, THEN RECONSTRUCTED</span><h2>Real places. Local computation.</h2><p>The capture and reconstruction scenes were trained on an Apple M2. Each scene includes its source and camera information. Preview images show the actual 3D render.</p></div>
+        <div className="collection-note"><span className="eyebrow">OBSERVE, COMPARE, ITERATE</span><h2>Local computation. Visible outcomes.</h2><p>Reconstructions run on an Apple M2; Houseplant is a downloaded viewer sample. Each scene identifies its inputs and limits. Experimental results remain available regardless of quality, and previews show actual 3D renders.</p></div>
         {importControls}
       </div>
-      <footer className="collection-footer"><span>GROUND SHIFT / THE COLLECTION</span><span>A little closer to being there.</span></footer>
+      <footer className="collection-footer"><span>GROUND SHIFT / OBSERVATION ROOM</span><span>What worked, what failed, what comes next.</span></footer>
     </main> : <main className="viewer-page">
       <aside className="sidebar">
         <div className="section-label">SAVED SCENES <span>{String(scenes.length).padStart(2, "0")}</span></div>
@@ -206,6 +218,13 @@ export default function App() {
             <img src={scene.thumbnailPath} alt="" /><span><strong>{scene.title}</strong><small>{categories[scene.category]}</small></span>
           </a>)}
         </nav>
+        {selectedScene?.category === "experiment" && <section className="experiment-context" aria-label="Experiment status">
+          <strong>Experiment output</strong>
+          <p>{selectedScene.description}</p>
+          <p className="experiment-detail">{selectedScene.detail}</p>
+          <small>Inclusion does not imply visual-quality acceptance.</small>
+          <a href={experimentReport}>Comparison &amp; stage history ↗</a>
+        </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}
         {error && <div className="manifest-error" role="alert"><strong>Couldn’t open this world</strong><p>{error}</p><button onClick={() => load(samplePath)}>Open sample</button></div>}
@@ -215,7 +234,7 @@ export default function App() {
           <a href={world.manifest.provenance.licenseUrl} target="_blank" rel="noreferrer">{world.manifest.provenance.license} ↗</a>
           <div className="coordinate-note">Y-up · Right-handed · {world.manifest.coordinates.unit === "meters" ? "Meters" : "Unscaled capture"}<br />Camera views · No collision geometry</div>
         </section>}
-        <footer className="sidebar-footer"><span>GROUND SHIFT / THE COLLECTION</span><p>A little closer to being there.</p></footer>
+        <footer className="sidebar-footer"><span>GROUND SHIFT / OBSERVATION ROOM</span><p>What worked, what failed, what comes next.</p></footer>
       </aside>
       <section className="viewer-region" aria-label="World viewer">
         {world ? <Suspense fallback={<div className="empty-view" role="status"><span className="empty-mark">gs</span><p>Preparing the 3D viewer…</p></div>}><Viewer key={world.instanceId} world={world} /></Suspense> : <div className="empty-view"><span className="empty-mark">gs</span><p>{loading ? "Opening your world…" : "Open a world to begin exploring."}</p></div>}

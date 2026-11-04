@@ -13,6 +13,13 @@ describe('scene catalog', () => {
     expect(parseSceneCatalog(fixture())).toEqual(fixture());
   });
 
+  it('includes experimental outputs without implying quality acceptance', () => {
+    const catalog = fixture();
+    catalog.scenes[0]!.category = 'experiment';
+    catalog.scenes[0]!.detail = 'Training PASS · Quality FAIL · Generated pixels included';
+    expect(parseSceneCatalog(catalog)).toEqual(catalog);
+  });
+
   it.each([
     'https://example.com/world.json', '//example.com/world.json', '/worlds/../world.json',
     '/worlds/%2e%2e/world.json', '/worlds/sample/world.json?download=1',

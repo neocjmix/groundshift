@@ -18,32 +18,89 @@ const flags = {
   '--include-independent': 'independent',
   '--include-desk': 'desk',
 };
+const observationReport = 'experiments/mapillary/index.html';
 
 export function selectedWorlds(args) {
-  if (args.some(arg => !Object.hasOwn(flags, arg))) {
-    throw new Error('Usage: node scripts/package-viewer.mjs [--include-reconstruction] [--include-independent] [--include-desk]');
+  if (args.some(arg => arg !== '--include-experiments' && !Object.hasOwn(flags, arg))) {
+    throw new Error('Usage: node scripts/package-viewer.mjs [--include-reconstruction] [--include-independent] [--include-desk] [--include-experiments]');
   }
-  return ['sample', ...new Set(args.map(arg => flags[arg]))];
+  return ['sample', ...new Set(args.filter(arg => Object.hasOwn(flags, arg)).map(arg => flags[arg]))];
+}
+
+function relativePath(value) {
+  if (typeof value !== 'string' || !value.split('/').every(piece => /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/u.test(piece))) {
+    throw new Error('Invalid package source path');
+  }
+  return value;
+}
+
+// This is an explicit publication list, not a directory to walk. The source
+// records where a world was produced; packaging only reads reviewed dist files.
+export function parseObservationSpec(value) {
+  if (!value || value.version !== 1 || !Array.isArray(value.worlds) || !Array.isArray(value.files)
+    || Object.keys(value).some(key => !['version', 'worlds', 'files'].includes(key))) {
+    throw new Error('Invalid observation publication specification');
+  }
+  const ids = new Set(Object.keys(worldFiles));
+  for (const world of value.worlds) {
+    if (!world || Object.keys(world).some(key => !['id', 'source', 'asset', 'format', 'credits'].includes(key))
+      || typeof world.id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(world.id) || ids.has(world.id)) {
+      throw new Error('Invalid or duplicate observation world identifier');
+    }
+    ids.add(world.id);
+    relativePath(world.source);
+    if (!/^data\/jobs\/.+\/world$/u.test(world.source)) throw new Error('Observation source must identify a local job world');
+    relativePath(world.asset);
+    if (!['ply', 'splat', 'spz'].includes(world.format) || world.asset.includes('/') || !world.asset.endsWith(`.${world.format}`)) {
+      throw new Error('Invalid observation scene asset');
+    }
+    if (!Array.isArray(world.credits) || new Set(world.credits).size !== world.credits.length) {
+      throw new Error('Invalid or duplicate observation credits');
+    }
+    for (const credit of world.credits) {
+      relativePath(credit);
+      if (!/^(?:SOURCE_LICENSE|LICENSE|[\w.-]+\.(?:txt|md|json))$/u.test(credit)
+        || ['world.json', 'cameras.json'].includes(credit)) throw new Error('Invalid observation credit filename');
+    }
+  }
+  if (new Set(value.files).size !== value.files.length) throw new Error('Duplicate observation report path');
+  for (const file of value.files) {
+    relativePath(file);
+    if (!/^experiments\/[a-z0-9]+(?:-[a-z0-9]+)*\/.+\.(?:html|css|js|json|txt|md|png|jpg|jpeg|webp|svg)$/u.test(file)) {
+      throw new Error('Observation reports must use explicit public experiment files');
+    }
+  }
+  if (value.worlds.length && !value.files.includes(observationReport)) {
+    throw new Error('Observation worlds require their linked public report');
+  }
+  return value;
 }
 
 // World metadata must be publication-ready before packaging. This catches common
 // accidental local references; it does not replace reviewing the selected scene.
 function assertPublicMetadata(text, worldName) {
-  if (/file:\/\/|\/Users\/|\/home\/|https?:\/\/(?:[a-z0-9-]+\.)*icloud\.com(?:[/:]|$)/iu.test(text)) {
+  if (/file:\/\/|\/(?:Users|home|private|Volumes|tmp)\/|\bdata\/jobs\/|[a-z]:\\|https?:\/\/(?:localhost|127\.0\.0\.1|\[::1\])(?=[/:]|$)|https?:\/\/(?:[a-z0-9-]+\.)*icloud\.com(?:[/:]|$)/iu.test(text)) {
     throw new Error(`Private source reference in public world metadata: ${worldName}`);
   }
 }
 
-export async function packageViewer({ root, output, worlds = ['sample'] }) {
+export async function packageViewer({ root, output, worlds = ['sample'], includeExperiments = false, observationSpec }) {
   if (worlds.length === 0 || new Set(worlds).size !== worlds.length || worlds.some(name => !Object.hasOwn(worldFiles, name))) {
     throw new Error('Select only the explicitly curated worlds');
   }
   const sourceRoot = await realpath(root);
   const planned = [];
+  const destinations = new Set();
+  function plan(destination, bytes) {
+    if (destinations.has(destination)) throw new Error(`Duplicate package destination: ${destination}`);
+    destinations.add(destination);
+    planned.push({ destination, bytes });
+  }
 
   // Reject both file and parent-directory symlinks; a safe-looking manifest path
   // must not escape into a dataset or another local directory through a symlink.
   async function ordinaryPath(relative, file = true) {
+    relativePath(relative);
     const pieces = relative.split('/');
     if (pieces.some(piece => !piece || piece === '.' || piece === '..')) throw new Error('Invalid package source path');
     let current = sourceRoot;
@@ -63,8 +120,14 @@ export async function packageViewer({ root, output, worlds = ['sample'] }) {
   }
 
   async function add(source, destination = source.replace(/^dist\//u, 'www/')) {
-    planned.push({ destination, bytes: await read(source) });
+    plan(destination, await read(source));
   }
+
+  const observations = includeExperiments
+    ? parseObservationSpec(observationSpec ?? JSON.parse((await read('scripts/observation-worlds.json')).toString('utf8')))
+    : { worlds: [], files: [] };
+  const definitions = { ...worldFiles, ...Object.fromEntries(observations.worlds.map(world => [world.id, world])) };
+  const selected = [...worlds, ...observations.worlds.map(world => world.id)];
 
   for (const name of ['index.html', 'favicon.svg', 'THIRD_PARTY_NOTICES.txt']) await add(`dist/${name}`);
   for (const name of (await readdir(await ordinaryPath('dist/assets', false))).sort()) {
@@ -73,11 +136,15 @@ export async function packageViewer({ root, output, worlds = ['sample'] }) {
   }
 
   const catalog = parseSceneCatalog(JSON.parse((await read('dist/worlds/catalog.json')).toString('utf8')));
-  const scenes = catalog.scenes.filter(scene => worlds.includes(scene.manifestPath.split('/')[2]));
-  for (const worldName of worlds) {
+  const scenes = catalog.scenes.filter(scene => selected.includes(scene.manifestPath.split('/')[2]));
+  assertPublicMetadata(JSON.stringify(scenes), 'scene catalog');
+  for (const worldName of selected) {
     const entry = scenes.find(scene => scene.manifestPath === `/worlds/${worldName}/world.json`);
     if (!entry || entry.id !== worldName) throw new Error(`Missing matching catalog entry: ${worldName}`);
-    const definition = worldFiles[worldName];
+    if (!Object.hasOwn(worldFiles, worldName) && entry.category !== 'experiment') {
+      throw new Error(`Observation world must be labeled as an experiment: ${worldName}`);
+    }
+    const definition = definitions[worldName];
     const prefix = `dist/worlds/${worldName}`;
     const manifestText = (await read(`${prefix}/world.json`)).toString('utf8');
     const manifest = parseWorldManifest(JSON.parse(manifestText));
@@ -96,14 +163,19 @@ export async function packageViewer({ root, output, worlds = ['sample'] }) {
     for (const name of metadata) {
       const bytes = await read(`${prefix}/${name}`);
       assertPublicMetadata(bytes.toString('utf8'), worldName);
-      planned.push({ destination: `www/worlds/${worldName}/${name}`, bytes });
+      plan(`www/worlds/${worldName}/${name}`, bytes);
     }
     for (const name of [definition.asset, 'preview.jpg']) await add(`${prefix}/${name}`);
   }
+  for (const file of observations.files) {
+    const bytes = await read(`dist/${file}`);
+    if (/\.(?:html|css|js|json|txt|md|svg)$/u.test(file)) assertPublicMetadata(bytes.toString('utf8'), file);
+    plan(`www/${file}`, bytes);
+  }
   const filteredCatalog = parseSceneCatalog({ version: 1, scenes });
-  planned.push({ destination: 'www/worlds/catalog.json', bytes: Buffer.from(JSON.stringify(filteredCatalog, null, 2) + '\n') });
+  plan('www/worlds/catalog.json', Buffer.from(JSON.stringify(filteredCatalog, null, 2) + '\n'));
   for (const name of ['Dockerfile', 'Caddyfile']) await add(`deploy/${name}`, name);
-  planned.push({ destination: '.dockerignore', bytes: Buffer.from('*\n!Dockerfile\n!Caddyfile\n!www\n!www/**\n') });
+  plan('.dockerignore', Buffer.from('*\n!Dockerfile\n!Caddyfile\n!www\n!www/**\n'));
 
   // Preflight every input before creating a new, non-overwriting output directory.
   await mkdir(path.dirname(output), { recursive: true });
@@ -128,6 +200,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     root,
     output: path.join(root, 'data', 'deploy', `viewer-${Date.now()}`),
     worlds: selectedWorlds(process.argv.slice(2)),
+    includeExperiments: process.argv.includes('--include-experiments'),
   });
   console.log(JSON.stringify(result, null, 2));
 }

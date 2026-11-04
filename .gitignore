@@ -27,3 +27,15 @@ public/worlds/reconstructed/
 public/worlds/independent/
 public/worlds/desk/
 public/worlds/**/preview.jpg
+
+# Generated observation assets are published through an explicit release allowlist.
+public/experiments/
+public/worlds/dozer-smoke/
+public/worlds/dozer-proof/
+public/worlds/dozer-partial/
+public/worlds/dozer-24/
+public/worlds/desk-15s/
+public/worlds/beijing-2k/
+public/worlds/beijing-10k/
+public/worlds/beijing-20k/
+public/worlds/beijing-generated/

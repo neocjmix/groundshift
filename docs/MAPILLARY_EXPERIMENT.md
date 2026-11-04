@@ -311,9 +311,8 @@ missing-view recovery FAIL** for this trial. Multi-view consistency is **NOT RUN
 a single completed target cannot establish it. View02 and view04 are separate
 tests with different masks and reference images.
 
-The comparison sheet is local-only at
-`data/research/diffusion-comparison-local-only.jpg`; it includes original source
-pixels and is excluded from viewer releases. Detailed metrics and input/output
+The original comparison sheet is retained at
+`data/research/diffusion-comparison-local-only.jpg`. Under the subsequent observation-surface instruction, explicitly selected licensed crops and comparisons are included in the public report with attribution and modification labels. Detailed metrics and input/output
 hashes are in `data/research/diffusion-experiment-summary.json` and the individual
 job reports.
 
@@ -321,8 +320,7 @@ An inspected local comparison page is available at
 `http://127.0.0.1:4317/data/research/mapillary-review.html` while the development
 server is running. It switches between the two experiments and overlays the
 generated and real images. Actual image loading, both case selectors and the
-opacity control were checked in the browser. This ignored, local-only report
-contains source images and is not included in the Railway package.
+opacity control were checked in the browser. The initial report was local-only. Its sanitized public counterpart now belongs in the Railway observation package, including licensed source crops and generated outputs.
 
 ## Feed generated pixels back into Gaussian training
 
@@ -442,10 +440,9 @@ physical positions. A supported MPS path and memory/license check are required
 before adopting a larger multi-view diffusion model. iOS capture, CUDA ports,
 cloud GPUs and platform services were not added.
 
-**New Railway scene publication: NOT RUN — quality gate not met.** All new
-Mapillary worlds remain local experiments. No catalog, production UI, release
-archive or deployment pointer changed. Standing automatic deployment applies
-when a usable scene or verified viewer change is ready; the existing public
-four-world catalog remains the release described in [DEPLOYMENT.md](DEPLOYMENT.md).
-Original photographs, model weights, logs and generated assets remain outside
-Git. Only source, tests, acquisition metadata and documentation are committed.
+**Publication policy changed by the user on 2026-11-05.** Railway is the observation surface, not a quality gate. The four Mapillary Gaussian trials, actual source/warp/diffusion comparisons, and unsuccessful stage history are included regardless of visual quality. Existing quality FAIL and NOT RUN outcomes remain unchanged. See [the current publication status and verified deployment](DEPLOYMENT.md).
+
+Original private footage, model weights and raw execution logs remain local.
+Large generated worlds and explicitly selected licensed comparison images use
+release attachments; Git contains the reproducible preparation recipe, public
+metadata, tests and documentation. Publication does not mean quality acceptance.

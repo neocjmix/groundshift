@@ -12,7 +12,7 @@ const sceneSchema = z.object({
   id: slug,
   title: label,
   description: label,
-  category: z.enum(['capture', 'reconstruction', 'sample']),
+  category: z.enum(['capture', 'reconstruction', 'sample', 'experiment']),
   manifestPath,
   thumbnailPath,
   detail: label,
