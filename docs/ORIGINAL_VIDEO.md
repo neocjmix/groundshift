@@ -1,4 +1,4 @@
-# Original private video experiment
+# Original video reconstruction
 
 This experiment uses a video supplied by the user, downloaded from their iCloud
 share on 2026-11-04 and processed locally on the M2 MacBook Air. The acquired MOV
@@ -71,11 +71,20 @@ subsequent verification is recorded separately in
 
 ## Privacy and evidence
 
-Original footage, extracted frames, camera files, scene assets, screenshots,
-probe metadata and logs remain in ignored `data/`. The user's permission is for
-local reconstruction; no redistribution license is inferred. This capture is
-not included in the public Railway sample package or Git history. Public docs
-record aggregate measurements and implementation decisions only.
+Original footage, extracted frames, raw camera reports, full probe metadata and
+logs remain in ignored `data/`. The creator has now authorized public display of
+the selected derived desk world and its selected preview. This changes the
+publication scope for that artifact; it does not make the original footage
+public or grant an open redistribution license. All rights remain reserved.
+The release uses only a curated scene asset, necessary camera/world metadata,
+public provenance and preview, with private paths/source URLs removed.
+
+**Public release: PENDING.** Local execution and browser acceptance above are
+complete; the selected artifact is being packaged for the four-world Railway
+catalog. See [publication permission and deployment evidence](DEPLOYMENT.md).
+Public docs record aggregate measurements and implementation decisions; the
+original MOV, extracted images and full processing evidence are not included
+in Git or the static release.
 
 The private evidence chain is retained under:
 

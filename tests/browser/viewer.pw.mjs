@@ -25,7 +25,7 @@ function nonBackgroundPixels(buffer) {
 test('actual scene renders; orbit, immediate reset, zoom, folder replacement and responsive view work', async ({ page, browser }, info) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/?world=/worlds/sample/world.json');
   await ready(page);
   await expect(page.locator('.render-details summary')).toContainText('fps');
   const canvas = page.locator('canvas');
@@ -113,7 +113,7 @@ test('manifest, missing/corrupt asset, slow-load replacement and GPU context los
   await page.getByLabel('World manifest URL').fill('/corrupt-world.json');
   await page.getByRole('button', { name:'Load world →' }).click();
   await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','error');
-  await page.getByRole('button', { name:'The small things' }).click();
+  await page.getByRole('navigation', { name: 'Saved scenes' }).getByRole('link', { name: 'Houseplant' }).click();
   await ready(page);
   // Delay one actual asset request, replace it, and verify stale completion cannot win.
   await page.route('**/slow-world.json', route => route.fulfill({json:{...sample,id:'slow',assets:[{...sample.assets[0],path:'slow.splat'}]}}));
@@ -121,7 +121,7 @@ test('manifest, missing/corrupt asset, slow-load replacement and GPU context los
   await page.getByLabel('World manifest URL').fill('/slow-world.json');
   await page.getByRole('button', { name:'Load world →' }).click();
   await expect(page.locator('.scene-topline')).toContainText('slow');
-  await page.getByRole('button', { name:'The small things' }).click();
+  await page.getByRole('navigation', { name: 'Saved scenes' }).getByRole('link', { name: 'Houseplant' }).click();
   await ready(page);
   await page.waitForTimeout(1700);
   await expect(page.locator('.scene-topline')).toContainText('houseplant');

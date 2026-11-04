@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "scenes": [
+    {
+      "id": "desk",
+      "title": "My desk",
+      "description": "A familiar workspace reconstructed from an original video, with screens, a laptop, and everyday details.",
+      "category": "capture",
+      "manifestPath": "/worlds/desk/world.json",
+      "thumbnailPath": "/worlds/desk/preview.jpg",
+      "detail": "99 camera views · 28,496 splats · 2.6 MB"
+    },
+    {
+      "id": "independent",
+      "title": "Dozer · estimated cameras",
+      "description": "An excavator and its surroundings, reconstructed from source photographs with locally estimated camera poses.",
+      "category": "reconstruction",
+      "manifestPath": "/worlds/independent/world.json",
+      "thumbnailPath": "/worlds/independent/preview.jpg",
+      "detail": "120 camera views · 75,397 splats · 6.9 MB"
+    },
+    {
+      "id": "reconstructed",
+      "title": "Dozer · supplied cameras",
+      "description": "The first local reconstruction of this outdoor scene, using the dataset’s provided camera poses.",
+      "category": "reconstruction",
+      "manifestPath": "/worlds/reconstructed/world.json",
+      "thumbnailPath": "/worlds/reconstructed/preview.jpg",
+      "detail": "40 camera views · 194,789 splats · 17.9 MB"
+    },
+    {
+      "id": "sample",
+      "title": "Houseplant",
+      "description": "Leaves and a small pot, captured as a Gaussian scene by Marcel Padilla and shared under CC BY 4.0.",
+      "category": "sample",
+      "manifestPath": "/worlds/sample/world.json",
+      "thumbnailPath": "/worlds/sample/preview.jpg",
+      "detail": "113,648 splats · 3.6 MB · CC BY 4.0"
+    }
+  ]
+}

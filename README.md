@@ -4,6 +4,8 @@ Revisit real places as explorable 3D worlds.
 
 **Live demo:** [Independently reconstructed dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
+The next catalog release makes four usable worlds easy to select: **My desk**, **Dozer · estimated cameras**, **Dozer · supplied cameras**, and **Houseplant**. The desk is a newly reconstructed user recording; the two dozer scenes remain separately identified by their camera inputs, and Houseplant is the licensed viewer sample. This catalog update is **PENDING** public deployment verification. Superseded low-quality trials remain local.
+
 ## Vision
 Anyone can record a memorable walk, reconstruct an explorable place, and revisit it later. Eventually separately recorded places can connect into a growing shared world. Pedestrian paths, alleys, corners and stairs matter more than driving routes. Recognizability and spatial continuity matter more than survey accuracy or geometric precision.
 
@@ -33,7 +35,7 @@ To replace the scene, choose **Open world folder** and select a folder containin
 
 Worlds with camera metadata also offer **Camera path**: play/pause, forward/backward, speed, checkpoint jumps and free look. Playback stops at unverified gaps; it interpolates recorded views without inventing a walking surface. See [revisit behavior and actual browser evidence](docs/REVISIT.md).
 
-The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loading, download progress, missing or corrupt files, invalid manifests, and graphics-context loss have visible states. Scene switches cancel fetches and release rendering resources. Local development serves code and scenes from this Mac. The optional [Railway deployment](docs/DEPLOYMENT.md) hosts a curated static viewer; reconstruction remains local.
+The viewer uses React, TypeScript, Vite, Three.js 0.180.0 and Spark 2.4.0. Loading, download progress, missing or corrupt files, invalid manifests, and graphics-context loss have visible states. Scene switches cancel fetches and release rendering resources. Local development serves code and scenes from this Mac. The [Railway deployment](docs/DEPLOYMENT.md) hosts a curated static viewer; reconstruction remains local. Verified changes and authorized usable scenes are packaged and deployed in the same workflow under the user’s standing instruction.
 
 ## Checks
 
@@ -61,8 +63,10 @@ The backend is a local Python process adapter; the portable output is a director
 The first **user-recorded original video** now works locally: a 24.8-second
 indoor capture produced 99/99 estimated cameras and a 28,496-Gaussian scene in
 4 min 38 s, with actual browser rendering and path playback verified. No sample
-model, supplied poses or calibrated lens values were used. The private footage
-and output remain on this Mac. [Evidence and remaining visual limits](docs/ORIGINAL_VIDEO.md).
+model, supplied poses or calibrated lens values were used. The original footage and processing evidence remain private. The creator has
+authorized public display of the derived desk scene and preview; the four-world
+catalog release is **PENDING** public verification. [Evidence and remaining
+visual limits](docs/ORIGINAL_VIDEO.md).
 
 After installing the native tools, run the new [local pipeline command](docs/PIPELINE.md):
 
@@ -93,7 +97,7 @@ unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.m
 - [Local reconstruction](docs/M1.md)
 - [Optional CPU camera estimation](docs/COLMAP.md)
 - [One-command local pipeline](docs/PIPELINE.md)
-- [Original private video experiment](docs/ORIGINAL_VIDEO.md)
+- [Original video reconstruction](docs/ORIGINAL_VIDEO.md)
 - [HDR-capable local FFmpeg](docs/HDR_TOOL.md)
 - [Video preparation](docs/VIDEO.md)
 - [Camera-path revisit](docs/REVISIT.md)

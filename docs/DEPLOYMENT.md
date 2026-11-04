@@ -1,10 +1,27 @@
 # Railway viewer deployment
 
-**Live:** [Independent 120-view reconstruction](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/)
+**Last verified public release:** [Independent 120-view reconstruction](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Original supplied-pose dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/)
 
-The user explicitly requested Railway hosting after local M0/M1 acceptance. Only the static viewer and selected licensed examples are hosted. Reconstruction, camera estimation, training, original input and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+The user explicitly requested Railway hosting after local M0/M1 acceptance and now instructs that verified viewer changes and authorized usable scenes ship in the same workflow. Only the static viewer and selected scene artifacts are hosted. Reconstruction, camera estimation, training, original inputs and job logs remain on the local Mac. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
-## Deployed revision
+## Current catalog release — PENDING
+
+The next release collects four usable worlds: Houseplant, the original supplied-pose dozer, the independently estimated 120-view dozer, and the user's reconstructed desk. The desk's local reconstruction and browser controls passed; its public package, updated catalog and Railway release are still **PENDING** until separately verified. The last confirmed deployment is recorded below. A release upload or a local screenshot is not public-deployment acceptance.
+
+| Selected world | What it demonstrates | Quality / evidence boundary |
+| --- | --- | --- |
+| Houseplant | Licensed upstream Gaussian scene; M0 viewer | Viewer sample, not a Groundshift reconstruction |
+| Dozer · supplied cameras | 40 photos plus supplied measured poses/sparse initialization; local Metal training | Recognizable early reconstruction; soft surroundings |
+| Dozer · estimated cameras | 120 raw photos, supplied lens calibration only; locally recovered poses/points and Metal training | Separate independently estimated pose result; supplied lens calibration is explicit |
+| My desk | 99 locally estimated views from one user recording, estimated intrinsics and new Metal training | Recognizable desk/computers; peripheral smearing, thin-object streaks and blurred screen text remain |
+
+The smaller 24-view dozer and initial 15-second desk trials are preserved locally and excluded from this catalog. They are superseded experiments, not additional accepted scenes. A second independent original recording and an actual walking-route capture remain **NOT RUN**.
+
+### Desk publication permission
+
+The creator has explicitly authorized **public display of the derived desk world and its selected viewer preview** in Groundshift. **All rights reserved; no open redistribution license is granted.** This permission covers the selected Gaussian scene, necessary camera/world metadata, provenance and preview. It does not publish or license the original MOV, extracted frames, private iCloud URL, location/probe metadata, absolute local paths or reconstruction logs. The public artifact cites this permission statement; no private source link or access token is exposed. [Local reconstruction evidence and limits](ORIGINAL_VIDEO.md).
+
+## Last verified deployed revision
 
 | Item | Value |
 | --- | --- |
@@ -20,7 +37,7 @@ The user explicitly requested Railway hosting after local M0/M1 acceptance. Only
 
 `deploy/Dockerfile.github` downloads the locally built archive, checks its SHA-256, and copies only `www/` into the pinned official Caddy image. Runtime notices, world provenance, camera metadata and dataset licenses are included. Large assets are release attachments, not Git commits. Root `.dockerignore` excludes everything except the deployment files.
 
-The source is pinned to the listed commit. Pushing documentation or application changes alone does **not** update this deployment. For a new viewer version, build and validate a fresh local package, publish it under a new release tag, update the URL/checksum in `deploy/Dockerfile.github`, push that commit, then reconnect the Railway service to that exact commit. Retain the previous release for rollback.
+This earlier deployment was pinned to the listed commit. The existing service has now been connected to `feat/local-viewer-reconstruction` without a commit pin (`commitSha: null`), with watch paths `/deploy/**` and `/.dockerignore`. The connector accepted and returned these settings. Reconnecting initially builds the previous archive; it does not publish the new catalog. Observing the new release-pointer push trigger and complete its deployment remains **PENDING**. Source or documentation edits alone do not replace the archive consumed by `deploy/Dockerfile.github`; every viewer/scene release must update that archive URL and checksum. Retain each previous archive and deployment pointer for rollback.
 
 The previous [viewer-2026-11-04 release](https://github.com/neocjmix/groundshift/releases/tag/viewer-2026-11-04)
 and source `81adf61858673dedf9367196f4430ba8c5f24b16` remain available for rollback.
@@ -28,7 +45,7 @@ Its deployment was `00a9186e-8ae1-48b4-8371-a30072c65015`; archive
 `groundshift-viewer-8c806e7.tar.gz`, SHA-256
 `33b5e2c1ac2f4176cafc0593e43bd1d525dab8e0550f9a10046f2c8ee3e3dbf9`.
 
-## Revisit release verification
+## Earlier revisit release verification
 
 The new release adds camera-path navigation and the separately identified
 [120-photo independent reconstruction](INDEPENDENT_RECONSTRUCTION.md). The
@@ -53,6 +70,25 @@ Preparation passed TypeScript, lint, 118 viewer unit tests, 41 Python tests,
 production build and four headed Chrome tests. Native image pipeline and
 Metal training have separate execution reports; original walking-video
 acceptance is still NOT RUN.
+
+## Standing release workflow
+
+Complete this sequence for verified viewer changes and selected scenes already authorized for publication. Routine approval is not needed again; preserve explicit privacy and licensing limits.
+
+1. Finish the change and run the relevant TypeScript, lint, automated, production-build and browser checks. New reconstructed scenes require actual local rendering/quality inspection in addition to native execution evidence.
+2. Select the usable worlds and their public metadata/previews. Keep scene provenance honest: downloaded sample, supplied-pose reconstruction, estimated-pose reconstruction, and original-video reconstruction are different evidence categories.
+3. Build the curated static package locally using the explicit inclusion flags below. Inspect its complete inventory for private source paths, URLs, footage, frames and logs. Do not upload the repository or raw `dist/` directory.
+4. Archive only `www/`, record its SHA-256, publish it under a fresh GitHub release tag, then download it and compare the hash. Keep the prior archive available.
+5. Update the release URL/checksum in `deploy/Dockerfile.github`, commit the reviewable deployment pointer, and push it to the connected branch as part of the same workflow. A source-code push without this step leaves the old package live.
+6. Observe Railway's deployment result and healthcheck. Read back the connected branch, watch patterns and deployed commit instead of assuming a push triggered the right deployment.
+7. Compare every public file against the curated inventory. Verify missing/private paths return 404. Open the public viewer, visually inspect all four selected worlds, and exercise changed navigation/catalog behavior.
+8. Record the release tag, source/deployment revisions, archive hash, Railway deployment ID and public-browser evidence here. Report any failed or unexecuted gate accurately; completion requires a verified live result.
+
+### Branch-following configuration
+
+The configured source is the existing service connected to `feat/local-viewer-reconstruction` without a commit pin, with autodeploy enabled and watch paths `/deploy/**` and `/.dockerignore`. Keep repository root as the build context and `deploy/Dockerfile.github` as the Dockerfile path. Native reconstruction and the production web build stay local; Railway downloads the already validated static archive and runs Caddy.
+
+Railway deploys pushes to its connected branch, while watch patterns limit which changed paths trigger it. This keeps ordinary source/docs work from redeploying an unchanged package. The release-pointer commit under `deploy/` is the deliberate trigger; it must follow local verification and archive publication. See [GitHub autodeploys](https://docs.railway.com/deployments/github-autodeploys) and [watch paths](https://docs.railway.com/deployments/monorepo#watch-paths). The branch/watch changes were accepted and returned by the Railway connector. A new release-pointer push and its successful public deployment remain **PENDING** for this transition; configuration acceptance alone does not prove that trigger.
 
 ## Prepare a curated package locally
 

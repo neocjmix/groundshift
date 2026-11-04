@@ -25,3 +25,5 @@ public/worlds/**/*.ksplat
 public/worlds/**/*.sog
 public/worlds/reconstructed/
 public/worlds/independent/
+public/worlds/desk/
+public/worlds/**/preview.jpg
