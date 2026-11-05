@@ -75,7 +75,24 @@ and the comparison, without local paths, model weights or raw execution logs.
 
 **PASS:** native Metal execution, exact training image/camera equality,
 TypeScript, production build, lint, 165 JS tests and actual local rendering of
-both new scenes. **NOT RUN:** independent geometry accuracy, quantitative image
+both new scenes. Python suites each ran 106 tests: OpenCV environment had five
+dependency skips, PyCOLMAP had 31. The first local report check timed out waiting
+for comparison images; an unchanged rerun decoded both and passed all report
+controls and chronological ordering. This does not establish a root cause for
+the initial timeout. **NOT RUN:** independent geometry accuracy, quantitative image
 quality comparison and the full historical browser regression suite. Learned
 monocular depth and intermediate generation were intentionally not executed.
 Public deployment and post-publication checks are recorded in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Public result
+
+[Side-by-side comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/)
+· [New object GS](https://groundshift-viewer-production.up.railway.app/?world=/worlds/scooter-nodepth-object/world.json)
+· [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/).
+
+Railway deployment succeeded. Public headed Chrome rendered both new exports,
+operated report controls and verified newest/oldest sorting without page errors.
+All 64 selected new/shared files matched the release hashes; health check passed.
+The screenshots confirm the poor visual result is present in the actual deployed
+artifact. The complete-object quality target is **FAIL**, not rescued by successful
+export or deployment. See the [release record](DEPLOYMENT.md#scooter-without-learned-depth--2026-11-05).
