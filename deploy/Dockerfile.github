@@ -1,8 +1,8 @@
-# The viewer and publication-authorized worlds were built locally from commit e8c4203.
+# Viewer code: 68ab2d3; measured publication metadata: a3551c8.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-depth-warp-2026-11-05/groundshift-depth-warp-20261105.tar.gz \
-    && echo 'bc1c75ccfdbcd7cc27f5b972ac15f9eab9d7286ca9699b98a5fa6c0d3e5a3aca  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-object-focus-2026-11-05/groundshift-object-focus-20261105.tar.gz \
+    && echo '40508f73cd0a87714d556cc305e21d46444eaf5eea8f0ce8ddb261025e0866d5  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
