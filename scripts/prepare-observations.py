@@ -484,6 +484,66 @@ def prepare_video_report(worlds):
             + ['experiments/video-4to6/' + image['path'] for image in images])
 
 
+def prepare_depth_report():
+    """Publish selected licensed crops and relative-depth previews, never arrays or logs."""
+    job = ROOT / 'data/jobs/mapillary-depth-v2-3views-20261105'
+    inference, geometry = read_json(job / 'report.json'), read_json(job / 'geometry-check.json')
+    if inference['status'] != 'PASS' or geometry['status'] != 'PASS' or len(inference['images']) != 3:
+        raise ValueError('Expected completed three-view depth diagnostic')
+    sample = read_json(ROOT / 'scripts/samples/mapillary-beijing.json')
+    out = PUBLIC / 'experiments/depth-v2'
+    out.mkdir(parents=True, exist_ok=True)
+    rows, files = [], ['experiments/depth-v2/index.html', 'experiments/depth-v2/summary.json']
+    for index, image in enumerate(inference['images']):
+        source = sample['images'][index + 4]
+        expected = f'pano_{index + 4:06d}_view_02.png'
+        check = geometry['results'][index]
+        if Path(image['source']).name != expected or check['image'] != expected:
+            raise ValueError('Depth image and SfM observation ordering differ')
+        expected_source = ROOT / 'data/jobs/mapillary-beijing-rig-poses-v2/dataset/images' / expected
+        if Path(image['source']).resolve() != expected_source.resolve() or expected_source.is_symlink():
+            raise ValueError('Depth source is not the selected public panorama crop')
+        for suffix in ('source', 'visual'):
+            name = f'view-{index:02d}-{suffix}.png'
+            original = expected_source if suffix == 'source' else job / name
+            if suffix == 'source' and sha(original) != image['sourceSha256']:
+                raise ValueError('Published depth source differs from observed crop')
+            if suffix == 'visual' and sha(original) != image['visualSha256']:
+                raise ValueError('Depth visualization hash mismatch')
+            shutil.copyfile(original, out / name)
+            files.append('experiments/depth-v2/' + name)
+        rows.append({'photo': index + 4, 'sourceUrl': source['commons_page'],
+                     'imageId': source['image_id'], 'license': source['license'],
+                     'cropSourceSha256': image['sourceSha256'],
+                     'depthVisualSha256': image['visualSha256'],
+                     'inferenceSeconds': image['inferenceSeconds'],
+                     'sparseObservations': check['sparseObservations'],
+                     'rankCorrelation': check['spearmanRelativeVsInverseSfMZ']})
+    summary = {'schemaVersion': 1, 'status': 'PASS for MPS relative-depth inference and observed-point ordering; GS improvement NOT RUN',
+               'model': inference['model'], 'revision': inference['revision'],
+               'modelLicense': 'Apache-2.0 for Depth Anything V2 Small',
+               'sourceLicense': 'CC-BY-SA-4.0; Cicero101 / Mapillary via Wikimedia Commons',
+               'device': inference['device'], 'torchVersion': inference['torchVersion'],
+               'modelLoadSeconds': inference['modelLoadSeconds'],
+               'wholeJobSeconds': inference['elapsedSeconds'],
+               'wholeProcessPeakFootprintBytes': 1619919952,
+               'interpretation': 'Relative inverse-depth-like values, independently normalized per image; no metric scale, cross-view agreement, novel-view coverage or GS gain established. SfM comparison uses the same observed photos and is not independent ground truth.',
+               'images': rows}
+    write_json(out / 'summary.json', summary)
+    cards = ''.join(f'<article><h2>실제 사진 {r["photo"]}</h2><div class="pair"><figure><img src="view-{i:02d}-source.png" alt="실제 베이징 거리 사진"><figcaption>실제 촬영 시야</figcaption></figure><figure><img src="view-{i:02d}-visual.png" alt="상대 깊이 예측, 밝을수록 가까움"><figcaption>예측 상대 깊이 · 밝을수록 가까움</figcaption></figure></div><p>희소 3D 관측점 {r["sparseObservations"]}개와 앞뒤 순서 상관 {r["rankCorrelation"]:.3f} · MPS 추론 {r["inferenceSeconds"]:.2f}초 · <a href="{html.escape(r["sourceUrl"], quote=True)}">원본 사진/저작자 ↗</a></p></article>' for i, r in enumerate(rows))
+    page = f'''<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Groundshift · 사진 깊이 추정 실험</title>
+<style>:root{{font-family:system-ui,-apple-system,sans-serif;background:#f4f3ec;color:#24372a}}*{{box-sizing:border-box}}body{{max-width:1150px;margin:auto;padding:28px}}a{{color:#426534}}nav{{display:flex;gap:16px;flex-wrap:wrap}}h1{{font-size:clamp(30px,5vw,58px);letter-spacing:-.04em;line-height:1.05}}p{{line-height:1.65;color:#536254;max-width:950px}}article{{margin:36px 0;padding:20px;background:#e6e9df;border-radius:12px}}.pair{{display:grid;grid-template-columns:1fr 1fr;gap:14px}}figure{{margin:0}}img{{width:100%;display:block;border-radius:7px}}figcaption{{padding:8px 0}}.status{{border-left:4px solid #819b68;padding:12px 18px;background:#e3eadb}}@media(max-width:650px){{.pair{{grid-template-columns:1fr}}body{{padding:16px}}}}</style>
+<nav><a href="/">장면 모음 ↗</a><a href="/experiments/video-4to6/">65프레임 실험 ↗</a><a href="/experiments/mapillary/">기존 비교 ↗</a></nav><h1>사진에서 깊이를 추정해 봤다</h1>
+<p>실제 360° 사진 4·5·6에서 같은 방향의 512×512 시야를 잘라, Depth Anything V2 Small을 이 맥의 MPS/Metal에서 실행했다. 회색 지도는 사진 속 각 픽셀의 <strong>상대적인 앞뒤</strong>를 예측한다. 각 사진마다 따로 정규화했으므로 회색값을 사진 사이에서 거리처럼 비교할 수 없다.</p>
+<div class="status"><strong>깊이 추론 PASS · GS 개선 NOT RUN.</strong> 세 사진에서 예측한 앞뒤 순서는 기존 사진 기반 희소 3D 점과 대체로 일치했다. 이는 같은 사진에서 얻은 SfM 추정치와의 내부 비교이지 실제 거리 측정이나 독립 검증이 아니다.</div>
+{cards}
+<h2>다음 검증</h2><p>예측 상대 깊이를 기존 카메라 위치와 희소점에 맞춰 조정하고, 원본 4·6의 픽셀을 관측된 5의 위치로 옮겨야 한다. 실제 5의 RGB를 이 생성·보정 과정에서 제외한 뒤, 가려진 영역의 비율과 실제 사진과의 차이, 여러 방향의 3D 렌더를 기존 스테레오 및 GS와 비교한다. 지금은 깊이 지도를 GS 학습에 넣거나 새로운 3D 장면을 만들지 않았다.</p>
+<p>사진: Cicero101 / Mapillary, Wikimedia Commons 재배포, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA-4.0</a>. 수정: 구면→평면 투영 및 상대 깊이 시각화. 모델: <a href="https://github.com/DepthAnything/Depth-Anything-V2">Depth Anything V2 Small</a>, Apache-2.0. <a href="summary.json">측정·해시 JSON ↗</a>. 원본 대형 사진, 깊이 수치 배열, 모델 가중치와 로컬 로그는 배포하지 않는다.</p></html>'''
+    assert_public_text(page)
+    (out / 'index.html').write_text(page)
+    return files
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--render-previews', action='store_true')
@@ -491,7 +551,7 @@ def main():
     args = parser.parse_args()
     worlds = prepare_worlds()
     history = collect_history()
-    files = prepare_report(worlds, history) + prepare_video_report(worlds)
+    files = prepare_report(worlds, history) + prepare_video_report(worlds) + prepare_depth_report()
     definitions = [dict(id=t[0], source='data/jobs/' + t[1], asset='scene.ply', format='ply', credits=['SOURCE_LICENSE']) for t in TRIALS]
     write_json(SPEC, dict(version=1, worlds=definitions, files=files))
     catalog_path = PUBLIC / 'worlds/catalog.json'

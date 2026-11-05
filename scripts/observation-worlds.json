@@ -127,6 +127,14 @@
     "experiments/video-4to6/images/observed-middle.jpg",
     "experiments/video-4to6/images/inpaint-input.jpg",
     "experiments/video-4to6/images/inpaint-mask.jpg",
-    "experiments/video-4to6/images/inpaint-result.jpg"
+    "experiments/video-4to6/images/inpaint-result.jpg",
+    "experiments/depth-v2/index.html",
+    "experiments/depth-v2/summary.json",
+    "experiments/depth-v2/view-00-source.png",
+    "experiments/depth-v2/view-00-visual.png",
+    "experiments/depth-v2/view-01-source.png",
+    "experiments/depth-v2/view-01-visual.png",
+    "experiments/depth-v2/view-02-source.png",
+    "experiments/depth-v2/view-02-visual.png"
   ]
 }

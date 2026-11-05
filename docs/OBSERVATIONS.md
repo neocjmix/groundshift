@@ -23,6 +23,11 @@ video diffusion; this distinction is visible in the report. The history also
 records unsuccessful and cancelled stages. No outcome is hidden because of
 poor visual quality.
 
+The [relative-depth diagnostic](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/)
+shows three licensed real crops and M2/MPS Depth Anything V2 Small predictions.
+It records agreement with existing sparse depth ordering while labeling GS
+improvement and novel-view synthesis **NOT RUN**. [Local evidence](DEPTH_EXPERIMENT.md).
+
 ## Rebuild from existing local evidence
 
 This command consumes the previously produced jobs. It does not repeat camera

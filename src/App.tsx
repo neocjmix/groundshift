@@ -8,6 +8,7 @@ const locationPath = () => new URLSearchParams(window.location.search).get("worl
 const sceneUrl = (path: string) => `/?world=${encodeURIComponent(path)}`;
 const experimentReport = "/experiments/mapillary/index.html";
 const videoExperimentReport = "/experiments/video-4to6/";
+const depthExperimentReport = "/experiments/depth-v2/";
 const categories = {
   capture: "Personal capture",
   reconstruction: "Local reconstruction",
@@ -189,6 +190,7 @@ export default function App() {
         </div>
         <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
         {videoExperimentAvailable && <a href={videoExperimentReport}>Watch 65-frame panorama <span aria-hidden="true">↗</span></a>}
+        {videoExperimentAvailable && <a href={depthExperimentReport}>Inspect photo depth maps <span aria-hidden="true">↗</span></a>}
       </section>}
       <div className="collection-toolbar">
         <div className="collection-filters" role="group" aria-label="Filter scenes">
