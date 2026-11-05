@@ -137,10 +137,26 @@ initialization contains **93,595 points**. Original poses remain fixed during
 the anchored registration. These partial outcomes stay visible in the report;
 they do not satisfy a 65-camera acceptance claim.
 
-The Gaussian training is in progress. Actual stage reports are retained under
-`data/jobs/object-focus-20261105/`. The first release will label independent
-depth/pose accuracy and comparative quality measurements **NOT RUN**. Build
-success and GPU execution do not imply improved visual quality.
+Brush completed 5,000 steps on the **Apple M2 / Metal** adapter in **610.514 s**
+using the 47 registered RGB views and the 93,595-point initialization. It exported
+**93,941 Gaussians / 8,643,223 bytes**. The process's recorded peak memory footprint
+was 915,784,496 bytes; this is not a system-wide unified-memory measurement.
+Selecting Gaussian centers inside the three observed object rectangles retained
+**93,101 Gaussians** in the focused display artifact.
+
+Actual local Chrome rendering of both exports and the interactive point cloud
+is **PASS**. Screenshots show a recognizable scooter and blue cover, with blurred,
+streaked surrounding geometry; this is not a clean complete object reconstruction.
+The lab's newest/oldest ordering also executed successfully in Chrome. TypeScript
+and the production build passed during packaging. Broader regression checks and
+public-origin verification follow publication, per the result-first instruction.
+Independent depth/pose accuracy and comparative quality measurements remain
+**NOT RUN**. Build success and GPU execution do not imply improved visual quality.
+
+Actual stage reports, failed attempts and screenshots are retained under
+`data/jobs/object-focus-20261105/`. Browser evidence is recorded separately in
+`browser-local.json`; the training job's original `browserRendering: NOT RUN`
+field is intentionally not rewritten as if training itself verified a browser.
 
 One early generation invocation ran before its model download completed and
 failed without producing images. Its report/log are preserved with a

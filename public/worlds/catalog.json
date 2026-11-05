@@ -8,25 +8,28 @@
       "category": "capture",
       "manifestPath": "/worlds/desk/world.json",
       "thumbnailPath": "/worlds/desk/preview.jpg",
-      "detail": "99 camera views · 28,496 splats · 2.6 MB"
+      "detail": "99 camera views \u00b7 28,496 splats \u00b7 2.6 MB",
+      "createdAt": "2026-11-04T15:07:45.136952+00:00"
     },
     {
       "id": "independent",
-      "title": "Dozer · estimated cameras",
+      "title": "Dozer \u00b7 estimated cameras",
       "description": "An excavator and its surroundings, reconstructed from source photographs with locally estimated camera poses.",
       "category": "reconstruction",
       "manifestPath": "/worlds/independent/world.json",
       "thumbnailPath": "/worlds/independent/preview.jpg",
-      "detail": "120 camera views · 75,397 splats · 6.9 MB"
+      "detail": "120 camera views \u00b7 75,397 splats \u00b7 6.9 MB",
+      "createdAt": "2026-11-04T13:29:08.322579+00:00"
     },
     {
       "id": "reconstructed",
-      "title": "Dozer · supplied cameras",
-      "description": "The first local reconstruction of this outdoor scene, using the dataset’s provided camera poses.",
+      "title": "Dozer \u00b7 supplied cameras",
+      "description": "The first local reconstruction of this outdoor scene, using the dataset\u2019s provided camera poses.",
       "category": "reconstruction",
       "manifestPath": "/worlds/reconstructed/world.json",
       "thumbnailPath": "/worlds/reconstructed/preview.jpg",
-      "detail": "40 camera views · 194,789 splats · 17.9 MB"
+      "detail": "40 camera views \u00b7 194,789 splats \u00b7 17.9 MB",
+      "createdAt": "2026-11-04T10:50:31.177290+00:00"
     },
     {
       "id": "sample",
@@ -35,115 +38,147 @@
       "category": "sample",
       "manifestPath": "/worlds/sample/world.json",
       "thumbnailPath": "/worlds/sample/preview.jpg",
-      "detail": "113,648 splats · 3.6 MB · CC BY 4.0"
+      "detail": "113,648 splats \u00b7 3.6 MB \u00b7 CC BY 4.0"
     },
     {
       "id": "beijing-10k",
-      "title": "Beijing · observed 10k",
+      "title": "Beijing \u00b7 observed 10k",
       "description": "Real photographs only; fixed panorama rigs. Blurred structures and stretched geometry remain.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-10k/world.json",
       "thumbnailPath": "/worlds/beijing-10k/preview.jpg",
-      "detail": "48 real crops · 150,000 splats · Quality FAIL"
+      "detail": "48 real crops \u00b7 150,000 splats \u00b7 Quality FAIL",
+      "createdAt": "2026-11-04T21:13:43.655917+00:00"
     },
     {
       "id": "beijing-generated",
-      "title": "Beijing · generated input",
+      "title": "Beijing \u00b7 generated input",
       "description": "Local diffusion output was included in Metal training. An integration experiment, not evidence of improved reconstruction.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-generated/world.json",
       "thumbnailPath": "/worlds/beijing-generated/preview.jpg",
-      "detail": "48 real + 1 generated view · 2,000 steps · Quality FAIL"
+      "detail": "48 real + 1 generated view \u00b7 2,000 steps \u00b7 Quality FAIL",
+      "createdAt": "2026-11-04T21:50:40.279795+00:00"
     },
     {
       "id": "beijing-depth",
-      "title": "Beijing · depth-guided generated view",
+      "title": "Beijing \u00b7 depth-guided generated view",
       "description": "Observed pixels were reprojected with locally calibrated relative depth; masked MPS diffusion supplied the remaining pixels. The generated view has an estimated, reused pose and does not establish new geometry.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-depth/world.json",
       "thumbnailPath": "/worlds/beijing-depth/preview.jpg",
-      "detail": "48 real + 1 depth-guided synthetic view · 10,000 Metal steps · Quality FAIL"
+      "detail": "48 real + 1 depth-guided synthetic view \u00b7 10,000 Metal steps \u00b7 Quality FAIL",
+      "createdAt": "2026-11-05T07:05:29.134187+00:00"
     },
     {
       "id": "beijing-20k",
-      "title": "Beijing · capacity 20k",
+      "title": "Beijing \u00b7 capacity 20k",
       "description": "Longer training and larger capacity together; held-view PSNR fell from 14.72 to 12.68 dB.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-20k/world.json",
       "thumbnailPath": "/worlds/beijing-20k/preview.jpg",
-      "detail": "750,000 splats · 69 MB · Quality FAIL"
+      "detail": "750,000 splats \u00b7 69 MB \u00b7 Quality FAIL",
+      "createdAt": "2026-11-04T21:49:14.530016+00:00"
     },
     {
       "id": "beijing-2k",
-      "title": "Beijing · observed 2k",
+      "title": "Beijing \u00b7 observed 2k",
       "description": "The first constrained-rig Gaussian baseline. Training and export worked, while the reconstructed appearance remained blurry.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-2k/world.json",
       "thumbnailPath": "/worlds/beijing-2k/preview.jpg",
-      "detail": "48 real crops · 7,015 splats · Quality FAIL"
+      "detail": "48 real crops \u00b7 7,015 splats \u00b7 Quality FAIL",
+      "createdAt": "2026-11-04T21:07:06.172976+00:00"
     },
     {
       "id": "beijing-video-baseline",
-      "title": "Beijing · matched real-only baseline",
+      "title": "Beijing \u00b7 matched real-only baseline",
       "description": "The matched real-only baseline for the 65-frame panorama experiment. Its rendered building edges remain blurry; target #5 geometry participated in all-image SfM.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-video-baseline/world.json",
       "thumbnailPath": "/worlds/beijing-video-baseline/preview.jpg",
-      "detail": "48 real crops · 10,000 Metal steps · Quality FAIL"
+      "detail": "48 real crops \u00b7 10,000 Metal steps \u00b7 Quality FAIL",
+      "createdAt": "2026-11-05T01:22:03.413550+00:00"
     },
     {
       "id": "beijing-video-rife",
-      "title": "Beijing · 65-frame interpolation GS",
+      "title": "Beijing \u00b7 65-frame interpolation GS",
       "description": "The generated midpoint was added to Metal Gaussian training. It renders but adds streaked geometry and did not improve either inspected target view.",
       "category": "experiment",
       "manifestPath": "/worlds/beijing-video-rife/world.json",
       "thumbnailPath": "/worlds/beijing-video-rife/preview.jpg",
-      "detail": "48 real + 6 generated crops · Quality FAIL"
+      "detail": "48 real + 6 generated crops \u00b7 Quality FAIL",
+      "createdAt": "2026-11-05T01:42:50.960466+00:00"
     },
     {
       "id": "dozer-smoke",
-      "title": "Dozer · 30-step smoke",
+      "title": "Dozer \u00b7 30-step smoke",
       "description": "Initial native execution test with only 30 training steps. This is a separate exported result, not the accepted 1,500-step scene.",
       "category": "experiment",
       "manifestPath": "/worlds/dozer-smoke/world.json",
       "thumbnailPath": "/worlds/dozer-smoke/preview.jpg",
-      "detail": "40 supplied cameras · 165,875 splats · early trial"
+      "detail": "40 supplied cameras \u00b7 165,875 splats \u00b7 early trial",
+      "createdAt": "2026-11-04T10:48:40.802909+00:00"
     },
     {
       "id": "dozer-proof",
-      "title": "Dozer · fresh proof rerun",
+      "title": "Dozer \u00b7 fresh proof rerun",
       "description": "A fresh local 1,500-step Metal run retained as reconstruction evidence; this PLY differs from the original export.",
       "category": "experiment",
       "manifestPath": "/worlds/dozer-proof/world.json",
       "thumbnailPath": "/worlds/dozer-proof/preview.jpg",
-      "detail": "40 supplied cameras · 194,871 splats · rerun"
+      "detail": "40 supplied cameras \u00b7 194,871 splats \u00b7 rerun",
+      "createdAt": "2026-11-04T12:29:21.628801+00:00"
     },
     {
       "id": "dozer-partial",
-      "title": "Dozer · partial 16/40 poses",
+      "title": "Dozer \u00b7 partial 16/40 poses",
       "description": "The early pose-estimation attempt registered only 16 of 40 photographs. Its sparse Gaussian output is retained for observation.",
       "category": "experiment",
       "manifestPath": "/worlds/dozer-partial/world.json",
       "thumbnailPath": "/worlds/dozer-partial/preview.jpg",
-      "detail": "16 of 40 cameras · 1,048 splats · Quality FAIL"
+      "detail": "16 of 40 cameras \u00b7 1,048 splats \u00b7 Quality FAIL",
+      "createdAt": "2026-11-04T10:54:28.931675+00:00"
     },
     {
       "id": "dozer-24",
-      "title": "Dozer · 24-view trial",
+      "title": "Dozer \u00b7 24-view trial",
       "description": "A small end-to-end local pipeline run using supplied lens calibration and newly estimated camera positions.",
       "category": "experiment",
       "manifestPath": "/worlds/dozer-24/world.json",
       "thumbnailPath": "/worlds/dozer-24/preview.jpg",
-      "detail": "24 estimated cameras · 9,662 splats · early trial"
+      "detail": "24 estimated cameras \u00b7 9,662 splats \u00b7 early trial",
+      "createdAt": "2026-11-04T13:30:41.464069+00:00"
     },
     {
       "id": "desk-15s",
-      "title": "My desk · initial 15s trial",
+      "title": "My desk \u00b7 initial 15s trial",
       "description": "The first 15-second crop of the creator recording, with the earlier system HDR conversion. The later full capture is separately available.",
       "category": "experiment",
       "manifestPath": "/worlds/desk-15s/world.json",
       "thumbnailPath": "/worlds/desk-15s/preview.jpg",
-      "detail": "60 estimated cameras · 11,450 splats · early trial"
+      "detail": "60 estimated cameras \u00b7 11,450 splats \u00b7 early trial",
+      "createdAt": "2026-11-04T14:54:28.408295+00:00"
+    },
+    {
+      "id": "scooter-object",
+      "title": "\uc2a4\ucfe0\ud130 \u00b7 \ud55c \ubb3c\uccb4 \uc9d1\uc911",
+      "description": "\uc774\ub3d9 \ud30c\ub178\ub77c\ub9c8\uc5d0\uc11c \uac19\uc740 \ubb3c\uccb4\ub97c \ubaa8\uc544 65\uc7a5\uc73c\ub85c \ubcf4\ucda9. \ubcf4\uc815\ub41c \uae4a\uc774 \uc810\uad70\uc5d0\uc11c \uc2dc\uc791\ud55c GS.",
+      "category": "experiment",
+      "manifestPath": "/worlds/scooter-object/world.json",
+      "thumbnailPath": "/worlds/scooter-object/preview.jpg",
+      "detail": "65 candidates \u2192 47 posed RGB views \u00b7 34 depth maps \u2192 Metal GS \u00b7 quality measurement pending",
+      "createdAt": "2026-11-05T08:35:50.272593+00:00"
+    },
+    {
+      "id": "scooter-context",
+      "title": "\uc2a4\ucfe0\ud130 \u00b7 \uc804\uccb4 \ud559\uc2b5 \uc7a5\uba74",
+      "description": "\ub3d9\uc77c\ud55c \ud559\uc2b5 \uacb0\uacfc\uc758 \uc8fc\ubcc0\ubd80\ub97c \ud3ec\ud568\ud55c \uc6d0\ubcf8 export. \uc0dd\uc131 \uc774\ubbf8\uc9c0\uac00 \ud3ec\ud568\ub41c \uc2e4\ud5d8.",
+      "category": "experiment",
+      "manifestPath": "/worlds/scooter-context/world.json",
+      "thumbnailPath": "/worlds/scooter-context/preview.jpg",
+      "detail": "65 candidates \u2192 47 posed RGB views \u00b7 34 depth maps \u2192 Metal GS \u00b7 quality measurement pending",
+      "createdAt": "2026-11-05T08:35:50.108498+00:00"
     }
   ]
 }
