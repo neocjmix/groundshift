@@ -50,7 +50,11 @@ The current object experiment uses whole-frame img2img diffusion only to add
 input images. Camera estimation follows generation; relative depth is calibrated
 to neighboring feature correspondences and fused to initialize Brush. Earlier
 masked completion remains historical evidence rather than the current workflow.
-See [object experiment](OBJECT_FOCUS_EXPERIMENT.md).
+See [object experiment](OBJECT_FOCUS_EXPERIMENT.md). The latest
+[no-depth ablation](OBJECT_NO_DEPTH.md) bypasses both generation and learned
+depth, reuses the exact nine-image camera dataset, and initializes from
+triangulated SfM points within the same object selection. It keeps the existing
+local process and portable artifact boundaries.
 
 Diffusion is an experimental local preprocessing process,
 not part of the viewer or a cloud worker. Keep source images, generated pixels,

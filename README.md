@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Browse all 20 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -14,7 +14,15 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 
 ## Current experiment: one object along the panorama path
 
-The latest [real-only ablation](docs/OBJECT_REAL_ONLY.md) removes all 56
+The latest [no-learned-depth trial](docs/OBJECT_NO_DEPTH.md) keeps those same nine
+real training images and camera matrices byte-identical, and removes depth
+prediction, calibration and fusion. It starts from 115 triangulated object points
+and trains 5,000 steps in 116.339 s on M2 Metal. The result renders but is severely
+blurred and stretched; both exports are published for observation. The
+[comparison page](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/)
+uses the same display camera as the preceding result.
+
+The preceding [real-only ablation](docs/OBJECT_REAL_ONLY.md) removes all 56
 intermediate images, including both RIFE interpolation and diffusion. The same
 nine real crops, original camera solution, depth model and training settings
 produce a separately trained world in 160.298 s on M2 Metal. Its

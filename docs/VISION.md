@@ -11,7 +11,9 @@ only augments the image count; calibrated per-image depth is fused into a point
 cloud before Gaussian training. Publish the first result for observation before
 detailed quality measurement. The current comparison removes all intermediate
 image generation and uses only the same nine real crops; see
-[real-only ablation](OBJECT_REAL_ONLY.md) and the preceding
+[real-only ablation](OBJECT_REAL_ONLY.md). The latest controlled comparison also
+removes learned monocular depth and initializes from triangulated sparse points;
+see [no-depth trial](OBJECT_NO_DEPTH.md). Both rough results stay visible alongside the preceding
 [object experiment](OBJECT_FOCUS_EXPERIMENT.md).
 
 The user redirected the next experiment to dense consecutive Mapillary 360°

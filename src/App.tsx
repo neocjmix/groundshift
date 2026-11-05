@@ -241,7 +241,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id.startsWith("scooter-nodepth-") ? "/experiments/object-nodepth/" : selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}
