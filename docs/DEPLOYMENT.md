@@ -1,12 +1,63 @@
 # Railway viewer deployment
 
-**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Photo depth report](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
+## Depth-guided generated-view observation release — 2026-11-05
+
+The [depth-guided comparison page](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/)
+places three licensed real 512px crops, corrected stereo, raw and
+source-consistent depth warps, the MPS inpainted image and two matched
+Chrome-rendered GS comparisons side by side. The new
+[Gaussian scene](https://groundshift-viewer-production.up.railway.app/?world=/worlds/beijing-depth/world.json)
+is the 16th catalog entry. Its 10,000-step M2 Metal execution **PASS**ed, but
+3D visual quality improvement **FAIL**ed: direction-01 MAE 38.900→39.874 and
+direction-03 MAE 23.903→26.028 against withheld real RGB. The scene remains
+visible because this service is an observation surface. The image-generation
+pose and sparse initialization used all-image SfM, so this is an appearance
+holdout, not independent geometry evidence. See [the local method,
+measurements and reproduction commands](DEPTH_WARP_EXPERIMENT.md).
+
+| Item | Verified value |
+| --- | --- |
+| Viewer/report source | `e8c4203` (core warp code `7c85279`) |
+| Release | [viewer-depth-warp-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-depth-warp-2026-11-05) |
+| Archive | `groundshift-depth-warp-20261105.tar.gz`, 204,273,508 bytes |
+| Archive SHA-256 | `bc1c75ccfdbcd7cc27f5b972ac15f9eab9d7286ca9699b98a5fa6c0d3e5a3aca` |
+| Static payload | 142 `www/` files, 219,096,620 bytes; 16 scene entries |
+| Deployment-pointer commit | `672db60` |
+| Railway deployment | `c7b440f4-ae49-43c2-98bc-6e51937e3033` — SUCCESS |
+| Actual trigger | Explicit latest-branch Railway connector request; push-only autodeploy was not relied on |
+
+**Local PASS:** TypeScript, lint, 165 JS tests, production build,
+28 headed Chrome tests including all 16 scene renders and the new report.
+The PyCOLMAP environment ran 106 Python tests with 31 dependency-specific
+skips; the OpenCV environment ran 106 with five skips. The depth-calibrated
+source warp, inpainting on MPS and Brush training on Metal executed separately.
+The augmented job took 979.402 s, exported 150,000 splats in a 13,800,652-byte
+PLY and logged the Apple M2 Metal adapter. Its actual two-direction Chrome
+renders were inspected: geometry remained blurred or doubled and both matched
+photo errors increased. Package contents passed a private-path text scan,
+and each of the 142 archived web files matched the staged length and SHA-256.
+The fresh GitHub release download matched the local archive length and hash.
+
+**Railway/public PASS:** The build log verified `/tmp/viewer.tar.gz: OK`;
+the new container reached SUCCESS with no pending work. All 142 public files
+matched the staged byte length and SHA-256; `/healthz` returned 200/`ok`.
+Five missing/private-source paths returned 404, including the local job
+report, raw depth and model-weight names. All 28 public headed Chrome tests
+passed in 4.8 minutes, including decoded report images, actual splat rendering
+and reload of every catalog scene, gallery controls, camera paths, video
+playback and error recovery. The public report screenshot was inspected.
+Raw evidence is retained locally under ignored `data/validation/deployment/`
+as `depth-warp-archive.json`, `railway-depth-warp-http.json` and
+`railway-depth-warp-browser.json`. Successful publication does not change
+the **FAIL** visual-quality or **NOT RUN** independent-geometry verdicts.
+
 ## Three-photo depth observation release — 2026-11-05
 
-The new [depth report](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/)
+The earlier [depth report](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/)
 shows three licensed observed 512px crops beside local M2/MPS relative-depth
 predictions. The 15 Gaussian worlds and previous experiment reports remain
 available. Depth prediction and its internal sparse-point ordering check are
@@ -316,7 +367,7 @@ The working release procedure must observe a new deployment and use an explicit 
 
 The catalog and preparation recipe are tracked; generated scenes and comparison
 images are ignored. `npm run sample` supplies only Houseplant's Gaussian asset.
-For the complete observation surface, restore this immutable release in a
+For the earlier 13-world observation surface, restore that immutable release in a
 **fresh checkout**. The commands verify the archive before copying the 13 named
 world folders and the public comparison report. Existing files in these paths
 would be replaced; keep any personal variants elsewhere.
@@ -373,7 +424,7 @@ COPYFILE_DISABLE=1 tar -czf data/deploy/groundshift-viewer-<revision>.tar.gz \
 shasum -a 256 data/deploy/groundshift-viewer-<revision>.tar.gz
 ```
 
-Compare the archive contents against the staging inventory before publishing. The current release includes `SHA256SUMS` and `viewer-files.json` as independently readable checksums. Re-download the published archive and verify the checksum before connecting Railway.
+Compare the archive contents against the staging inventory before publishing. The inventory JSON is retained beside the local staging directory; it is not part of the public `www/` archive. Re-download the published archive and verify the checksum before connecting Railway.
 
 ## Railway configuration
 
