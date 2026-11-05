@@ -20,6 +20,15 @@
       ]
     },
     {
+      "id": "beijing-depth",
+      "source": "data/jobs/mapillary-depth-gs-10000-20261105/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
       "id": "beijing-20k",
       "source": "data/jobs/mapillary-beijing-rig-baseline-20000/world",
       "asset": "scene.ply",
@@ -135,6 +144,23 @@
     "experiments/depth-v2/view-01-source.png",
     "experiments/depth-v2/view-01-visual.png",
     "experiments/depth-v2/view-02-source.png",
-    "experiments/depth-v2/view-02-visual.png"
+    "experiments/depth-v2/view-02-visual.png",
+    "experiments/depth-warp/index.html",
+    "experiments/depth-warp/summary.json",
+    "experiments/depth-warp/images/observed-04.png",
+    "experiments/depth-warp/images/observed-05.png",
+    "experiments/depth-warp/images/observed-06.png",
+    "experiments/depth-warp/images/stereo.png",
+    "experiments/depth-warp/images/depth-raw.png",
+    "experiments/depth-warp/images/depth-consistent.png",
+    "experiments/depth-warp/images/depth-mask.png",
+    "experiments/depth-warp/images/gray-control.png",
+    "experiments/depth-warp/images/diffusion.png",
+    "experiments/depth-warp/images/observed-01.png",
+    "experiments/depth-warp/images/gs-baseline-01.png",
+    "experiments/depth-warp/images/gs-generated-01.png",
+    "experiments/depth-warp/images/observed-03.png",
+    "experiments/depth-warp/images/gs-baseline-03.png",
+    "experiments/depth-warp/images/gs-generated-03.png"
   ]
 }

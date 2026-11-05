@@ -56,6 +56,15 @@
       "detail": "48 real + 1 generated view · 2,000 steps · Quality FAIL"
     },
     {
+      "id": "beijing-depth",
+      "title": "Beijing · depth-guided generated view",
+      "description": "Observed pixels were reprojected with locally calibrated relative depth; masked MPS diffusion supplied the remaining pixels. The generated view has an estimated, reused pose and does not establish new geometry.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-depth/world.json",
+      "thumbnailPath": "/worlds/beijing-depth/preview.jpg",
+      "detail": "48 real + 1 depth-guided synthetic view · 10,000 Metal steps · Quality FAIL"
+    },
+    {
       "id": "beijing-20k",
       "title": "Beijing · capacity 20k",
       "description": "Longer training and larger capacity together; held-view PSNR fell from 14.72 to 12.68 dB.",

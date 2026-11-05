@@ -26,6 +26,7 @@ COMMONS = 'https://commons.wikimedia.org/wiki/Category:Photographs_of_Beijing_fr
 TRIALS = [
  ('beijing-10k', 'mapillary-beijing-rig-baseline-10000/world', 'Beijing · observed 10k', '48 real crops · 150,000 splats · Quality FAIL', 'Real photographs only; fixed panorama rigs. Blurred structures and stretched geometry remain.'),
  ('beijing-generated', 'mapillary-beijing-generated-gs-smoke/world', 'Beijing · generated input', '48 real + 1 generated view · 2,000 steps · Quality FAIL', 'Local diffusion output was included in Metal training. An integration experiment, not evidence of improved reconstruction.'),
+ ('beijing-depth', 'mapillary-depth-gs-10000-20261105/world', 'Beijing · depth-guided generated view', '48 real + 1 depth-guided synthetic view · 10,000 Metal steps · Quality FAIL', 'Observed pixels were reprojected with locally calibrated relative depth; masked MPS diffusion supplied the remaining pixels. The generated view has an estimated, reused pose and does not establish new geometry.'),
  ('beijing-20k', 'mapillary-beijing-rig-baseline-20000/world', 'Beijing · capacity 20k', '750,000 splats · 69 MB · Quality FAIL', 'Longer training and larger capacity together; held-view PSNR fell from 14.72 to 12.68 dB.'),
  ('beijing-2k', 'mapillary-beijing-rig-baseline/world', 'Beijing · observed 2k', '48 real crops · 7,015 splats · Quality FAIL', 'The first constrained-rig Gaussian baseline. Training and export worked, while the reconstructed appearance remained blurry.'),
  ('beijing-video-baseline', 'mapillary-video-4to6-20261105/gs-real48-10000/world', 'Beijing · matched real-only baseline', '48 real crops · 10,000 Metal steps · Quality FAIL', 'The matched real-only baseline for the 65-frame panorama experiment. Its rendered building edges remain blurry; target #5 geometry participated in all-image SfM.'),
@@ -52,6 +53,9 @@ IMAGES = {
 
 # Snapshot of explicitly selected experiment stages; future jobs do not publish metadata silently.
 HISTORY_TRIALS = ['desk-video-15s', 'desk-video-full-sdr', 'dozer-1500', 'dozer-estimated-1500', 'dozer-independent-120', 'dozer-pipeline-24', 'dozer-proof-20261104', 'dozer-revisit-export', 'dozer-smoke', 'mapillary-beijing-baseline', 'mapillary-beijing-capacity-comparison', 'mapillary-beijing-crops', 'mapillary-beijing-direction2', 'mapillary-beijing-direction2-poses', 'mapillary-beijing-gap-inpaint-gs10000', 'mapillary-beijing-gap-inpaint-gs10000-v2', 'mapillary-beijing-gap-inpaint-stereo-widefov-v2', 'mapillary-beijing-gap-metrics-gs10000-diffusion', 'mapillary-beijing-gap-metrics-gs10000-gray', 'mapillary-beijing-gap-metrics-stereo-widefov-v2-diffusion', 'mapillary-beijing-gap-metrics-stereo-widefov-v2-gray', 'mapillary-beijing-gap-render', 'mapillary-beijing-gap-render-10000', 'mapillary-beijing-gap-render-20000', 'mapillary-beijing-gap-render-view5', 'mapillary-beijing-generated-augmentation-gs10000', 'mapillary-beijing-generated-augmentation-stereo', 'mapillary-beijing-generated-augmentation-stereo-v2', 'mapillary-beijing-generated-gs-render', 'mapillary-beijing-generated-gs-smoke', 'mapillary-beijing-holdout', 'mapillary-beijing-poses', 'mapillary-beijing-rig-baseline', 'mapillary-beijing-rig-baseline-10000', 'mapillary-beijing-rig-baseline-20000', 'mapillary-beijing-rig-holdout', 'mapillary-beijing-rig-poses', 'mapillary-beijing-rig-poses-v2', 'mapillary-beijing-stereo-gap-v1', 'mapillary-beijing-stereo-gap-view01', 'mapillary-beijing-stereo-gap-view04', 'mapillary-beijing-stereo-gap-view04-padded', 'mapillary-beijing-stereo-gap-view04-relaxed', 'mapillary-beijing-stereo-gap-view04-wide', 'mapillary-beijing-stereo-gap-view04-widefov', 'mapillary-beijing-stereo-gap-view04-widefov-comparison', 'mapillary-beijing-stereo-gap-view04-widefov-repro', 'mapillary-beijing-stereo-gap-view04-widefov-v2', 'mapillary-beijing-stereo-gap-view04-widefov-v2-comparison', 'mapillary-beijing-training-comparison', 'mapillary-beijing-training-view', 'mapillary-beijing-training-view-10000', 'mapillary-beijing-wide-stereo-input', 'mapillary-beijing-wide-stereo-input-repro', 'mapillary-diffusion-smoke', 'mapillary-diffusion-smoke-input']
+HISTORY_TRIALS += ['mapillary-depth-stereo-view02-corrected-20261105', 'mapillary-depth-warp-view02-v3-20261105', 'mapillary-depth-warp-comparison-20261105', 'mapillary-depth-inpaint-view02-20261105', 'mapillary-depth-inpaint-vs-real-20261105', 'mapillary-depth-inpaint-vs-gray-20261105', 'mapillary-depth-augmented-view02-20261105', 'mapillary-depth-gs-10000-20261105']
+HISTORY_TRIALS += [f'mapillary-depth-render-view{view}-{kind}' for view in ('01', '03')
+                   for kind in ('baseline', 'generated', 'comparison')]
 
 def read_json(path):
     return json.loads(path.read_text())
@@ -106,12 +110,20 @@ def prepare_worlds():
             if slug == 'beijing-generated':
                 old = provenance['notes']
                 notes += old[old.index('Current augmented dataset:'):]
+            elif slug == 'beijing-depth':
+                notes += ('One 512x512 generated training view used source photos pano_000004 and pano_000006 view 02, '
+                    'Depth Anything V2 Small on MPS, sparse SfM inverse-depth calibration, source-consistency gating, '
+                    'and Stable Diffusion 1.5 Inpainting on MPS for 34.31% missing pixels. Its camera is the existing '
+                    'all-image SfM pose for pano_000005 view 02, not independently estimated from generated RGB. '
+                    'See /experiments/depth-warp/ for real/synthetic labels and matched renders.')
             else:
                 notes += 'No diffusion-generated training pixels were used in this variant.'
             provenance['notes'] = notes
             credit = ('Source photography: Cicero101 / Mapillary, redistributed by Wikimedia Commons. CC-BY-SA-4.0: https://creativecommons.org/licenses/by-sa/4.0/\n' + COMMONS + '\nModifications: perspective reprojection, camera estimation, Gaussian reconstruction and rendered preview. Per-image attribution is in /experiments/mapillary/sources.json.\n')
-            if slug == 'beijing-generated':
+            if slug in ('beijing-generated', 'beijing-depth'):
                 credit += 'One synthetic training view used Stable Diffusion 1.5 Inpainting. Model terms: CreativeML OpenRAIL-M, ' + MODEL_LICENSE + '. Generated pixels are hypotheses, not observed geometry.\n'
+            if slug == 'beijing-depth':
+                credit += 'Source-crop relative depth used Depth Anything V2 Small, Apache-2.0: https://github.com/DepthAnything/Depth-Anything-V2.\n'
         else:
             credit = (src / 'SOURCE_LICENSE').read_text()
             if slug == 'dozer-24':
@@ -263,7 +275,7 @@ REPORT_HTML = r'''<!doctype html>
 <h2>실제 사진과 겹쳐 보기</h2><p class="small">불투명도를 움직여 생성된 사람·간판과 건물 선의 어긋남을 관찰하세요.</p>
 <div class="tools"><label for="opacity">생성 결과 불투명도</label><input id="opacity" type="range" min="0" max="100" value="50"><output id="value" for="opacity">50%</output></div>
 <figure class="blend"><img id="under" alt="비교용 실제 사진"><img id="over" alt="겹쳐진 디퓨전 결과"></figure>
-<h2 id="worlds">내보낸 GS 장면을 모두 열어 보기</h2><p>11개 실험을 기존 4개 장면과 함께 갤러리에서 볼 수 있습니다. 아래 수치는 저장된 실제 실행 결과입니다. 브라우저 미리보기는 실제 GS 렌더링이며 원본 사진을 대신 사용하지 않았습니다.</p>
+<h2 id="worlds">내보낸 GS 장면을 모두 열어 보기</h2><p>EXPERIMENT_COUNT개 실험을 기존 4개 장면과 함께 갤러리에서 볼 수 있습니다. 아래 수치는 저장된 실제 실행 결과입니다. 브라우저 미리보기는 실제 GS 렌더링이며 원본 사진을 대신 사용하지 않았습니다.</p>
 <div class="links"><a href="/?world=/worlds/desk/world.json">My desk ↗</a><a href="/?world=/worlds/independent/world.json">Dozer · estimated cameras ↗</a><a href="/?world=/worlds/reconstructed/world.json">Dozer · supplied cameras ↗</a><a href="/?world=/worlds/sample/world.json">Houseplant ↗</a></div>
 <div class="scroll"><table><thead><tr><th>장면</th><th>학습</th><th>산출물</th><th>판정</th></tr></thead><tbody>WORLD_ROWS</tbody></table></div>
 <p class="small">20,000단계 실험은 학습량과 최대 용량을 함께 바꿨습니다. 10,000단계 대비 PSNR 14.72 → 12.68 dB로 악화했습니다. 실제 48장 + 생성 1장으로 실행한 2,000단계 시험은 통합 동작 확인이며 품질 개선을 입증하는 공정한 비교가 아닙니다.</p>
@@ -316,7 +328,7 @@ def prepare_report(worlds, history):
         if 'artifact' in record:
             detail.append(f"{record['artifact'].get('splats', '?')} splats")
         history_rows.append('<tr><td>' + html.escape(record['trial']) + '<small>' + html.escape(record['stage']) + '</small></td><td>' + html.escape(str(record['execution'])) + '</td><td>' + '<br>'.join(html.escape(x) for x in detail) + '</td></tr>')
-    page = REPORT_HTML.replace('WORLD_ROWS', world_rows).replace('HISTORY_ROWS', ''.join(history_rows)).replace('HISTORY_COUNT', str(len(history))).replace('COMMONS_URL', html.escape(COMMONS, quote=True)).replace('MODEL_LICENSE_URL', html.escape(MODEL_LICENSE, quote=True))
+    page = REPORT_HTML.replace('WORLD_ROWS', world_rows).replace('HISTORY_ROWS', ''.join(history_rows)).replace('HISTORY_COUNT', str(len(history))).replace('EXPERIMENT_COUNT', str(len(TRIALS))).replace('COMMONS_URL', html.escape(COMMONS, quote=True)).replace('MODEL_LICENSE_URL', html.escape(MODEL_LICENSE, quote=True))
     assert_public_text(page)
     (out / 'index.html').write_text(page)
     return ['experiments/mapillary/' + x for x in ['index.html', 'summary.json', 'sources.json']] + ['experiments/mapillary/images/' + x for x in IMAGES]
@@ -491,15 +503,22 @@ def prepare_depth_report():
     if inference['status'] != 'PASS' or geometry['status'] != 'PASS' or len(inference['images']) != 3:
         raise ValueError('Expected completed three-view depth diagnostic')
     sample = read_json(ROOT / 'scripts/samples/mapillary-beijing.json')
+    crops = read_json(ROOT / 'data/jobs/mapillary-beijing-crops/crops.json')
+    crop_by_name = {Path(crop['file']).name: crop for crop in crops['crops']}
     out = PUBLIC / 'experiments/depth-v2'
     out.mkdir(parents=True, exist_ok=True)
     rows, files = [], ['experiments/depth-v2/index.html', 'experiments/depth-v2/summary.json']
     for index, image in enumerate(inference['images']):
-        source = sample['images'][index + 4]
+        # Panorama filenames are one-based; source inventory indices are zero-based.
+        source_index = index + 3
+        source = sample['images'][source_index]
         expected = f'pano_{index + 4:06d}_view_02.png'
         check = geometry['results'][index]
         if Path(image['source']).name != expected or check['image'] != expected:
             raise ValueError('Depth image and SfM observation ordering differ')
+        crop = crop_by_name[expected]
+        if crop['sourceIndex'] != source_index or source['image_id'] not in crop['sourceId']:
+            raise ValueError('Depth crop provenance differs from source inventory')
         expected_source = ROOT / 'data/jobs/mapillary-beijing-rig-poses-v2/dataset/images' / expected
         if Path(image['source']).resolve() != expected_source.resolve() or expected_source.is_symlink():
             raise ValueError('Depth source is not the selected public panorama crop')
@@ -519,7 +538,7 @@ def prepare_depth_report():
                      'inferenceSeconds': image['inferenceSeconds'],
                      'sparseObservations': check['sparseObservations'],
                      'rankCorrelation': check['spearmanRelativeVsInverseSfMZ']})
-    summary = {'schemaVersion': 1, 'status': 'PASS for MPS relative-depth inference and observed-point ordering; GS improvement NOT RUN',
+    summary = {'schemaVersion': 1, 'status': 'PASS for MPS relative-depth inference and observed-point ordering; subsequent reprojection and GS comparison at /experiments/depth-warp/',
                'model': inference['model'], 'revision': inference['revision'],
                'modelLicense': 'Apache-2.0 for Depth Anything V2 Small',
                'sourceLicense': 'CC-BY-SA-4.0; Cicero101 / Mapillary via Wikimedia Commons',
@@ -535,13 +554,172 @@ def prepare_depth_report():
 <style>:root{{font-family:system-ui,-apple-system,sans-serif;background:#f4f3ec;color:#24372a}}*{{box-sizing:border-box}}body{{max-width:1150px;margin:auto;padding:28px}}a{{color:#426534}}nav{{display:flex;gap:16px;flex-wrap:wrap}}h1{{font-size:clamp(30px,5vw,58px);letter-spacing:-.04em;line-height:1.05}}p{{line-height:1.65;color:#536254;max-width:950px}}article{{margin:36px 0;padding:20px;background:#e6e9df;border-radius:12px}}.pair{{display:grid;grid-template-columns:1fr 1fr;gap:14px}}figure{{margin:0}}img{{width:100%;display:block;border-radius:7px}}figcaption{{padding:8px 0}}.status{{border-left:4px solid #819b68;padding:12px 18px;background:#e3eadb}}@media(max-width:650px){{.pair{{grid-template-columns:1fr}}body{{padding:16px}}}}</style>
 <nav><a href="/">장면 모음 ↗</a><a href="/experiments/video-4to6/">65프레임 실험 ↗</a><a href="/experiments/mapillary/">기존 비교 ↗</a></nav><h1>사진에서 깊이를 추정해 봤다</h1>
 <p>실제 360° 사진 4·5·6에서 같은 방향의 512×512 시야를 잘라, Depth Anything V2 Small을 이 맥의 MPS/Metal에서 실행했다. 회색 지도는 사진 속 각 픽셀의 <strong>상대적인 앞뒤</strong>를 예측한다. 각 사진마다 따로 정규화했으므로 회색값을 사진 사이에서 거리처럼 비교할 수 없다.</p>
-<div class="status"><strong>깊이 추론 PASS · GS 개선 NOT RUN.</strong> 세 사진에서 예측한 앞뒤 순서는 기존 사진 기반 희소 3D 점과 대체로 일치했다. 이는 같은 사진에서 얻은 SfM 추정치와의 내부 비교이지 실제 거리 측정이나 독립 검증이 아니다.</div>
+<div class="status"><strong>깊이 추론 PASS.</strong> 세 사진에서 예측한 앞뒤 순서는 기존 사진 기반 희소 3D 점과 대체로 일치했다. 이는 같은 사진에서 얻은 SfM 추정치와의 내부 비교이지 실제 거리 측정이나 독립 검증이 아니다.</div>
 {cards}
-<h2>다음 검증</h2><p>예측 상대 깊이를 기존 카메라 위치와 희소점에 맞춰 조정하고, 원본 4·6의 픽셀을 관측된 5의 위치로 옮겨야 한다. 실제 5의 RGB를 이 생성·보정 과정에서 제외한 뒤, 가려진 영역의 비율과 실제 사진과의 차이, 여러 방향의 3D 렌더를 기존 스테레오 및 GS와 비교한다. 지금은 깊이 지도를 GS 학습에 넣거나 새로운 3D 장면을 만들지 않았다.</p>
+<h2>후속 실험</h2><p>사진 4·6의 상대 깊이를 SfM 희소점에 맞춰 보정하고, 관측 RGB를 사진 5의 카메라로 옮긴 뒤 비어 있는 부분을 확산 모델로 채웠다. <a href="/experiments/depth-warp/">투영·생성·3D 결과 비교 ↗</a>. 사진 5의 RGB는 투영·생성 과정에 쓰지 않았지만 전체 이미지 SfM은 사진 5를 사용했다.</p>
 <p>사진: Cicero101 / Mapillary, Wikimedia Commons 재배포, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA-4.0</a>. 수정: 구면→평면 투영 및 상대 깊이 시각화. 모델: <a href="https://github.com/DepthAnything/Depth-Anything-V2">Depth Anything V2 Small</a>, Apache-2.0. <a href="summary.json">측정·해시 JSON ↗</a>. 원본 대형 사진, 깊이 수치 배열, 모델 가중치와 로컬 로그는 배포하지 않는다.</p></html>'''
     assert_public_text(page)
     (out / 'index.html').write_text(page)
     return files
+
+
+def prepare_depth_warp_report(worlds):
+    """Publish an evidence-bound, image-first account of the depth-guided trial."""
+    jobs = ROOT / 'data/jobs'
+    warp_dir = jobs / 'mapillary-depth-warp-view02-v3-20261105'
+    warp = read_json(warp_dir / 'report.json')
+    coverage = read_json(jobs / 'mapillary-depth-warp-comparison-20261105/report.json')
+    inpaint_dir = jobs / 'mapillary-depth-inpaint-view02-20261105'
+    inpaint = read_json(inpaint_dir / 'report.json')
+    inpaint_rgb = read_json(jobs / 'mapillary-depth-inpaint-vs-real-20261105/report.json')
+    gray_rgb = read_json(jobs / 'mapillary-depth-inpaint-vs-gray-20261105/report.json')
+    augmentation = read_json(jobs / 'mapillary-depth-augmented-view02-20261105/augmentation.json')
+    training = read_json(jobs / 'mapillary-depth-gs-10000-20261105/job.json')
+    world = next((item for item in worlds if item['id'] == 'beijing-depth'), None)
+    if any(item['status'] != 'PASS' for item in (warp, coverage, inpaint, inpaint_rgb, gray_rgb, augmentation, training)):
+        raise ValueError('Depth-guided report requires completed local stages')
+    if world is None or world['execution'] != 'PASS' or warp['targetImagePixelsRead'] is not False:
+        raise ValueError('Depth-guided GS export or held-out RGB boundary was not verified')
+    if augmentation['targetPhotographPixelsRead'] is not False or augmentation['target'] != 'images/pano_000005_view_02.png':
+        raise ValueError('Generated-view augmentation did not preserve target RGB holdout')
+    if inpaint['output']['sha256'] != sha(inpaint_dir / 'completed.png'):
+        raise ValueError('Generated image differs from MPS inpaint report')
+    if inpaint['input']['referenceSha256'] != warp['outputs']['warp-consistent.png']['sha256']:
+        raise ValueError('Inpaint input differs from source-consistent warp')
+    sample = read_json(ROOT / 'scripts/samples/mapillary-beijing.json')
+    crop_report = read_json(jobs / 'mapillary-beijing-crops/crops.json')
+    crop_by_name = {Path(item['file']).name: item for item in crop_report['crops']}
+    for number, sample_index in ((4, 3), (5, 4), (6, 5)):
+        crop = crop_by_name[f'pano_{number:06d}_view_02.png']
+        if crop['sourceIndex'] != sample_index or sample['images'][sample_index]['image_id'] not in crop['sourceId']:
+            raise ValueError('Depth-guided crop/source attribution mismatch')
+    out = PUBLIC / 'experiments/depth-warp'
+    image_dir = out / 'images'
+    image_dir.mkdir(parents=True, exist_ok=True)
+    dataset_images = jobs / 'mapillary-beijing-rig-poses-v2/dataset/images'
+    if sha(dataset_images / 'pano_000005_view_02.png') != coverage['inputs']['reference']['sha256']:
+        raise ValueError('Published target photo differs from held-out RGB evaluation')
+    for source in warp['sources']:
+        if sha(dataset_images / source['name']) != source['sourceSha256']:
+            raise ValueError('Published endpoint differs from learned-depth warp input')
+    stereo_dir = jobs / 'mapillary-depth-stereo-view02-corrected-20261105'
+    images = {
+        'observed-04': dataset_images / 'pano_000004_view_02.png',
+        'observed-05': dataset_images / 'pano_000005_view_02.png',
+        'observed-06': dataset_images / 'pano_000006_view_02.png',
+        'stereo': stereo_dir / 'warp.png',
+        'depth-raw': warp_dir / 'warp.png',
+        'depth-consistent': warp_dir / 'warp-consistent.png',
+        'depth-mask': warp_dir / 'mask-consistent.png',
+        'gray-control': inpaint_dir / 'gray-control.png',
+        'diffusion': inpaint_dir / 'completed.png',
+    }
+    renders = []
+    for view in ('01', '03'):
+        before_dir = jobs / f'mapillary-depth-render-view{view}-baseline'
+        after_dir = jobs / f'mapillary-depth-render-view{view}-generated'
+        before = read_json(before_dir / 'report.json')
+        after = read_json(after_dir / 'report.json')
+        comparison = read_json(jobs / f'mapillary-depth-render-view{view}-comparison/report.json')
+        if any(item['status'] != 'PASS' for item in (before, after, comparison)):
+            raise ValueError(f'Headed Chrome render/compare missing for view {view}')
+        expected = f'images/pano_000005_view_{view}.png'
+        if before['frame'] != expected or after['frame'] != expected:
+            raise ValueError('Matched render camera mismatch')
+        images[f'observed-{view}'] = dataset_images / Path(expected).name
+        images[f'gs-baseline-{view}'] = before_dir / 'input.png'
+        images[f'gs-generated-{view}'] = after_dir / 'input.png'
+        full = comparison['regions']['full']
+        renders.append({
+            'view': view, 'camera': expected, 'browserGpu': after['gpu'],
+            'baselineMae255': full['baseline']['mae'],
+            'generatedMae255': full['completed']['mae'],
+            'baselinePsnrDb': full['baseline']['psnrDb'],
+            'generatedPsnrDb': full['completed']['psnrDb'],
+            'baselineLowOpacityFraction': before['maskedFraction'],
+            'generatedLowOpacityFraction': after['maskedFraction'],
+            'baselinePlySha256': before['assetSha256'],
+            'generatedPlySha256': after['assetSha256'],
+        })
+    inventory = []
+    for name, src in images.items():
+        dst = image_dir / f'{name}.png'
+        shutil.copyfile(src, dst)
+        inventory.append({'name': name, 'path': f'images/{name}.png',
+                          'sha256': sha(dst), 'bytes': dst.stat().st_size})
+    public = {
+        'schemaVersion': 1,
+        'experiment': 'Depth-calibrated reprojection, masked diffusion, matched Gaussian training',
+        'status': {'MPSDepth': 'PASS', 'sparseCalibration': 'PASS',
+                   'observedPixelWarp': 'PASS', 'sourceConsistencyGate': 'PASS',
+                   'MPSInpainting': 'PASS', 'MetalGaussianTraining': 'PASS',
+                   'localHeadedChromeRenders': 'PASS', 'visualQuality': 'FAIL',
+                   'independentGeometryValidation': 'NOT RUN',
+                   'publicBrowserRendering': 'NOT RUN at archive creation; see deployment evidence'},
+        'sourcePhotos': [{'panorama': number, 'imageId': sample['images'][number-1]['image_id'],
+                          'commonsPage': sample['images'][number-1]['commons_page'],
+                          'license': 'CC-BY-SA-4.0'} for number in (4, 5, 6)],
+        'holdout': 'Panorama 5 RGB excluded from warp, inpainting and GS training; all-image SfM used its pixels to estimate pose and sparse initialization.',
+        'geometry': {'method': warp['calibration'], 'scale': 'arbitrary SfM units',
+                     'sourceSparsePairs': [source['sparsePairs'] for source in warp['sources']],
+                     'sourceInternalHoldoutMedianAbsInverseZError': [
+                         source['internalHoldoutMedianAbsInverseZError'] for source in warp['sources']]},
+        'coverage': {'stereoFraction': coverage['variants']['stereo']['projectedSourceFraction'],
+                     'rawDepthWarpFraction': coverage['variants']['learnedRaw']['projectedSourceFraction'],
+                     'sourceConsistentDepthWarpFraction': coverage['variants']['learnedSourceConsistent']['projectedSourceFraction'],
+                     'consistentUnknownFraction': inpaint['input']['syntheticFraction'],
+                     'consistencyRule': warp['coverage']['consistencyRule']},
+        'photometric': {
+            'warp': coverage['variants'],
+            'diffusionFullMae255': inpaint_rgb['regions']['full']['completed']['mae'],
+            'grayControlFullMae255': gray_rgb['regions']['full']['baseline']['mae'],
+            'diffusionFullPsnrDb': inpaint_rgb['regions']['full']['completed']['psnrDb'],
+            'grayControlFullPsnrDb': gray_rgb['regions']['full']['baseline']['psnrDb'],
+            'interpretation': 'Different source supports are not directly comparable. On common pixels stereo beats both depth variants. Full-canvas diffusion versus gray is a small MAE gain but lower PSNR.'},
+        'generation': {'model': inpaint['model'], 'steps': inpaint['settings']['steps'],
+                       'seed': inpaint['settings']['seed'], 'gpuInferenceSeconds': inpaint['inferenceSeconds'],
+                       'processPeakRssBytes': inpaint['processPeakRssBytes']},
+        'gaussian': {'realTrainingImages': 48, 'generatedTrainingImages': 1,
+                     'steps': training['options']['steps'], 'trainingSeconds': training['elapsedSeconds'],
+                     'splats': world['splats'], 'sceneBytes': world['bytes'],
+                     'worldManifest': world['manifest'], 'matchedRenders': renders},
+        'images': inventory,
+    }
+    assert_public_text(json.dumps(public, ensure_ascii=False))
+    write_json(out / 'summary.json', public)
+    by_name = {item['name']: item for item in inventory}
+    def figure(name, caption):
+        return f'<figure><img src="{by_name[name]["path"]}" alt="{html.escape(caption, quote=True)}"><figcaption>{html.escape(caption)}</figcaption></figure>'
+    source_links = ' · '.join(
+        f'<a href="{html.escape(photo["commonsPage"], quote=True)}">실제 사진 {photo["panorama"]} 원본·저작자 ↗</a>'
+        for photo in public['sourcePhotos'])
+    render_cards = ''.join(
+        f'<section><h3>사진 5 · 방향 {item["view"]}</h3><div class="grid">'
+        + figure(f'observed-{item["view"]}', '실제 사진 5 · 학습 RGB 제외')
+        + figure(f'gs-baseline-{item["view"]}', '실제 사진 48장만 학습한 GS')
+        + figure(f'gs-generated-{item["view"]}', '실제 48장 + 생성 1장 학습한 GS')
+        + '</div><p>실제 사진 대비 RGB MAE '
+        + f'{item["baselineMae255"]:.2f} → {item["generatedMae255"]:.2f}; '
+        + f'PSNR {item["baselinePsnrDb"]:.2f} → {item["generatedPsnrDb"]:.2f} dB. '
+        + '같은 추정 카메라로 Chrome에서 렌더했다.</p></section>' for item in renders)
+    page = f'''<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Groundshift · 깊이 기반 중간 시점 실험</title>
+<style>:root{{font-family:system-ui,-apple-system,sans-serif;background:#f4f3ec;color:#24372a}}*{{box-sizing:border-box}}body{{max-width:1220px;margin:auto;padding:28px}}a{{color:#426534}}nav{{display:flex;gap:16px;flex-wrap:wrap}}h1{{font-size:clamp(31px,5vw,58px);letter-spacing:-.04em;line-height:1.05}}h2{{margin-top:42px}}p{{line-height:1.65;color:#536254;max-width:1040px}}.status{{border-left:4px solid #b06646;padding:12px 18px;background:#f2e5d8}}.grid{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}figure{{margin:0}}img{{width:100%;display:block;border-radius:7px;background:#121b14}}figcaption{{padding:8px 0;font-size:14px}}section{{margin:34px 0;padding:20px;background:#e6e9df;border-radius:12px}}@media(max-width:750px){{.grid{{grid-template-columns:1fr 1fr}}body{{padding:16px}}}}@media(max-width:490px){{.grid{{grid-template-columns:1fr}}}}</style>
+<nav><a href="/">장면 모음 ↗</a><a href="/experiments/depth-v2/">깊이 예측 지도 ↗</a><a href="/experiments/video-4to6/">65프레임 영상 ↗</a></nav>
+<h1>깊이를 이용해 중간 장면 만들기</h1>
+<p>실제로 촬영된 구면 사진 4와 6에서 같은 방향을 잘랐다. 각 픽셀의 상대 깊이를 M2에서 추정하고 기존 SfM 희소 3D 점에 맞춘 뒤, 사진 5의 추정 카메라로 두 사진의 <strong>관측 픽셀</strong>을 옮겼다. 두 출처가 서로 맞지 않는 픽셀은 버리고 빈 영역만 확산 모델로 채웠다. 사진 5의 RGB는 생성이나 GS 학습에 쓰지 않았지만, 카메라 위치와 초기 3D 점을 구한 전체 이미지 SfM에는 쓰였다.</p>
+<div class="status"><strong>로컬 실행 PASS · 3D 품질 개선 FAIL.</strong> 원본 48장과 생성 이미지 1장을 10,000단계씩 맞춰 비교했다. 아래 결과는 실제 브라우저 렌더이며, 새 장면도 <a href="/?world={world['manifest']}">직접 탐색할 수 있다 ↗</a>. 밝고 그럴듯한 부분은 생성된 가설이지 실제 거리의 측정값이 아니다.</div>
+<h2>1 · 관측 원본</h2><div class="grid">{figure('observed-04','실제 사진 4 · 입력')}{figure('observed-05','실제 사진 5 · 결과 평가용 RGB')}{figure('observed-06','실제 사진 6 · 입력')}</div>
+<h2>2 · 사진을 중간 카메라로 옮기기</h2><p>동일한 512² 방향에서 스테레오는 {public['coverage']['stereoFraction']*100:.1f}%를 채웠다. 깊이 기반 투영은 {public['coverage']['rawDepthWarpFraction']*100:.1f}%를 채운 것처럼 보였지만 어긋난 물체가 많았다. 두 출처 간 깊이·색 일치 검사 후에는 {public['coverage']['sourceConsistentDepthWarpFraction']*100:.1f}%만 관측 픽셀로 남겼다. 서로 다른 영역의 MAE를 직접 순위 비교하면 안 된다. 양쪽에 공통으로 있는 픽셀에서는 스테레오가 더 정확했다.</p>
+<div class="grid">{figure('stereo','스테레오로 옮긴 관측 픽셀 · 나머지 검정')}{figure('depth-raw','깊이 투영 원본 · 높은 채움률, 눈에 띄는 중복')}{figure('depth-consistent','두 출처 일치 검사 후 관측 픽셀')}</div>
+<h2>3 · 빈 {public['coverage']['consistentUnknownFraction']*100:.1f}% 생성</h2><p>흰 마스크만 Stable Diffusion 1.5 Inpainting으로 MPS에서 채웠다. 실제 사진 5와의 전체 RGB MAE는 단색 회색 채움 {public['photometric']['grayControlFullMae255']:.2f}, 확산 채움 {public['photometric']['diffusionFullMae255']:.2f}로 작은 차이다. PSNR은 각각 {public['photometric']['grayControlFullPsnrDb']:.2f}, {public['photometric']['diffusionFullPsnrDb']:.2f} dB로 오히려 회색이 높다. 이런 픽셀 점수는 그럴듯함이나 3D 일관성을 판단하지 않는다.</p>
+<div class="grid">{figure('depth-mask','흰색 부분만 생성')}{figure('gray-control','단색 채움 비교')}{figure('diffusion','MPS 확산 생성 · 실제 물체 보존 보장 없음')}</div>
+<h2>4 · 같은 조건의 GS 렌더</h2><p>원본만 학습한 장면과 생성 1장을 더한 장면을 실제 사진 5의 서로 다른 두 방향에서 렌더했다. 생성 이미지의 포즈는 기존 전체 이미지 SfM에서 가져온 추정값이다. 새로운 시점의 실제 정합이나 미터 단위 위치가 확인된 것은 아니다.</p>{render_cards}
+<p><a href="/?world=/worlds/beijing-10k/world.json">실제 48장 GS ↗</a> · <a href="/?world={world['manifest']}">실제 48장 + 생성 1장 GS ↗</a> · <a href="summary.json">측정·해시·상태 JSON ↗</a></p>
+<h2>출처와 한계</h2><p>{source_links}. Cicero101 / Mapillary, Wikimedia Commons 재배포, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA-4.0</a>. 수정: 구면 투영, 깊이 보정, 재투영, 인페인팅 및 GS 렌더. <a href="https://github.com/DepthAnything/Depth-Anything-V2">Depth Anything V2 Small</a> Apache-2.0, <a href="{MODEL_LICENSE}">Stable Diffusion 1.5 Inpainting CreativeML OpenRAIL-M</a>. 원본 대형 사진, 깊이 배열, 모델 가중치와 로컬 학습 로그는 배포하지 않는다.</p></html>'''
+    assert_public_text(page)
+    (out / 'index.html').write_text(page)
+    return ['experiments/depth-warp/index.html', 'experiments/depth-warp/summary.json'] + [
+        'experiments/depth-warp/' + item['path'] for item in inventory]
 
 
 def main():
@@ -551,7 +729,7 @@ def main():
     args = parser.parse_args()
     worlds = prepare_worlds()
     history = collect_history()
-    files = prepare_report(worlds, history) + prepare_video_report(worlds) + prepare_depth_report()
+    files = prepare_report(worlds, history) + prepare_video_report(worlds) + prepare_depth_report() + prepare_depth_warp_report(worlds)
     definitions = [dict(id=t[0], source='data/jobs/' + t[1], asset='scene.ply', format='ply', credits=['SOURCE_LICENSE']) for t in TRIALS]
     write_json(SPEC, dict(version=1, worlds=definitions, files=files))
     catalog_path = PUBLIC / 'worlds/catalog.json'

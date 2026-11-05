@@ -9,6 +9,7 @@ const sceneUrl = (path: string) => `/?world=${encodeURIComponent(path)}`;
 const experimentReport = "/experiments/mapillary/index.html";
 const videoExperimentReport = "/experiments/video-4to6/";
 const depthExperimentReport = "/experiments/depth-v2/";
+const depthWarpReport = "/experiments/depth-warp/";
 const categories = {
   capture: "Personal capture",
   reconstruction: "Local reconstruction",
@@ -36,6 +37,7 @@ export default function App() {
   const viewerOpen = Boolean(request.path) || localMode;
   const experimentCount = scenes.filter((scene) => scene.category === "experiment").length;
   const videoExperimentAvailable = scenes.some((scene) => scene.id === "beijing-video-rife");
+  const depthWarpAvailable = scenes.some((scene) => scene.id === "beijing-depth");
   const selectedScene = scenes.find((scene) => scene.manifestPath === request.path);
 
   useEffect(() => {
@@ -191,6 +193,7 @@ export default function App() {
         <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
         {videoExperimentAvailable && <a href={videoExperimentReport}>Watch 65-frame panorama <span aria-hidden="true">↗</span></a>}
         {videoExperimentAvailable && <a href={depthExperimentReport}>Inspect photo depth maps <span aria-hidden="true">↗</span></a>}
+        {depthWarpAvailable && <a href={depthWarpReport}>Depth-guided scene experiment <span aria-hidden="true">↗</span></a>}
       </section>}
       <div className="collection-toolbar">
         <div className="collection-filters" role="group" aria-label="Filter scenes">
@@ -229,7 +232,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}

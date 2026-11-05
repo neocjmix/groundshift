@@ -14,7 +14,7 @@
 | Future iOS/ARKit capture | **Candidate, not held:** synchronized RGB, camera intrinsics and tracking transforms; supported devices/configurations may also supply scene depth and confidence. A custom capture app/export would be needed. | No ARKit stream exists in Groundshift today. ARKit local tracking is not automatically a globally georeferenced, drift-free route, and depth support must be checked on the actual iPhone. | [Apple camera intrinsics](https://developer.apple.com/documentation/arkit/arcamera/intrinsics), [camera transform](https://developer.apple.com/documentation/arkit/arcamera/transform), [scene depth](https://developer.apple.com/documentation/arkit/arframe/smoothedscenedepth) |
 | Future phone sensors | **Candidate, not held:** timestamped gyro, acceleration, compass/magnetometer, GPS accuracy and perhaps device calibration, if explicitly recorded and synchronized. | Ordinary exported video or the current Mapillary manifest does not establish these measurements. Sensor axes, camera-to-sensor transform, clock alignment, biases and uncertainty would need calibration. | No implemented capture/import path |
 
-The public [observation catalog](https://groundshift-viewer-production.up.railway.app/) has 15 exported scene variants and selected experiment images/reports. Railway holds curated *outputs*, not the original private MOV, full source panoramas, model weights, complete logs, or local training environment. The source photos' reuse terms and the user's private-footage permissions differ.
+The public [observation catalog](https://groundshift-viewer-production.up.railway.app/) has 16 exported scene variants after the depth-guided observation release and selected experiment images/reports. Railway holds curated *outputs*, not the original private MOV, full source panoramas, model weights, complete logs, or local training environment. The source photos' reuse terms and the user's private-footage permissions differ.
 
 ## 2. Executed topology
 
@@ -35,6 +35,7 @@ flowchart LR
     U[CPU SfM / undistortion<br/>poses + sparse points]
     Z[Relative depth on real crops<br/>Depth Anything V2 on MPS]
     T[Stereo disparity + source RGB warp<br/>known pixels + unknown mask]
+    L[Affine inverse-Z depth calibration<br/>source RGB warp + consistency gate]
   end
   subgraph G[Generated appearance]
     I[2D masked diffusion on MPS<br/>completed target crop]
@@ -50,8 +51,12 @@ flowchart LR
   end
   P --> C --> S
   C --> Z
+  Z --> L
+  S --> L
+  C --> L
   S --> T
   C --> T --> I
+  L --> I
   P --> R --> M
   S --> M
   S --> A
@@ -65,10 +70,9 @@ flowchart LR
   P --> E
   W --> PBL
   E --> PBL
-  Z -. calibration and reprojection NOT RUN .-> T
 ```
 
-The arrow from SfM to the RIFE midpoint **does not mean RIFE estimated a pose**. The experiment placed one generated panorama at the already estimated camera rig of real photo 5. The photo 5 RGB was withheld from GS appearance training, but all-image SfM had used it to estimate that pose and initial geometry. The 65 RIFE frames are 65 image hypotheses, **not 65 camera observations**. The 2D inpainted crop similarly borrowed an existing estimated target pose. No generated image independently establishes position, orientation, baseline or parallax.
+The arrow from SfM to the RIFE midpoint **does not mean RIFE estimated a pose**. In that follow-up video trial the original file indices were **zero-based 4 and 6**, and one generated panorama used the already estimated rig of **zero-based 5**. That target RGB was withheld from GS appearance training, but all-image SfM had used it to estimate the pose and initial geometry. The earlier stereo/depth trial instead uses the separate `pano_000004`/`pano_000006` pair and target `pano_000005` (one-based panorama names). The 65 RIFE frames are 65 image hypotheses, **not 65 camera observations**. The 2D inpainted crop similarly borrowed an existing estimated target pose. No generated image independently establishes position, orientation, baseline or parallax.
 
 ## 3. Processing inventory: input → new information → dependency/limit
 
@@ -79,7 +83,8 @@ The arrow from SfM to the RIFE midpoint **does not mean RIFE estimated a pose**.
 | Panorama projection / **Executed** | Original 360 RGB, chosen yaw/pitch/FOV and output resolution | Six 512² overlapping perspective crops per sphere and exact *relative* rotations/intrinsics | The six views share a virtual center. `yaw=0` is relative to the pano image, not geographic north; world translation is still unknown. Widened 768²/120° source crops were also tested. |
 | Pose estimation / **Executed** | Overlapping observed RGB, camera intrinsics/model and known panorama rig; optional correct image order | Matched features, estimated world camera rotations/centers, sparse 3D points, registration/reprojection diagnostics | PyCOLMAP yields an internally consistent **arbitrary-scale** frame; GPS and gravity are not integrated. Unconstrained six-camera panorama SfM failed co-location despite 54/54 registration; fixed-rig SfM corrected co-location. |
 | Sparse-depth evidence / **Executed** | SfM poses, calibrated rays and triangulated point tracks | Sparse per-feature 3D locations/depth; triangulation angles and point colors | Low parallax leaves many points weak. Reprojection error and exact rig constraints do not certify geometry everywhere. |
-| Learned monocular depth / **Executed diagnostic** | One real 512² crop and pinned Depth Anything V2 Small weights | Dense *relative* depth array/visualization for each of photos 4, 5, 6 | M2/MPS ran. Depth order correlates 0.876–0.913 with the same all-image SfM's sparse inverse-Z; this is internal evidence, not independent truth, meters or cross-view consistency. |
+| Learned monocular depth / **Executed** | One real 512² crop and pinned Depth Anything V2 Small weights | Dense *relative* depth array/visualization for each of photos 4, 5, 6 | M2/MPS ran. Depth order correlates 0.876–0.913 with the same all-image SfM's sparse inverse-Z; this is internal evidence, not independent truth, meters or cross-view consistency. |
+| SfM-scale depth calibration and source RGB warp / **Executed** | Endpoint relative-depth arrays, endpoint sparse SfM tracks, estimated endpoint and target cameras, source RGB | Two robust inverse-Z fits, internal sparse holdout residuals, z-buffered target projections and source agreement mask | Raw projection covered 98.86% but visibly misprojected many surfaces. Source agreement retained 65.69%; on shared target pixels corrected stereo had lower MAE. Target RGB was excluded from warp generation, but target pose/initialization came from all-image SfM. See [bounded depth-warp experiment](DEPTH_WARP_EXPERIMENT.md). |
 | Stereo disparity and reprojection / **Executed** | Two observed RGB crops, two estimated poses/intrinsics, target camera pose | Disparity/depth estimate, z-buffered target RGB fragments, binary unknown mask and coverage report | Best corrected wide-FOV test filled 24.877% of target; 75.123% remained unknown. Target RGB was excluded from this computation; target pose came from all-image SfM. |
 | GS render-gap mask / **Executed** | Existing Gaussian PLY and requested camera | Rendered RGBA, composite and low-opacity mask | Transparent pixels are a hole heuristic; opaque-but-wrong pixels are not detected. |
 | 2D diffusion inpainting / **Executed** | A partial target RGB image, binary mask, prompt, seed and MPS model | Synthesized RGB in masked region plus hashes/settings/log | Keeps unmasked pixels, but does not guarantee multiview 3D consistency. The observed street trial invented details and did not pass faithful-view quality. |
@@ -99,7 +104,7 @@ The arrow from SfM to the RIFE midpoint **does not mean RIFE estimated a pose**.
 | Global panorama heading / **Absent** | Obtain trustworthy compass/heading metadata or estimate orientation from a calibrated sensor/camera rig, then reconcile with SfM. | Yaw alignment of a panorama to the map and possible pose initialization. | The current manifest has no heading field. Magnetic north needs calibration/declination handling; pano seam/stitch orientation must be related to the sensor. |
 | Gravity and camera/sensor motion / **Absent** | Future synchronized gyro/accelerometer or ARKit tracking. | Rotation prior, gravity-up, short-term motion and pose-estimation initialization. | Clock sync, camera-to-IMU extrinsics, biases and drift; acceleration is not a reliable standalone translation by double integration. |
 | Measured depth / **Absent for this sequence** | A supported future ARKit depth capture, stereo/depth sensor or independent reference measurement. | Scale/geometry constraint, depth validation, occlusion-aware reprojection. | Actual device support, camera/depth alignment, confidence and valid-range checks. Current learned depth is relative, not measured depth. |
-| Dense depth in SfM coordinates / **NOT RUN** | Fit per-view scale/shift or inverse-depth mapping to sparse SfM points, then enforce cross-view reprojection agreement; compare photo 5 without using its RGB in training. | Potentially larger known-pixel coverage, 3D point seeding, depth regularization and more reliable inpaint masks. | Avoid overfitting same-image sparse points; report metric-agnostic errors, occlusions and conflicting views. A plausible depth color map alone is insufficient. |
+| Dense depth in SfM coordinates / **Executed bounded prototype** | Per-view robust affine inverse-depth fit to sparse endpoint tracks; cross-source depth/RGB agreement; photo 5 RGB held out from construction. | Larger projected support and a conservative observed-pixel mask for one 512² target direction. | This did **not** produce metric or independently verified geometry. The sparse calibration points and target pose used all-image SfM, singly sourced pixels had no cross-view check, and shared-support stereo error was lower. Further depth regularization or full-sphere fusion is NOT RUN. |
 | Truly new target camera / **NOT RUN** | Validated metric/relative trajectory interpolation with pose uncertainty, ARKit capture, or source-only SfM/georegistration. | A pose to which novel RGB can be assigned without borrowing the withheld photo's solved pose. | A generated frame has no intrinsic camera location. Interpolated trajectory poses are hypotheses until checked against a real view or independent sensor. |
 | Multiview-consistent hallucination / **NOT RUN** | Generate/refine several overlapping target views jointly with shared cameras/depth/visibility and test on withheld physical positions. | Coherent 3D appearance, if a supported local model and data allow it. | Consistency, memory, license and M2 feasibility must be validated. One pretty image or 2D temporal coherence does not establish this. |
 | Spherical dense depth / **NOT RUN** | Predict depth for all directions or stitch calibrated overlapping crop predictions into one panorama. | A depth/ray hypothesis over the full 360° capture rather than one crop. | Crop-relative scales, boundaries and overlap must agree; the existing three V2 maps are per-view and separately normalized for display. |
@@ -115,17 +120,27 @@ The arrow from SfM to the RIFE midpoint **does not mean RIFE estimated a pose**.
 | Crop direction, count, FOV and resolution | Six yaw directions at 60° intervals, 90° FOV, 512²; stereo sources also tested at 120°/768² | Angular overlap, feature pixels and ray calibration | More crops from the *same sphere* do not add physical positions. Intrinsics must be recomputed exactly after cropping/resizing. |
 | Video frame sampling | Original MOV sampled at 4 fps / 99 frames, up to 960px; source 30 fps video | Number of observed RGB images offered to SfM/GS | Keeping all compressed frames adds near-duplicates, compute and motion blur; skipping too many loses overlap. Nominal offsets are not measured camera poses. |
 | Generated-frame count | RIFE made 65 full spheres; only one midpoint sphere became six GS views | 2D temporal density versus number of training images | The 65 frames do not create 65 known physical stations. More synthetic crops can amplify pose and appearance contradictions. |
-| Depth model and resolution | V2 Small ran on three 512² real crops; DA3 multi-view remains unrun | Relative depth detail, perhaps cross-view confidence with a suitable model | Needs calibration, cross-view checks, M2 memory validation and separate licensing before GS use. |
+| Depth model and resolution | V2 Small ran on three 512² real crops and two endpoint depth maps were calibrated to sparse SfM; DA3 multi-view remains unrun | Relative depth detail and projected observed-pixel support | Calibration and a source agreement gate ran, but the shared-pixel comparison favored stereo. A stronger model needs separate M2 memory, license and multi-view verification before its outputs can be trusted in GS. |
 | Gap-filling method | Observed-pixel stereo warp, gray control, SD1.5 masked inpaint, RIFE optical flow; LTX candidate unrun | Fraction of genuinely sourced pixels versus invented appearance | Generated areas may look plausible yet disagree in 3D. Preserve masks and provenance. |
 | Gaussian budget | 2k/10k/20k steps and 150k/750k maximum splats were tested | Model fitting capacity and output size | Larger trial worsened the measured held-out panorama view; geometry and supervision are upstream dependencies. |
 | Evaluation split | Photo 5 RGB held out of GS; its camera pose/initial geometry came from all-image SfM | Appearance comparison at a known estimated pose | Source-only pose estimation or external pose measurement is required for an independent geometry/novel-location test. |
 
-## 6. Practical dependency order for the next bounded experiment
+## 6. Completed dependency chain and the next bounded question
 
-1. **Observed source geometry:** keep panorama 5 RGB out of the generation/training input; audit endpoint 4/6 poses, intrinsics, sparse tracks and GPS quality separately. Decide whether the evaluation is appearance-only (reuse all-image SfM pose) or independent geometry (source-only poses plus a separately obtained target pose). Do not mix the labels.
-2. **Calibrate learned depth:** turn endpoint relative depth into *SfM-scale* depth using only endpoint sparse observations; measure consistency between endpoints, confidence and occlusion before generating RGB. This does not create meters until an independent scale is established.
-3. **Warp and compare:** forward-project only observed endpoint pixels to the target camera with a z-buffer; compare known-pixel coverage and error with the 24.877% stereo baseline. The target pose must be explicitly marked estimated or measured.
-4. **Fill only remaining unknowns:** run the already available local inpainting path if coverage improves, and compare against gray-fill and RIFE controls. Keep masks, generated-pixel provenance and the withheld image distinct.
-5. **Train a matched GS pair:** same observed images, camera poses, training budget and browser cameras, with and without the selected generated views. Inspect multiple render directions and report both perceptual plausibility and held-out RGB diagnostics. Publish both outcomes to the static observation surface regardless of quality.
+The one-direction depth experiment completed the first five stages: retain the
+photo-5 RGB appearance holdout; robustly calibrate endpoint relative depth to
+SfM inverse-Z; project only observed pixels; reject cross-source conflicts and
+inpaint the 34.31% remaining mask; train a matched 48-real versus 48-real+1-
+synthetic GS pair. The corrected **same-direction** stereo baseline filled
+13.76%, raw depth projected 98.86%, and the conservative depth mask kept
+65.69%. On common target pixels, stereo had lower error. Two Chrome render
+directions then showed worse RGB error and visibly more ghosting after the
+generated view was added. See [method and exact measurements](DEPTH_WARP_EXPERIMENT.md).
 
-The highest-value unresolved edge is **dense depth + trustworthy camera geometry → more observed-pixel coverage at a genuinely new viewpoint**. More generated frames or more splats cannot substitute for that edge on their own.
+The highest-value unresolved edge is **trustworthy camera geometry and
+cross-view-consistent depth → more correct observed-pixel support at a
+genuinely new viewpoint**. A future bounded check should first test source-only
+camera estimation or an independently measured target pose, then depth
+agreement and occlusion on more than one direction. The current trial does
+not justify assuming that more generated frames, more splats or a denser raw
+warp will solve that missing constraint.

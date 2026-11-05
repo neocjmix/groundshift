@@ -10,7 +10,7 @@ test('public depth diagnostic shows three observed crops and three MPS predictio
   await page.getByRole('link', { name: 'Inspect photo depth maps' }).click();
   await expect(page).toHaveURL(/\/experiments\/depth-v2\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('사진에서 깊이를 추정해 봤다');
-  await expect(page.locator('.status')).toContainText('GS 개선 NOT RUN');
+  await expect(page.locator('.status')).toContainText('깊이 추론 PASS');
   const images = page.locator('figure img');
   await expect(images).toHaveCount(6);
   for (let index = 0; index < 6; index++) {
@@ -21,7 +21,7 @@ test('public depth diagnostic shows three observed crops and three MPS predictio
   await expect(page.getByRole('link', { name: '원본 사진/저작자' })).toHaveCount(3);
   expect(summary.images).toHaveLength(3);
   expect(summary.images.map(image => image.sparseObservations)).toEqual([317, 312, 281]);
-  expect(summary.status).toContain('GS improvement NOT RUN');
+  expect(summary.status).toContain('subsequent reprojection and GS comparison');
   expect(errors).toEqual([]);
   await page.screenshot({ path: info.outputPath('depth-report.png'), fullPage: true });
   await writeFile(info.outputPath('depth-checks.json'), JSON.stringify({

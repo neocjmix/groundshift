@@ -1,7 +1,7 @@
 # Relative-depth diagnostic on three public panoramas
 
 The user suggested estimating depth from photographs before trying more
-interpolated views. This is a small local diagnostic, not a reconstructed world
+interpolated views. This initial local diagnostic was not a reconstructed world
 or a demonstrated GS improvement. The [observation page](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/)
 shows the three observed crops beside their predicted depth maps.
 
@@ -57,7 +57,7 @@ normalized **separately for each displayed image**.
 
 **PASS:** Apple MPS inference on all three real photos, finite 512 × 512 depth
 arrays, inspected visual depth separation, and positive internal depth-order
-agreement. **NOT RUN:** metric calibration, independent depth ground truth,
+agreement. **NOT RUN in this initial diagnostic:** metric calibration, independent depth ground truth,
 cross-view consistency, depth-guided reprojection to a new position, GS training
 with this depth, and browser rendering of a new depth-assisted GS world. All-image
 SfM estimated the comparison points from the same photographs, so correlation
@@ -67,10 +67,10 @@ that a bike contour or occluded surface is geometrically correct.
 The raw arrays, local source images, model weights and run logs remain under
 ignored `data/`. The public report includes only three selected licensed crops,
 their depth visualizations and a sanitized summary with per-photo source links.
-The next bounded comparison should calibrate relative inverse depth against
-sparse SfM points on the two endpoint views, warp their *observed* pixels to
-photo 5's separately localized camera, and measure coverage and errors against
-the prior stereo result. A stronger multi-view model such as
+The subsequent [bounded comparison](DEPTH_WARP_EXPERIMENT.md) calibrated relative
+inverse depth against sparse SfM points on the two endpoint views, warped their
+*observed* pixels to photo 5's existing estimated camera, and measured coverage
+and errors against a corrected same-direction stereo result. A stronger multi-view model such as
 [Depth Anything 3](https://github.com/ByteDance-Seed/Depth-Anything-3)
 supports pose-conditioned depth, but its official examples target CUDA; Apple
 MPS behavior on this Mac is **NOT RUN**. Its small checkpoint does not directly

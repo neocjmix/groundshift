@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Browse all 15 scenes](https://groundshift-viewer-production.up.railway.app/) · [Watch the 65-frame panorama experiment](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Browse all 16 scenes](https://groundshift-viewer-production.up.railway.app/) · [Compare the depth-guided scene](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Watch the 65-frame panorama experiment](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -20,6 +20,11 @@ diffusion-assisted gap completion; see [MAPILLARY_EXPERIMENT.md](docs/MAPILLARY_
 The follow-up puts photos 4 and 6 at the ends of a 65-frame equirectangular
 sequence and compares real-only versus generated-midpoint Gaussian training;
 see [PANORAMA_VIDEO_EXPERIMENT.md](docs/PANORAMA_VIDEO_EXPERIMENT.md).
+The [depth-guided follow-up](docs/DEPTH_WARP_EXPERIMENT.md) calibrated two
+observed crops to SfM sparse points, projected their RGB into a middle camera,
+filled remaining pixels locally on MPS and trained one additional Metal GS
+world. It improved projected coverage but **failed** the matched two-direction
+3D render comparison; the resulting scene and evidence remain in the catalog.
 Plausible generated scenery now matters more than exact street fidelity.
 Generated pixels remain hypotheses, not new camera-pose measurements. The
 executed RIFE model is optical-flow interpolation, not video diffusion; the
