@@ -20,6 +20,16 @@ The original experiment's 38 registered synthetic RGB images and their depth
 contributions are absent. This is an ablation of the entire intermediate-image
 stage, not an isolated measurement of the diffusion model's effect.
 
+The post-run input check found one minor preprocessing difference: the reused
+COLMAP original-only posed dataset has 1,019–1,023 changed pixels per image,
+confined to the one-pixel outer border from undistortion. All interior pixels
+match the source crops exactly. The 65-candidate run copied original pixels
+directly into its anchored dataset. Thus a byte-identical training-raster
+assertion **FAIL**ed; source hashes, camera matrices, depth reports and training
+options matched. The point cloud also exactly matches the earlier original-only
+cloud. This border difference is recorded as a comparison limitation, without
+claiming its effect on quality has been measured. See `control-check.json`.
+
 ## Actual local result
 
 | Observation | Prior augmented run | Real-only run |
@@ -74,3 +84,13 @@ estimation before GS training, and none of its products enter this experiment.
 · [New GS](https://groundshift-viewer-production.up.railway.app/?world=/worlds/scooter-real-object/world.json)
 · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/).
 Public release and post-publication checks are recorded in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Post-publication checks
+
+Railway deployment succeeded. Both new worlds rendered in public-origin Chrome;
+the comparison images, nine real-image records, point-cloud selector and time
+ordering passed focused checks. All 62 new/shared public files matched hashes.
+TypeScript/build, lint and 165 JS tests passed; Python suites ran 106 tests with
+31 dependency skips in PyCOLMAP and five in OpenCV. The full historical browser
+suite and independent geometry/quality measurements remain NOT RUN. See the
+[current deployment record](DEPLOYMENT.md#real-only-scooter-comparison--2026-11-05).
