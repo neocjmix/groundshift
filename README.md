@@ -4,7 +4,7 @@ Revisit real places as explorable 3D worlds.
 
 **Live demo:** [Browse scenes and experiments](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
-Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
+Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
 ## Vision
 Anyone can record a memorable walk, reconstruct an explorable place, and revisit it later. Eventually separately recorded places can connect into a growing shared world. Pedestrian paths, alleys, corners and stairs matter more than driving routes. Recognizability and spatial continuity matter more than survey accuracy or geometric precision.
@@ -14,11 +14,16 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 
 ## Current experiment: public 360° sequences
 
-The next user-directed experiment uses a small licensed Mapillary panorama
-sequence, tests an observed-image Gaussian baseline, and then evaluates local
-diffusion-assisted gap completion. Generated views are hypotheses, not new
-measurements. Acquisition, actual hardware results, limits and reproducible
-commands are recorded in [MAPILLARY_EXPERIMENT.md](docs/MAPILLARY_EXPERIMENT.md).
+The user-directed experiments use a small licensed Mapillary panorama
+sequence. The first tested an observed-image Gaussian baseline and local
+diffusion-assisted gap completion; see [MAPILLARY_EXPERIMENT.md](docs/MAPILLARY_EXPERIMENT.md).
+The follow-up puts photos 4 and 6 at the ends of a 65-frame equirectangular
+sequence and compares real-only versus generated-midpoint Gaussian training;
+see [PANORAMA_VIDEO_EXPERIMENT.md](docs/PANORAMA_VIDEO_EXPERIMENT.md).
+Plausible generated scenery now matters more than exact street fidelity.
+Generated pixels remain hypotheses, not new camera-pose measurements. The
+executed RIFE model is optical-flow interpolation, not video diffusion; the
+larger LTX diffusion candidate did not reach inference on this Mac.
 The original-video path and earlier public worlds remain available.
 Actual fixed-rig SfM, Metal Gaussian training, local MPS inpainting and generated-
 image retraining have executed. The Mapillary scenes are published as experiments: the new gap-filled world has

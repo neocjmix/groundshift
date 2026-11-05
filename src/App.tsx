@@ -7,6 +7,7 @@ const samplePath = "/worlds/sample/world.json";
 const locationPath = () => new URLSearchParams(window.location.search).get("world");
 const sceneUrl = (path: string) => `/?world=${encodeURIComponent(path)}`;
 const experimentReport = "/experiments/mapillary/index.html";
+const videoExperimentReport = "/experiments/video-4to6/";
 const categories = {
   capture: "Personal capture",
   reconstruction: "Local reconstruction",
@@ -33,6 +34,7 @@ export default function App() {
   const folderInput = useRef<HTMLInputElement>(null);
   const viewerOpen = Boolean(request.path) || localMode;
   const experimentCount = scenes.filter((scene) => scene.category === "experiment").length;
+  const videoExperimentAvailable = scenes.some((scene) => scene.id === "beijing-video-rife");
   const selectedScene = scenes.find((scene) => scene.manifestPath === request.path);
 
   useEffect(() => {
@@ -165,6 +167,7 @@ export default function App() {
       </a>
       <div className="header-right">
         {viewerOpen && <a className="collection-link" href="/" onClick={(event) => follow(event, null)}>← Back to scenes</a>}
+        {videoExperimentAvailable && <a className="collection-link" href={videoExperimentReport}>65-frame video ↗</a>}
         {experimentCount > 0 && <a className="collection-link experiment-report-link" href={experimentReport}>Experiment report ↗</a>}
         <span className="local-badge"><span className="live-dot" /> Renders on your device</span>
       </div>
@@ -182,9 +185,10 @@ export default function App() {
       {experimentCount > 0 && <section className="experiment-overview" aria-labelledby="experiment-heading">
         <div><span className="eyebrow">CURRENT EXPERIMENT · MAPILLARY 360°</span>
           <h2 id="experiment-heading">Real photos, generated gaps, actual results.</h2>
-          <p>Compare the source photos, stereo warps, diffusion completions and Gaussian trials. Failed, cancelled and unrun stages stay visible in the report, with their evidence and limits.</p>
+          <p>Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately.</p>
         </div>
         <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
+        {videoExperimentAvailable && <a href={videoExperimentReport}>Watch 65-frame panorama <span aria-hidden="true">↗</span></a>}
       </section>}
       <div className="collection-toolbar">
         <div className="collection-filters" role="group" aria-label="Filter scenes">
@@ -223,7 +227,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}

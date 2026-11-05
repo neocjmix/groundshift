@@ -22,12 +22,14 @@ SPEC = ROOT / 'scripts/observation-worlds.json'
 GITHUB = 'https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/'
 MODEL_LICENSE = 'https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting/blob/8a4288a76071f7280aedbdb3253bdb9e9d5d84bb/README.md'
 COMMONS = 'https://commons.wikimedia.org/wiki/Category:Photographs_of_Beijing_from_Mapillary_(m4ks1Y6pR3fcIjBz9wXxWt)'
-# These nine distinct exports supplement the four existing catalog worlds.
+# These distinct exports supplement the four existing catalog worlds.
 TRIALS = [
  ('beijing-10k', 'mapillary-beijing-rig-baseline-10000/world', 'Beijing · observed 10k', '48 real crops · 150,000 splats · Quality FAIL', 'Real photographs only; fixed panorama rigs. Blurred structures and stretched geometry remain.'),
  ('beijing-generated', 'mapillary-beijing-generated-gs-smoke/world', 'Beijing · generated input', '48 real + 1 generated view · 2,000 steps · Quality FAIL', 'Local diffusion output was included in Metal training. An integration experiment, not evidence of improved reconstruction.'),
  ('beijing-20k', 'mapillary-beijing-rig-baseline-20000/world', 'Beijing · capacity 20k', '750,000 splats · 69 MB · Quality FAIL', 'Longer training and larger capacity together; held-view PSNR fell from 14.72 to 12.68 dB.'),
  ('beijing-2k', 'mapillary-beijing-rig-baseline/world', 'Beijing · observed 2k', '48 real crops · 7,015 splats · Quality FAIL', 'The first constrained-rig Gaussian baseline. Training and export worked, while the reconstructed appearance remained blurry.'),
+ ('beijing-video-baseline', 'mapillary-video-4to6-20261105/gs-real48-10000/world', 'Beijing · matched real-only baseline', '48 real crops · 10,000 Metal steps · Quality FAIL', 'The matched real-only baseline for the 65-frame panorama experiment. Its rendered building edges remain blurry; target #5 geometry participated in all-image SfM.'),
+ ('beijing-video-rife', 'mapillary-video-4to6-20261105/gs-rife6-10000/world', 'Beijing · 65-frame interpolation GS', '48 real + 6 generated crops · Quality FAIL', 'The generated midpoint was added to Metal Gaussian training. It renders but adds streaked geometry and did not improve either inspected target view.'),
  ('dozer-smoke', 'dozer-smoke/world', 'Dozer · 30-step smoke', '40 supplied cameras · 165,875 splats · early trial', 'Initial native execution test with only 30 training steps. This is a separate exported result, not the accepted 1,500-step scene.'),
  ('dozer-proof', 'dozer-proof-20261104/world', 'Dozer · fresh proof rerun', '40 supplied cameras · 194,871 splats · rerun', 'A fresh local 1,500-step Metal run retained as reconstruction evidence; this PLY differs from the original export.'),
  ('dozer-partial', 'dozer-estimated-1500/world', 'Dozer · partial 16/40 poses', '16 of 40 cameras · 1,048 splats · Quality FAIL', 'The early pose-estimation attempt registered only 16 of 40 photographs. Its sparse Gaussian output is retained for observation.'),
@@ -85,6 +87,19 @@ def prepare_worlds():
                 attribution='Recorded by the scene creator; public display authorized by the creator',
                 notes='Initial 15-second private indoor recording trial; 60 cameras and 9,872 sparse points estimated locally without supplied poses or lens calibration. System HDR-to-SDR conversion preceded 1,500 Metal training steps. Creator authorization covers derived experimental worlds, camera metadata and rendered previews in this observation viewer; no general reuse license is granted. Source footage and extracted frames are not distributed. Asset coordinates preserve Brush output; mean camera up is aligned to world +Y, while gravity and metric scale are unmeasured. This superseded trial is shown as an experiment, not an accepted reconstruction.')
             credit = 'Creator-authorized public display of the derived experimental scene and rendered preview. All rights reserved. No general reuse or redistribution license is granted. Private original footage is not included.\n'
+        elif slug in ('beijing-video-baseline', 'beijing-video-rife'):
+            provenance['notes'] = ('Source: Cicero101 / Mapillary 360 photographs mirrored by Wikimedia Commons, CC-BY-SA-4.0. '
+                + ('This is the matched 48-real-view baseline for the RIFE interpolation experiment. No synthetic training pixels were used. ' if slug == 'beijing-video-baseline' else
+                   'Two 7680x3840 source panoramas numbered 4 and 6 were resized to 2048x1024 and interpolated with Practical-RIFE 4.25 on Apple MLX into 65 frames. The generated midpoint was projected into six 512x512 pinhole views. Training combined 48 observed views with these six generated views. ')
+                + 'The target rig camera matrices were copied from all-image SfM of real panorama number 5; generated pixels did not estimate or validate those poses. '
+                'This is an appearance experiment with possible pose mismatch and foreground ghosting, not an independently verified 3D camera path. '
+                'RIFE is optical-flow frame interpolation, not diffusion. The 65-frame video and failed diffusion acquisition are documented at /experiments/video-4to6/. '
+                'Gravity and metric scale are unknown. Asset coordinates preserve the actual Brush export. '
+                'Quality FAIL after actual browser rendering: blurry or streaked geometry. Successful Metal execution is recorded separately.')
+            credit = ('Source photography: Cicero101 / Mapillary, redistributed by Wikimedia Commons. CC-BY-SA-4.0: https://creativecommons.org/licenses/by-sa/4.0/\n'
+                + COMMONS + '\nModifications: ' + ('pinhole reprojection and local Brush Gaussian training from 48 real crops. No generated training pixels.' if slug == 'beijing-video-baseline' else
+                'resized equirectangular endpoints, RIFE 4.25 MLX optical-flow interpolation, 64-pixel seam blend, pinhole reprojection and local Brush Gaussian training. RIFE code and converted weights are MIT; see https://huggingface.co/mlx-community/RIFE-4.25. Generated content may be fictional and does not prove place fidelity.') + ' '
+                'Per-image source attribution and the interpolated video are at /experiments/video-4to6/.\n')
         elif slug.startswith('beijing-'):
             # Do not retain earlier-stage wording claiming no reconstruction was performed.
             notes = ('Source: nine consecutive 7680x3840 panoramas by Cicero101 on Mapillary, mirrored by Wikimedia Commons; 2025-05-27 05:11:05–13, timezone unspecified. This is a small dense candidate, not a global density maximum. The photos were reprojected into overlapping pinhole views, then world cameras were estimated with fixed co-located spherical rigs. Forty-eight observed crops were used for Brush Metal training. Poses and initialization colors used all nine panoramas: this is only an appearance holdout, not independent geometry validation. Gravity and metric scale are unknown. Coordinates and transforms preserve the measured export. Quality FAIL: blurry, streaked or incomplete geometry. ')
@@ -171,7 +186,28 @@ def collect_history():
         dict(trial='SEVA', stage='local candidate', execution='NOT RUN', detail='Gated CUDA model with noncommercial terms; not adopted for this local experiment.'),
         dict(trial='Mapillary direct Graph search', stage='acquisition', execution='FAIL', detail='API access without an authorized token rejected; public Commons mirror used instead.'),
         dict(trial='Commons initial 12-image acquisition', stage='acquisition', execution='FAIL', detail='Rate limit after nine images; nine consecutive licensed panoramas retained. No bypass.'),
-        dict(trial='Generated multi-view consistency', stage='quality validation', execution='NOT RUN', detail='One generated input is an integration test, not validated multi-view novel-view synthesis.'),
+        dict(trial='Previous generated-view consistency', stage='quality validation', execution='NOT RUN', detail='The earlier one-view diffusion input is an integration test, not validated multi-view novel-view synthesis.'),
+    ])
+    video_job = ROOT / 'data/jobs/mapillary-video-4to6-20261105'
+    rife = read_json(video_job / 'rife-65-periodic/report.json')
+    inpaint = read_json(video_job / 'rife-view02-diffusion/report.json')
+    baseline = read_json(video_job / 'gs-real48-10000/job.json')
+    augmented = read_json(video_job / 'gs-rife6-10000/job.json')
+    records.extend([
+        dict(trial='Panorama 4→6', stage='RIFE 4.25 MLX 65-frame inference', execution='PASS',
+             detail=f"2048x1024; inference {rife['generationSeconds']:.3f} s; optical-flow interpolation, not diffusion."),
+        dict(trial='Panorama 4→6', stage='Generated-frame seam blend and MP4 encode', execution=rife['encoding']['status'],
+             detail=f"Midpoint edge MAE {rife['seam'][32]['edgeMaeBefore']:.3f} → {rife['seam'][32]['edgeMaeAfter']:.3f}; source endpoints byte-identical."),
+        dict(trial='Panorama 4→6', stage='Exploratory bicycle-region MPS inpainting', execution=inpaint['status'],
+             detail=f"One 512x512 crop; {inpaint['inferenceSeconds']:.3f} s; distorted bicycle remained, so output was not used for video or GS training."),
+        dict(trial='Panorama 4→6', stage='Real-only matched baseline GS', execution=baseline['status'],
+             detail=f"48 real photographs; {baseline['options']['steps']:,} Metal steps."),
+        dict(trial='Panorama 4→6', stage='RIFE-augmented GS', execution=augmented['status'],
+             detail=f"48 real + 6 generated crops at measured target rig pose; {augmented['options']['steps']:,} Metal steps."),
+        dict(trial='LTX-2.3 MLX', stage='full-sphere video diffusion candidate', execution='NOT RUN',
+             detail='Local code and CLI verified; selected q8 model files total 49,986,854,521 bytes before text encoder. Slow model transfer stopped; no inference.'),
+        dict(trial='RIFE generated multi-view consistency', stage='quality validation', execution='NOT RUN',
+             detail='Six crops share one measured rig pose; other 64 generated panoramas have no independently estimated camera poses.'),
     ])
     assert_public_text(json.dumps(records))
     return records
@@ -209,7 +245,7 @@ REPORT_HTML = r'''<!doctype html>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#213526;background:#f4f3ec;color-scheme:light}*{box-sizing:border-box}body{max-width:1540px;margin:auto;padding:32px}header{display:flex;justify-content:space-between;gap:24px;align-items:center}h1{font-size:36px;letter-spacing:-1.5px;margin:12px 0}h2{font-size:24px;margin:36px 0 12px}p{line-height:1.7;max-width:960px;color:#51604f}a{color:#496333}.eyebrow{font-size:12px;letter-spacing:2px}.badge{padding:10px 14px;border:1px solid #b9ba9c;border-radius:30px;font-size:12px}.status{background:#e7e9dc;padding:14px 20px;border-left:3px solid #78904c;line-height:1.7;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}figure{margin:0;background:#e9e9df;border:1px solid #d1d6c5;border-radius:12px;overflow:hidden}figure img{display:block;width:100%;aspect-ratio:1;object-fit:contain;background:#14191b}figcaption{padding:12px;font-size:14px;line-height:1.5}figcaption strong{display:block}nav,.links,.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:20px 0}button{font:inherit;cursor:pointer;border:1px solid #b8c1a8;background:transparent;border-radius:24px;padding:10px 18px;color:#263a28}button[aria-pressed=true]{background:#263c2a;color:white}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #ba701b;outline-offset:3px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:12px;text-align:left;border-bottom:1px solid #d3d7ca;vertical-align:top}td small{display:block;max-width:600px}caption{text-align:left;line-height:1.7;padding:8px 0}.blend{position:relative;max-width:512px}.blend img+img{position:absolute;inset:0;opacity:.5}.tools input{width:240px}.small{font-size:13px}details{border:1px solid #d1d6c5;border-radius:12px;padding:18px;margin-top:24px}summary{cursor:pointer;font-weight:650}footer{font-size:12px;line-height:1.8;border-top:1px solid #ccd0c1;padding-top:24px;margin-top:44px;color:#596454}code{overflow-wrap:anywhere}.failure{color:#8f3f24}.pass{color:#366738}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:550px){body{padding:24px 14px}header{display:block}h1{font-size:29px}.grid{grid-template-columns:1fr}.badge{display:inline-block}td,th{padding:9px}}
 </style>
-<div class="links"><a href="/">← 모든 장면</a><a href="#worlds">GS 실험 결과</a><a href="#history">전체 실행 기록</a></div>
+<div class="links"><a href="/">← 모든 장면</a><a href="/experiments/video-4to6/">65장 구면 보간 실험 ↗</a><a href="#worlds">GS 실험 결과</a><a href="#history">전체 실행 기록</a></div>
 <header><div><div class="eyebrow">GROUNDSHIFT / OBSERVATION / 2026.11.05</div><h1>실제로 본 곳과, 모델이 채운 곳.</h1></div><span class="badge">품질과 상관없이 공개하는 실험 관측면</span></header>
 <p>연속 360° 사진 9장으로 카메라를 추정하고 이 Mac의 Metal에서 GS를 학습했습니다. 중간 촬영 위치의 사진을 GS RGB 학습에서 빼고, 빈 영역을 로컬 디퓨전으로 채워 실제 사진과 비교했습니다. 잘못 나온 결과와 중단된 시도도 아래에서 확인할 수 있습니다.</p>
 <p class="small">Cicero101 · Mapillary / Wikimedia Commons · 베이징 · 2025-05-27 · 7,680 × 3,840 · CC-BY-SA-4.0. 약 11.3 m 구간의 1초 간격 9장입니다. 전 세계에서 가장 조밀한 지역이라는 주장은 하지 않습니다.</p>
@@ -227,7 +263,7 @@ REPORT_HTML = r'''<!doctype html>
 <h2>실제 사진과 겹쳐 보기</h2><p class="small">불투명도를 움직여 생성된 사람·간판과 건물 선의 어긋남을 관찰하세요.</p>
 <div class="tools"><label for="opacity">생성 결과 불투명도</label><input id="opacity" type="range" min="0" max="100" value="50"><output id="value" for="opacity">50%</output></div>
 <figure class="blend"><img id="under" alt="비교용 실제 사진"><img id="over" alt="겹쳐진 디퓨전 결과"></figure>
-<h2 id="worlds">내보낸 GS 장면을 모두 열어 보기</h2><p>9개 신규 실험을 기존 4개 장면과 함께 갤러리에서 볼 수 있습니다. 아래 수치는 저장된 실제 실행 결과입니다. 브라우저 미리보기는 실제 GS 렌더링이며 원본 사진을 대신 사용하지 않았습니다.</p>
+<h2 id="worlds">내보낸 GS 장면을 모두 열어 보기</h2><p>11개 실험을 기존 4개 장면과 함께 갤러리에서 볼 수 있습니다. 아래 수치는 저장된 실제 실행 결과입니다. 브라우저 미리보기는 실제 GS 렌더링이며 원본 사진을 대신 사용하지 않았습니다.</p>
 <div class="links"><a href="/?world=/worlds/desk/world.json">My desk ↗</a><a href="/?world=/worlds/independent/world.json">Dozer · estimated cameras ↗</a><a href="/?world=/worlds/reconstructed/world.json">Dozer · supplied cameras ↗</a><a href="/?world=/worlds/sample/world.json">Houseplant ↗</a></div>
 <div class="scroll"><table><thead><tr><th>장면</th><th>학습</th><th>산출물</th><th>판정</th></tr></thead><tbody>WORLD_ROWS</tbody></table></div>
 <p class="small">20,000단계 실험은 학습량과 최대 용량을 함께 바꿨습니다. 10,000단계 대비 PSNR 14.72 → 12.68 dB로 악화했습니다. 실제 48장 + 생성 1장으로 실행한 2,000단계 시험은 통합 동작 확인이며 품질 개선을 입증하는 공정한 비교가 아닙니다.</p>
@@ -286,6 +322,168 @@ def prepare_report(worlds, history):
     return ['experiments/mapillary/' + x for x in ['index.html', 'summary.json', 'sources.json']] + ['experiments/mapillary/images/' + x for x in IMAGES]
 
 
+def prepare_video_report(worlds):
+    """Publish only selected licensed stills and the generated RIFE clip."""
+    from shutil import which
+    job = ROOT / 'data/jobs/mapillary-video-4to6-20261105'
+    source = job / 'rife-65-periodic'
+    generation = read_json(source / 'report.json')
+    preparation = read_json(job / 'preparation.json')
+    if generation['encoding']['status'] != 'PASS' or generation['frameCount'] != 65 or generation['imageSize'] != [2048, 1024]:
+        raise ValueError('Expected completed 65-frame 2048x1024 panorama run')
+    if not any(w['id'] == 'beijing-video-rife' and w['execution'] == 'PASS' for w in worlds):
+        raise ValueError('Video experiment GS scene has not been exported')
+    if sha(source / 'interpolation.mp4') != generation['video']['sha256']:
+        raise ValueError('Video hash differs from local generation report')
+    if [x['preparedSha256'] for x in preparation['inputs']] != [sha(source / 'frames/frame_000.png'), sha(source / 'frames/frame_064.png')]:
+        raise ValueError('Photo endpoints are not byte-identical in the video frame sequence')
+    ffmpeg = shutil.which('ffmpeg')
+    if not ffmpeg:
+        raise FileNotFoundError('FFmpeg required to strip metadata and prepare licensed public thumbnails')
+    out = PUBLIC / 'experiments/video-4to6'
+    (out / 'images').mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source / 'interpolation.mp4', out / 'interpolation.mp4')
+    originals = sorted((ROOT / 'data/samples/mapillary-beijing/images').glob('*.jpg'))
+    if len(originals) != 9:
+        raise ValueError('Expected the nine acquired source panoramas')
+    sample = read_json(ROOT / 'scripts/samples/mapillary-beijing.json')
+    for index in (4, 5, 6):
+        if sha(originals[index]) != sample['images'][index]['sha256']:
+            raise ValueError('Source photograph differs from licensed sample inventory')
+    frames = {'start': source / 'frames/frame_000.png',
+              'quarter': source / 'frames/frame_016.png',
+              'midpoint': source / 'frames/frame_032.png',
+              'threequarter': source / 'frames/frame_048.png',
+              'finish': source / 'frames/frame_064.png',
+              'crossfade': job / 'crossfade.png',
+              'observed-middle': originals[5],
+              'inpaint-input': job / 'rife-view02-diffusion/reference.png',
+              'inpaint-mask': job / 'rife-view02-diffusion/mask.png',
+              'inpaint-result': job / 'rife-view02-diffusion/completed.png'}
+    inpaint = read_json(job / 'rife-view02-diffusion/report.json')
+    if inpaint['status'] != 'PASS' or inpaint['gpuInference'] != 'PASS':
+        raise ValueError('Expected completed exploratory MPS inpaint')
+    images = []
+    for name, src in frames.items():
+        dst = out / 'images' / f'{name}.jpg'
+        scale = '512:512:flags=lanczos' if name.startswith('inpaint-') else '1024:512:flags=lanczos'
+        subprocess.run([ffmpeg, '-hide_banner', '-loglevel', 'error', '-y', '-i', str(src),
+                        '-vf', 'scale=' + scale, '-map_metadata', '-1',
+                        '-frames:v', '1', '-q:v', '2', str(dst)], check=True)
+        kind = ('observed-source' if name in ('start', 'finish', 'observed-middle') else
+                'simple-blend-control' if name == 'crossfade' else
+                'inpaint-mask' if name == 'inpaint-mask' else
+                'diffusion-completion' if name == 'inpaint-result' else
+                'generated-interpolation')
+        images.append({'path': f'images/{name}.jpg', 'bytes': dst.stat().st_size,
+                       'sha256': sha(dst), 'kind': kind})
+    run_log = (job / 'rife-run.log').read_text()
+    peak_match = re.search(r'(\d+)\s+peak memory footprint', run_log)
+    peak = int(peak_match.group(1)) if peak_match else None
+    comparison = read_json(job / 'midpoint-comparison.json')
+    posed = []
+    for view in ('02', '04'):
+        baseline_render = read_json(job / f'render-real48-view{view}/report.json')
+        generated_render = read_json(job / f'render-rife6-view{view}/report.json')
+        metrics = read_json(job / f'compare-view{view}/report.json')
+        if any(value['status'] != 'PASS' for value in (baseline_render, generated_render, metrics)):
+            raise ValueError(f'Expected actual headed-Chrome render and photometric comparison for view {view}')
+        full = metrics['regions']['full']
+        posed.append({'view': view, 'reference': 'Separately held-out real photo 5 crop',
+                      'baselineMae': round(full['baseline']['mae'], 3),
+                      'generatedMae': round(full['completed']['mae'], 3),
+                      'baselinePsnrDb': round(full['baseline']['psnrDb'], 3),
+                      'generatedPsnrDb': round(full['completed']['psnrDb'], 3),
+                      'baselineAlphaBelow240Fraction': baseline_render['maskedFraction'],
+                      'generatedAlphaBelow240Fraction': generated_render['maskedFraction']})
+    preview_evidence = ROOT / 'data/validation/observations/local-previews.json'
+    preview_ids = set()
+    if preview_evidence.is_file():
+        preview_ids = {result['id'] for result in read_json(preview_evidence)['results']
+                       if result['render'] == 'PASS' and not result['errors']}
+    local_browser = 'PASS' if {'beijing-video-baseline', 'beijing-video-rife'} <= preview_ids else 'NOT RUN'
+    world = next(w for w in worlds if w['id'] == 'beijing-video-rife')
+    public = {
+        'schemaVersion': 1, 'experiment': 'Mapillary panoramas 4→6, 65-frame RIFE interpolation',
+        'priority': 'Plausible generated scenery; exact place fidelity is secondary',
+        'status': {'frameGeneration': 'PASS', 'seamRepair': 'PASS', 'videoEncoding': 'PASS',
+                   'metalGaussianTraining': world['execution'], 'localBrowserRendering': local_browser,
+                   'publicBrowserRendering': 'NOT RUN at archive creation; see deployment evidence',
+                   'gaussianVisualQuality': 'FAIL', 'LTXVideoDiffusion': 'NOT RUN'},
+        'sources': [{'index': index, 'imageId': sample['images'][index]['image_id'],
+                     'commonsPage': sample['images'][index]['commons_page'], 'sha256': sample['images'][index]['sha256']}
+                    for index in (4, 5, 6)],
+        'sourceLicense': {'author': 'Cicero101 / Mapillary', 'license': 'CC-BY-SA-4.0',
+                          'licenseUrl': sample['licenseUrl']},
+        'generation': {'engine': 'Practical-RIFE 4.25 via MLX', 'isDiffusion': False,
+                       'modelRevision': generation['model']['revision'], 'modelWeightsSha256': generation['model']['weightsSha256'],
+                       'codeRevision': '764b89be56497fb26243d1de75f2957f3889e5d3',
+                       'license': 'MIT', 'frames': 65, 'imageSize': [2048, 1024], 'fps': 24,
+                       'gpuInferenceSeconds': generation['generationSeconds'],
+                       'wholeProcessPeakFootprintBytes': peak, 'seamBandPixels': generation['seamBandPixels'],
+                       'midpointEdgeMaeBefore': generation['seam'][32]['edgeMaeBefore'],
+                       'midpointEdgeMaeAfter': generation['seam'][32]['edgeMaeAfter'],
+                       'videoBytes': generation['video']['bytes'], 'videoSha256': generation['video']['sha256']},
+        'midpointComparison': {'meaning': 'Pixel error against separately loaded observed panorama 5; not a plausibility or geometry score',
+                               'maeCrossfade': comparison['results']['crossfade']['mae'],
+                               'maeRife': comparison['results']['rife_mid_periodic']['mae'],
+                               'psnrCrossfadeDb': comparison['results']['crossfade']['psnrDb'],
+                               'psnrRifeDb': comparison['results']['rife_mid_periodic']['psnrDb']},
+        'exploratoryDiffusion': {'status': 'PASS for local 2D inference; visual repair not accepted',
+                                 'scope': 'One 512x512 crop, foreground bicycle mask only; not used in Gaussian training or panorama video',
+                                 'model': inpaint['model']['repository'], 'modelRevision': inpaint['model']['revision'],
+                                 'license': inpaint['model']['license'], 'licenseUrl': inpaint['model']['licenseUrl'],
+                                 'device': inpaint['device'], 'inferenceSeconds': inpaint['inferenceSeconds'],
+                                 'outputSha256': inpaint['output']['sha256'],
+                                 'assessment': 'Foreground bicycle remained visibly distorted; no convincing geometry repair'},
+        'reconstruction': {'world': world['manifest'], 'trainingImages': world['trainingImages'],
+                           'syntheticImages': 6, 'steps': world['steps'], 'splats': world['splats'],
+                           'trainingElapsedSeconds': world['trainingSeconds'], 'worldAssetSha256': world['sha256'],
+                           'poseProvenance': 'Six locally estimated all-image SfM poses involving the real middle panorama; generated pixels did not estimate or validate pose',
+                           'posedViewComparison': posed,
+                           'assessment': 'Both worlds rendered in headed Chrome. The generated-view world remained blurry or streaked and had higher pixel error at two inspected target directions. 3D plausibility improvement FAIL.'},
+        'LTXVideoDiffusion': {'status': 'NOT RUN', 'reason': 'Selected q8 model weights alone require 49,986,854,521 bytes, plus Gemma; acquisition was stopped after a measured 10 MiB HTTP range transferred only 5,720,941 bytes in 30 seconds. No video diffusion inference took place.',
+                              'candidateModel': 'dgrauet/ltx-2.3-mlx-q8', 'candidateRevision': '69f8f11996b7b2ee54e82d0db7a5acad14b8685d',
+                              'modelLicense': 'LTX-2 Community License Agreement',
+                              'modelLicenseUrl': 'https://github.com/Lightricks/LTX-2/blob/main/LICENSE-2'},
+        'limitations': ['RIFE is flow interpolation, not diffusion or new 3D view synthesis.',
+                        'The 65 frames are temporal interpolation images, not 65 separately measured camera positions.',
+                        'Foreground bicycles show ghosting and the source photographs retain a yellow nadir band.',
+                        'All-image SfM used the observed middle photograph for pose and initialization, so there is no independent geometry test.'],
+        'publicImages': images,
+    }
+    assert_public_text(json.dumps(public))
+    write_json(out / 'summary.json', public)
+    scenic = ''.join(f'<figure><img src="images/{name}.jpg" alt="{label}"><figcaption>{label}</figcaption></figure>'
+                     for name, label in [('start','출발 · 실제 사진 #4'), ('quarter','¼ · 생성'),
+                                         ('midpoint','½ · 생성 / GS 입력'), ('threequarter','¾ · 생성'),
+                                         ('finish','도착 · 실제 사진 #6'), ('crossfade','단순 50% 겹침 기준'),
+                                         ('observed-middle','비교 · 실제 사진 #5')])
+    source_links = ' · '.join(f'<a href="{html.escape(sample["images"][i]["commons_page"], quote=True)}">원본 #{i}</a>' for i in (4, 5, 6))
+    page = f'''<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Groundshift · 65개 구면 프레임 실험</title>
+<style>:root{{font-family:system-ui,-apple-system,sans-serif;background:#f4f3ec;color:#223627;color-scheme:light}}*{{box-sizing:border-box}}body{{max-width:1320px;margin:auto;padding:28px}}a{{color:#426534}}h1{{font-size:clamp(30px,5vw,60px);letter-spacing:-.04em;line-height:1.05;max-width:850px;margin:16px 0}}h2{{margin-top:42px}}p{{line-height:1.65;color:#526252;max-width:960px}}nav{{display:flex;gap:16px;flex-wrap:wrap}}.eyebrow{{font-size:12px;letter-spacing:.18em}}.status{{padding:16px 20px;background:#e6e9dc;border-left:4px solid #8da16e;line-height:1.6;margin:20px 0}}video{{display:block;width:100%;max-height:70vh;background:#142018;border-radius:12px}}.grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}figure{{margin:0;background:#e5e8df;border-radius:10px;overflow:hidden}}figure img{{display:block;width:100%;aspect-ratio:2/1;object-fit:contain}}figcaption{{padding:12px 16px;font-size:14px}}small{{color:#647164}}@media(max-width:700px){{body{{padding:18px}}.grid{{grid-template-columns:1fr}}}}</style>
+<nav><a href="/">← 장면 갤러리</a><a href="/experiments/mapillary/">이전 Mapillary 실험</a><a href="/?world=/worlds/beijing-video-baseline/world.json">실제 사진 GS ↗</a><a href="/?world={world['manifest']}">보간 추가 GS ↗</a></nav>
+<div class="eyebrow">GROUNDSHIFT / 360° INTERPOLATION / LOCAL M2 METAL</div><h1>두 장 사이에 65개의 구면 프레임을 만들다.</h1>
+<p>연속 촬영된 파노라마 #4와 #6을 양 끝에 놓고, 맥에서 중간 프레임을 생성했습니다. 실제 #5 사진은 생성 입력에서 빼고 나중에 비교용으로만 보여줍니다. 이번에는 장소를 정확히 맞히는 것보다 그럴듯한 풍경과 움직임을 우선 봅니다.</p>
+<div class="status"><strong>프레임 생성 PASS</strong> · 65장 / 2048×1024 / 24fps · Apple MLX 추론 {generation['generationSeconds']:.1f}초 · <strong>GS Metal 학습 {world['execution']}</strong><br>영상 확산 모델 LTX는 가중치 다운로드를 완료하지 못해 추론 <strong>NOT RUN</strong>입니다. 이 영상은 <strong>RIFE 광학 흐름 보간</strong> 결과이며 디퓨전 생성물로 표시하지 않습니다.</div>
+<video controls playsinline muted preload="metadata" poster="images/midpoint.jpg"><source src="interpolation.mp4" type="video/mp4">브라우저에서 MP4 재생을 지원하지 않습니다.</video>
+<p><small>원본 구면 사진을 2048×1024로 축소하고 65프레임을 만든 뒤, 생성 프레임의 좌우 64픽셀 경계를 부드럽게 연결했습니다. 실제 사진인 첫·마지막 프레임은 원본 준비 파일과 바이트 단위로 같습니다. 이 영상의 카메라 경로는 측정되지 않았습니다.</small></p>
+<h2>선택한 시점</h2><div class="grid">{scenic}</div>
+<p>건물과 보행로는 이어지지만 가까운 자전거는 겹쳐 보이고, 아래 노란 띠는 원본 360 카메라의 바닥 가림입니다. 실제 중간 사진과의 2048×1024 픽셀 비교에서 단순 겹침은 PSNR {comparison['results']['crossfade']['psnrDb']:.3f} dB, RIFE는 {comparison['results']['rife_mid_periodic']['psnrDb']:.3f} dB였습니다. 이 수치는 그럴듯함이나 3D 형상의 점수가 아닙니다.</p>
+<h2>3D로 내보낸 결과</h2><p>가운데 생성 파노라마를 여섯 90° 시야로 나누어, 실제 #5 사진의 전체 이미지 SfM에서 얻은 위치·방향을 붙였습니다. 나머지 48장은 실제 관측 사진입니다. 이 포즈는 생성 장면에서 새로 검증한 값이 아니므로 3D 형상의 정확도를 뜻하지 않습니다.</p>
+<p><a href="/?world=/worlds/beijing-video-baseline/world.json">48장 실제 사진 GS ↗</a> · <a href="/?world={world['manifest']}">48장 실제 + 6장 생성 GS ↗</a> · 각각 10,000 Metal 단계 · 생성 추가 장면 {world['splats']:,} splats / {world['bytes']/1e6:.2f} MB</p>
+<p><strong>3D 품질 개선 FAIL.</strong> 같은 추정 카메라 방향 두 곳을 Chrome에서 렌더링해 실제 #5 사진과 비교했습니다. 02방향 MAE는 실제 사진만 학습한 장면 {posed[0]['baselineMae']:.3f} → 생성 뷰 추가 장면 {posed[0]['generatedMae']:.3f}, 04방향은 {posed[1]['baselineMae']:.3f} → {posed[1]['generatedMae']:.3f}로 모두 커졌습니다. 숫자보다 직접 보이는 흐릿한 건물·자전거 형상이 핵심 한계입니다. 사진과의 오차는 장면의 그럴듯함을 완전히 평가하지 않습니다.</p>
+<h2>자전거 부분 2D 확산 보정</h2><p>한 시야의 앞쪽 자전거만 마스킹해 M2의 MPS에서 Stable Diffusion 1.5 인페인팅을 실행했습니다. 입력·마스크·결과를 아래에 그대로 둡니다. 결과에서도 자전거가 찌그러져 보여 3D 학습이나 위 영상에는 사용하지 않았습니다. 한 장의 부분 보정은 구면 전체나 여러 시점의 일관성을 증명하지 않습니다.</p>
+<div class="grid">{''.join(f'<figure><img src="images/{name}.jpg" alt="{label}"><figcaption>{label}</figcaption></figure>' for name, label in [('inpaint-input','보정 전 생성 자전거 시야'),('inpaint-mask','흰색 생성 마스크'),('inpaint-result','MPS 확산 보정 결과 · 형상 미수용')])}</div>
+<h2>출처와 한계</h2><p>{source_links} · Cicero101 / Mapillary, Wikimedia Commons 재배포 · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA-4.0</a>. 이미지와 비디오는 해당 사진의 수정본입니다. RIFE 코드·변환 가중치 <a href="https://huggingface.co/mlx-community/RIFE-4.25">MIT</a>. 부분 보정 모델은 <a href="{MODEL_LICENSE}">CreativeML OpenRAIL-M</a>입니다. LTX-2 모델은 별도의 <a href="https://github.com/Lightricks/LTX-2/blob/main/LICENSE-2">커뮤니티 라이선스</a> 후보였고 실행 결과는 없습니다.</p>
+<p><a href="summary.json">실측값·해시·상태 JSON ↗</a> · 원본 대형 사진, 모델 가중치와 로컬 작업 로그는 배포물에 넣지 않았습니다.</p></html>'''
+    assert_public_text(page)
+    (out / 'index.html').write_text(page)
+    return (['experiments/video-4to6/' + name for name in ['index.html', 'summary.json', 'interpolation.mp4']]
+            + ['experiments/video-4to6/' + image['path'] for image in images])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--render-previews', action='store_true')
@@ -293,7 +491,7 @@ def main():
     args = parser.parse_args()
     worlds = prepare_worlds()
     history = collect_history()
-    files = prepare_report(worlds, history)
+    files = prepare_report(worlds, history) + prepare_video_report(worlds)
     definitions = [dict(id=t[0], source='data/jobs/' + t[1], asset='scene.ply', format='ply', credits=['SOURCE_LICENSE']) for t in TRIALS]
     write_json(SPEC, dict(version=1, worlds=definitions, files=files))
     catalog_path = PUBLIC / 'worlds/catalog.json'

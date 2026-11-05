@@ -48,7 +48,7 @@ async function observationFixture() {
   const spec = {
     version: 1,
     worlds: [{ id: world, source: 'data/jobs/observed-trial/world', asset: 'scene.ply', format: 'ply', credits: ['SOURCE_LICENSE'] }],
-    files: ['experiments/mapillary/index.html', 'experiments/mapillary/comparison.png', 'experiments/mapillary/results.json'],
+    files: ['experiments/mapillary/index.html', 'experiments/mapillary/comparison.png', 'experiments/mapillary/results.json', 'experiments/mapillary/clip.mp4'],
   };
   const manifest = structuredClone(manifests.independent);
   manifest.id = world;
@@ -60,6 +60,7 @@ async function observationFixture() {
   await put('dist/experiments/mapillary/index.html', '<html><img src="comparison.png"><p>Quality FAIL; execution PASS.</p></html>');
   await put('dist/experiments/mapillary/comparison.png', 'synthetic comparison image, not pixel evidence');
   await put('dist/experiments/mapillary/results.json', { status: 'FAIL', notes: 'Fixture status only' });
+  await put('dist/experiments/mapillary/clip.mp4', 'synthetic media fixture');
   await put('dist/experiments/mapillary/private.log', 'do not publish');
   await put('dist/experiments/mapillary/unlisted.png', 'do not publish');
   await put(`dist/worlds/${world}/job.json`, { source: '/Users/person/private.mov' });
@@ -163,6 +164,7 @@ describe('explicit observation packaging', () => {
     expect(paths).toContain('www/experiments/mapillary/index.html');
     expect(paths).toContain('www/experiments/mapillary/comparison.png');
     expect(paths).toContain('www/experiments/mapillary/results.json');
+    expect(paths).toContain('www/experiments/mapillary/clip.mp4');
     expect(paths.some(file => /private|job\.json|unlisted|data\/jobs|observation-worlds\.json/u.test(file))).toBe(false);
     const catalog = JSON.parse(await readFile(path.join(output, 'www/worlds/catalog.json'), 'utf8'));
     expect(catalog.scenes.some(scene => scene.category === 'experiment')).toBe(true);

@@ -66,7 +66,7 @@ export function parseObservationSpec(value) {
   if (new Set(value.files).size !== value.files.length) throw new Error('Duplicate observation report path');
   for (const file of value.files) {
     relativePath(file);
-    if (!/^experiments\/[a-z0-9]+(?:-[a-z0-9]+)*\/.+\.(?:html|css|js|json|txt|md|png|jpg|jpeg|webp|svg)$/u.test(file)) {
+    if (!/^experiments\/[a-z0-9]+(?:-[a-z0-9]+)*\/.+\.(?:html|css|js|json|txt|md|png|jpg|jpeg|webp|svg|mp4)$/u.test(file)) {
       throw new Error('Observation reports must use explicit public experiment files');
     }
   }

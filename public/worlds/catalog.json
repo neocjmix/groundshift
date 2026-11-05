@@ -74,6 +74,24 @@
       "detail": "48 real crops · 7,015 splats · Quality FAIL"
     },
     {
+      "id": "beijing-video-baseline",
+      "title": "Beijing · matched real-only baseline",
+      "description": "The matched real-only baseline for the 65-frame panorama experiment. Its rendered building edges remain blurry; target #5 geometry participated in all-image SfM.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-video-baseline/world.json",
+      "thumbnailPath": "/worlds/beijing-video-baseline/preview.jpg",
+      "detail": "48 real crops · 10,000 Metal steps · Quality FAIL"
+    },
+    {
+      "id": "beijing-video-rife",
+      "title": "Beijing · 65-frame interpolation GS",
+      "description": "The generated midpoint was added to Metal Gaussian training. It renders but adds streaked geometry and did not improve either inspected target view.",
+      "category": "experiment",
+      "manifestPath": "/worlds/beijing-video-rife/world.json",
+      "thumbnailPath": "/worlds/beijing-video-rife/preview.jpg",
+      "detail": "48 real + 6 generated crops · Quality FAIL"
+    },
+    {
       "id": "dozer-smoke",
       "title": "Dozer · 30-step smoke",
       "description": "Initial native execution test with only 30 training steps. This is a separate exported result, not the accepted 1,500-step scene.",

@@ -38,6 +38,24 @@
       ]
     },
     {
+      "id": "beijing-video-baseline",
+      "source": "data/jobs/mapillary-video-4to6-20261105/gs-real48-10000/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "beijing-video-rife",
+      "source": "data/jobs/mapillary-video-4to6-20261105/gs-rife6-10000/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
       "id": "dozer-smoke",
       "source": "data/jobs/dozer-smoke/world",
       "asset": "scene.ply",
@@ -96,6 +114,19 @@
     "experiments/mapillary/images/gs-input.png",
     "experiments/mapillary/images/gs-mask.png",
     "experiments/mapillary/images/gs-completed.png",
-    "experiments/mapillary/images/gs-gray.png"
+    "experiments/mapillary/images/gs-gray.png",
+    "experiments/video-4to6/index.html",
+    "experiments/video-4to6/summary.json",
+    "experiments/video-4to6/interpolation.mp4",
+    "experiments/video-4to6/images/start.jpg",
+    "experiments/video-4to6/images/quarter.jpg",
+    "experiments/video-4to6/images/midpoint.jpg",
+    "experiments/video-4to6/images/threequarter.jpg",
+    "experiments/video-4to6/images/finish.jpg",
+    "experiments/video-4to6/images/crossfade.jpg",
+    "experiments/video-4to6/images/observed-middle.jpg",
+    "experiments/video-4to6/images/inpaint-input.jpg",
+    "experiments/video-4to6/images/inpaint-mask.jpg",
+    "experiments/video-4to6/images/inpaint-result.jpg"
   ]
 }

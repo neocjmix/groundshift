@@ -442,6 +442,14 @@ cloud GPUs and platform services were not added.
 
 **Publication policy changed by the user on 2026-11-05.** Railway is the observation surface, not a quality gate. The four Mapillary Gaussian trials, actual source/warp/diffusion comparisons, and unsuccessful stage history are included regardless of visual quality. Existing quality FAIL and NOT RUN outcomes remain unchanged. See [the current publication status and verified deployment](DEPLOYMENT.md).
 
+The follow-up [two-endpoint panorama experiment](PANORAMA_VIDEO_EXPERIMENT.md)
+uses observed photos 4 and 6 as the ends of a locally generated 65-frame
+sequence, then compares matched real-only and generated-midpoint Gaussian
+training. Its goal is plausible scenery, even if generated details do not match
+the real street. The executed MLX model is optical-flow interpolation; the
+larger video-diffusion candidate did not reach inference. This changes neither
+the quality verdict nor the unmeasured geometry limits of the first experiment.
+
 Original private footage, model weights and raw execution logs remain local.
 Large generated worlds and explicitly selected licensed comparison images use
 release attachments; Git contains the reproducible preparation recipe, public

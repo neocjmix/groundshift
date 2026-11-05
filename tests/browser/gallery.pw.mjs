@@ -47,6 +47,9 @@ test('gallery shows real previews, filters and mobile layout without starting We
   await expect(collection(page).getByRole('link')).toHaveCount(experiments.length);
   if (experiments.length) {
     await expect(page.getByRole('link', { name: 'Compare source, warp & diffusion' })).toHaveAttribute('href', '/experiments/mapillary/index.html');
+    if (catalog.scenes.some(scene => scene.id === 'beijing-video-rife')) {
+      await expect(page.getByRole('link', { name: 'Watch 65-frame panorama' })).toHaveAttribute('href', '/experiments/video-4to6/');
+    }
     for (const scene of experiments) await expect(card(page, scene)).toContainText(scene.detail);
   }
   await page.getByRole('button', { name: 'All scenes', exact: true }).click();
@@ -80,6 +83,7 @@ test('a reduced catalog does not advertise an experiment report that was not pac
   await expect(collection(page).getByRole('link')).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'Experiment report' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Compare source, warp & diffusion' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: '65-frame video' })).toHaveCount(0);
   await expect(page.locator('canvas')).toHaveCount(0);
 });
 

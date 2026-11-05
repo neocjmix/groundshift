@@ -740,7 +740,8 @@ a {
 .collection-count { display: grid; gap: 5px; text-align: right; flex-shrink: 0; }
 .collection-count strong { font-family: Georgia, serif; font-weight: 400; font-size: 44px; color: #829273; line-height: 1; }
 .collection-count span { font-size: 10px; color: #819075; }
-.experiment-overview { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 26px 28px; border: 1px solid #c8d3b9; border-radius: 10px; background: #e8eddf; margin-bottom: 28px; }
+.experiment-overview { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 18px 24px; padding: 26px 28px; border: 1px solid #c8d3b9; border-radius: 10px; background: #e8eddf; margin-bottom: 28px; }
+.experiment-overview > div { flex: 1 1 460px; }
 .experiment-overview h2 { font-family: Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: -.5px; margin: 11px 0; }
 .experiment-overview p { max-width: 700px; font-size: 12px; color: #65725c; line-height: 1.8; margin: 0; }
 .experiment-overview > a { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; flex-shrink: 0; border: 1px solid #415d35; border-radius: 6px; padding: 15px 18px; background: #3b5135; color: #f4f7ef; text-decoration: none; font-size: 12px; }
