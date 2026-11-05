@@ -10,6 +10,7 @@ export default defineConfig({
     objectReal: "experiments/object-real/index.html",
     objectNoDepth: "experiments/object-nodepth/index.html",
     panoramicDepth: "experiments/panoramic-depth/index.html",
+    panoramicPair: "experiments/panoramic-pair/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },

@@ -1,0 +1,909 @@
+{
+  "schemaVersion": 1,
+  "execution": "PASS",
+  "geometryAcceptance": "NOT RUN",
+  "publicDeployment": "NOT RUN: pending release verification",
+  "sourceCommitBase": "c8114b1",
+  "sparse": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "createdAt": "2026-11-05T20:18:20.968621+00:00",
+    "operation": "Adjacent-pair sparse evidence only; no dense output is read",
+    "sources": [
+      "003_1677293342921360.jpg",
+      "004_679966948337536.jpg"
+    ],
+    "coordinateFrame": "fixed-rig-sfm-20261104",
+    "centerSeparationSfm": 1.3475062159150892,
+    "commonTracks": 1001,
+    "commonHeldOutTracks": 217,
+    "sharedPointIdHoldout": "SHA256(str(point3DId)) first eight hex digits modulo 5 == 0; excluded in every panorama",
+    "commonCropReprojectionPixels": {
+      "samples": 2499,
+      "median": 0.3643258608177158,
+      "p90": 1.1950252780808779,
+      "max": 3.9246567815873967
+    },
+    "commonCropBearingErrorRadians": {
+      "samples": 2499,
+      "median": 0.001060846337375384,
+      "p90": 0.003602488523703279,
+      "max": 0.011612466661148763
+    },
+    "pairTriangulationDegrees": {
+      "samples": 1001,
+      "median": 1.9385740106395992,
+      "p90": 10.340258242979084,
+      "max": 24.174035453165846
+    },
+    "belowOneDegreeTracks": 371,
+    "firstOrderRelativeSamplingBand": {
+      "samples": 1001,
+      "median": 0.32069607012330203,
+      "p90": 1.5048547763543758,
+      "max": 15.751785449399293
+    },
+    "toleranceRecommendation": {
+      "kind": "conditioning diagnostic only; NOT a geometric acceptance tolerance",
+      "workingResolution": [
+        1092,
+        546
+      ],
+      "empiricalAngularErrorRadians": 0.003602488523703279,
+      "formula": "sqrt(2) * (p90 observed sparse bearing residual + half ERP pixel diagonal at equator) / abs(sin(pair triangulation angle))",
+      "interpretation": "Finite bearing residuals and sampling set a useful error scale, but do not bound pose, correspondence, stitching or learned-depth bias. Report residuals and coverage against this diagnostic scale; do not label fusion geometry PASS from this alone.",
+      "acceptanceStatus": "NOT RUN: no independent pose/depth truth or validated static-surface tolerance"
+    },
+    "limits": [
+      "Shared tracks are from the same all-nine-panorama SfM, not independent geometry truth.",
+      "Small internal reprojection error does not bound camera pose or depth uncertainty.",
+      "Pair triangulation angle uses the estimated 3D point and is a conditioning diagnostic.",
+      "No ICP, camera refinement, depth fit, generated imagery, fusion or training is performed."
+    ]
+  },
+  "models": {
+    "da2": {
+      "newPanoramaInference": {
+        "status": "PASS",
+        "device": "mps",
+        "sourceSha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8",
+        "model": "da2",
+        "rawSha256": "05a96da455af937ead99ece498c09f13ac7ce04ba9f51933e58ec268c4e82eee",
+        "modelLoadSeconds": 4.0738935000263155,
+        "inferenceSeconds": 2.1533122500404716,
+        "elapsedSeconds": 7.732838792027906,
+        "maxResidentSetBytes": 3165667328,
+        "mpsDriverAllocatedBytes": 4400578560
+      },
+      "pair": {
+        "status": "PASS",
+        "model": "da2",
+        "startedAt": "2026-11-05T20:25:49.650169+00:00",
+        "finishedAt": "2026-11-05T20:25:51.928272+00:00",
+        "elapsedSeconds": 2.2781514590606093,
+        "cloudPoints": [
+          24076,
+          24074
+        ],
+        "protocolSha256": "ffbd08dbf57671f8b517a7e4ed4127431369d4d74f32790351ec28d9fdd57a2a",
+        "commonCalibrationTracks": 1001,
+        "commonWithheldTracks": 217,
+        "commonSparseRegionResiduals": [
+          {
+            "source": "4",
+            "region": "road",
+            "training": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            },
+            "heldOut": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            }
+          },
+          {
+            "source": "4",
+            "region": "facade",
+            "training": {
+              "samples": 10,
+              "validSamples": 10,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.17778813219473721,
+              "p90AbsRel": 0.2862232370222378,
+              "medianAbsoluteSfmUnits": 0.9193809981330856,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": -0.17778813219473721
+            },
+            "heldOut": {
+              "samples": 1,
+              "validSamples": 1,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.272118215227121,
+              "p90AbsRel": 0.272118215227121,
+              "medianAbsoluteSfmUnits": 1.4516445880962654,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": -0.272118215227121
+            }
+          },
+          {
+            "source": "5",
+            "region": "road",
+            "training": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            },
+            "heldOut": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            }
+          },
+          {
+            "source": "5",
+            "region": "facade",
+            "training": {
+              "samples": 7,
+              "validSamples": 7,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.10693724614699324,
+              "p90AbsRel": 0.19042744881282653,
+              "medianAbsoluteSfmUnits": 0.5776624017158882,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": -0.10693724614699324
+            },
+            "heldOut": {
+              "samples": 1,
+              "validSamples": 1,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.1728429011445694,
+              "p90AbsRel": 0.1728429011445694,
+              "medianAbsoluteSfmUnits": 0.8289088050377735,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": -0.1728429011445694
+            }
+          }
+        ],
+        "inputs": [
+          {
+            "consumedFileSha256": {
+              "raw.npy": "05a96da455af937ead99ece498c09f13ac7ce04ba9f51933e58ec268c4e82eee",
+              "source.png": "30c5e1890e0090e77ef7a0d60bc5b32f58a443348195fb1b2a5363ef58231fae",
+              "geometry/range-sfm.npy": "f94a69d867f891e07fbe0c5ebe179d20553956917ad706d6639e323fd1cac044",
+              "geometry/filtered.npy": "20aefe4c8ba347364b4ee7cb4740b2ac1abf87c090ebbd594835e14ccbfd831c",
+              "geometry/calibration-samples.json": "d2da015a9ab4e3dafc23a87239b3636b44bbe49c571692b54264d866025793ef"
+            },
+            "sourceSha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8",
+            "rawSha256": "05a96da455af937ead99ece498c09f13ac7ce04ba9f51933e58ec268c4e82eee",
+            "geometrySha256": "22b3b066fc64a477836112dc7acfce8034795a8374d1ab386bbc5d4ba9a3b7b6",
+            "calibration": {
+              "convention": "ray-range",
+              "scale": 596.052443944351,
+              "offset": 0.0,
+              "units": "sfm-arbitrary",
+              "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+              "method": "Median log-range ratio on training anchors only; scale-only",
+              "trainingSamples": 1195,
+              "heldOutSamples": 331
+            },
+            "heldOut": {
+              "samples": 331,
+              "validSamples": 331,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.28199497949972163,
+              "p90AbsRel": 1.372679747479302,
+              "medianAbsoluteSfmUnits": 3.2025147069773414,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+            }
+          },
+          {
+            "consumedFileSha256": {
+              "raw.npy": "78e15106c2f2f93aa604909dd1e2737513c16a3f35f006243bf5bc92cd2a4794",
+              "source.png": "cb90d65e077b43540d8e0bccf51f14c041c5e2e7969a50a37efc3867b3098c6a",
+              "geometry/range-sfm.npy": "275ffdaebc4737d4cb810ed4dbd0c03dbd1c863b72cecbfcce2fa97bd2d7cd08",
+              "geometry/filtered.npy": "1af8d76c5919e9a994d094b5093b3744e84d4a7be6a07ef0740a929903b46577",
+              "geometry/calibration-samples.json": "56c3d55efae12a6920f6db6f28579f9bbfe238aa70403ef282ecc669319b94c0"
+            },
+            "sourceSha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391",
+            "rawSha256": "78e15106c2f2f93aa604909dd1e2737513c16a3f35f006243bf5bc92cd2a4794",
+            "geometrySha256": "809a8270621e28682f2ff3b06d6e9a93b36d8111769e3ffb810d305629622b77",
+            "calibration": {
+              "convention": "ray-range",
+              "scale": 526.1355031564486,
+              "offset": 0.0,
+              "units": "sfm-arbitrary",
+              "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+              "method": "Median log-range ratio on training anchors only; scale-only",
+              "trainingSamples": 1195,
+              "heldOutSamples": 326
+            },
+            "heldOut": {
+              "samples": 326,
+              "validSamples": 326,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.2563083120932458,
+              "p90AbsRel": 1.2451180805191902,
+              "medianAbsoluteSfmUnits": 3.2844205181705064,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+            }
+          }
+        ],
+        "p2Acceptance": "NOT RUN: diagnostic comparator is not independently validated geometry tolerance",
+        "fusion": "NOT RUN",
+        "gaussianTraining": "NOT RUN",
+        "directions": [
+          {
+            "id": "4-to-5",
+            "allSupported": {
+              "selectedSourceSamples": 217672,
+              "candidateSamples": 201001,
+              "candidateFraction": 0.923412290051086,
+              "absoluteRangeResidual": {
+                "samples": 201001,
+                "mean": 0.7116818226514748,
+                "median": 0.11404577926568393,
+                "p10": 0.014571055410131706,
+                "p90": 0.7165783694998211
+              },
+              "signedRelativeResidual": {
+                "samples": 201001,
+                "mean": -0.014883500775570059,
+                "median": -0.028682101792004866,
+                "p10": -0.08160368071165228,
+                "p90": 0.015370240922175303
+              },
+              "absoluteRelativeResidual": {
+                "samples": 201001,
+                "mean": 0.06820868552570457,
+                "median": 0.03607619212733523,
+                "p10": 0.0036678836509632644,
+                "p90": 0.12151700832136447
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 201001,
+                "mean": 24.393607816067597,
+                "median": 13.320571284211724,
+                "p10": 2.4926980761321715,
+                "p90": 62.83392976110278
+              }
+            },
+            "regions": [
+              {
+                "id": "road",
+                "selectedSourceSamples": 16929,
+                "candidateSamples": 11526,
+                "candidateFraction": 0.6808435229487861,
+                "absoluteRangeResidual": {
+                  "samples": 11526,
+                  "mean": 0.07484590996005014,
+                  "median": 0.0755700129227932,
+                  "p10": 0.04614883668020142,
+                  "p90": 0.10176818211818317
+                },
+                "signedRelativeResidual": {
+                  "samples": 11526,
+                  "mean": -0.03064323114115815,
+                  "median": -0.028736047896433543,
+                  "p10": -0.048233849131721074,
+                  "p90": -0.015630886740881908
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 11526,
+                  "mean": 0.03064323114115815,
+                  "median": 0.028736047896433543,
+                  "p10": 0.015630886740881908,
+                  "p90": 0.048233849131721074
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 11526,
+                  "mean": 13.994279827872253,
+                  "median": 10.811475409061226,
+                  "p10": 2.217758351499488,
+                  "p90": 29.986928917680267
+                }
+              },
+              {
+                "id": "facade",
+                "selectedSourceSamples": 9114,
+                "candidateSamples": 9114,
+                "candidateFraction": 1.0,
+                "absoluteRangeResidual": {
+                  "samples": 9114,
+                  "mean": 0.563482681094864,
+                  "median": 0.42383263438792773,
+                  "p10": 0.2251638043072631,
+                  "p90": 1.1210501747970736
+                },
+                "signedRelativeResidual": {
+                  "samples": 9114,
+                  "mean": -0.12760441748408605,
+                  "median": -0.10019899752061945,
+                  "p10": -0.27964804953033556,
+                  "p90": -0.04630776390660597
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.1383493872030911,
+                  "median": 0.10238587399321256,
+                  "p10": 0.059199632127115924,
+                  "p90": 0.27999423540957524
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 9114,
+                  "mean": 45.24167918057265,
+                  "median": 21.95877839067966,
+                  "p10": 3.3612297424909636,
+                  "p90": 130.3676122981662
+                }
+              }
+            ]
+          },
+          {
+            "id": "5-to-4",
+            "allSupported": {
+              "selectedSourceSamples": 217601,
+              "candidateSamples": 200907,
+              "candidateFraction": 0.9232816025661646,
+              "absoluteRangeResidual": {
+                "samples": 200907,
+                "mean": 0.7610228351402865,
+                "median": 0.1800363744341258,
+                "p10": 0.04360453983198394,
+                "p90": 0.6485490976301312
+              },
+              "signedRelativeResidual": {
+                "samples": 200907,
+                "mean": 0.042350423147303654,
+                "median": 0.04733684031033401,
+                "p10": -0.016569913519343633,
+                "p90": 0.08672738776135636
+              },
+              "absoluteRelativeResidual": {
+                "samples": 200907,
+                "mean": 0.07247036058557726,
+                "median": 0.05099963013722809,
+                "p10": 0.011011093259120412,
+                "p90": 0.12370610010112912
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 200907,
+                "mean": 22.36255357209944,
+                "median": 12.260653621897879,
+                "p10": 2.350305726526523,
+                "p90": 56.14902447012643
+              }
+            },
+            "regions": [
+              {
+                "id": "road",
+                "selectedSourceSamples": 16929,
+                "candidateSamples": 15442,
+                "candidateFraction": 0.9121625612853683,
+                "absoluteRangeResidual": {
+                  "samples": 15442,
+                  "mean": 0.15276177231992233,
+                  "median": 0.15327510440876013,
+                  "p10": 0.10056706643261802,
+                  "p90": 0.1941429086605984
+                },
+                "signedRelativeResidual": {
+                  "samples": 15442,
+                  "mean": 0.05978052229528225,
+                  "median": 0.0609629117554704,
+                  "p10": 0.049272260105507226,
+                  "p90": 0.0695707772411037
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 15442,
+                  "mean": 0.05978052229528225,
+                  "median": 0.0609629117554704,
+                  "p10": 0.049272260105507226,
+                  "p90": 0.0695707772411037
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 15442,
+                  "mean": 12.514258699290384,
+                  "median": 8.880563501192189,
+                  "p10": 2.0248947163977173,
+                  "p90": 27.409360057908753
+                }
+              },
+              {
+                "id": "facade",
+                "selectedSourceSamples": 9114,
+                "candidateSamples": 9114,
+                "candidateFraction": 1.0,
+                "absoluteRangeResidual": {
+                  "samples": 9114,
+                  "mean": 0.8320065220521163,
+                  "median": 0.6517924089426563,
+                  "p10": 0.31651046621994544,
+                  "p90": 1.2264664042753355
+                },
+                "signedRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.08266386203074347,
+                  "median": 0.11282143392322985,
+                  "p10": -0.18121231552121292,
+                  "p90": 0.23835108947278327
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.16803218678711088,
+                  "median": 0.13971307809468086,
+                  "p10": 0.08784720739095792,
+                  "p90": 0.31385489642651365
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 9114,
+                  "mean": 41.4598948041295,
+                  "median": 19.243910473563844,
+                  "p10": 2.2530849094779013,
+                  "p90": 127.1742364414274
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dav2": {
+      "newPanoramaInference": {
+        "status": "PASS",
+        "device": "mps",
+        "sourceSha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8",
+        "model": "dav2",
+        "rawSha256": "e2816ea83f41d047e7bd72e7221a6d4b5e4724daac0fbccf03531d922416beff",
+        "modelLoadSeconds": 2.4779606249649078,
+        "inferenceSeconds": 0.40963454090524465,
+        "elapsedSeconds": 4.121195667074062,
+        "maxResidentSetBytes": 673939456,
+        "mpsDriverAllocatedBytes": 1258995712
+      },
+      "pair": {
+        "status": "PASS",
+        "model": "dav2",
+        "startedAt": "2026-11-05T20:25:50.739103+00:00",
+        "finishedAt": "2026-11-05T20:25:53.036469+00:00",
+        "elapsedSeconds": 2.297411625040695,
+        "cloudPoints": [
+          24388,
+          24388
+        ],
+        "protocolSha256": "ffbd08dbf57671f8b517a7e4ed4127431369d4d74f32790351ec28d9fdd57a2a",
+        "commonCalibrationTracks": 1001,
+        "commonWithheldTracks": 217,
+        "commonSparseRegionResiduals": [
+          {
+            "source": "4",
+            "region": "road",
+            "training": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            },
+            "heldOut": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            }
+          },
+          {
+            "source": "4",
+            "region": "facade",
+            "training": {
+              "samples": 10,
+              "validSamples": 10,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.4603107259669461,
+              "p90AbsRel": 0.6458906131316501,
+              "medianAbsoluteSfmUnits": 2.147029715334916,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": 0.4603107259669461
+            },
+            "heldOut": {
+              "samples": 1,
+              "validSamples": 1,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.02974423986003842,
+              "p90AbsRel": 0.02974423986003842,
+              "medianAbsoluteSfmUnits": 0.15867392333079877,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": -0.02974423986003842
+            }
+          },
+          {
+            "source": "5",
+            "region": "road",
+            "training": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            },
+            "heldOut": {
+              "samples": 0,
+              "validSamples": 0,
+              "invalidSamples": 0,
+              "medianAbsRel": null,
+              "p90AbsRel": null,
+              "medianAbsoluteSfmUnits": null,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": null
+            }
+          },
+          {
+            "source": "5",
+            "region": "facade",
+            "training": {
+              "samples": 7,
+              "validSamples": 7,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.4185026311188328,
+              "p90AbsRel": 0.6838594789454181,
+              "medianAbsoluteSfmUnits": 2.2433166536167057,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": 0.4185026311188328
+            },
+            "heldOut": {
+              "samples": 1,
+              "validSamples": 1,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.10404889616055635,
+              "p90AbsRel": 0.10404889616055635,
+              "medianAbsoluteSfmUnits": 0.4989909658471152,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy",
+              "medianSignedRelative": 0.10404889616055635
+            }
+          }
+        ],
+        "inputs": [
+          {
+            "consumedFileSha256": {
+              "raw.npy": "e2816ea83f41d047e7bd72e7221a6d4b5e4724daac0fbccf03531d922416beff",
+              "source.png": "30c5e1890e0090e77ef7a0d60bc5b32f58a443348195fb1b2a5363ef58231fae",
+              "geometry/range-sfm.npy": "930aa94f9c903476115b15ead7849af9c04d81975bccceb65285a4d92f773ad1",
+              "geometry/filtered.npy": "513983e4397bb884de7a7a6ab35df69f9501176d3ea932e673bb639e5dc84ca6",
+              "geometry/calibration-samples.json": "c108ee475e905140014aaf10f858b88ec50bf37f9b7002d01bd7b827efd28f3c"
+            },
+            "sourceSha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8",
+            "rawSha256": "e2816ea83f41d047e7bd72e7221a6d4b5e4724daac0fbccf03531d922416beff",
+            "geometrySha256": "aacd0fbd5f7d47489c72c756eb734175e5333b1179dd1032def70ea8c56c81f7",
+            "calibration": {
+              "convention": "inverse-ray-range",
+              "scale": 0.07920953570763818,
+              "offset": 0.0025023309456306203,
+              "units": "sfm-arbitrary",
+              "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+              "method": "Huber IRLS affine inverse-range fit on training anchors only",
+              "trainingSamples": 1195,
+              "heldOutSamples": 331
+            },
+            "heldOut": {
+              "samples": 331,
+              "validSamples": 331,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.15670499483602585,
+              "p90AbsRel": 0.8881326782240478,
+              "medianAbsoluteSfmUnits": 2.6399020969092284,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+            }
+          },
+          {
+            "consumedFileSha256": {
+              "raw.npy": "f56d3beece7bfe2b269429324ec65efd8dff3bced5a5f5d3a66b36ae096d4c05",
+              "source.png": "cb90d65e077b43540d8e0bccf51f14c041c5e2e7969a50a37efc3867b3098c6a",
+              "geometry/range-sfm.npy": "15d4871fda13748d6a3cae08426a315345a7254435e13a8d0dc635b4bf7e2e24",
+              "geometry/filtered.npy": "513983e4397bb884de7a7a6ab35df69f9501176d3ea932e673bb639e5dc84ca6",
+              "geometry/calibration-samples.json": "ae5a713a00bbb543671eae47aaa910db48fe109b7c511fbce046412db547331d"
+            },
+            "sourceSha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391",
+            "rawSha256": "f56d3beece7bfe2b269429324ec65efd8dff3bced5a5f5d3a66b36ae096d4c05",
+            "geometrySha256": "d69c8ccf50be9d54d3481d7a5203f5701d79e7cbec6a17701c2922b35cdc479a",
+            "calibration": {
+              "convention": "inverse-ray-range",
+              "scale": 0.06979650615424454,
+              "offset": 0.0034205460436870986,
+              "units": "sfm-arbitrary",
+              "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+              "method": "Huber IRLS affine inverse-range fit on training anchors only",
+              "trainingSamples": 1195,
+              "heldOutSamples": 326
+            },
+            "heldOut": {
+              "samples": 326,
+              "validSamples": 326,
+              "invalidSamples": 0,
+              "medianAbsRel": 0.13772906721325937,
+              "p90AbsRel": 0.5494366625138773,
+              "medianAbsoluteSfmUnits": 2.4516776944557837,
+              "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+            }
+          }
+        ],
+        "p2Acceptance": "NOT RUN: diagnostic comparator is not independently validated geometry tolerance",
+        "fusion": "NOT RUN",
+        "gaussianTraining": "NOT RUN",
+        "directions": [
+          {
+            "id": "4-to-5",
+            "allSupported": {
+              "selectedSourceSamples": 220584,
+              "candidateSamples": 205127,
+              "candidateFraction": 0.9299269212635549,
+              "absoluteRangeResidual": {
+                "samples": 205127,
+                "mean": 0.6126863348264123,
+                "median": 0.1750516149232233,
+                "p10": 0.03510222235631898,
+                "p90": 0.8856984800774933
+              },
+              "signedRelativeResidual": {
+                "samples": 205127,
+                "mean": -0.013385158666543301,
+                "median": -0.01925929921822881,
+                "p10": -0.09122596445112666,
+                "p90": 0.05962374572412205
+              },
+              "absoluteRelativeResidual": {
+                "samples": 205127,
+                "mean": 0.06014663118709116,
+                "median": 0.040705742424788936,
+                "p10": 0.0067286660603955335,
+                "p90": 0.10772303350209626
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 205127,
+                "mean": 18.585536678839063,
+                "median": 8.783035434873256,
+                "p10": 1.6475710054343855,
+                "p90": 46.16585814954227
+              }
+            },
+            "regions": [
+              {
+                "id": "road",
+                "selectedSourceSamples": 16929,
+                "candidateSamples": 10993,
+                "candidateFraction": 0.6493590879555792,
+                "absoluteRangeResidual": {
+                  "samples": 10993,
+                  "mean": 0.19471346060756173,
+                  "median": 0.2061311679023179,
+                  "p10": 0.04682677933933502,
+                  "p90": 0.3205109098688177
+                },
+                "signedRelativeResidual": {
+                  "samples": 10993,
+                  "mean": -0.05914728027033444,
+                  "median": -0.06411221266382265,
+                  "p10": -0.09301266735711536,
+                  "p90": -0.01581433368002023
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 10993,
+                  "mean": 0.06047164641636365,
+                  "median": 0.06411221266382265,
+                  "p10": 0.01916350815048251,
+                  "p90": 0.09301266735711536
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 10993,
+                  "mean": 13.152433085998663,
+                  "median": 10.022235107399823,
+                  "p10": 2.0150247569912763,
+                  "p90": 28.673005063909706
+                }
+              },
+              {
+                "id": "facade",
+                "selectedSourceSamples": 9114,
+                "candidateSamples": 9114,
+                "candidateFraction": 1.0,
+                "absoluteRangeResidual": {
+                  "samples": 9114,
+                  "mean": 0.43234279688092875,
+                  "median": 0.29899244273388526,
+                  "p10": 0.06076397181055651,
+                  "p90": 0.9578555272091342
+                },
+                "signedRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.020211099034511418,
+                  "median": -0.0059474664173444,
+                  "p10": -0.08831207458258732,
+                  "p90": 0.15188590036133404
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.07052841687460597,
+                  "median": 0.04629204751542952,
+                  "p10": 0.008998575358577121,
+                  "p90": 0.15642589345366256
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 9114,
+                  "mean": 45.11172752609059,
+                  "median": 18.712824411583277,
+                  "p10": 2.5459764856863076,
+                  "p90": 138.14614410968184
+                }
+              }
+            ]
+          },
+          {
+            "id": "5-to-4",
+            "allSupported": {
+              "selectedSourceSamples": 220584,
+              "candidateSamples": 205199,
+              "candidateFraction": 0.9302533275305552,
+              "absoluteRangeResidual": {
+                "samples": 205199,
+                "mean": 0.5961238835784755,
+                "median": 0.14965358330117517,
+                "p10": 0.029346567121911006,
+                "p90": 0.8413301111274192
+              },
+              "signedRelativeResidual": {
+                "samples": 205199,
+                "mean": 0.022197433836825785,
+                "median": 0.003116602778557583,
+                "p10": -0.06255380509535344,
+                "p90": 0.09269859188481398
+              },
+              "absoluteRelativeResidual": {
+                "samples": 205199,
+                "mean": 0.06233356344886795,
+                "median": 0.03580336384162708,
+                "p10": 0.005481560254800683,
+                "p90": 0.10606756411142278
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 205199,
+                "mean": 17.918593617743777,
+                "median": 8.432387794680475,
+                "p10": 1.6633666538399023,
+                "p90": 44.25634130623534
+              }
+            },
+            "regions": [
+              {
+                "id": "road",
+                "selectedSourceSamples": 16929,
+                "candidateSamples": 15041,
+                "candidateFraction": 0.888475397247327,
+                "absoluteRangeResidual": {
+                  "samples": 15041,
+                  "mean": 0.1431435611461709,
+                  "median": 0.15946526873270317,
+                  "p10": 0.028856655536379172,
+                  "p90": 0.23840819840031324
+                },
+                "signedRelativeResidual": {
+                  "samples": 15041,
+                  "mean": -0.0309689880829093,
+                  "median": -0.04473282666621932,
+                  "p10": -0.06981816086796488,
+                  "p90": 0.028439327233566365
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 15041,
+                  "mean": 0.04380716321491116,
+                  "median": 0.04693930631652255,
+                  "p10": 0.010516000586114906,
+                  "p90": 0.0706690972560071
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 15041,
+                  "mean": 11.804672112267273,
+                  "median": 8.267593026772042,
+                  "p10": 1.698163039401057,
+                  "p90": 27.000482172968702
+                }
+              },
+              {
+                "id": "facade",
+                "selectedSourceSamples": 9114,
+                "candidateSamples": 9114,
+                "candidateFraction": 1.0,
+                "absoluteRangeResidual": {
+                  "samples": 9114,
+                  "mean": 0.36925103611868254,
+                  "median": 0.26896175824857327,
+                  "p10": 0.05265870737995613,
+                  "p90": 0.8054150632691724
+                },
+                "signedRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.02665266032646132,
+                  "median": 0.019544094485393185,
+                  "p10": -0.05505701464215243,
+                  "p90": 0.11877516558430647
+                },
+                "absoluteRelativeResidual": {
+                  "samples": 9114,
+                  "mean": 0.054159975059013425,
+                  "median": 0.038545879446598444,
+                  "p10": 0.0069736547933057745,
+                  "p90": 0.12409039334619117
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 9114,
+                  "mean": 48.7249093659095,
+                  "median": 23.59901794785557,
+                  "p10": 2.5333817349388683,
+                  "p90": 139.68285150701715
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "validation": {
+    "pythonDistinctPassed": 159,
+    "pythonNotRunInBoth": [
+      "test_hdr_rotation_is_baked_before_tone_mapping (test_prepare_video.VideoHdrPixelTests.test_hdr_rotation_is_baked_before_tone_mapping)",
+      "test_hlg_and_pq_change_pixels_and_keep_highlight_order (test_prepare_video.VideoHdrPixelTests.test_hlg_and_pq_change_pixels_and_keep_highlight_order)",
+      "test_missing_zscale_fails_before_hdr_extraction (test_prepare_video.VideoHdrPixelTests.test_missing_zscale_fails_before_hdr_extraction)"
+    ],
+    "javascript": 166,
+    "newPythonTests": 22,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "localTargetedChrome": {
+      "status": "PASS",
+      "tests": 3,
+      "seconds": 9.8
+    },
+    "baselineFilesUnchanged": 103,
+    "archive": {
+      "status": "PASS",
+      "archive": "groundshift-panoramic-pair-20261106.tar.gz",
+      "bytes": 287123649,
+      "sha256": "d0000f6be2998163665c31900cbb9ae144dc160fd5d29406d09581aff008e2ac",
+      "wwwFiles": 410,
+      "wwwBytes": 326969233,
+      "stage": "data/deploy/viewer-1793910538729",
+      "inventory": "data/deploy/viewer-1793910538729.inventory.json"
+    }
+  }
+}

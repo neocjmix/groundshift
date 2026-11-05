@@ -1,5 +1,7 @@
 # P0 + one-panorama full-sphere depth experiment
 
+Follow-up: [adjacent-pair diagnostics](PANORAMIC_PAIR_P1.md) have now executed; the one-panorama measurements below remain unchanged.
+
 Authoritative scope: [panoramic street roadmap](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md).
 This run freezes the existing best scooter result and tests one full ERP; no
 Gaussian training, generated RGB, nine-way fusion or scooter tuning is included.

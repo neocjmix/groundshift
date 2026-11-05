@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -12,15 +12,17 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: one full panorama before street reconstruction
+## Current experiment: adjacent full-sphere depth comparison
 
 The [panoramic street roadmap](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md)
-now has a [bounded P0/P1 execution](docs/PANORAMIC_DEPTH_P1.md): the best scooter
-baseline is frozen, DA² and DAV2-Small run on one real ERP locally on MPS, and
-explicit sparse-range calibration produces inspectable colored spherical point
-clouds. No new Gaussian training is performed. Both models execute; neither has
-passed cross-panorama or independent geometry validation. The new report compares
-depth, masks, point clouds, timings and limitations. [Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
+now has an [executed two-panorama diagnostic](docs/PANORAMIC_PAIR_P1.md).
+DA² and DAV2-Small ran on the adjacent real ERP on MPS, reusing the preceding
+panorama's predictions and fixed-rig camera poses. The report shows unfused
+source-colored clouds, bidirectional range/RGB comparisons and regional failures.
+Median pair range disagreement is 3.6–5.1%, but facade bias, weak parallax and
+unsupported road calibration prevent geometry acceptance. No new GS training or
+nine-way fusion. The [one-panorama result](docs/PANORAMIC_DEPTH_P1.md), best scooter
+and all earlier observations are preserved. [Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
 
 ## Preserved experiments: one object along the panorama path
 

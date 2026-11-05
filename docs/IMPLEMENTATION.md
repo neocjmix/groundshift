@@ -7,7 +7,7 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 The latest direction is the [panoramic street plan](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md).
 The bounded [P0/P1 run](PANORAMIC_DEPTH_P1.md) preserves the best scooter result,
 executes two depth models on one ERP and exports calibrated spherical clouds.
-No Gaussian training is included; two-panorama consistency remains NOT RUN.
+The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) now measures both directions and exposes regional bias. No fusion or Gaussian training is included; P2 geometry acceptance remains NOT RUN.
 
 The preceding user direction prioritized a visible one-object result and immediate
 Railway publication. Build/package integrity and a brief actual browser check
@@ -20,6 +20,7 @@ completion time, newest first, with an oldest-first option.
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
+| Adjacent-pair P1 / P2 diagnostic | PASS for actual MPS execution, pair projection and local browser; geometry not accepted for fusion | [Two-panorama results](PANORAMIC_PAIR_P1.md): 1,001 shared sparse tracks, weak median 1.94° parallax, 3.6–5.1% median pair range differences; regional bias and unsupported road calibration remain. |
 | P0 + one-panorama P1 | PASS for preserved baseline, actual MPS inference, projection tests and public browser inspection; global geometry NOT RUN | DA² 2.570 s / DAV2 1.408 s; 1,195 calibration + 326 withheld SfM tracks; colored clouds and [limitations](PANORAMIC_DEPTH_P1.md). No new GS training. |
 | M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 165 viewer/packager tests, 25 local headed Chrome tests, inspected desktop/mobile views; original M0 hardware evidence in [VALIDATION.md](VALIDATION.md) and current release checks in [DEPLOYMENT.md](DEPLOYMENT.md) |
 | M1 local image input, obtained real camera poses, native Metal training, PLY export and viewer rendering | PASS | 40-image dozer dataset, 1,500 steps, 80.35-second job, 194,789 splats; [M1.md](M1.md) |

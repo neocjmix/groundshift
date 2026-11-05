@@ -8,7 +8,7 @@ The product is not a precise digital twin. Accept approximations, incomplete uns
 The current [street roadmap](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md) moves from
 one object toward full-sphere depth and shared-frame point fusion. Its first
 [bounded run](PANORAMIC_DEPTH_P1.md) executes one ERP only, preserves the strongest
-scooter recipe and makes no full-street or cross-view consistency claim.
+scooter recipe. The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) now measures cross-view disagreement, without claiming accepted global geometry or a reconstructed full street.
 
 The current bounded experiment selects one object in the middle of the existing
 panorama route and gathers the views looking toward it. Whole-frame diffusion

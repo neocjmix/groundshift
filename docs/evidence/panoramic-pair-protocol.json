@@ -1,0 +1,62 @@
+{
+  "declaredAt": "2026-11-05T20:21:02.314057+00:00",
+  "basis": "Manually selected from observed RGB before inspecting pair dense residuals. Normalized ERP pixel centers. Candidate static regions, not semantic segmentation or verified static truth. Same normalized boxes for both adjacent photographs; contents may differ after motion.",
+  "regions": [
+    {
+      "id": "road",
+      "title": "Foreground pavement candidate",
+      "u": [
+        0.25,
+        0.72
+      ],
+      "v": [
+        0.78,
+        0.84
+      ]
+    },
+    {
+      "id": "facade",
+      "title": "Lower left facade and railing candidate",
+      "u": [
+        0.01,
+        0.18
+      ],
+      "v": [
+        0.49,
+        0.58
+      ]
+    }
+  ],
+  "pairGate": "No full P2 acceptance based on internal SfM alone. Compare depth discrepancy to a sparse-only angular noise comparator before any fusion. Do not tune thresholds to dense outputs.",
+  "fusion": "NOT RUN",
+  "gaussianTraining": "NOT RUN",
+  "relativeDiagnosticBand": 0.32069607012330203,
+  "bandSelection": "Median shared-track first-order sampling band derived solely from sparse SfM; diagnostic reference, NOT acceptance tolerance.",
+  "sparseEvidenceSha256": "c69dd173068abbf82bcf44311318ea8ddd950f0428e52a2b61c01287a0c1104b",
+  "sourceHashes": [
+    "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8",
+    "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391"
+  ],
+  "regionalDiagnosticBands": {
+    "4": {
+      "road": {
+        "sharedTracks": 0,
+        "median": null
+      },
+      "facade": {
+        "sharedTracks": 11,
+        "median": 0.0385568961456474
+      }
+    },
+    "5": {
+      "road": {
+        "sharedTracks": 0,
+        "median": null
+      },
+      "facade": {
+        "sharedTracks": 8,
+        "median": 0.0464202296390919
+      }
+    }
+  }
+}

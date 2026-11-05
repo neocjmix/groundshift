@@ -40,7 +40,7 @@ The strict schema in `src/world.ts` and [world format reference](WORLD_FORMAT.md
 The [one-panorama P1 experiment](PANORAMIC_DEPTH_P1.md) adds a pinned local depth
 process plus explicitly calibrated spherical projection. Raw prediction semantics,
 SfM radial calibration and measured-by-image-estimation pose metadata stay separate.
-Its point-cloud report uses the existing static viewer infrastructure; a colored
+The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) adds bidirectional radial/RGB projection without pose refinement or fusion, preserving source IDs and explicit uncertainty. Its point-cloud report uses the existing static viewer infrastructure; a colored
 PLY is not passed off as a trained Gaussian world. No backend framework is added.
 
 
