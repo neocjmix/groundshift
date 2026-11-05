@@ -1,8 +1,8 @@
-# Viewer and no-learned-depth scooter observation package: bad9de4.
+# Viewer and one-panorama depth observation package: 5336744.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-object-nodepth-2026-11-05/groundshift-object-nodepth-20261105.tar.gz \
-    && echo '38fdfbe601a9941e8310e29c321dacd9c4082caf3fb79128a88a5a3505d58d26  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-depth-2026-11-06/groundshift-panoramic-depth-20261106.tar.gz \
+    && echo '312eade1493ba7e289e37cad7c7d68b59c19f7a0eaf0b87e6d154054e1c53d66  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
