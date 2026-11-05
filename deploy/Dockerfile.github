@@ -1,8 +1,8 @@
-# Viewer and real-only scooter observation package: 301c4be.
+# Viewer and no-learned-depth scooter observation package: bad9de4.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-object-real-2026-11-05/groundshift-object-real-20261105.tar.gz \
-    && echo '16fa51ef8275314ac46111387a4814c696056d160489b5a50769fec25dbda42d  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-object-nodepth-2026-11-05/groundshift-object-nodepth-20261105.tar.gz \
+    && echo '38fdfbe601a9941e8310e29c321dacd9c4082caf3fb79128a88a5a3505d58d26  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
