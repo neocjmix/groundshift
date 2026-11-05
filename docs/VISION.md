@@ -5,6 +5,11 @@ Groundshift turns pedestrian memories into places people can revisit. Someone wa
 The product is not a precise digital twin. Accept approximations, incomplete unseen geometry and imperfect texture when the place still feels recognizable. Maintain the continuity of paths, turns, and landmarks.
 
 ## Prototype scope
+The current [street roadmap](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md) moves from
+one object toward full-sphere depth and shared-frame point fusion. Its first
+[bounded run](PANORAMIC_DEPTH_P1.md) executes one ERP only, preserves the strongest
+scooter recipe and makes no full-street or cross-view consistency claim.
+
 The current bounded experiment selects one object in the middle of the existing
 panorama route and gathers the views looking toward it. Whole-frame diffusion
 only augments the image count; calibrated per-image depth is fused into a point

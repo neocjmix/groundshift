@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -12,7 +12,17 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: one object along the panorama path
+## Current experiment: one full panorama before street reconstruction
+
+The [panoramic street roadmap](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md)
+now has a [bounded P0/P1 execution](docs/PANORAMIC_DEPTH_P1.md): the best scooter
+baseline is frozen, DA² and DAV2-Small run on one real ERP locally on MPS, and
+explicit sparse-range calibration produces inspectable colored spherical point
+clouds. No new Gaussian training is performed. Both models execute; neither has
+passed cross-panorama or independent geometry validation. The new report compares
+depth, masks, point clouds, timings and limitations. [Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
+
+## Preserved experiments: one object along the panorama path
 
 The latest [no-learned-depth trial](docs/OBJECT_NO_DEPTH.md) keeps those same nine
 real training images and camera matrices byte-identical, and removes depth

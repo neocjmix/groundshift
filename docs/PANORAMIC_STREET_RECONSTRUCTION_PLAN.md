@@ -1,6 +1,6 @@
 # Panoramic street reconstruction: staged experiment plan
 
-Status: PLANNED (not executed). Baseline: branch `feat/local-viewer-reconstruction`, 2026-11-06. This plan is for a *continuous explorable street*, not optimizing the scooter in isolation. No performance or quality claims below are new measurements.
+Status: P0 baseline frozen and one-panorama P1 smoke test executed; see [actual results](PANORAMIC_DEPTH_P1.md). Two-panorama consistency, full P0 evaluation renders and P2–P5 remain NOT RUN. Baseline: branch `feat/local-viewer-reconstruction`, 2026-11-06. This plan is for a *continuous explorable street*, not optimizing the scooter in isolation. No performance or quality claims below are new measurements.
 
 ## Decision and hypotheses
 

@@ -37,6 +37,12 @@ lens calibration or poses. See [actual evidence](ORIGINAL_VIDEO.md).
 The strict schema in `src/world.ts` and [world format reference](WORLD_FORMAT.md) replace the illustrative shape below for real artifacts. Version 1 supports one Gaussian asset, orbit and optional camera-path navigation. The viewer world is right-handed, +Y-up with arbitrary or meter units, an explicit uniform asset transform and camera position/target/up/clipping. Three.js cameras look along local −Z. The manifest never silently assumes an asset's up-axis or invents a safe origin. Native exports retain genuine world-space camera matrices in `cameras.json`; the viewer must not apply the asset transform to them again. Explicit sequence edges permit interpolated movement; unknown edges and different components stop it. Free look changes orientation without moving off the selected camera route.
 
 ## Reconstruction backend boundary
+The [one-panorama P1 experiment](PANORAMIC_DEPTH_P1.md) adds a pinned local depth
+process plus explicitly calibrated spherical projection. Raw prediction semantics,
+SfM radial calibration and measured-by-image-estimation pose metadata stay separate.
+Its point-cloud report uses the existing static viewer infrastructure; a colored
+PLY is not passed off as a trained Gaussian world. No backend framework is added.
+
 
 The public-panorama experiment adds an input preparation step: verified licensed
 equirectangular photos are reprojected to overlapping pinhole crops with known

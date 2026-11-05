@@ -154,6 +154,17 @@ describe('curated viewer packaging', () => {
 });
 
 describe('explicit observation packaging', () => {
+  it('packages only explicitly allowed point-cloud downloads without treating them as GS worlds', async () => {
+    const { root, output, spec, put } = await observationFixture();
+    const name = 'experiments/panoramic-depth/cloud.ply';
+    spec.files.push(name);
+    await put('dist/' + name, 'ply\nformat ascii 1.0\nelement vertex 0\nend_header\n');
+    await put('dist/experiments/panoramic-depth/unlisted.ply', 'private unlisted fixture');
+    await packageViewer({ root, output, includeExperiments: true, observationSpec: spec });
+    expect(await readFile(path.join(output, 'www', name), 'utf8')).toContain('element vertex 0');
+    await expect(access(path.join(output, 'www/experiments/panoramic-depth/unlisted.ply'))).rejects.toThrow();
+  });
+
   it('adds all listed experimental worlds and only explicitly listed comparison files', async () => {
     const { root, output, world } = await observationFixture();
     const result = await packageViewer({ root, output, includeExperiments: true });

@@ -395,6 +395,25 @@
     "experiments/object-nodepth/images/frame_0024.png",
     "experiments/object-nodepth/index.html",
     "experiments/object-nodepth/gs-preview.jpg",
-    "experiments/object-nodepth/context-preview.jpg"
+    "experiments/object-nodepth/context-preview.jpg",
+    "experiments/panoramic-depth/summary.json",
+    "experiments/panoramic-depth/source.jpg",
+    "experiments/panoramic-depth/dav2/depth.png",
+    "experiments/panoramic-depth/dav2/cloud.json",
+    "experiments/panoramic-depth/dav2/diagnostics.json",
+    "experiments/panoramic-depth/dav2/cloud-all.json",
+    "experiments/panoramic-depth/dav2/range.png",
+    "experiments/panoramic-depth/dav2/cloud.ply",
+    "experiments/panoramic-depth/dav2/cloud-all.ply",
+    "experiments/panoramic-depth/dav2/mask.png",
+    "experiments/panoramic-depth/da2/depth.png",
+    "experiments/panoramic-depth/da2/cloud.json",
+    "experiments/panoramic-depth/da2/diagnostics.json",
+    "experiments/panoramic-depth/da2/cloud-all.json",
+    "experiments/panoramic-depth/da2/range.png",
+    "experiments/panoramic-depth/da2/cloud.ply",
+    "experiments/panoramic-depth/da2/cloud-all.ply",
+    "experiments/panoramic-depth/da2/mask.png",
+    "experiments/panoramic-depth/index.html"
   ]
 }
