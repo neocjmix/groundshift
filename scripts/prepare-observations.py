@@ -168,6 +168,9 @@ def collect_history():
             stage = str(report.relative_to(directory).parent)
             item = dict(trial=directory.name, stage=(report.stem if stage == '.' else stage + ' / ' + report.stem),
                         execution=data.get('status', 'NOT RECORDED'))
+            stamp = data.get('finishedAt') or data.get('startedAt') or data.get('createdAt')
+            if stamp:
+                item['recordedAt'] = stamp
             for key in ['elapsedSeconds', 'inferenceSeconds', 'gpuInference', 'modelDownload', 'multiViewConsistency', 'geometryValidation', 'imageCount', 'registeredImages', 'registeredImageCount', 'trainingImages', 'gpuTraining', 'reconstruction', 'cameraEstimation']:
                 value = data.get(key)
                 if isinstance(value, (int, float, bool)) or value in ['PASS', 'FAIL', 'NOT RUN', 'CANCELLED']:
@@ -221,6 +224,7 @@ def collect_history():
         dict(trial='RIFE generated multi-view consistency', stage='quality validation', execution='NOT RUN',
              detail='Six crops share one measured rig pose; other 64 generated panoramas have no independently estimated camera poses.'),
     ])
+    records.sort(key=lambda item: item.get('recordedAt', ''), reverse=True)
     assert_public_text(json.dumps(records))
     return records
 

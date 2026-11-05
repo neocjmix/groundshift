@@ -4,6 +4,15 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-05
 
+The latest user direction prioritizes a visible one-object result and immediate
+Railway publication. Build/package integrity and a brief actual browser check
+remain necessary to report a working release; broad regression runs and detailed
+quality comparisons follow publication and are labeled NOT RUN until executed.
+The [object-focused experiment](OBJECT_FOCUS_EXPERIMENT.md) keeps whole-frame
+diffusion before depth estimation, then calibrates and fuses depth for GS
+initialization. The chronological lab lists experiments and worlds by recorded
+completion time, newest first, with an oldest-first option.
+
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
 | M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 165 viewer/packager tests, 25 local headed Chrome tests, inspected desktop/mobile views; original M0 hardware evidence in [VALIDATION.md](VALIDATION.md) and current release checks in [DEPLOYMENT.md](DEPLOYMENT.md) |

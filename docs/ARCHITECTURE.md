@@ -46,7 +46,13 @@ or a new measured baseline. World poses still need reconstruction. The prototype
 does not pretend that ordinary perspective trainers understand an equirectangular
 image directly.
 
-Diffusion completion is an experimental local preprocessing/refinement process,
+The current object experiment uses whole-frame img2img diffusion only to add
+input images. Camera estimation follows generation; relative depth is calibrated
+to neighboring feature correspondences and fused to initialize Brush. Earlier
+masked completion remains historical evidence rather than the current workflow.
+See [object experiment](OBJECT_FOCUS_EXPERIMENT.md).
+
+Diffusion is an experimental local preprocessing process,
 not part of the viewer or a cloud worker. Keep source images, generated pixels,
 mask semantics, model revision/seed and camera evidence distinct. Evaluate
 against real withheld views and distinguish experimental publication from quality

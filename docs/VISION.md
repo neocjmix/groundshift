@@ -5,6 +5,12 @@ Groundshift turns pedestrian memories into places people can revisit. Someone wa
 The product is not a precise digital twin. Accept approximations, incomplete unseen geometry and imperfect texture when the place still feels recognizable. Maintain the continuity of paths, turns, and landmarks.
 
 ## Prototype scope
+The current bounded experiment selects one object in the middle of the existing
+panorama route and gathers the views looking toward it. Whole-frame diffusion
+only augments the image count; calibrated per-image depth is fused into a point
+cloud before Gaussian training. Publish the first result for observation before
+detailed quality measurement. See [object experiment](OBJECT_FOCUS_EXPERIMENT.md).
+
 The user redirected the next experiment to dense consecutive Mapillary 360°
 imagery, followed by diffusion-assisted filling of missing viewpoints and
 Gaussian reconstruction. Begin with a small, licensed, reproducibly acquired

@@ -32,6 +32,7 @@ export default function App() {
   const [catalogRevision, setCatalogRevision] = useState(0);
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
   const sequence = useRef(0);
   const folderInput = useRef<HTMLInputElement>(null);
   const viewerOpen = Boolean(request.path) || localMode;
@@ -137,7 +138,11 @@ export default function App() {
     (filter === "all" || scene.category === filter) &&
     `${scene.title} ${scene.description} ${scene.detail} ${categories[scene.category]}`
       .toLowerCase().includes(search.trim().toLowerCase()),
-  );
+  ).sort((a, b) => {
+    if (!a.createdAt) return b.createdAt ? 1 : 0;
+    if (!b.createdAt) return -1;
+    return (Date.parse(a.createdAt) - Date.parse(b.createdAt)) * (sortOrder === "oldest" ? 1 : -1);
+  });
   const catalogStatus = <>
     {catalogLoading && <p className="manifest-status" role="status">Opening the collection…</p>}
     {catalogError && <div className="manifest-error" role="alert">
@@ -172,6 +177,7 @@ export default function App() {
         {viewerOpen && <a className="collection-link" href="/" onClick={(event) => follow(event, null)}>← Back to scenes</a>}
         {videoExperimentAvailable && <a className="collection-link" href={videoExperimentReport}>65-frame video ↗</a>}
         {experimentCount > 0 && <a className="collection-link experiment-report-link" href={experimentReport}>Experiment report ↗</a>}
+        {scenes.some(scene => scene.id === "scooter-object") && <a className="collection-link" href="/experiments/lab/">실험실 · 시간순 ↗</a>}
         <span className="local-badge"><span className="live-dot" /> Renders on your device</span>
       </div>
     </header>
@@ -190,6 +196,7 @@ export default function App() {
           <h2 id="experiment-heading">Real photos, generated gaps, actual results.</h2>
           <p>Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately.</p>
         </div>
+        {scenes.some(scene => scene.id === "scooter-object") && <a href="/experiments/lab/">실험실 · 최신 결과부터 <span aria-hidden="true">↗</span></a>}
         <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
         {videoExperimentAvailable && <a href={videoExperimentReport}>Watch 65-frame panorama <span aria-hidden="true">↗</span></a>}
         {videoExperimentAvailable && <a href={depthExperimentReport}>Inspect photo depth maps <span aria-hidden="true">↗</span></a>}
@@ -201,6 +208,7 @@ export default function App() {
           {Object.entries(categories).map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}
         </div>
         <input className="scene-search" type="search" aria-label="Search scenes" placeholder="Search scenes…" value={search} onChange={(event) => setSearch(event.target.value)} />
+        <select className="scene-sort" aria-label="Sort scenes by time" value={sortOrder} onChange={event => setSortOrder(event.target.value)}><option value="newest">최신순</option><option value="oldest">오래된 순</option></select>
       </div>
       {catalogStatus}
       <section className="scene-grid" aria-label="Scene collection">
@@ -209,6 +217,7 @@ export default function App() {
           <div className="scene-card-copy"><span className={`scene-category category-${scene.category}`}>{categories[scene.category]}</span>
             <h2>{scene.title}<span aria-hidden="true">↗</span></h2>
             <p>{scene.description}</p><small>{scene.detail}</small>
+            {scene.createdAt && <time dateTime={scene.createdAt}>{new Date(scene.createdAt).toLocaleString()}</time>}
           </div>
         </a>)}
       </section>
@@ -232,7 +241,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}

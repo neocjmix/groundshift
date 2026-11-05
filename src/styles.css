@@ -831,3 +831,5 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .scene-card, .scene-preview img { transition: none; }
 }
+ .scene-sort { background: #17232b; color: #edf2f5; border: 1px solid #41525e; border-radius: 8px; padding: 10px 12px; }
+ .scene-card time { display: block; margin-top: 12px; color: #92a2ad; font-size: 12px; }

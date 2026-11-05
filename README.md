@@ -12,7 +12,16 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: public 360° sequences
+## Current experiment: one object along the panorama path
+
+The next observation is a single parked scooter viewed from nine existing
+panorama positions. Whole-frame diffusion adds intermediate image candidates;
+relative depth is calibrated against neighboring features and fused into the
+Gaussian initialization. The [experiment record](docs/OBJECT_FOCUS_EXPERIMENT.md)
+tracks actual camera/depth rejections and the result-first release. The new
+chronological laboratory links images, depth, point clouds and Gaussian worlds.
+
+## Earlier experiments: public 360° sequences
 
 The user-directed experiments use a small licensed Mapillary panorama
 sequence. The first tested an observed-image Gaussian baseline and local

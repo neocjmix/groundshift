@@ -16,6 +16,7 @@ const sceneSchema = z.object({
   manifestPath,
   thumbnailPath,
   detail: label,
+  createdAt: z.iso.datetime({ offset: true }).optional(),
 }).strict().superRefine((scene, context) => {
   if (scene.manifestPath.split('/')[2] !== scene.thumbnailPath.split('/')[2]) {
     context.addIssue({ code: 'custom', path: ['thumbnailPath'], message: 'Preview must belong to the same world as its manifest' });
