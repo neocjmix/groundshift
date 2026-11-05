@@ -181,6 +181,11 @@ failures remain in logs. Browser screenshots and control evidence are in
 
 ## Validation
 
+Railway deployment and 99 selected public file hashes **PASS**. Public headed
+Chrome renders both pair clouds and the preserved one-panorama report. Three
+targeted checks pass after correcting the initial 5-second remote-download wait;
+initial failures and final screenshots remain recorded. [Release evidence](DEPLOYMENT.md).
+
 - **PASS:** new MPS inference for both models; same global point-ID holdout;
   source/pose/array provenance; 103 frozen baseline hashes unchanged.
 - **PASS:** 22 new Python tests (6 anchor/split/conditioning, 16 pair geometry),

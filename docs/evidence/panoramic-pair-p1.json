@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "execution": "PASS",
   "geometryAcceptance": "NOT RUN",
-  "publicDeployment": "NOT RUN: pending release verification",
+  "publicDeployment": "PASS",
   "sourceCommitBase": "c8114b1",
   "sparse": {
     "schemaVersion": 1,
@@ -905,5 +905,66 @@
       "stage": "data/deploy/viewer-1793910538729",
       "inventory": "data/deploy/viewer-1793910538729.inventory.json"
     }
+  },
+  "sourceCommit": "73e63e69a9d1fef09dbdbc2c893b58d9637dec3b",
+  "deploymentPointerCommit": "51920313a1c7a6d39bf2ea18f14622ccb83e5c61",
+  "publication": {
+    "id": "ff2b8ff3-64aa-43af-acf6-b4eeaeebad12",
+    "status": "SUCCESS",
+    "createdAt": "2026-11-05T20:38:15.253Z",
+    "updatedAt": "2026-11-05T20:39:08.634Z",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "release": "viewer-panoramic-pair-2026-11-06",
+    "publicFileHashes": {
+      "status": "PASS",
+      "files": 99
+    },
+    "health": {
+      "url": "https://groundshift-viewer-production.up.railway.app/healthz",
+      "status": 200,
+      "body": "ok"
+    },
+    "releaseDownload": {
+      "status": "PASS",
+      "sha256": "d0000f6be2998163665c31900cbb9ae144dc160fd5d29406d09581aff008e2ac",
+      "bytes": 287123649
+    },
+    "checksumLog": "2026-11-05T20:38:35.574759491Z",
+    "publicChrome": {
+      "time": "2026-11-05T20:42:38.706Z",
+      "browser": "156.0.8078.81",
+      "origin": "https://groundshift-viewer-production.up.railway.app",
+      "mode": "headed",
+      "status": "PASS",
+      "observations": [
+        {
+          "model": "da2",
+          "status": "PASS",
+          "coloredPixels": 38796,
+          "cloud": "DA\u00b2 \u00b7 \uad6c\uba74 \ubc29\uc0ac \uac70\ub9ac \u00b7 48,150\uac1c \ud45c\uc2dc \uc810 \u00b7 4\u00b75\ubc88 \ub450 \ucd9c\ucc98, \uc735\ud569 \uc5c6\uc74c \u00b7 SfM \uc784\uc758 \ub2e8\uc704",
+          "metrics": "2.153 s\n\uc0c8 4\ubc88 \uc0ac\uc9c4 \u00b7 MPS \ucd94\ub860\n2.57 s\n5\ubc88 \uc0ac\uc9c4 \u00b7 \uc55e\uc120 \uc2e4\ud589 \uc7ac\uc0ac\uc6a9\n24,076\n4\ubc88 \uc810 \uc218\n24,074\n5\ubc88 \uc810 \uc218"
+        },
+        {
+          "model": "dav2",
+          "status": "PASS",
+          "coloredPixels": 69992,
+          "cloud": "Depth Anything V2 Small \u00b7 ERP \ub300\uc870\uad70 \u00b7 48,776\uac1c \ud45c\uc2dc \uc810 \u00b7 4\u00b75\ubc88 \ub450 \ucd9c\ucc98, \uc735\ud569 \uc5c6\uc74c \u00b7 SfM \uc784\uc758 \ub2e8\uc704",
+          "metrics": "0.41 s\n\uc0c8 4\ubc88 \uc0ac\uc9c4 \u00b7 MPS \ucd94\ub860\n1.408 s\n5\ubc88 \uc0ac\uc9c4 \u00b7 \uc55e\uc120 \uc2e4\ud589 \uc7ac\uc0ac\uc6a9\n24,388\n4\ubc88 \uc810 \uc218\n24,388\n5\ubc88 \uc810 \uc218"
+        }
+      ],
+      "errors": [],
+      "evidenceLimit": "Existing real assets rendered; inference and reconstruction were not rerun. Pixel checks do not establish geometric quality. Screenshots need separate visual inspection."
+    },
+    "targetedPublicTests": {
+      "status": "PASS",
+      "tests": 3,
+      "seconds": 23.9
+    },
+    "firstPublicAttempt": {
+      "status": "FAIL",
+      "tests": 3,
+      "reason": "5-second assertions expired while cloud downloads were pending; traces preserved. Explicit bounded 60-second remote waits added; final pixels exclude status overlay. No deployed artifact change."
+    },
+    "visualInspection": "PASS for actual public rendering; separated/curved surfaces and stretched edges remain; no geometry acceptance"
   }
 }

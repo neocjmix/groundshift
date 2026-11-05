@@ -2,11 +2,13 @@ import { test, expect } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 import { PNG } from 'pngjs';
 
+// Remote clouds must finish downloading before rendering assertions. Keep a bounded deadline.
+const assetTimeout = process.env.GS_BASE_URL ? 60_000 : 10_000;
 const reportPath = '/experiments/panoramic-pair/';
 const ready = (page, title) => Promise.all([
-  expect(page.locator('#cloud-status')).toContainText(title),
-  expect(page.locator('#cloud-status')).toContainText('개 표시 점'),
-  expect(page.locator('#capture-4')).toBeEnabled(),
+  expect(page.locator('#cloud-status')).toContainText(title, { timeout: assetTimeout }),
+  expect(page.locator('#cloud-status')).toContainText('개 표시 점', { timeout: assetTimeout }),
+  expect(page.locator('#capture-4')).toBeEnabled({ timeout: assetTimeout }),
 ]);
 async function openReport(page) {
   await page.goto(reportPath);
@@ -20,8 +22,8 @@ async function openReport(page) {
 function coloredPixels(buffer) {
   const png = PNG.sync.read(buffer);
   let count = 0;
-  // Canvas only: status text and controls cannot satisfy this rendering check.
-  for (let i = 0; i < png.data.length; i += 4) {
+  // Element screenshots can include the overlaid status line; exclude that top band.
+  for (let i = Math.min(64, png.height) * png.width * 4; i < png.data.length; i += 4) {
     if (Math.max(png.data[i], png.data[i + 1], png.data[i + 2]) > 65) count++;
   }
   return count;
@@ -78,7 +80,7 @@ test('adjacent real panorama clouds render with source, camera and directional d
         await expect(page.locator(`#direction-${key}`)).toHaveAttribute('src', direction[key]);
       }
       await expect.poll(() => page.locator('figure:not([hidden]) img').evaluateAll(images =>
-        images.length === 8 && images.every(image => image.complete && image.naturalWidth > 0))).toBe(true);
+        images.length === 8 && images.every(image => image.complete && image.naturalWidth > 0)), { timeout: assetTimeout }).toBe(true);
       await page.locator('#direction-warp').screenshot({ path: info.outputPath(`${model.id}-${direction.id}-warp.png`) });
     }
     observations.push({ model: model.id, status: 'PASS', coloredPixels: pixelCount,
@@ -163,7 +165,7 @@ test('pair remains discoverable in both lab orders and the preserved one-panoram
   await expect(page).toHaveURL(/\/experiments\/panoramic-pair\/$/);
   await page.getByRole('link', { name: '앞선 한 파노라마 실험 ↗' }).click();
   await expect(page).toHaveURL(/\/experiments\/panoramic-depth\/$/);
-  await expect(page.locator('#cloud-status')).toContainText('개 표시 점');
+  await expect(page.locator('#cloud-status')).toContainText('개 표시 점', { timeout: assetTimeout });
   await page.locator('#cloud').scrollIntoViewIfNeeded();
   const screenshot = await page.locator('#cloud canvas').screenshot({ path: info.outputPath('preserved-one-panorama.png') });
   expect(coloredPixels(screenshot)).toBeGreaterThan(1_000);
