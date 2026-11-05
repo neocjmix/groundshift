@@ -1,8 +1,58 @@
 # Railway viewer deployment
 
-**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Object-focused scooter observation release — 2026-11-05
+
+The [chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/)
+lists all 18 worlds and five reports, with newest/oldest sorting. The
+[object experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/)
+shows all 65 candidate images, relative-depth previews, original-only and
+augmented point clouds, and both new Gaussian exports. The local result is
+recognizable but blurred and streaked. Publication is not a quality pass.
+
+| Item | Value |
+| --- | --- |
+| Viewer implementation / publication metadata | `68ab2d3` / `a3551c8` |
+| Release | [viewer-object-focus-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-object-focus-2026-11-05) |
+| Archive | `groundshift-object-focus-20261105.tar.gz`, 253,063,372 bytes |
+| Archive SHA-256 | `40508f73cd0a87714d556cc305e21d46444eaf5eea8f0ce8ddb261025e0866d5` |
+| Static payload | 300 files, 272,548,845 bytes; 18 scene entries |
+| Deployment-pointer commit | `5d32ce9` |
+| Railway deployment | `d3cf2adb-b133-4923-a894-63184246132c` — SUCCESS |
+| Trigger | Existing-service connector request for the latest branch |
+
+The result-first local run completed 56 whole-image MPS diffusion candidates
+in 757.964 s, registered 47/65 cameras (all nine real photographs), and accepted
+34 depth maps for a 93,595-point object initialization. Brush trained 5,000
+steps on Apple M2 Metal in 610.514 s and exported 93,941 Gaussians; object-center
+selection retained 93,101. Eighteen images failed registration and 13 registered
+synthetic depth maps failed calibration. These exclusions are visible rather
+than described as full registration. See [method and reproduction](OBJECT_FOCUS_EXPERIMENT.md).
+
+Local TypeScript/build, actual Chrome rendering of both new worlds, interactive
+point clouds and lab ordering passed before publication. Railway verified the
+archive checksum in its build log and reached SUCCESS at 08:42:40 UTC.
+
+**Post-publication PASS:** both new GS worlds render in headed Chrome 156 at the
+public origin; their actual screenshots and the experiment page were inspected.
+The image/depth selector, point-cloud display and newest/oldest lab ordering
+executed without page errors. All **163 new/shared public files** matched staged
+lengths and SHA-256 values; `/healthz` returned `ok`, and every lab-card thumbnail
+returned HTTP 200. The shared-file check is not an all-300-file recrawl.
+Lint and **165 JS tests** passed. The PyCOLMAP environment ran **106 Python tests,
+31 skipped**; the OpenCV environment ran **106, five skipped**. Dependency-specific
+skips are not GPU validation. The new native stages separately executed on the
+actual M2 as recorded above.
+
+The old full browser regression suite and independent geometry/comparative
+quality measurements are **NOT RUN** for this release. Focused public checks
+were performed after the user could already open the result. Raw evidence is
+retained under ignored `data/jobs/object-focus-20261105/`: `browser-public.json`,
+`public-files.json`, `railway-deployment.json`, stage reports, test logs and actual
+render screenshots. This documentation update does not change the deployed archive.
 
 ## Depth-guided generated-view observation release — 2026-11-05
 
@@ -367,37 +417,40 @@ The working release procedure must observe a new deployment and use an explicit 
 
 The catalog and preparation recipe are tracked; generated scenes and comparison
 images are ignored. `npm run sample` supplies only Houseplant's Gaussian asset.
-For the earlier 13-world observation surface, restore that immutable release in a
-**fresh checkout**. The commands verify the archive before copying the 13 named
-world folders and the public comparison report. Existing files in these paths
+For the current 18-world observation surface, restore the immutable object-focus
+release in a **fresh checkout**. The commands verify the archive before copying
+the named world folders and public experiment assets. Existing files in these paths
 would be replaced; keep any personal variants elsewhere.
 
 ```sh
 (
   set -e
   gs_release_dir=$(mktemp -d)
-  gs_archive=groundshift-observations-20261105.tar.gz
+  gs_archive=groundshift-object-focus-20261105.tar.gz
   curl --fail --location --output "$gs_release_dir/$gs_archive" \
-    "https://github.com/neocjmix/groundshift/releases/download/viewer-observations-2026-11-05/$gs_archive"
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-object-focus-2026-11-05/$gs_archive"
   printf '%s  %s\n' \
-    '8cbb3335f30127be05f81904e792ae2190d5483bf3c9a564b6d25358c38ebb20' \
+    '40508f73cd0a87714d556cc305e21d46444eaf5eea8f0ce8ddb261025e0866d5' \
     "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
   tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
-  for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-20k beijing-2k dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s; do
+  for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-depth beijing-20k beijing-2k beijing-video-baseline beijing-video-rife dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s scooter-object scooter-context; do
     mkdir -p "public/worlds/$gs_world"
     cp -R "$gs_release_dir/www/worlds/$gs_world/." "public/worlds/$gs_world/"
   done
-  mkdir -p public/experiments/mapillary
-  cp -R "$gs_release_dir/www/experiments/mapillary/." public/experiments/mapillary/
+  mkdir -p public/experiments
+  cp -R "$gs_release_dir/www/experiments/." public/experiments/
+  # Vite serves these two tracked HTML entries from experiments/.
+  rm -f public/experiments/lab/index.html public/experiments/object-focus/index.html
   cp "$gs_release_dir/www/worlds/catalog.json" public/worlds/catalog.json
 )
 npm ci
 npm run dev
 ```
 
-The extraction/copy procedure was executed in an isolated fresh directory: all
-13 worlds and the report restored with 80 files / 155,723,181 bytes matching
-the release inventory. Evidence: `data/validation/deployment/observation-fresh-restore.json`.
+The earlier 13-world extraction/copy procedure was executed in an isolated fresh
+directory and matched its inventory. The updated 18-world command above has not
+yet been rerun in a fresh checkout; package preparation read all 300 staged files.
+Do not substitute the historical restore evidence for a current restore test.
 
 This restores display assets only. It neither downloads the private original
 video nor repeats reconstruction. Desk creator-authorized display terms remain

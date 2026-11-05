@@ -72,9 +72,24 @@ consistent 3D geometry. All computation runs on the local M2 / 16 GB Mac.
 
 ## Reproduction
 
-The stages intentionally use the existing separate model environments. Use a
-fresh job directory and preserve failed reports when retrying. The download
-requires the pinned Tiny-SD repository in `data/tools/object-diffusion-models`.
+The stages intentionally use the existing separate model environments. First
+follow [public panorama acquisition and fixed-rig estimation](MAPILLARY_EXPERIMENT.md),
+[the diffusion environment setup](MAPILLARY_EXPERIMENT.md#diffusion-installation-and-execution),
+and [RIFE installation](PANORAMA_VIDEO_EXPERIMENT.md#reproduce-locally).
+Preparation reads the existing nine panoramas and
+`data/jobs/mapillary-beijing-rig-poses-v2/dataset`; it is a bounded experiment
+with manually selected target bearings, not a general automatic object finder.
+Use a fresh job directory and preserve failed reports when retrying. Download
+the pinned Tiny-SD snapshot fully before invoking the offline inference stage:
+
+```sh
+HF_HUB_DISABLE_XET=1 data/tools/diffusion-venv/bin/python - <<'PY'
+from huggingface_hub import snapshot_download
+snapshot_download('segmind/tiny-sd',
+    revision='cad0bd7495fa6c4bcca01b19a723dc91627fe84f',
+    cache_dir='data/tools/object-diffusion-models')
+PY
+```
 
 ```sh
 job=data/jobs/object-focus-NEW
@@ -110,7 +125,8 @@ data/tools/colmap-venv/bin/python scripts/fuse-object-depth.py \
   "$job/poses/dataset" "$job/depth" "$job/fusion"
 data/tools/venv/bin/python scripts/reconstruct.py \
   "$job/fusion/dataset" "$job/training" --steps 5000 \
-  --resolution 512 --max-splats 150000 --title 'Scooter object focus' --id scooter-context
+  --resolution 512 --max-splats 150000 --title 'Scooter object focus' --id scooter-context \
+  --sequence "$job/augmented/sequence.json" --component-id scooter-sfm
 data/tools/venv/bin/python scripts/publish-object-focus.py "$job"
 ```
 
@@ -148,8 +164,13 @@ Actual local Chrome rendering of both exports and the interactive point cloud
 is **PASS**. Screenshots show a recognizable scooter and blue cover, with blurred,
 streaked surrounding geometry; this is not a clean complete object reconstruction.
 The lab's newest/oldest ordering also executed successfully in Chrome. TypeScript
-and the production build passed during packaging. Broader regression checks and
-public-origin verification follow publication, per the result-first instruction.
+and the production build passed during packaging. Following publication, both
+new worlds and the point cloud rendered in public-origin headed Chrome with no
+page errors. The public lab sorting and 163 new/shared asset hashes passed.
+Lint and all 165 JS tests passed. The PyCOLMAP Python suite ran 106 tests with
+31 dependency-specific skips; the OpenCV environment ran 106 with five skips.
+The existing full browser regression suite was not rerun for this release;
+the focused checks above cover the new results and sorting.
 Independent depth/pose accuracy and comparative quality measurements remain
 **NOT RUN**. Build success and GPU execution do not imply improved visual quality.
 
