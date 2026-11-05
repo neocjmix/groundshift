@@ -9,7 +9,10 @@ The current bounded experiment selects one object in the middle of the existing
 panorama route and gathers the views looking toward it. Whole-frame diffusion
 only augments the image count; calibrated per-image depth is fused into a point
 cloud before Gaussian training. Publish the first result for observation before
-detailed quality measurement. See [object experiment](OBJECT_FOCUS_EXPERIMENT.md).
+detailed quality measurement. The current comparison removes all intermediate
+image generation and uses only the same nine real crops; see
+[real-only ablation](OBJECT_REAL_ONLY.md) and the preceding
+[object experiment](OBJECT_FOCUS_EXPERIMENT.md).
 
 The user redirected the next experiment to dense consecutive Mapillary 360°
 imagery, followed by diffusion-assisted filling of missing viewpoints and

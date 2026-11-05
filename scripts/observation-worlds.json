@@ -126,6 +126,24 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "scooter-real-object",
+      "source": "data/jobs/object-focus-real-only-20261105/object/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
+    },
+    {
+      "id": "scooter-real-context",
+      "source": "data/jobs/object-focus-real-only-20261105/training/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
@@ -318,6 +336,31 @@
     "experiments/object-focus/images/frame_0031.png",
     "experiments/object-focus/images/frame_0025.png",
     "experiments/object-focus/gs-preview.jpg",
-    "experiments/object-focus/context-preview.jpg"
+    "experiments/object-focus/context-preview.jpg",
+    "experiments/object-real/index.html",
+    "experiments/object-real/summary.json",
+    "experiments/object-real/cloud.json",
+    "experiments/object-real/originals-contact.jpg",
+    "experiments/object-real/real-cloud.json",
+    "experiments/object-real/depth/frame_0000.png",
+    "experiments/object-real/depth/frame_0016.png",
+    "experiments/object-real/depth/frame_0048.png",
+    "experiments/object-real/depth/frame_0064.png",
+    "experiments/object-real/depth/frame_0056.png",
+    "experiments/object-real/depth/frame_0040.png",
+    "experiments/object-real/depth/frame_0008.png",
+    "experiments/object-real/depth/frame_0032.png",
+    "experiments/object-real/depth/frame_0024.png",
+    "experiments/object-real/images/frame_0000.png",
+    "experiments/object-real/images/frame_0016.png",
+    "experiments/object-real/images/frame_0048.png",
+    "experiments/object-real/images/frame_0064.png",
+    "experiments/object-real/images/frame_0056.png",
+    "experiments/object-real/images/frame_0040.png",
+    "experiments/object-real/images/frame_0008.png",
+    "experiments/object-real/images/frame_0032.png",
+    "experiments/object-real/images/frame_0024.png",
+    "experiments/object-real/gs-preview.jpg",
+    "experiments/object-real/context-preview.jpg"
   ]
 }

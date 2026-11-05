@@ -7,6 +7,7 @@ export default defineConfig({
     main: "index.html",
     lab: "experiments/lab/index.html",
     object: "experiments/object-focus/index.html",
+    objectReal: "experiments/object-real/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },

@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment: images → depth → points → GS](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Browse all 18 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Browse all 20 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -14,7 +14,14 @@ On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into 
 
 ## Current experiment: one object along the panorama path
 
-The latest observation is a single parked scooter viewed from nine existing
+The latest [real-only ablation](docs/OBJECT_REAL_ONLY.md) removes all 56
+intermediate images, including both RIFE interpolation and diffusion. The same
+nine real crops, original camera solution, depth model and training settings
+produce a separately trained world in 160.298 s on M2 Metal. Its
+[comparison page](https://groundshift-viewer-production.up.railway.app/experiments/object-real/)
+shows both results. The original augmented experiment below remains available.
+
+The preceding observation is a single parked scooter viewed from nine existing
 panorama positions. Whole-frame diffusion adds intermediate image candidates;
 relative depth is calibrated against neighboring features and fused into the
 Gaussian initialization. The [experiment record](docs/OBJECT_FOCUS_EXPERIMENT.md)

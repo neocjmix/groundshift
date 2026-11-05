@@ -183,3 +183,9 @@ One early generation invocation ran before its model download completed and
 failed without producing images. Its report/log are preserved with a
 `diffuse-download-race-failure` name. The pinned download completed and generation
 was restarted. No cloud computation or paid inference was used.
+
+## Follow-up: remove all intermediate images
+
+The [real-only ablation](OBJECT_REAL_ONLY.md) keeps the same nine observed crops
+and reconstruction settings while removing both RIFE and diffusion outputs.
+It is published separately; this 65-candidate experiment remains unchanged.

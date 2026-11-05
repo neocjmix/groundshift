@@ -179,6 +179,26 @@
       "thumbnailPath": "/worlds/scooter-context/preview.jpg",
       "detail": "65 candidates \u2192 47 posed RGB views \u00b7 34 depth maps \u2192 Metal GS \u00b7 quality measurement pending",
       "createdAt": "2026-11-05T08:35:50.108498+00:00"
+    },
+    {
+      "id": "scooter-real-object",
+      "title": "\uc2a4\ucfe0\ud130 \u00b7 \uc2e4\uc81c 9\uc7a5\ub9cc",
+      "description": "\ubcf4\uac04\u00b7\ub514\ud4e8\uc804 \uc5c6\uc774 \uc6d0\ubcf8 9\uc7a5\ub9cc\uc73c\ub85c \uae4a\uc774 \ubcf4\uc815 \u2192 \uc810\uad70 \u2192 GS. \uc774\uc804 \uc2e4\ud5d8\uacfc \ub098\uba38\uc9c0 \uc124\uc815 \ub3d9\uc77c.",
+      "category": "experiment",
+      "manifestPath": "/worlds/scooter-real-object/world.json",
+      "thumbnailPath": "/worlds/scooter-real-object/preview.jpg",
+      "detail": "9 candidates \u2192 9 posed RGB views \u00b7 9 depth maps \u2192 Metal GS \u00b7 quality measurement pending",
+      "createdAt": "2026-11-05T11:21:21.268968+00:00"
+    },
+    {
+      "id": "scooter-real-context",
+      "title": "\uc2a4\ucfe0\ud130 \u00b7 \uc2e4\uc81c 9\uc7a5 \u00b7 \uc804\uccb4",
+      "description": "\ubcf4\uac04\u00b7\ub514\ud4e8\uc804 \uc5c6\uc774 \uc6d0\ubcf8 9\uc7a5\ub9cc\uc73c\ub85c \uae4a\uc774 \ubcf4\uc815 \u2192 \uc810\uad70 \u2192 GS. \uc774\uc804 \uc2e4\ud5d8\uacfc \ub098\uba38\uc9c0 \uc124\uc815 \ub3d9\uc77c.",
+      "category": "experiment",
+      "manifestPath": "/worlds/scooter-real-context/world.json",
+      "thumbnailPath": "/worlds/scooter-real-context/preview.jpg",
+      "detail": "9 candidates \u2192 9 posed RGB views \u00b7 9 depth maps \u2192 Metal GS \u00b7 quality measurement pending",
+      "createdAt": "2026-11-05T11:21:07.024011+00:00"
     }
   ]
 }
