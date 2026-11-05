@@ -1,8 +1,8 @@
-# The viewer and publication-authorized worlds were built locally from commit 8e4fc0c.
+# The viewer and publication-authorized worlds were built locally from commit 19c1d53.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-panorama-2026-11-05/groundshift-panorama-20261105.tar.gz \
-    && echo '1d7def29ae1cf39b7cdca927fa01e4c3aacc9c834c39d36831145118cd954ab3  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-depth-2026-11-05/groundshift-depth-20261105.tar.gz \
+    && echo '59107b247c429ec4153f534c357711fc2410e23b8dd7eae9564261a7e8d03941  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
