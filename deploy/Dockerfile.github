@@ -1,8 +1,8 @@
-# Viewer and one-panorama depth observation package: 5336744.
+# Viewer and adjacent-panorama depth observation package: 73e63e6.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-depth-2026-11-06/groundshift-panoramic-depth-20261106.tar.gz \
-    && echo '312eade1493ba7e289e37cad7c7d68b59c19f7a0eaf0b87e6d154054e1c53d66  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-pair-2026-11-06/groundshift-panoramic-pair-20261106.tar.gz \
+    && echo 'd0000f6be2998163665c31900cbb9ae144dc160fd5d29406d09581aff008e2ac  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
