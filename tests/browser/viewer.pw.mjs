@@ -98,7 +98,9 @@ test('locally reconstructed artifact renders on the same viewer', async ({page,b
 
 test('manifest, missing/corrupt asset, slow-load replacement and GPU context loss are recoverable', async ({ page }, info) => {
   await page.goto('/?world=/missing-world.json');
-  await expect(page.getByRole('alert')).toContainText('JSON world manifest');
+  // Vite's SPA fallback returns HTML/200; the static public server correctly
+  // returns 404. Both must surface a recoverable manifest error in the UI.
+  await expect(page.getByRole('alert')).toContainText(/JSON world manifest|World manifest: HTTP 404/);
   await page.getByRole('button', { name: 'Open sample', exact: true }).click();
   await ready(page);
   await page.route('**/broken-world.json', route => route.fulfill({json: {...sample, assets:[{...sample.assets[0],path:'absent.splat'}]}}));

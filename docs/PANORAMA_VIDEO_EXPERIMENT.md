@@ -1,5 +1,8 @@
 # Two-endpoint panorama interpolation experiment
 
+[Open the Railway observation report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/)
+to play the generated video and inspect both exported Gaussian worlds.
+
 The user changed the target on 2026-11-05: **a plausible generated scene matters
 more than faithful reproduction of the exact street**. This experiment retains
 honest provenance and distinguishes a visually plausible 2D sequence from a
@@ -48,15 +51,15 @@ observations; they are not silently treated as 65 measured camera positions.
 | Matched baseline GS | PASS for Metal training/export; quality FAIL | 48 observed crops, 10,000 steps, 150,000 splats, 1,107.156 s; 13,800,652-byte PLY |
 | RIFE-augmented GS | PASS for Metal training/export; quality FAIL | 48 observed + 6 generated crops, 10,000 steps, 150,000 splats, 1,112.224 s; 13,800,652-byte PLY |
 | Local browser GS rendering | PASS | Headed Chrome: both PLYs rendered at the same two estimated target-rig camera directions; 11 experiment previews captured from actual canvas output |
-| Public browser rendering | NOT RUN | Requires live Railway release verification |
+| Public browser rendering and video playback | PASS after one test-only retry | Public-origin headed Chrome: all 15 scenes render/reload; MP4 plays and seeks. The first 25-case run had 24 PASS / 1 wording assertion FAIL for a correct missing-world 404; the corrected case passed without changing the deployed app. New video/GS/gallery screenshots were inspected |
 
 The RIFE process used a measured 4,219,438,688-byte peak macOS memory footprint
 and 736,673,792-byte peak resident set size (`rife-run.log`, `/usr/bin/time -l`).
 These are **whole-process** values; neither is an isolated Metal allocation.
 The 65 generated frames and reports remain in ignored
-`data/jobs/mapillary-video-4to6-20261105/`. They are not committed. The
-selected licensed stills and resulting video will be explicitly allowlisted
-for the Railway observation surface.
+`data/jobs/mapillary-video-4to6-20261105/`. They are not committed. Selected
+licensed stills and the resulting video are explicitly allowlisted in the
+[Railway observation release](DEPLOYMENT.md).
 
 The matched real-only PLY SHA-256 is
 `b31559b5c9f77fb2bdf4be359b37e65126a79e702ecaa93ff84716c67956644a`;
@@ -191,7 +194,13 @@ data/tools/venv/bin/python scripts/reconstruct.py \
 ```
 
 The experiment deliberately does not assign poses to the other 64 frames.
-Future work can register generated perspective crops to an observed sparse
-model, reject failed localizations, and only then train a denser multi-view
-world. The photographic target #5 pose used here makes this an appearance
-test with geometry leakage, not independent 3D reconstruction proof.
+The next quality-first trial should first find a **locally downloadable,
+M2-executable generative video or view model** that actually invents plausible
+details; RIFE's flow interpolation alone cannot repair occlusions. On this
+hardware, model acquisition size and Metal memory must be checked before a
+long download. Then test a few overlapping perspective views for consistency,
+register only views that localize against observed sparse geometry, and train
+a new world only if the image sequence is coherent. More Brush steps or
+unverified synthetic camera positions are not a justified fix. The
+photographic target #5 pose used here makes this an appearance test with
+geometry leakage, not independent 3D reconstruction proof.

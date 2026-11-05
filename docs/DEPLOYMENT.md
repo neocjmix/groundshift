@@ -1,10 +1,74 @@
 # Railway viewer deployment
 
-**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
-## Observation release — 2026-11-05
+## Two-endpoint panorama observation release — 2026-11-05
+
+The new catalog contains **15 distinct scenes**, including both matched
+10,000-step Beijing Gaussian worlds. The new
+[65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/)
+contains the actual 2048×1024 H.264 video, 10 selected licensed or generated
+comparison images, an exploratory MPS inpaint and clear LTX **NOT RUN** status.
+The previous Mapillary report remains available and now lists 79 summarized
+stages. The generated-view GS renders, but its visual quality **FAILS** to
+improve the real-only baseline. Publication does not change that verdict.
+
+| Item | Value |
+| --- | --- |
+| Viewer and experiment source | `8e4fc0c0a9b3420aa59b9fe8a823b974a4d1c037` |
+| Release | [viewer-panorama-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-panorama-2026-11-05) |
+| Archive | `groundshift-panorama-20261105.tar.gz`, 182,419,689 bytes |
+| Archive SHA-256 | `1d7def29ae1cf39b7cdca927fa01e4c3aacc9c834c39d36831145118cd954ab3` |
+| Static payload | 112 `www/` files, 196,253,479 bytes; 15 scene entries |
+| Deployment-pointer commit | `d2e94c309cc1aa30662f17f658d8d79e1b794301` |
+| Railway deployment | `0caccf5b-9e98-49dc-8160-4b3f6becd544` — SUCCESS; public browser verification below |
+| Actual trigger | Explicit latest-branch connector trigger; push autodeploy did not appear before triggering |
+
+**Local PASS:** TypeScript, lint, 165 JS tests, production build, 25 headed
+Chrome tests (including all 15 actual scene renders and MP4 playback), and
+native adapter tests in the available dependency-specific environments. Both
+new Brush jobs ran 10,000 steps on the M2 Metal adapter and exported distinct
+13,800,652-byte PLYs. The 65-frame RIFE/MLX video ran locally; LTX-2.3 video
+diffusion was **NOT RUN** because model acquisition was impractical at the
+observed transfer rate. The generated-view GS quality is **FAIL**: two matched
+headed-Chrome target-direction renders had higher photo error and visible
+streaking. See [the experiment record](PANORAMA_VIDEO_EXPERIMENT.md).
+
+The 115-file local package inventory includes `Dockerfile`, `Caddyfile` and
+`.dockerignore`; the release archive contains only its 112 `www/` files. Every
+file in a local archive readback matched the curated inventory's exact size
+and SHA-256. A fresh GitHub release download matched the local 182,419,689-byte
+archive SHA-256. Railway's build log independently reported
+`/tmp/viewer.tar.gz: OK`, followed by Caddy startup and deployment SUCCESS.
+The large originals, model weights, source job reports and
+private desktop footage are outside the archive. The report itself is rebuilt
+from selected status fields and downscaled, attributed images. Remote archive
+readback and public-origin checks are recorded below.
+
+| Public observation check | Result | Evidence |
+| --- | --- | --- |
+| Railway build and health | PASS | Exact pointer commit deployed; archive checksum OK in build log; Caddy starts; `/healthz` returns 200/`ok` |
+| Public file integrity | PASS | All 112 `www/` files match the release inventory's exact bytes and SHA-256 |
+| Missing/private paths | PASS | Seven probes return genuine 404, including the raw video experiment training log and unshipped inference log |
+| Public video playback and 15-scene rendering | PASS after one test-only retry | The first 25-case run had 24 PASS / 1 missing-manifest wording assertion FAIL. The public server correctly returned HTTP 404; the local Vite server instead returned HTML/200. After accepting both visible error states, that case passed on the public origin. All 25 distinct cases passed; a focused four-case rerun captured the new public video, both GS views and gallery |
+
+The public-origin browser run covered 15 direct scene routes and reloads,
+gallery filters/search, 390px mobile layout, the old Mapillary comparisons,
+actual MP4 playback/seeking, and viewer controls/error recovery. The initial
+test failure was an assertion about the missing-world message, not a broken
+deployment. The application and release archive were unchanged for the
+targeted retry. The four-case public capture rerun passed; the inspected
+screenshots show the video and both real Gaussian canvases, including their
+visible quality faults. Local evidence is retained in
+`data/validation/deployment/railway-panorama-http.json`,
+`panorama-public-{report,baseline,rife,gallery}.png` and the corresponding
+`panorama-public-*-checks.json` files. The new release has no pending Railway
+changes. Browser success does not make the synthetic scene geometrically
+accurate or visually accepted.
+
+## Previous 13-scene observation release — 2026-11-05
 
 The observation catalog contains **13 distinct scenes**: the previous four and
 nine additional exports, including all four Mapillary Gaussian variants, early
