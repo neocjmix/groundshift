@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "scope": "One ERP; internal SfM-calibrated radial clouds; no Gaussian training",
+  "sourceSha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391",
+  "independentGeometry": "NOT RUN",
+  "crossPanoramaConsistency": "NOT RUN",
+  "panDAInference": "NOT RUN",
+  "baselineFilesPreserved": 103,
+  "models": [
+    {
+      "model": "da2",
+      "status": "PASS",
+      "startedAt": "2026-11-05T19:49:28.512365+00:00",
+      "finishedAt": "2026-11-05T19:49:36.644148+00:00",
+      "device": "mps",
+      "precision": "float32",
+      "modelId": "haodongli/DA-2",
+      "checkpointRevision": "0d55ccb5e46b8ed4715fae3a4c04fc897f1689f3",
+      "originalSize": [
+        7680,
+        3840
+      ],
+      "workingSize": [
+        1092,
+        546
+      ],
+      "networkInputSize": [
+        1092,
+        546
+      ],
+      "modelLoadSeconds": 4.157813916099258,
+      "inferenceSeconds": 2.5701452920911834,
+      "elapsedSeconds": 8.131758290925063,
+      "rawSha256": "78e15106c2f2f93aa604909dd1e2737513c16a3f35f006243bf5bc92cd2a4794",
+      "maxResidentSetBytes": 3159523328,
+      "mpsCurrentAllocatedBytes": 1388138496,
+      "mpsDriverAllocatedBytes": 4400578560,
+      "calibration": {
+        "convention": "ray-range",
+        "scale": 526.1355031564486,
+        "offset": 0.0,
+        "units": "sfm-arbitrary",
+        "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+        "method": "Median log-range ratio on training anchors only; scale-only",
+        "trainingSamples": 1195,
+        "heldOutSamples": 326
+      },
+      "heldOut": {
+        "samples": 326,
+        "validSamples": 326,
+        "invalidSamples": 0,
+        "medianAbsRel": 0.2563083120932458,
+        "p90AbsRel": 1.2451180805191902,
+        "medianAbsoluteSfmUnits": 3.2844205181705064,
+        "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+      },
+      "points": {
+        "cloud-all": 66248,
+        "cloud": 24074
+      },
+      "coverageFraction": 0.3649602839163279,
+      "seam": {
+        "seam": {
+          "pairs": 202,
+          "medianAbs": 0.05244404279226833,
+          "p90Abs": 0.17815568890534528,
+          "maxAbs": 0.5038657393446244
+        },
+        "interior": {
+          "pairs": 217327,
+          "medianAbs": 0.0007068276994890432,
+          "p90Abs": 0.05410336062947104,
+          "maxAbs": 105.98687411098734
+        },
+        "medianSeamToInteriorRatio": 74.19636048527734,
+        "meaning": "Neighbor difference diagnostic only; no independent depth truth or pass threshold"
+      },
+      "selfReprojection": {
+        "cloud-all": {
+          "maxPixelError": 1.3607479331904498e-11,
+          "maxRangeError": 2.2737367544323206e-13,
+          "meaning": "Algebraic self-reprojection, not an accuracy measurement"
+        },
+        "cloud": {
+          "maxPixelError": 2.5421149729252077e-13,
+          "maxRangeError": 4.263256414560601e-14,
+          "meaning": "Algebraic self-reprojection, not an accuracy measurement"
+        }
+      }
+    },
+    {
+      "model": "dav2",
+      "status": "PASS",
+      "startedAt": "2026-11-05T19:46:38.201064+00:00",
+      "finishedAt": "2026-11-05T19:46:43.523239+00:00",
+      "device": "mps",
+      "precision": "float32",
+      "modelId": "depth-anything/Depth-Anything-V2-Small-hf",
+      "checkpointRevision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+      "originalSize": [
+        7680,
+        3840
+      ],
+      "workingSize": [
+        1092,
+        546
+      ],
+      "networkInputSize": [
+        1036,
+        518
+      ],
+      "modelLoadSeconds": 2.487187833059579,
+      "inferenceSeconds": 1.40787887503393,
+      "elapsedSeconds": 5.322152958018705,
+      "rawSha256": "f56d3beece7bfe2b269429324ec65efd8dff3bced5a5f5d3a66b36ae096d4c05",
+      "maxResidentSetBytes": 623132672,
+      "mpsCurrentAllocatedBytes": 99986176,
+      "mpsDriverAllocatedBytes": 1258979328,
+      "calibration": {
+        "convention": "inverse-ray-range",
+        "scale": 0.06979650615424454,
+        "offset": 0.0034205460436870986,
+        "units": "sfm-arbitrary",
+        "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+        "method": "Huber IRLS affine inverse-range fit on training anchors only",
+        "trainingSamples": 1195,
+        "heldOutSamples": 326
+      },
+      "heldOut": {
+        "samples": 326,
+        "validSamples": 326,
+        "invalidSamples": 0,
+        "medianAbsRel": 0.13772906721325937,
+        "p90AbsRel": 0.5494366625138773,
+        "medianAbsoluteSfmUnits": 2.4516776944557837,
+        "meaning": "Residual to withheld calibration tracks from same SfM, not independent geometry accuracy"
+      },
+      "points": {
+        "cloud-all": 66080,
+        "cloud": 24388
+      },
+      "coverageFraction": 0.36996336996337,
+      "seam": {
+        "seam": {
+          "pairs": 202,
+          "medianAbs": 0.3159357365267177,
+          "p90Abs": 0.5167449885820568,
+          "maxAbs": 0.6802622879730373
+        },
+        "interior": {
+          "pairs": 220382,
+          "medianAbs": 0.001187098319320956,
+          "p90Abs": 0.07345241023635311,
+          "maxAbs": 60.55948285459215
+        },
+        "medianSeamToInteriorRatio": 266.1411707729813,
+        "meaning": "Neighbor difference diagnostic only; no independent depth truth or pass threshold"
+      },
+      "selfReprojection": {
+        "cloud-all": {
+          "maxPixelError": 2.6147972675971687e-12,
+          "maxRangeError": 1.8189894035458565e-12,
+          "meaning": "Algebraic self-reprojection, not an accuracy measurement"
+        },
+        "cloud": {
+          "maxPixelError": 2.5421149729252077e-13,
+          "maxRangeError": 2.842170943040401e-14,
+          "meaning": "Algebraic self-reprojection, not an accuracy measurement"
+        }
+      }
+    }
+  ]
+}

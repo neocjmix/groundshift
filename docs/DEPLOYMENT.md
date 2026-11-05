@@ -1,8 +1,54 @@
 # Railway viewer deployment
 
-**Live:** [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## One-panorama full-sphere depth — 2026-11-06 KST
+
+The [new P0/P1 report](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/)
+shows one real panorama, DA² and DAV2-Small raw-depth visualizations, explicit
+SfM radial calibration, conservative masks and interactive colored point clouds.
+Both models actually execute on M2 MPS; no Gaussian training occurs. The existing
+22 GS scenes remain unchanged. The chronological lab now has 30 entries:
+22 scenes and eight reports. [Experiment](PANORAMIC_DEPTH_P1.md) ·
+[model/license findings](PANORAMIC_DEPTH_MODELS.md) · [baseline preservation](PANORAMIC_BASELINE.md).
+
+| Item | Verified value |
+| --- | --- |
+| Experiment/report source | `5336744` |
+| Release | [viewer-panoramic-depth-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-panoramic-depth-2026-11-06) |
+| Archive | `groundshift-panoramic-depth-20261106.tar.gz`, 277,842,996 bytes |
+| SHA-256 | `312eade1493ba7e289e37cad7c7d68b59c19f7a0eaf0b87e6d154054e1c53d66` |
+| Static archive contents | 379 `www/` files, 311,508,601 bytes |
+| Local package inventory | 382 files, 311,509,288 bytes including three deployment-support files |
+| Deployment-pointer commit | `04964ab` |
+| Railway deployment | `b7a76e45-d253-4dd9-b6d6-3acc36bb6a42` — SUCCESS at 2026-11-05 19:59:29 UTC |
+| Trigger | Explicit connector request for the existing branch-backed service |
+
+**PASS:** pinned archive checksum verified in Railway build logs; health endpoint
+returns `ok`; all 68 selected new/shared public files match staged bytes and
+SHA-256 hashes. Headed Chrome156 actually renders both models' point clouds,
+switches filtered/full data, capture/overview views and point size, decodes source,
+depth, range and mask images, verifies lab sorting/newest entry and opens the
+preserved scooter report. Public cloud/report screenshots were inspected with
+no page errors. Downloadable PLYs are ordinary colored points, not GS exports.
+
+TypeScript, lint, build and 166 JS tests pass. Python suites each ran 140 tests,
+with five OpenCV-environment skips and 31 PyCOLMAP-environment skips; 137 distinct tests
+execute across their union. Three unrelated HDR/FFmpeg tests remain NOT RUN in
+both environments. The 34 new spherical/calibration tests are included in that
+total. The full historical browser regression suite and a 379-file public recrawl
+are NOT RUN. Inference/browser PASS does not establish geometry acceptance.
+Independent geometric accuracy and cross-panorama consistency are NOT RUN.
+
+Existing baseline 103 file hashes were checked again after execution and remained
+unchanged. Evidence lives under `data/jobs/panoramic-baseline-20261106/`,
+`data/jobs/panoramic-depth-{da2,dav2}-20261106/` and
+`data/jobs/panoramic-depth-input-20261106/`. A compact measurement record is
+tracked at [evidence/panoramic-depth-p1.json](evidence/panoramic-depth-p1.json).
+Raw logs, original-resolution panoramas, model weights and absolute local paths
+are not in this archive. Documentation-only commits retain this release.
 
 ## Scooter without learned depth — 2026-11-05
 
@@ -519,7 +565,7 @@ The working release procedure must observe a new deployment and use an explicit 
 
 The catalog and preparation recipe are tracked; generated scenes and comparison
 images are ignored. `npm run sample` supplies only Houseplant's Gaussian asset.
-For the current 22-world observation surface, restore the immutable no-learned-depth
+For the current 22-world observation surface, restore the immutable panoramic-depth
 release in a **fresh checkout**. The commands verify the archive before copying
 the named world folders and public experiment assets. Existing files in these paths
 would be replaced; keep any personal variants elsewhere.
@@ -528,11 +574,11 @@ would be replaced; keep any personal variants elsewhere.
 (
   set -e
   gs_release_dir=$(mktemp -d)
-  gs_archive=groundshift-object-nodepth-20261105.tar.gz
+  gs_archive=groundshift-panoramic-depth-20261106.tar.gz
   curl --fail --location --output "$gs_release_dir/$gs_archive" \
-    "https://github.com/neocjmix/groundshift/releases/download/viewer-object-nodepth-2026-11-05/$gs_archive"
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-depth-2026-11-06/$gs_archive"
   printf '%s  %s\n' \
-    '38fdfbe601a9941e8310e29c321dacd9c4082caf3fb79128a88a5a3505d58d26' \
+    '312eade1493ba7e289e37cad7c7d68b59c19f7a0eaf0b87e6d154054e1c53d66' \
     "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
   tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
   for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-depth beijing-20k beijing-2k beijing-video-baseline beijing-video-rife dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s scooter-object scooter-context scooter-real-object scooter-real-context scooter-nodepth-object scooter-nodepth-context; do
@@ -542,7 +588,7 @@ would be replaced; keep any personal variants elsewhere.
   mkdir -p public/experiments
   cp -R "$gs_release_dir/www/experiments/." public/experiments/
   # Vite serves these tracked HTML entries from experiments/.
-  rm -f public/experiments/lab/index.html public/experiments/object-focus/index.html public/experiments/object-real/index.html public/experiments/object-nodepth/index.html
+  rm -f public/experiments/lab/index.html public/experiments/object-focus/index.html public/experiments/object-real/index.html public/experiments/object-nodepth/index.html public/experiments/panoramic-depth/index.html
   cp "$gs_release_dir/www/worlds/catalog.json" public/worlds/catalog.json
 )
 npm ci
@@ -551,7 +597,7 @@ npm run dev
 
 The earlier 13-world extraction/copy procedure was executed in an isolated fresh
 directory and matched its inventory. The updated 22-world command above has not
-yet been rerun in a fresh checkout; package preparation read all 362 staged files.
+yet been rerun in a fresh checkout; package preparation read all 382 staged files.
 Do not substitute the historical restore evidence for a current restore test.
 
 This restores display assets only. It neither downloads the private original

@@ -185,12 +185,34 @@ are ordinary colored point clouds, not trained Gaussian scenes.
 Executed environment: Python 3.12.12, Torch 2.15.0, torchvision 0.29.2,
 Transformers 5.22.1, huggingface-hub 2.4.0, safetensors 0.8.0, einops 0.8.1,
 NumPy 2.5.4, Pillow 13.0.0, macOS 26.6.2 arm64. The existing separate OpenCV and
-PyCOLMAP environments run geometry/snapshot tests. Only torchvision and einops
+PyCOLMAP environments run geometry/snapshot tests. The initial core import failed with `ModuleNotFoundError: torchvision`; installing
+these dependencies resolved it before inference. Only torchvision and einops
 were added; existing Torch was not replaced. Upstream training pins differ and
 are not represented as the tested environment.
+
+[Compact recorded measurements](evidence/panoramic-depth-p1.json) are tracked with
+the code; raw evidence and large outputs remain local/release assets.
 
 Local evidence directories: `data/jobs/panoramic-baseline-20261106/`,
 `data/jobs/panoramic-depth-{da2,dav2}-20261106/`,
 `data/jobs/panoramic-depth-input-20261106/`, and model research snapshots.
 The actual deployment and public-origin checks are recorded in [DEPLOYMENT.md](DEPLOYMENT.md).
 
+
+
+Post-run software checks: TypeScript, lint, production build and all 166 JS tests
+PASS. Python suites each ran 140 tests: five dependency skips in OpenCV and 31
+in PyCOLMAP. The union executes 137 distinct tests; three unrelated HDR/FFmpeg
+checks remain skipped in both environments and are NOT RUN for this release.
+The 34 new geometry/calibration tests are included in these totals, not additional.
+The full historical headed-browser suite is NOT RUN; focused actual local report
+inspection passes for both models, both cloud masks, capture/overview views,
+point-size control, lab ordering and the preserved scooter report. Public checks
+are recorded after deployment separately.
+
+
+Public deployment **PASS**: both models' actual point clouds and report controls
+were inspected in headed Chrome 156 at the Railway origin, with no page errors;
+all 68 selected new/shared public file hashes and `/healthz` pass. The chronological
+lab lists this report first and preserves all 22 existing GS scenes. This changes
+no geometric uncertainty or NOT RUN boundary. See the [release record](DEPLOYMENT.md#one-panorama-full-sphere-depth--2026-11-06-kst).
