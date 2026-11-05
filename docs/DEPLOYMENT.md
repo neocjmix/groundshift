@@ -1,8 +1,57 @@
 # Railway viewer deployment
 
-**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Photo depth report](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Three-photo depth observation release — 2026-11-05
+
+The new [depth report](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/)
+shows three licensed observed 512px crops beside local M2/MPS relative-depth
+predictions. The 15 Gaussian worlds and previous experiment reports remain
+available. Depth prediction and its internal sparse-point ordering check are
+**PASS**; metric depth, cross-view consistency and depth-assisted GS improvement
+are **NOT RUN**. See [the local experiment](DEPTH_EXPERIMENT.md).
+
+| Item | Verified value |
+| --- | --- |
+| Viewer/report source | `19c1d539f21efb79a904b8e1d239823d536da5d1` |
+| Release | [viewer-depth-2026-11-05](https://github.com/neocjmix/groundshift/releases/tag/viewer-depth-2026-11-05) |
+| Archive | `groundshift-depth-20261105.tar.gz`, 184,298,462 bytes |
+| Archive SHA-256 | `59107b247c429ec4153f534c357711fc2410e23b8dd7eae9564261a7e8d03941` |
+| Static payload | 120 `www/` files, 198,141,306 bytes; 15 scene entries and eight depth-report files |
+| Deployment-pointer commit | `a43958fc1944b56d95499393c15b7aba81217a80` |
+| Railway deployment | `9aa61c0c-eb21-4eab-9937-3188b04411b1` — SUCCESS |
+| Actual trigger | Explicit latest-branch connector trigger; no push-triggered deployment appeared before it |
+
+**Local PASS:** TypeScript, lint, 165 JS tests, production build and all 26
+headed Chrome cases including the new six-image depth report and every actual
+Gaussian scene. The available Python environments each ran 102 native tests:
+the OpenCV environment had five missing-dependency skips, the PyCOLMAP
+environment had 44; the actual three-image depth inference and sparse-point
+check completed separately. The local archive readback matched every selected
+file's exact length and SHA-256; the fresh GitHub release download matched the
+local archive byte for byte. Railway's build log reported
+`/tmp/viewer.tar.gz: OK` at the pinned checksum, and the service reached
+SUCCESS with no pending work.
+
+**Public HTTP PASS:** all 120 public files matched exact length and SHA-256,
+`/healthz` returned 200/`ok`, and nine private/missing paths returned 404,
+including depth arrays and raw inference logs. The first public headed-Chrome
+depth case timed out at its 5-second image readiness assertion while the full
+file crawl was running. Direct requests then returned all six images with 200,
+the complete hash crawl passed, and the same public page passed after a test-only
+30-second image wait. The deployed page and archive were unchanged for that
+retry. The screenshot was inspected; it shows all three real photos paired with
+three relative-depth maps. Evidence is retained in ignored
+`data/validation/deployment/railway-depth-http.json` and the public Playwright
+test output. **All 26 public headed-Chrome cases passed** in 5.5 minutes,
+including actual render and reload of all 15 scenes, gallery controls, both
+older reports, MP4 play/seek, camera-path controls and error recovery. The 15
+public scene screenshots were inspected together in
+`data/validation/deployment/depth-public-scenes-contact.jpg`; the older
+Beijing scenes still visibly streak or blur. Browser success does not change
+their recorded quality failures or prove a depth-assisted GS world exists.
 
 ## Two-endpoint panorama observation release — 2026-11-05
 

@@ -15,7 +15,8 @@ test('public depth diagnostic shows three observed crops and three MPS predictio
   await expect(images).toHaveCount(6);
   for (let index = 0; index < 6; index++) {
     await images.nth(index).scrollIntoViewIfNeeded();
-    await expect.poll(() => images.nth(index).evaluate(image => image.complete && image.naturalWidth === 512 && image.naturalHeight === 512)).toBe(true);
+    await expect.poll(() => images.nth(index).evaluate(image => image.complete && image.naturalWidth === 512 && image.naturalHeight === 512),
+      { timeout: process.env.GS_BASE_URL ? 30_000 : 5_000 }).toBe(true);
   }
   await expect(page.getByRole('link', { name: '원본 사진/저작자' })).toHaveCount(3);
   expect(summary.images).toHaveLength(3);
