@@ -122,6 +122,7 @@ unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.m
 - [Video preparation](docs/VIDEO.md)
 - [Camera-path revisit](docs/REVISIT.md)
 - [Portable world format](docs/WORLD_FORMAT.md)
+- [Information and processing topology](docs/INFORMATION_TOPOLOGY.md)
 - [Observation publication and reproduction](docs/OBSERVATIONS.md)
 - [Railway deployment](docs/DEPLOYMENT.md)
 - [Agent instructions](AGENTS.md)
