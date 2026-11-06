@@ -30,9 +30,17 @@ RUN wget -q -O /tmp/tangent-native.tar.gz https://github.com/neocjmix/groundshif
     && mkdir /out \
     && tar -xzf /tmp/tangent-native.tar.gz -C /out
 
+# Measured outcome ships during local browser checks; actual GS appearance did not improve.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS evidence
+RUN wget -q -O /tmp/tangent-evidence.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-evidence-2026-11-06/groundshift-tangent-evidence-20261106.tar.gz \
+    && echo '55b2e885924bb007338a56b0e5c660df242bb2ee49e478006bc3163fccc0a15b  /tmp/tangent-evidence.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tangent-evidence.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
 COPY --from=tangent /out/www /srv
+COPY --from=evidence /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
