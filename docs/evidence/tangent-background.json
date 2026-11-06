@@ -1,0 +1,2226 @@
+{
+  "schemaVersion": 1,
+  "experiment": "street-tangent-background-20261106",
+  "decision": "Retain street-final-hires overall; one bounded tangent20 native export retained for observation, no further same-data sweep.",
+  "qualityScreen": "FAIL",
+  "geometryStatus": "NOT ACCEPTED",
+  "configuration": {
+    "physicalTraining": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      9
+    ],
+    "appearanceWithheld": 5,
+    "geometryUsesAllNine": true,
+    "directionsPerCenter": 20,
+    "rgbEdge": 1024,
+    "fovDegrees": 80,
+    "seed": 42,
+    "steps": 8000,
+    "maxSplats": 800000,
+    "shDegree": 1,
+    "diffusion": "NOT RUN"
+  },
+  "preparation": {
+    "status": "PASS",
+    "trainingImages": 160,
+    "elapsedSeconds": 31.212167707970366,
+    "coverage": {
+      "sampledRays": 145800,
+      "uncovered": 0,
+      "minimum": 1,
+      "mean": 2.6252949245541837,
+      "maximum": 5
+    },
+    "sourceManifestSha256": "2d659ec73dd0044fc463c3f3f351203fdb59d5ac9e9fc46877a2b43f2e8ea2b4",
+    "poseDocumentSha256": "87ece93541ec2504fd0e2586ff3f8866e627b06e817d69551a2cf0cf053754db"
+  },
+  "depth": {
+    "status": "PASS",
+    "device": "mps",
+    "model": "depth-anything/Depth-Anything-V2-Small-hf",
+    "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+    "torchVersion": "2.15.0",
+    "elapsedSeconds": 110.91877895896323,
+    "modelLoadSeconds": 0.3788042499218136,
+    "images": 160,
+    "actualInputTensorShapes": [
+      [
+        1,
+        3,
+        1036,
+        1036
+      ]
+    ],
+    "inferenceSecondsSum": 93.04502091440372,
+    "peakNeuralMemory": "NOT RELIABLY ISOLATED"
+  },
+  "fusion": {
+    "status": "PASS",
+    "elapsedSeconds": 16.866375291952863,
+    "points": 183124,
+    "denseFullPoints": 618158,
+    "sparsePoints": 3124,
+    "voxelSpacingSfm": 0.011401638635910911,
+    "initialPlySha256": "5082ed8d95f81c91e42056d3370ee35a5fdcd8119609b64f88e685b6f7d4ea8c",
+    "depthReportSha256": "a1f1b1b6739f561f40157603aa8c77e8963d73fb02253b588a837ca93c6b4b8b",
+    "physical": [
+      {
+        "id": 1,
+        "calibratedFaces": 16,
+        "failedFaces": 4,
+        "overlapConstraints": 6592,
+        "anchorConstraints": 2374,
+        "validSpherePixels": 306207,
+        "capSfm": 102.17636785082418,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 272316,
+            "medianLogRangeSpread": 0.08786234060444265,
+            "p90LogRangeSpread": 0.38928486130237805
+          },
+          {
+            "stage": "after",
+            "rays": 274203,
+            "medianLogRangeSpread": 0.06875531331271656,
+            "p90LogRangeSpread": 0.3301898626178748
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "calibratedFaces": 17,
+        "failedFaces": 3,
+        "overlapConstraints": 7590,
+        "anchorConstraints": 3022,
+        "validSpherePixels": 307198,
+        "capSfm": 93.59994089563133,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 281722,
+            "medianLogRangeSpread": 0.07994232781796029,
+            "p90LogRangeSpread": 0.3469857869649432
+          },
+          {
+            "stage": "after",
+            "rays": 285283,
+            "medianLogRangeSpread": 0.06162684152170428,
+            "p90LogRangeSpread": 0.327268949493693
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "calibratedFaces": 18,
+        "failedFaces": 2,
+        "overlapConstraints": 8166,
+        "anchorConstraints": 3116,
+        "validSpherePixels": 310005,
+        "capSfm": 120.69232922056293,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 292651,
+            "medianLogRangeSpread": 0.08866658462961086,
+            "p90LogRangeSpread": 0.37479716036882404
+          },
+          {
+            "stage": "after",
+            "rays": 294318,
+            "medianLogRangeSpread": 0.06384050143776909,
+            "p90LogRangeSpread": 0.3382595152490605
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "calibratedFaces": 17,
+        "failedFaces": 3,
+        "overlapConstraints": 7590,
+        "anchorConstraints": 2942,
+        "validSpherePixels": 308893,
+        "capSfm": 120.52884438420688,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 285685,
+            "medianLogRangeSpread": 0.08407367076876371,
+            "p90LogRangeSpread": 0.35077471594617005
+          },
+          {
+            "stage": "after",
+            "rays": 287697,
+            "medianLogRangeSpread": 0.05820211368355244,
+            "p90LogRangeSpread": 0.3081274674337714
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "calibratedFaces": 17,
+        "failedFaces": 3,
+        "overlapConstraints": 7590,
+        "anchorConstraints": 2816,
+        "validSpherePixels": 308632,
+        "capSfm": 119.88700009506985,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 284932,
+            "medianLogRangeSpread": 0.07212025434787528,
+            "p90LogRangeSpread": 0.2807555669736241
+          },
+          {
+            "stage": "after",
+            "rays": 287030,
+            "medianLogRangeSpread": 0.05103683088878941,
+            "p90LogRangeSpread": 0.24863627973588107
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "calibratedFaces": 18,
+        "failedFaces": 2,
+        "overlapConstraints": 8716,
+        "anchorConstraints": 2970,
+        "validSpherePixels": 310424,
+        "capSfm": 119.58541299226049,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 302118,
+            "medianLogRangeSpread": 0.06146269893487977,
+            "p90LogRangeSpread": 0.2665121291424152
+          },
+          {
+            "stage": "after",
+            "rays": 304740,
+            "medianLogRangeSpread": 0.04872019801294347,
+            "p90LogRangeSpread": 0.25115167898399615
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "calibratedFaces": 17,
+        "failedFaces": 3,
+        "overlapConstraints": 7590,
+        "anchorConstraints": 2653,
+        "validSpherePixels": 311066,
+        "capSfm": 123.12206557437544,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 291899,
+            "medianLogRangeSpread": 0.05675706073997677,
+            "p90LogRangeSpread": 0.2981484673693123
+          },
+          {
+            "stage": "after",
+            "rays": 294305,
+            "medianLogRangeSpread": 0.048644242363870216,
+            "p90LogRangeSpread": 0.2721033323653813
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "calibratedFaces": 16,
+        "failedFaces": 4,
+        "overlapConstraints": 6592,
+        "anchorConstraints": 2008,
+        "validSpherePixels": 310613,
+        "capSfm": 119.55545909169932,
+        "overlap": [
+          {
+            "stage": "before",
+            "rays": 276183,
+            "medianLogRangeSpread": 0.05803019927736619,
+            "p90LogRangeSpread": 0.2879705045284388
+          },
+          {
+            "stage": "after",
+            "rays": 280641,
+            "medianLogRangeSpread": 0.050086333331915034,
+            "p90LogRangeSpread": 0.2856022894285726
+          }
+        ]
+      }
+    ],
+    "meaning": "Original per-stage overlap validity can differ; use paired diagnostic for matched before/after."
+  },
+  "pairedAndNeighborDiagnostics": {
+    "status": "PASS",
+    "sameCenter": [
+      {
+        "physical": 1,
+        "commonRays": 17005,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 17005,
+          "median": 0.08774466498400901,
+          "p90": 0.390830865093465
+        },
+        "after": {
+          "samples": 17005,
+          "median": 0.06827952538485604,
+          "p90": 0.323238890358259
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 2,
+        "commonRays": 17618,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 17618,
+          "median": 0.07980875305775059,
+          "p90": 0.34358241651659555
+        },
+        "after": {
+          "samples": 17618,
+          "median": 0.060385273479468315,
+          "p90": 0.3096935186021171
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 3,
+        "commonRays": 18080,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 18080,
+          "median": 0.08743014483766764,
+          "p90": 0.37943119444550794
+        },
+        "after": {
+          "samples": 18080,
+          "median": 0.06246407908449436,
+          "p90": 0.3096351831808475
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 4,
+        "commonRays": 17900,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 17900,
+          "median": 0.08371369606898271,
+          "p90": 0.3495842043179894
+        },
+        "after": {
+          "samples": 17900,
+          "median": 0.05772912693835186,
+          "p90": 0.29717703958173153
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 6,
+        "commonRays": 17812,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 17812,
+          "median": 0.07255701594730823,
+          "p90": 0.27621853343594793
+        },
+        "after": {
+          "samples": 17812,
+          "median": 0.05069852361940419,
+          "p90": 0.24268466718033097
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 7,
+        "commonRays": 18902,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 18902,
+          "median": 0.06153335144126515,
+          "p90": 0.26572636496094415
+        },
+        "after": {
+          "samples": 18902,
+          "median": 0.04859176504024543,
+          "p90": 0.25115219115790544
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 8,
+        "commonRays": 18148,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 18148,
+          "median": 0.05617571326658055,
+          "p90": 0.2936072294811416
+        },
+        "after": {
+          "samples": 18148,
+          "median": 0.047631550394827915,
+          "p90": 0.2700542883747104
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      },
+      {
+        "physical": 9,
+        "commonRays": 17259,
+        "sameCropMembership": true,
+        "before": {
+          "samples": 17259,
+          "median": 0.05797844602988422,
+          "p90": 0.2879017249805655
+        },
+        "after": {
+          "samples": 17259,
+          "median": 0.05001177568996229,
+          "p90": 0.2807636643496187
+        },
+        "meaning": "Same raw RGB/physical center; internal agreement only. Identical ray and valid crop membership for before/after."
+      }
+    ],
+    "neighborCenter": [
+      {
+        "source": 1,
+        "target": 2,
+        "sampled": 3000,
+        "comparable": 2854,
+        "invalid": 146,
+        "absRelativeRange": {
+          "samples": 2854,
+          "median": 0.035279228131393614,
+          "p90": 0.19851537898535612
+        },
+        "rgbMae": {
+          "samples": 2854,
+          "median": 8.883912780437367,
+          "p90": 53.2673350140067
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "sampled": 3000,
+        "comparable": 2817,
+        "invalid": 183,
+        "absRelativeRange": {
+          "samples": 2817,
+          "median": 0.05403308262139794,
+          "p90": 0.2968386996383182
+        },
+        "rgbMae": {
+          "samples": 2817,
+          "median": 12.197140969626412,
+          "p90": 81.97144519124367
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 2,
+        "target": 1,
+        "sampled": 3000,
+        "comparable": 2822,
+        "invalid": 178,
+        "absRelativeRange": {
+          "samples": 2822,
+          "median": 0.03269624409292177,
+          "p90": 0.20211238632180606
+        },
+        "rgbMae": {
+          "samples": 2822,
+          "median": 9.29190645604589,
+          "p90": 51.79122630459326
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "sampled": 3000,
+        "comparable": 2856,
+        "invalid": 144,
+        "absRelativeRange": {
+          "samples": 2856,
+          "median": 0.028294729452488565,
+          "p90": 0.2086617275310267
+        },
+        "rgbMae": {
+          "samples": 2856,
+          "median": 8.148996900553644,
+          "p90": 48.501963883870374
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 3,
+        "target": 2,
+        "sampled": 3000,
+        "comparable": 2807,
+        "invalid": 193,
+        "absRelativeRange": {
+          "samples": 2807,
+          "median": 0.027381640200697,
+          "p90": 0.19368323074302465
+        },
+        "rgbMae": {
+          "samples": 2807,
+          "median": 8.001232993511792,
+          "p90": 52.66816403664286
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "sampled": 3000,
+        "comparable": 2834,
+        "invalid": 166,
+        "absRelativeRange": {
+          "samples": 2834,
+          "median": 0.03469721787082669,
+          "p90": 0.2430405083694589
+        },
+        "rgbMae": {
+          "samples": 2834,
+          "median": 8.20814791085979,
+          "p90": 60.15607192922792
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 4,
+        "target": 3,
+        "sampled": 3000,
+        "comparable": 2819,
+        "invalid": 181,
+        "absRelativeRange": {
+          "samples": 2819,
+          "median": 0.03127537700051586,
+          "p90": 0.22702777203488092
+        },
+        "rgbMae": {
+          "samples": 2819,
+          "median": 8.444131624277164,
+          "p90": 51.77222270797841
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 4,
+        "target": 2,
+        "sampled": 3000,
+        "comparable": 2790,
+        "invalid": 210,
+        "absRelativeRange": {
+          "samples": 2790,
+          "median": 0.04407617264722613,
+          "p90": 0.34848216148603806
+        },
+        "rgbMae": {
+          "samples": 2790,
+          "median": 11.551888699235334,
+          "p90": 67.22547986058069
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "sampled": 3000,
+        "comparable": 2811,
+        "invalid": 189,
+        "absRelativeRange": {
+          "samples": 2811,
+          "median": 0.028402820136300244,
+          "p90": 0.17081241788821244
+        },
+        "rgbMae": {
+          "samples": 2811,
+          "median": 7.963000113271296,
+          "p90": 48.897253662309275
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 6,
+        "target": 4,
+        "sampled": 3000,
+        "comparable": 2851,
+        "invalid": 149,
+        "absRelativeRange": {
+          "samples": 2851,
+          "median": 0.046053661030457604,
+          "p90": 0.3053310985683435
+        },
+        "rgbMae": {
+          "samples": 2851,
+          "median": 11.53649368897515,
+          "p90": 73.92608187959245
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 7,
+        "target": 6,
+        "sampled": 3000,
+        "comparable": 2802,
+        "invalid": 198,
+        "absRelativeRange": {
+          "samples": 2802,
+          "median": 0.026654688101169888,
+          "p90": 0.19621026147424353
+        },
+        "rgbMae": {
+          "samples": 2802,
+          "median": 7.561493411373897,
+          "p90": 50.431010620386864
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 7,
+        "target": 8,
+        "sampled": 3000,
+        "comparable": 2821,
+        "invalid": 179,
+        "absRelativeRange": {
+          "samples": 2821,
+          "median": 0.032887580133516,
+          "p90": 0.20416207675968978
+        },
+        "rgbMae": {
+          "samples": 2821,
+          "median": 8.050692442105836,
+          "p90": 50.574582138390326
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 8,
+        "target": 7,
+        "sampled": 3000,
+        "comparable": 2813,
+        "invalid": 187,
+        "absRelativeRange": {
+          "samples": 2813,
+          "median": 0.028240563777348737,
+          "p90": 0.21082210548052874
+        },
+        "rgbMae": {
+          "samples": 2813,
+          "median": 8.339002596323212,
+          "p90": 49.068459868461254
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 8,
+        "target": 9,
+        "sampled": 3000,
+        "comparable": 2807,
+        "invalid": 193,
+        "absRelativeRange": {
+          "samples": 2807,
+          "median": 0.024010594067682134,
+          "p90": 0.2267370319828126
+        },
+        "rgbMae": {
+          "samples": 2807,
+          "median": 9.029138077600086,
+          "p90": 46.609112921545254
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 9,
+        "target": 8,
+        "sampled": 3000,
+        "comparable": 2834,
+        "invalid": 166,
+        "absRelativeRange": {
+          "samples": 2834,
+          "median": 0.026093411758068008,
+          "p90": 0.21159520522526507
+        },
+        "rgbMae": {
+          "samples": 2834,
+          "median": 9.706030275002203,
+          "p90": 51.07818363106932
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      },
+      {
+        "source": 9,
+        "target": 7,
+        "sampled": 3000,
+        "comparable": 2848,
+        "invalid": 152,
+        "absRelativeRange": {
+          "samples": 2848,
+          "median": 0.03763710784469443,
+          "p90": 0.30762152315797353
+        },
+        "rgbMae": {
+          "samples": 2848,
+          "median": 11.806231182539083,
+          "p90": 61.89356947374153
+        },
+        "meaning": "Estimated pose/depth cross-view disagreement; occlusion and dynamic objects unresolved. Not independent measured error."
+      }
+    ],
+    "fusionSha256": "a3d922fd6a3a9871b7cfff4e015e0dd47c41f5573461256c30c5ed7d0bfed642",
+    "calibrationSha256": "16c98650faab19928180057b9d81a9144fed3fd8577d817e0f3b84b541ac7976",
+    "geometryStatus": "NOT ACCEPTED",
+    "finishedAt": "2026-11-06T14:28:13.238102+00:00",
+    "elapsedSeconds": 4.4105265841353685
+  },
+  "native": {
+    "status": "PASS",
+    "elapsedSeconds": 1188.2504419169854,
+    "maximumResidentSetBytes": 872415232,
+    "peakMemoryFootprintBytes": 2669135216,
+    "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+    "artifact": {
+      "splats": 800000,
+      "bytes": 73600652,
+      "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e"
+    },
+    "startedAt": "2026-11-06T14:22:48.993223+00:00",
+    "finishedAt": "2026-11-06T14:42:37.359266+00:00"
+  },
+  "evaluation": {
+    "evaluation": {
+      "status": "PASS",
+      "models": [
+        {
+          "id": "baseline",
+          "status": "PASS",
+          "trainingSeconds": 1455.6505130419973,
+          "maxResidentSetBytes": 666107904,
+          "peakMemoryFootprintBytes": 2386281696,
+          "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+          "initialPoints": null,
+          "splats": 800000,
+          "bytes": 73600652,
+          "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+          "steps": 8000,
+          "renderStatus": "PASS",
+          "heldLevelViews": 6,
+          "heldLevelMaeMean": 24.41442983479862,
+          "heldLevelCoverage95Mean": 0.2714522827725971,
+          "heldLevelPsnrMean": 17.482927321261187
+        },
+        {
+          "id": "tangent",
+          "status": "PASS",
+          "trainingSeconds": 1188.2504419169854,
+          "maxResidentSetBytes": 872415232,
+          "peakMemoryFootprintBytes": 2669135216,
+          "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+          "initialPoints": null,
+          "splats": 800000,
+          "bytes": 73600652,
+          "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e",
+          "steps": 8000,
+          "renderStatus": "PASS",
+          "heldLevelViews": 6,
+          "heldLevelMaeMean": 26.20261559588954,
+          "heldLevelCoverage95Mean": 0.2330723233041758,
+          "heldLevelPsnrMean": 17.057204809320282
+        }
+      ],
+      "comparisons": [
+        {
+          "id": "tangent",
+          "baseline": "baseline",
+          "views": 6,
+          "maeImprovedViews": 0,
+          "meanCoverageDifference": -0.038379959468421314,
+          "comparisonScreen": "FAIL",
+          "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+        }
+      ],
+      "elapsedSeconds": 5.95193516719155,
+      "renderReportSha256": "5cd85c485be5ff308d060749c521c268c422ae3d03eda3cfdad60a5dd8fc766c",
+      "configSha256": "ac65feb1535fa188e95188b19bb863efe492fe6cb1509ee37d706b2c8a81c8d4",
+      "metricsSha256": "b3ad7ea2ce45d4e1021c82dd89bbae66b205460a122bf61d7313b86799ef7d21",
+      "evaluation": "Physical5 RGB excluded from GS optimization and dense initialization. Camera/sparse geometry use all-nine SfM. Actual same-pose photometry, not independent measured geometry.",
+      "views": [
+        {
+          "model": "baseline",
+          "view": "held-5-level-000",
+          "kind": "held",
+          "yaw": 0,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 32.19724318576726,
+              "mse": 1913.2246149685268,
+              "psnrDb": 15.313144011307504,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2182870035900457,
+              "meanOpacity": 0.8167332349574079,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 18.750320102432777,
+              "mse": 681.0830742027925,
+              "psnrDb": 19.798802732320002,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.09721968172672397,
+              "meanOpacity": 0.8129290896896529,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 35.330023289078916,
+              "mse": 2206.1984942138774,
+              "psnrDb": 14.69435777032242,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.22483772520952425,
+              "meanOpacity": 0.8103697912062844,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-060",
+          "kind": "held",
+          "yaw": 60,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 27.199403141012105,
+              "mse": 1570.2316987325546,
+              "psnrDb": 16.171166205245054,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.25822765113203144,
+              "meanOpacity": 0.8296263436519088,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 16.92855618559844,
+              "mse": 489.53748247058104,
+              "psnrDb": 21.23294410782013,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.001097494055240534,
+              "meanOpacity": 0.7611973086289573,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 29.47492422012569,
+              "mse": 1813.6793878741873,
+              "psnrDb": 15.545198435150514,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.30305494880017353,
+              "meanOpacity": 0.8379786646885986,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-120",
+          "kind": "held",
+          "yaw": 120,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 19.874533646026684,
+              "mse": 830.6823606124937,
+              "psnrDb": 18.936453724683943,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.33066210223294173,
+              "meanOpacity": 0.872386069498211,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 14.087708066581307,
+              "mse": 330.4724102188891,
+              "psnrDb": 22.939451529913256,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.005990488384854582,
+              "meanOpacity": 0.7945344078732645,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 21.073363180534255,
+              "mse": 916.0332398671851,
+              "psnrDb": 18.511691277797773,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3880187758516522,
+              "meanOpacity": 0.8855524481174788,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-180",
+          "kind": "held",
+          "yaw": 180,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 24.393888030587632,
+              "mse": 1031.9115770637206,
+              "psnrDb": 17.994378760171635,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.29316668704360294,
+              "meanOpacity": 0.8429951829794393,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 23.212349856716052,
+              "mse": 910.7163130296933,
+              "psnrDb": 18.536972450065427,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.011386500823120541,
+              "meanOpacity": 0.7796748404867709,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 24.921710482151063,
+              "mse": 1058.6504314418057,
+              "psnrDb": 17.883277820239197,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3227525522455113,
+              "meanOpacity": 0.8568505644267901,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-240",
+          "kind": "held",
+          "yaw": 240,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 21.796956797190205,
+              "mse": 951.8277815444236,
+              "psnrDb": 18.345219842175684,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2775505440641985,
+              "meanOpacity": 0.841272362053045,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 19.577175172245596,
+              "mse": 723.9714194256447,
+              "psnrDb": 19.533589391883517,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.031232851655386865,
+              "meanOpacity": 0.7844328000086077,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 21.994027977877955,
+              "mse": 974.1615802492087,
+              "psnrDb": 18.244493633418575,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3137906461557528,
+              "meanOpacity": 0.8570291130193151,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-300",
+          "kind": "held",
+          "yaw": 300,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 21.02455420820783,
+              "mse": 998.5279423369752,
+              "psnrDb": 18.137201383983296,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2508197085727623,
+              "meanOpacity": 0.8604099883164968,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 13.108880556063655,
+              "mse": 325.11534357661117,
+              "psnrDb": 23.0104289468335,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.03960124382659594,
+              "meanOpacity": 0.829395983745611,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 21.380773858396203,
+              "mse": 1044.6064920243941,
+              "psnrDb": 17.94127640303553,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.29269879630059953,
+              "meanOpacity": 0.8706943681254009,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-000",
+          "kind": "held",
+          "yaw": 0,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 33.36221300937709,
+              "mse": 2015.2361057081355,
+              "psnrDb": 15.087544253291545,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.22086561225283702,
+              "meanOpacity": 0.8080929999012754,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 19.413389427473934,
+              "mse": 714.9172306566672,
+              "psnrDb": 19.588245964791856,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.12429120175599048,
+              "meanOpacity": 0.8196399430450798,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 36.74912859599387,
+              "mse": 2330.7043939417413,
+              "psnrDb": 14.455931659491677,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.21819956313612493,
+              "meanOpacity": 0.7949681069930723,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-060",
+          "kind": "held",
+          "yaw": 60,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 28.064661576137496,
+              "mse": 1623.6455969145613,
+              "psnrDb": 16.02589121739338,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.26161763234820107,
+              "meanOpacity": 0.8204190413425154,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 17.40153039448814,
+              "mse": 534.2329431132248,
+              "psnrDb": 20.853496958812364,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.004618620815803914,
+              "meanOpacity": 0.7682105108368571,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 30.37227411917192,
+              "mse": 1863.4085606729564,
+              "psnrDb": 15.427722745210044,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3097705690074515,
+              "meanOpacity": 0.8277303460616792,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-120",
+          "kind": "held",
+          "yaw": 120,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 22.599587644907803,
+              "mse": 1022.9713370604602,
+              "psnrDb": 18.032168956121236,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2854308610552289,
+              "meanOpacity": 0.845898667566303,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 14.902307786110603,
+              "mse": 383.216709346991,
+              "psnrDb": 22.296359235642637,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.012163892445582587,
+              "meanOpacity": 0.8179115692371699,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 24.20063722224804,
+              "mse": 1137.799703593541,
+              "psnrDb": 17.570145445735335,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3266641880063825,
+              "meanOpacity": 0.8498455849319326,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-180",
+          "kind": "held",
+          "yaw": 180,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 27.9738582432117,
+              "mse": 1246.8960146417548,
+              "psnrDb": 17.17250124029553,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.19121161263073658,
+              "meanOpacity": 0.8020279955131512,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 23.537558685446008,
+              "mse": 940.0906956892873,
+              "psnrDb": 18.399106064838392,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.006310590817633071,
+              "meanOpacity": 0.7866197183098591,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 29.636507051272122,
+              "mse": 1344.311157069604,
+              "psnrDb": 16.845805578063896,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.1888816594630602,
+              "meanOpacity": 0.7974234994612863,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-240",
+          "kind": "held",
+          "yaw": 240,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 23.344170158532563,
+              "mse": 1010.6186548999121,
+              "psnrDb": 18.084930502970685,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.20237632125907237,
+              "meanOpacity": 0.8237879918169712,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 20.55889884763124,
+              "mse": 808.2118773245534,
+              "psnrDb": 19.055551324071477,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.013810133528443387,
+              "meanOpacity": 0.7775359823827098,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 23.962938864876868,
+              "mse": 1058.8307849607288,
+              "psnrDb": 17.88253801166245,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.21939241839785595,
+              "meanOpacity": 0.8316963240192206,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-300",
+          "kind": "held",
+          "yaw": 300,
+          "regions": {
+            "band": {
+              "pixelCount": 179942,
+              "channelValueCount": 539826,
+              "mae": 21.871202943170577,
+              "mse": 1044.8671905391736,
+              "psnrDb": 17.94019268584932,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.23693190027897879,
+              "meanOpacity": 0.8552008370453137,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 21868,
+              "channelValueCount": 65604,
+              "mae": 13.754832022437656,
+              "mse": 366.056338028169,
+              "psnrDb": 22.49532430085973,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.04920431680995061,
+              "meanOpacity": 0.8435228124540469,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 129102,
+              "channelValueCount": 387306,
+              "mae": 22.629832742069578,
+              "mse": 1124.9639303289905,
+              "psnrDb": 17.619417629629396,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.26528636272094935,
+              "meanOpacity": 0.8572274058420445,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        }
+      ],
+      "actualRender": {
+        "status": "PASS",
+        "browser": "156.0.8078.81",
+        "headed": true,
+        "resolution": 512,
+        "elapsedSeconds": 34.993605375
+      }
+    },
+    "evaluation-detail": {
+      "status": "PASS",
+      "models": [
+        {
+          "id": "baseline",
+          "status": "PASS",
+          "trainingSeconds": 1455.6505130419973,
+          "maxResidentSetBytes": 666107904,
+          "peakMemoryFootprintBytes": 2386281696,
+          "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+          "initialPoints": null,
+          "splats": 800000,
+          "bytes": 73600652,
+          "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+          "steps": 8000,
+          "renderStatus": "PASS",
+          "heldLevelViews": 6,
+          "heldLevelMaeMean": 24.344902326348176,
+          "heldLevelCoverage95Mean": 0.2960763829073888,
+          "heldLevelPsnrMean": 17.458603436016425
+        },
+        {
+          "id": "tangent",
+          "status": "PASS",
+          "trainingSeconds": 1188.2504419169854,
+          "maxResidentSetBytes": 872415232,
+          "peakMemoryFootprintBytes": 2669135216,
+          "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+          "initialPoints": null,
+          "splats": 800000,
+          "bytes": 73600652,
+          "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e",
+          "steps": 8000,
+          "renderStatus": "PASS",
+          "heldLevelViews": 6,
+          "heldLevelMaeMean": 25.9806089799991,
+          "heldLevelCoverage95Mean": 0.25376811352593914,
+          "heldLevelPsnrMean": 17.08535839195652
+        }
+      ],
+      "comparisons": [
+        {
+          "id": "tangent",
+          "baseline": "baseline",
+          "views": 6,
+          "maeImprovedViews": 0,
+          "meanCoverageDifference": -0.0423082693814496,
+          "comparisonScreen": "FAIL",
+          "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+        }
+      ],
+      "elapsedSeconds": 23.84332250012085,
+      "renderReportSha256": "45298752667afc631a60de4330127d3cc639d7c9c1756f1f2dd77193b42395d3",
+      "configSha256": "f030bada81484a9fdad2e03e944b95b792d2a9a8e1b317f1d441d9398a53fb9a",
+      "metricsSha256": "c1e3bd91ba6c3f2131be220d81020791dcfa73331a3d880ab7276c0ff2c0d612",
+      "evaluation": "Physical5 RGB excluded from GS optimization and dense initialization. Camera/sparse geometry use all-nine SfM. Actual same-pose photometry, not independent measured geometry.",
+      "views": [
+        {
+          "model": "baseline",
+          "view": "held-5-level-000",
+          "kind": "held",
+          "yaw": 0,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 32.49251285983933,
+              "mse": 1979.920087467283,
+              "psnrDb": 15.164326990267675,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.24527932293432175,
+              "meanOpacity": 0.8170068698765899,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 18.999367416620938,
+              "mse": 699.6951481616975,
+              "psnrDb": 19.681714984377013,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.1080117066032559,
+              "meanOpacity": 0.8133582242115797,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 35.65302414149238,
+              "mse": 2285.2792066873226,
+              "psnrDb": 14.541410927789348,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.25609604957397364,
+              "meanOpacity": 0.8106356069926035,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-060",
+          "kind": "held",
+          "yaw": 60,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 27.164417005180983,
+              "mse": 1599.955426324281,
+              "psnrDb": 16.089724771938933,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.28506332208965673,
+              "meanOpacity": 0.8301456273495379,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 17.189996036827022,
+              "mse": 500.9066063044936,
+              "psnrDb": 21.133236013631283,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.005041613316261203,
+              "meanOpacity": 0.7623659963345133,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 29.337803382390913,
+              "mse": 1843.8293099664343,
+              "psnrDb": 15.473596465205917,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.33605538342370256,
+              "meanOpacity": 0.8384908643550372,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-120",
+          "kind": "held",
+          "yaw": 120,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 19.577742521658433,
+              "mse": 818.3569969195661,
+              "psnrDb": 19.00137560900882,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3562332942490539,
+              "meanOpacity": 0.8731179481178256,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 14.36517209316505,
+              "mse": 343.1049593012621,
+              "psnrDb": 22.776533653952214,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.013832997987927566,
+              "meanOpacity": 0.7945615313987311,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 20.60458171959721,
+              "mse": 891.9535282726569,
+              "psnrDb": 18.627381331067014,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.41784856700232376,
+              "meanOpacity": 0.8864393235218179,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-180",
+          "kind": "held",
+          "yaw": 180,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 24.40798477009738,
+              "mse": 1042.3961427891356,
+              "psnrDb": 17.950475651937865,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.30443226842564447,
+              "meanOpacity": 0.842980116921597,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 23.369714499115908,
+              "mse": 926.3094971343211,
+              "psnrDb": 18.46324244120985,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.01833729650631059,
+              "meanOpacity": 0.7793459060961132,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 24.89907629744384,
+              "mse": 1067.2504034340304,
+              "psnrDb": 17.848140332231367,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3356409759876065,
+              "meanOpacity": 0.8570021567108641,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-240",
+          "kind": "held",
+          "yaw": 240,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 21.509817841325233,
+              "mse": 933.4108327359552,
+              "psnrDb": 18.430075240679166,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2992267425383294,
+              "meanOpacity": 0.8418394541581282,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 19.82374169257972,
+              "mse": 736.1926140174379,
+              "psnrDb": 19.460889048715806,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.04307664166819097,
+              "meanOpacity": 0.7852361943496987,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 21.645631293570876,
+              "mse": 953.3825716498839,
+              "psnrDb": 18.338131523428267,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.33954879938032534,
+              "meanOpacity": 0.8576967543020306,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "baseline",
+          "view": "held-5-level-300",
+          "kind": "held",
+          "yaw": 300,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 20.9169389599877,
+              "mse": 1003.4971089673414,
+              "psnrDb": 18.115642352266075,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.28622334720732634,
+              "meanOpacity": 0.8609353771349666,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 13.361769099445155,
+              "mse": 334.67836564843606,
+              "psnrDb": 22.884527213609726,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.058235778306200844,
+              "meanOpacity": 0.8296053952951219,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 21.251703459850244,
+              "mse": 1054.3321540149755,
+              "psnrDb": 17.901029094496636,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.33408985282726567,
+              "meanOpacity": 0.8713936604851082,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-000",
+          "kind": "held",
+          "yaw": 0,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 33.443098105246,
+              "mse": 2049.5623949957303,
+              "psnrDb": 15.014192167516818,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.24240635054708728,
+              "meanOpacity": 0.8081145098562228,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 19.723774464971648,
+              "mse": 740.3775684409487,
+              "psnrDb": 19.436271086069958,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.13435156392902872,
+              "meanOpacity": 0.8200071641973049,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 36.766124451329716,
+              "mse": 2362.9053304931576,
+              "psnrDb": 14.396340388411435,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.24204686289697908,
+              "meanOpacity": 0.7949418067769324,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-060",
+          "kind": "held",
+          "yaw": 60,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 27.92521287965932,
+              "mse": 1634.8258878707218,
+              "psnrDb": 15.996088546137809,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.282772446138714,
+              "meanOpacity": 0.82048137187891,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 17.80637232485824,
+              "mse": 554.541594262545,
+              "psnrDb": 20.691462342218298,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.010609109200658497,
+              "meanOpacity": 0.7690959930707238,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 30.080274335140718,
+              "mse": 1870.928531500129,
+              "psnrDb": 15.410231628750843,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.3349535243996902,
+              "meanOpacity": 0.8276752783220181,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-120",
+          "kind": "held",
+          "yaw": 120,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 22.21939617566809,
+              "mse": 1002.156359345681,
+              "psnrDb": 18.121448741637273,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.30632165065322614,
+              "meanOpacity": 0.8460631822928059,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 15.196760106091093,
+              "mse": 396.60502789464056,
+              "psnrDb": 22.147221452672675,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.02342463874154015,
+              "meanOpacity": 0.8191728804197733,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 23.599902530338237,
+              "mse": 1101.1876123160341,
+              "psnrDb": 17.712190436651884,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.35092951200619676,
+              "meanOpacity": 0.8498446332832127,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-180",
+          "kind": "held",
+          "yaw": 180,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 27.806499474862882,
+              "mse": 1242.827901359429,
+              "psnrDb": 17.186693663087752,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2031961123182164,
+              "meanOpacity": 0.8025846236757027,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 23.64979650631059,
+              "mse": 950.3669783854643,
+              "psnrDb": 18.35189023039423,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.010586244741174318,
+              "meanOpacity": 0.7867002370730622,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 29.383800671314226,
+              "mse": 1332.837279886393,
+              "psnrDb": 16.88303229279299,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.202428350116189,
+              "meanOpacity": 0.7980673364620829,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-240",
+          "kind": "held",
+          "yaw": 240,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 22.898011795672573,
+              "mse": 980.5457531503596,
+              "psnrDb": 18.216124978185803,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.22219968547342916,
+              "meanOpacity": 0.8239372797014646,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 20.704442564477777,
+              "mse": 812.15145036888,
+              "psnrDb": 19.034433366435856,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.023184561916956285,
+              "meanOpacity": 0.7779486186279889,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 23.47452168861348,
+              "mse": 1026.2216221275496,
+              "psnrDb": 18.018392000206205,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.24351084430673897,
+              "meanOpacity": 0.8318846615330873,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        },
+        {
+          "model": "tangent",
+          "view": "held-5-level-300",
+          "kind": "held",
+          "yaw": 300,
+          "regions": {
+            "band": {
+              "pixelCount": 719812,
+              "channelValueCount": 2159436,
+              "mae": 21.59143544888573,
+              "mse": 1035.9054915264912,
+              "psnrDb": 17.97760225517366,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2657124360249621,
+              "meanOpacity": 0.8551796531185759,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "road-band": {
+              "pixelCount": 87472,
+              "channelValueCount": 262416,
+              "mae": 13.962033565026523,
+              "mse": 374.3884557344064,
+              "psnrDb": 22.397579120629043,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.07126852021218219,
+              "meanOpacity": 0.8435635649906571,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            },
+            "mid-height-band": {
+              "pixelCount": 516400,
+              "channelValueCount": 1549200,
+              "mae": 22.352584559772787,
+              "mse": 1121.028689646269,
+              "psnrDb": 17.634636335578396,
+              "exactMatch": false,
+              "psnrInterpretation": "finite decibels",
+              "opacityCoverage95": 0.2976800929512006,
+              "meanOpacity": 0.8574141644264213,
+              "meaning": "Decoded sRGB RGB error including holes, composited on127 grey. Alpha coverage is not measured visibility or true geometric coverage."
+            }
+          }
+        }
+      ],
+      "actualRender": {
+        "status": "PASS",
+        "browser": "156.0.8078.81",
+        "headed": true,
+        "resolution": 1024,
+        "elapsedSeconds": 81.60723545799999
+      }
+    }
+  },
+  "validation": {
+    "python": {
+      "status": "PASS",
+      "distinctPassed": 243,
+      "environments": [
+        {
+          "environment": "main",
+          "status": "PASS",
+          "testsRun": 243,
+          "elapsedSeconds": 10.676397500094026,
+          "successes": 241,
+          "skips": 2
+        },
+        {
+          "environment": "colmap",
+          "status": "PASS",
+          "testsRun": 243,
+          "elapsedSeconds": 9.170255000004545,
+          "successes": 214,
+          "skips": 29
+        }
+      ]
+    },
+    "js": {
+      "status": "PASS",
+      "tests": 182
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "localBrowser": {
+      "status": "PASS",
+      "stats": {
+        "startTime": "2026-11-06T14:45:11.236Z",
+        "duration": 243164.141,
+        "expected": 79,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "phase": "immutable native-export package, before measured metric/video layout"
+    },
+    "sheetsReproduction": {
+      "status": "PASS",
+      "files": [
+        {
+          "name": "held-512.jpg",
+          "matches": true
+        },
+        {
+          "name": "route.jpg",
+          "matches": true
+        },
+        {
+          "name": "offpath.jpg",
+          "matches": true
+        },
+        {
+          "name": "detail-1024.jpg",
+          "matches": true
+        }
+      ]
+    },
+    "backgroundPoses": {
+      "status": "PASS",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "rows": [
+        {
+          "physicalView": 1,
+          "mode": "gs",
+          "image": "view-1-gs.png",
+          "source": "",
+          "darkFraction": 0.011834779016935151,
+          "cameraPosition": "-3.929018853076337,0.04632071367748451,-2.1170345501608008",
+          "cameraQuaternion": "0.0020444246055321296,0.8928008150649017,0.0008622951174400087,-0.45044620255321244",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 1,
+          "mode": "panorama",
+          "image": "view-1-panorama.png",
+          "source": "p01",
+          "darkFraction": 0.01213052457662123,
+          "cameraPosition": "-3.929018853076337,0.04632071367748451,-2.1170345501608008",
+          "cameraQuaternion": "0.0020444246055321296,0.8928008150649017,0.0008622951174400087,-0.45044620255321244",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 1,
+          "mode": "depth-shell",
+          "image": "view-1-depth-shell.png",
+          "source": "p01",
+          "darkFraction": 0.01209500206526229,
+          "cameraPosition": "-3.929018853076337,0.04632071367748451,-2.1170345501608008",
+          "cameraQuaternion": "0.0020444246055321296,0.8928008150649017,0.0008622951174400087,-0.45044620255321244",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 4,
+          "mode": "gs",
+          "image": "view-4-gs.png",
+          "source": "",
+          "darkFraction": 0.017302767451466337,
+          "cameraPosition": "-1.4040443235680076,-0.02385142166505744,-0.5417423667279692",
+          "cameraQuaternion": "0.00023228525970092403,0.8930949608623744,0.00008372507428954433,-0.4498681250276617",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 4,
+          "mode": "panorama",
+          "image": "view-4-panorama.png",
+          "source": "p04",
+          "darkFraction": 0.017878562577447337,
+          "cameraPosition": "-1.4040443235680076,-0.02385142166505744,-0.5417423667279692",
+          "cameraQuaternion": "0.00023228525970092403,0.8930949608623744,0.00008372507428954433,-0.4498681250276617",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 4,
+          "mode": "depth-shell",
+          "image": "view-4-depth-shell.png",
+          "source": "p04",
+          "darkFraction": 0.01779925650557621,
+          "cameraPosition": "-1.4040443235680076,-0.02385142166505744,-0.5417423667279692",
+          "cameraQuaternion": "0.00023228525970092403,0.8930949608623744,0.00008372507428954433,-0.4498681250276617",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 5,
+          "mode": "gs",
+          "image": "view-5-gs.png",
+          "source": "",
+          "darkFraction": 0.011468814539446509,
+          "cameraPosition": "-0.15176606298705878,-0.024483484852017512,-0.04417653138325456",
+          "cameraQuaternion": "-0.00014821076254517492,0.8935759325360361,-0.000004728705524055857,-0.4489120524151282",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 5,
+          "mode": "panorama",
+          "image": "view-5-panorama.png",
+          "source": "p04",
+          "darkFraction": 0.009669558033870302,
+          "cameraPosition": "-0.15176606298705878,-0.024483484852017512,-0.04417653138325456",
+          "cameraQuaternion": "-0.00014821076254517492,0.8935759325360361,-0.000004728705524055857,-0.4489120524151282",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 5,
+          "mode": "depth-shell",
+          "image": "view-5-depth-shell.png",
+          "source": "p04",
+          "darkFraction": 0.011070631970260224,
+          "cameraPosition": "-0.15176606298705878,-0.024483484852017512,-0.04417653138325456",
+          "cameraQuaternion": "-0.00014821076254517492,0.8935759325360361,-0.000004728705524055857,-0.4489120524151282",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 9,
+          "mode": "gs",
+          "image": "view-9-gs.png",
+          "source": "",
+          "darkFraction": 0.011571251548946716,
+          "cameraPosition": "4.8950390730823194,-0.00028090932213506534,2.5224176723915637",
+          "cameraQuaternion": "-0.001860265069440382,0.8953878193130704,-0.0005999729049436108,-0.4452828679302281",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 9,
+          "mode": "panorama",
+          "image": "view-9-panorama.png",
+          "source": "p09",
+          "darkFraction": 0.011948781495249897,
+          "cameraPosition": "4.8950390730823194,-0.00028090932213506534,2.5224176723915637",
+          "cameraQuaternion": "-0.001860265069440382,0.8953878193130704,-0.0005999729049436108,-0.4452828679302281",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        },
+        {
+          "physicalView": 9,
+          "mode": "depth-shell",
+          "image": "view-9-depth-shell.png",
+          "source": "p09",
+          "darkFraction": 0.01188930194134655,
+          "cameraPosition": "4.8950390730823194,-0.00028090932213506534,2.5224176723915637",
+          "cameraQuaternion": "-0.001860265069440382,0.8953878193130704,-0.0005999729049436108,-0.4452828679302281",
+          "meaning": "Canvas pixels only; display dark fraction, not geometric coverage or opacity."
+        }
+      ],
+      "errors": [],
+      "geometryAccuracy": "NOT RUN",
+      "meaning": "Actual GS-only and two presentation modes from same poses, later manual visual review required."
+    },
+    "backgroundLimits": {
+      "status": "PASS",
+      "rows": [
+        {
+          "direction": "down",
+          "mode": "gs",
+          "image": "down-gs.png",
+          "source": "",
+          "darkFraction": 0.021239983477901694,
+          "clearColorLikeFraction": 0.026290788930194136
+        },
+        {
+          "direction": "down",
+          "mode": "panorama",
+          "image": "down-panorama.png",
+          "source": "p01",
+          "darkFraction": 0.022887236679058242,
+          "clearColorLikeFraction": 0.008397356464270962
+        },
+        {
+          "direction": "down",
+          "mode": "depth-shell",
+          "image": "down-depth-shell.png",
+          "source": "p01",
+          "darkFraction": 0.022883932259396944,
+          "clearColorLikeFraction": 0.008380008261049154
+        },
+        {
+          "direction": "up",
+          "mode": "gs",
+          "image": "up-gs.png",
+          "source": "",
+          "darkFraction": 0.0012333746385790995,
+          "clearColorLikeFraction": 0.0016893845518380834
+        },
+        {
+          "direction": "up",
+          "mode": "panorama",
+          "image": "up-panorama.png",
+          "source": "p01",
+          "darkFraction": 0.0012201569599339117,
+          "clearColorLikeFraction": 0.001581164807930607
+        },
+        {
+          "direction": "up",
+          "mode": "depth-shell",
+          "image": "up-depth-shell.png",
+          "source": "p01",
+          "darkFraction": 0.0012193308550185874,
+          "clearColorLikeFraction": 0.0015778603882693103
+        }
+      ],
+      "meaning": "Actual off-axis presentation stress captures; dark/color fractions do not establish geometric coverage."
+    },
+    "nadirDiagnostic": [
+      {
+        "physical": 1,
+        "orangeCandidateMinV": 0.8349609375,
+        "orangeCandidatesAboveMaskBoundary": 1751,
+        "meaning": "Color diagnostic only; not semantic segmentation. Confirms source orange artwork can extend above fixed lower15percent mask."
+      },
+      {
+        "physical": 4,
+        "orangeCandidateMinV": 0.8642578125,
+        "orangeCandidatesAboveMaskBoundary": 0,
+        "meaning": "Color diagnostic only; not semantic segmentation. Confirms source orange artwork can extend above fixed lower15percent mask."
+      }
+    ],
+    "publicActual": {
+      "browser": "156.0.8078.81",
+      "world": "/worlds/street-tangent20/world.json",
+      "gsOnlyColoredPixels": 989694,
+      "modePixels": {
+        "gs": {
+          "width": 1076,
+          "height": 1142,
+          "clearColorLikePixels": 4127,
+          "clearColorLikeFraction": 0.003358583063691821
+        },
+        "panorama": {
+          "width": 1076,
+          "height": 1142,
+          "clearColorLikePixels": 2760,
+          "clearColorLikeFraction": 0.0022461083731013876
+        },
+        "depthShell": {
+          "width": 1076,
+          "height": 1142,
+          "clearColorLikePixels": 2777,
+          "clearColorLikeFraction": 0.0022599430985878813
+        }
+      },
+      "pixelMeaning": "Clear-color-like display pixels only; neither geometric completeness nor accuracy. All three mode captures use the same camera before path movement.",
+      "backgroundRequests": [
+        "/worlds/street-tangent20/background/p01-panorama.jpg",
+        "/worlds/street-tangent20/background/p01-shell.json"
+      ],
+      "errors": [],
+      "geometryAccuracy": "NOT RUN"
+    },
+    "notRun": [
+      "Full79publicsuite",
+      "Independent measured geometry",
+      "Another training configuration",
+      "Collision/freewalking acceptance"
+    ],
+    "evaluatedAssets": {
+      "status": "PASS",
+      "models": [
+        {
+          "model": "baseline",
+          "nativeArtifactMatches": true,
+          "bothActualRenderAssetsMatchNative": true,
+          "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352"
+        },
+        {
+          "model": "tangent",
+          "nativeArtifactMatches": true,
+          "bothActualRenderAssetsMatchNative": true,
+          "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e"
+        }
+      ]
+    },
+    "frozen103BaselineHashes": "PASS after native completion"
+  },
+  "evidenceHashes": {
+    "depth/report.json": "a1f1b1b6739f561f40157603aa8c77e8963d73fb02253b588a837ca93c6b4b8b",
+    "fusion-tangent/report.json": "a3d922fd6a3a9871b7cfff4e015e0dd47c41f5573461256c30c5ed7d0bfed642",
+    "diagnostics/report.json": "d115a7a79881104516e4481630b5eafb9807b2c5a619305fac774ba09f928986",
+    "training-tangent/job.json": "d9753384f1101dc1cb8d73dcbc2a2cf2a76bcdc7ce6c80bf4186f00d73391b3e",
+    "research/browser-local-full.json": "3425ed2eb9b078cb0c005bbf1ea3582e6f5799864d2a84c491bd89631ac07437",
+    "research/python-final-union.json": "4ab47d78e3a94fdf616a7a18779112e8d699aa62fdcf2edb85ddacfbab7598d1"
+  },
+  "licensing": {
+    "depthModel": "Depth Anything V2 Small, code and pinned Small weights Apache-2.0; larger checkpoints not substituted",
+    "depthCode": "https://github.com/DepthAnything/Depth-Anything-V2",
+    "depthCheckpoint": "https://huggingface.co/depth-anything/Depth-Anything-V2-Small-hf/tree/5426e4f0f36572d16453bbda7a8389317b1bef99",
+    "source": "Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0; source manifest scripts/samples/mapillary-beijing.json",
+    "tangentInspiration": "https://manurare.github.io/360monodepth/",
+    "limitations": "Uses existing DAV2 with explicit anchored calibration, does not reproduce complete360MonoDepth optimization."
+  }
+}

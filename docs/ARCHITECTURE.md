@@ -28,6 +28,18 @@ v1 world artifact, with no GPU plugin framework or cloud inference dependency.
 [Actual model executions and limits](MODEL_SELECTION.md) are separate from
 world export validation and geometric acceptance.
 
+The [user-reopened tangent/background experiment](TANGENT_BACKGROUND.md) adds
+20 co-located pinhole directions per physical panorama. DAV2 runs on those
+perspective crops, then inverse camera-Z is converted to radial range while
+calibrating against SfM and same-center overlap. This changes preprocessing
+inside the existing local job boundary, not the reconstruction service model.
+The optional v1 `background` reference carries photo-derived ERP display textures
+and coarse estimated-depth meshes. The viewer loads these lazily for explicit
+presentation modes, renders them behind GS and clears their depth buffer before
+the Gaussian pass. They provide neither collision nor geometry acceptance;
+GS-only rendering and comparisons remain separate. The native Gaussian export
+and original source assets are preserved. See [artifact schema](WORLD_FORMAT.md).
+
 `scripts/build-world.py` now chains `prepare-video.py` (optional), CPU estimation,
 a registration coverage gate and `reconstruct.py`. Each stage remains a local
 process with its own logs. Source sequence order is separate from camera

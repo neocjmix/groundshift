@@ -1,5 +1,12 @@
 # Panoramic street reconstruction: staged experiment plan
 
+Explicit user reopening, 2026-11-06: after discussing polyhedral projections,
+post-crop depth and black-background completion, the user authorized
+[one bounded 20-direction tangent/background experiment](TANGENT_BACKGROUND.md).
+This permits one declared 1024px DAV2/overlap-calibration/8k-step GS candidate
+and presentation backgrounds. It does not reopen a parameter or model sweep.
+The earlier stop rule and all previous evidence remain in force afterward.
+
 User stop rule2026-11-06 (campaign now executed and CLOSED): [the final same-data quality run](FINAL_QUALITY.md)
 uses fresh1024 crops and an800k ceiling with the retained DAV2/poses. After this
 campaign, close quality tuning on the existing nine panoramas. Historical P2–P5
