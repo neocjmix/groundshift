@@ -4,6 +4,14 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
+The [completed model-family comparison](MODEL_SELECTION.md) adds four real
+8k Metal GS exports (PanDA-Small,DA3-Small,MoGe-2 Small,DA²) and375 actual matched
+renders including the reused DAV2 control. MoGe's mean withheld color error is
+27.587 versus27.751, a0.6% reduction with no clear qualitative breakthrough.
+Retain DAV2 as incumbent; MoGe is the most promising new candidate. Native
+execution passes; accurate geometry and unrestricted walking remain unaccepted.
+
+
 The [completed short-street run](STREET_CONCLUSION.md) trains7 real-image worlds
 locally on M2 Metal and renders525 matched camera views. Recommend dense8k:
 409.759s,400k Gaussians, held mean MAE27.751. Same16k/400k control: dense28.911,
@@ -32,6 +40,7 @@ completion time, newest first, with an oldest-first option.
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
+| Alternative depth/geometry model families | PASS for4 actual MPS/Metal exports and375 actual renders; major quality gain NOT ESTABLISHED | [Model selection](MODEL_SELECTION.md); corrected strict loads, PanDA cancelled attempt/one repair, DepthMaster dependency blocker, mixed-condition timings. |
 | Short street, real images and calibrated dense initialization | PASS for7 actual Metal exports/525 renders; recognizable route, geometric quality partial | [Seven controls and conclusion](STREET_CONCLUSION.md); same16k/400k budget comparison,61 full local browser cases plus11 final-layout checks. |
 | Observed correspondences and road calibration | PASS for actual CPU execution and seven local/seven public headed Chrome checks; P2 NOT ACCEPTED | [Matched evidence](STEREO_ANCHORS.md): SIFT-only failures, inadequate256px stereo search, successful512px retry, five cloud controls and invalid-depth counts. No new GPU operation. |
 | Dense perspective coverage and overlap | PASS for actual MPS/CPU execution and six local/six public headed Chrome checks; P2 geometry NOT ACCEPTED | [Measured controls](PERSPECTIVE_OVERLAP.md): two physical panoramas, augmented/filtered/level/ERP point clouds. Road calibration lacks sparse anchors; filtering is not uniformly beneficial. No fusion or new GS. |
@@ -54,7 +63,7 @@ completion time, newest first, with an oldest-first option.
 
 Implementation decisions: use the official Brush arm64 release, optional PyCOLMAP CPU wheels instead of requiring the Homebrew executable, and supplied measured poses for the first M1 acceptance run. Undistort the sample's actual fisheye images before Brush because its released importer does not handle their distortion. Preserve reconstruction internals in the native process and use the explicit v1 world format at the viewer boundary. These decisions keep the initial local-only design intact.
 
-The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains29 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
+The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains33 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
 
 ## Observation publication policy — 2026-11-05
 

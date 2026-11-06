@@ -82,11 +82,13 @@ test('street report retains a visible error for an explicit HTTP failure fixture
   await expect(page.locator('canvas,iframe')).toHaveCount(0);
 });
 
-test('chronological lab retains every old result and makes the completed street comparison first', async ({ page }) => {
+test('chronological lab retains every old result and orders by recorded completion', async ({ page }) => {
   const timeline = JSON.parse(await readFile('public/experiments/lab/timeline.json', 'utf8'));
   await page.goto('/experiments/lab/');
   await expect(page.locator('.entry')).toHaveCount(timeline.entries.length);
-  await expect(page.locator('.entry').first()).toHaveAttribute('data-id', 'report-street-conclusion');
+  const latest=[...timeline.entries].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt))[0];
+  await expect(page.locator('.entry').first()).toHaveAttribute('data-id', latest.id);
+  await expect(page.locator('.entry[data-id="report-street-conclusion"]')).toHaveCount(1);
   for (const model of summary.models) await expect(page.locator(`.entry[data-id="street-${model.id}"]`)).toHaveCount(1);
   for (const order of ['newest', 'oldest']) {
     await page.selectOption('#order', order);

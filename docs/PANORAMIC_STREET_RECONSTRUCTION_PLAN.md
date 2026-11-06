@@ -3,8 +3,9 @@
 Follow-up2026-11-06: the user prioritizes economical **model selection** before
 more data/parameter tuning. [The model-family comparison](MODEL_SELECTION.md)
 tests panoramic, monocular-geometry and pose-conditioned multi-view approaches
-on the preserved street inputs, with at most four new full GS runs. It does not
-claim that earlier source inspection completed these candidate experiments.
+on the preserved street inputs. All four new full GS exports and375 matched
+renders complete. MoGe reduces mean RGB error by0.6% but does not establish a
+clear visual gain; retain DAV2. Earlier source inspection alone was not execution.
 
 Status2026-11-06: the user's instruction to continue to a product conclusion
 extends the earlier bounded runs. [The end-to-end street run](STREET_CONCLUSION.md)

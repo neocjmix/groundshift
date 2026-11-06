@@ -8,6 +8,10 @@ stability remain limited; globally accurate full-sphere geometry is unproven.
 [Railway release and public verification](DEPLOYMENT.md) PASS. Existing scooter/panorama experiments
 and their immutable release remain preserved.
 
+Follow-up: [four new model families actually executed](MODEL_SELECTION.md).
+MoGe slightly lowers mean RGB error, but no clear qualitative improvement is
+established. This original DAV2 result remains the incumbent.
+
 ## Question and scope
 
 Can the strongest scooter recipe make a continuous, recognizable short street

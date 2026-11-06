@@ -20,6 +20,14 @@ For unposed images, the separate `scripts/estimate-poses.py` uses official PyCOL
 
 The browser never starts native processes. React owns the interface; Three.js, OrbitControls and Spark own one live renderer and scene. Local folder selection loads assets with browser object URLs, without upload. HTTP manifests resolve asset paths relative to the manifest, and scene replacement guards against stale asynchronous completion. Loading/error UI and GPU-context recovery are tested independently of visual acceptance.
 
+The street model comparison adds pinned local inference scripts and explicit
+depth calibration before that same Brush process. Radial range, camera-Z,
+relative scale and affine offsets have separate contracts. Model-specific
+imports stay in `infer-street-model.py`; the viewer still consumes the existing
+v1 world artifact, with no GPU plugin framework or cloud inference dependency.
+[Actual model executions and limits](MODEL_SELECTION.md) are separate from
+world export validation and geometric acceptance.
+
 `scripts/build-world.py` now chains `prepare-video.py` (optional), CPU estimation,
 a registration coverage gate and `reconstruct.py`. Each stage remains a local
 process with its own logs. Source sequence order is separate from camera

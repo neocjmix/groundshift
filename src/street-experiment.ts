@@ -8,18 +8,22 @@ type View = {id:string;title:string;kind:string;source?:string};
 type Summary = {status:string;completedAt:string;best:string;verdict:{state:string;title:string;summary:string;works:string[];limits:string[];recommendation:string};
   models:Model[];views:View[];metrics:{model:string;view:string;regions:Record<string,Metric>}[];
   stages:{title:string;status:string;detail:string}[];depthEvidence:{title:string;image:string;caption:string}[];notes:string[];
-  sources:{title:string;url:string;licenseUrl:string}[];comparisonVideo:string;repair?:string};
+  sources:{title:string;url:string;licenseUrl:string}[];comparisonVideo:string;repair?:string;
+  candidates?:{title:string;status:string;meaning:string;seconds?:number;decision:string;source:string;evidence?:string}[]};
+
+const selection=document.documentElement.dataset.experiment==='model-selection';
 
 document.querySelector('#app')!.innerHTML=`
 <header><a href="/">GROUND SHIFT</a><a href="/experiments/lab/">← 시간순 실험실</a></header>
-<main><span class="eyebrow">Panoramic street reconstruction · end-to-end conclusion</span>
-<h1>스쿠터 한 대에서,<br>짧은 거리 전체로.</h1>
+<main><span class="eyebrow">${selection?'Street model selection · local M2 comparison':'Panoramic street reconstruction · end-to-end conclusion'}</span>
+<h1>${selection?'같은 거리,<br>다른 깊이 모델.':'스쿠터 한 대에서,<br>짧은 거리 전체로.'}</h1>
 <p>실제 360° 사진 9장의 카메라를 유지하고, 8개 촬영 위치에서 뽑은 96장으로 거리 GS를 학습했습니다. 가운데 5번 사진은 학습과 조밀 점군 색 입력에서 제외해 비교에 사용했습니다. 중간 이미지 생성과 디퓨전은 없습니다.</p>
 <span id="status" class="status" role="status">실행 기록을 불러오는 중…</span>
 <section class="section verdict"><span id="verdict-state" class="eyebrow"></span><h2 id="verdict-title"></h2><p id="verdict-summary"></p>
 <div class="actions"><a id="best-world" class="action" href="/">추천 장면 3D 열기 ↗</a><a id="best-video" href="/">추천 장면 이동 영상 ↗</a></div>
 <div class="street-columns"><div><h3>이번에 확인한 것</h3><ul id="works"></ul></div><div><h3>아직 안 된 것</h3><ul id="limits"></ul></div></div><p id="recommendation" class="note"></p>
 </section>
+${selection?'<section class="section"><h2>후보 선정과 실제 실행 범위</h2><p>현재 최고 DAV2 결과를 기준으로 파노라마 전용·단안 기하·여러 시점 공동 추정 모델을 비교합니다. 사진·카메라·GS 학습 조건을 유지하고, 모델별 입력 해상도·깊이 의미·보정 방식의 차이는 기록합니다. 전체 조합 탐색은 하지 않습니다.</p><div id="candidates"></div></section>':''}
 <section class="section"><h2>같은 길을 이동하며 비교</h2>
 <p>모든 칸은 동일한 카메라 위치와 방향입니다. 기존 촬영 위치 사이를 보간해 실제 GS를 렌더했습니다. 원본 영상이나 생성형 영상이 아닙니다. 아래 재생 속도는 렌더링 성능 수치가 아닙니다.</p>
 <video id="comparison-video" controls playsinline preload="metadata" aria-label="동일 카메라 경로의 모든 거리 GS 비교"></video>
@@ -33,16 +37,16 @@ document.querySelector('#app')!.innerHTML=`
 <p id="view-kind" class="note"></p><div id="compare-images" class="street-comparisons"></div>
 <p class="muted">색 차이는 0–255 단위이며 작을수록 원본에 가깝습니다. 표시된 채움 비율은 alpha≥.95의 픽셀 비율이며, 실제 형상 정확도나 가려짐 정답이 아닙니다.</p>
 <div class="street-table-wrap"><table id="view-metrics"><thead><tr><th>장면</th><th>검사 픽셀</th><th>색 차이</th><th>PSNR</th><th>불투명도 기준 채움</th></tr></thead><tbody></tbody></table></div></section>
-<section class="section"><h2>실제로 실행한 비교군</h2><p>사진·카메라·마스크·시드·학습 설정을 맞추고 초기 점군을 바꿨습니다. 초기 점 개수도 달라지는 비교이므로, 깊이 모델의 정확도만을 분리해 증명하는 실험은 아닙니다.</p>
+<section class="section"><h2>실제로 실행한 비교군</h2><p>${selection?'같은 96장·카메라·마스크·8,000단계·시드·상한을 사용했습니다. 모델의 해상도·보정 자유도·문맥·초기 점군 분포는 다릅니다. 전체 파이프라인 비교이며 모델 정확도만을 분리한 벤치마크는 아닙니다.':'사진·카메라·마스크·시드·학습 설정을 맞추고 초기 점군을 바꿨습니다. 초기 점 개수도 달라지는 비교이므로, 깊이 모델의 정확도만을 분리해 증명하는 실험은 아닙니다.'}</p>
 <div class="street-table-wrap"><table id="run-metrics"><thead><tr><th>장면</th><th>초기 점</th><th>최종 Gaussian</th><th>학습 단계</th><th>실제 학습 시간</th><th>장면 파일</th><th>최대 프로세스 footprint</th><th>학습에서 뺀 사진 5 색 차이</th></tr></thead><tbody></tbody></table></div>
 <p class="muted">footprint는 macOS가 해당 프로세스에 기록한 값입니다. 시스템 전체나 GPU 전체 메모리의 최대 사용량을 뜻하지 않습니다.</p>
 <p id="repair-note" class="note" hidden></p></section>
-<section class="section"><h2>사진 → 깊이 → 초기 점군 → GS</h2><p>각 사진의 상대 깊이를 특징점·스테레오 근거에 맞춰 보정한 뒤 같은 좌표에 놓았습니다. 미터 단위의 실측 깊이가 아닙니다. 필터는 다른 촬영 위치의 깊이·색과 비슷한 점을 남기는 휴리스틱입니다.</p><div id="depth-evidence" class="image-pair"></div>
+<section class="section"><h2>사진 → 깊이 → 초기 점군 → GS</h2><p>각 사진의 깊이를 특징점·스테레오 근거에 맞춰 보정한 뒤 같은 좌표에 놓았습니다. 미터 단위의 실측 깊이가 아닙니다. ${selection?'구면의 방사 거리와 일반 사진의 camera-Z를 구분했습니다. 모델별 보정 자유도와 여러 시점 문맥이 달라, 최종 파이프라인의 실용적 결과로 비교합니다.':'필터는 다른 촬영 위치의 깊이·색과 비슷한 점을 남기는 휴리스틱입니다.'}</p><div id="depth-evidence" class="image-pair"></div>
 <p>각 장면 카드의 초기 점군 PLY는 실제 학습에 쓴 파일입니다. 원본 전체 해상도 사진·원시 깊이 배열·가중치·원시 로그는 Mac에 보존합니다.</p></section>
 <section class="section"><h2>성공·실패·실행하지 않은 단계</h2><div id="stages"></div></section>
 <section class="section"><h2>해석 범위와 출처</h2><div id="notes" class="note"></div><ul id="sources"></ul>
 <p>사진5는 GS 학습에서 제외했지만, 카메라와 희소 형상은9장 전체로 추정했습니다. 독립적으로 측정한 실제 깊이·카메라 정답은 없습니다.</p></section>
-<footer><a href="./summary.json">공개 측정 기록 JSON</a> · <a href="./ATTRIBUTION.txt">출처와 변형 내역</a> · <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/STREET_CONCLUSION.md">재현 명령·실행 기록·결론 ↗</a> · <a href="/experiments/road-third-view/">직전 국소 검사</a><p id="completed"></p></footer></main>`;
+<footer><a href="./summary.json">공개 측정 기록 JSON</a> · <a href="./ATTRIBUTION.txt">출처와 변형 내역</a> · <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/${selection?'MODEL_SELECTION':'STREET_CONCLUSION'}.md">재현 명령·실행 기록·결론 ↗</a> · <a href="${selection?'/experiments/street/':'/experiments/road-third-view/'}">앞선 비교</a><p id="completed"></p></footer></main>`;
 
 const text=(selector:string,value:string)=>{document.querySelector(selector)!.textContent=value;};
 const value=(n:number|undefined,unit='')=>typeof n==='number'&&Number.isFinite(n)?n.toLocaleString('ko-KR',{maximumFractionDigits:2})+unit:'NOT RUN';
@@ -52,6 +56,7 @@ function figure(src:string,title:string,lazy=false){const f=document.createEleme
 async function start(){
   const response=await fetch('./summary.json');if(!response.ok)throw new Error(`summary.json HTTP ${response.status}`);
   const s:Summary=await response.json();text('#status',`실제 학습·렌더 ${s.status} · 실측 형상 검증 NOT RUN`);
+  for(const c of s.candidates??[]){const row=document.createElement('div');row.className='street-stage';const title=document.createElement('a');title.href=c.source;title.textContent=c.title;const status=document.createElement('span');status.className='status '+(c.status==='PASS'?'':'pending');status.textContent=c.status;const p=document.createElement('p');p.textContent=c.meaning+' '+c.decision+(c.seconds===undefined?'':` 실제 추론 작업 ${value(c.seconds)}초.`);row.append(status,title,p);if(c.evidence){const a=document.createElement('a');a.href=c.evidence;a.textContent='진단용 초기 점군 PLY ↓';row.append(a);}document.querySelector('#candidates')?.append(row);}
   text('#verdict-state',s.verdict.state);text('#verdict-title',s.verdict.title);text('#verdict-summary',s.verdict.summary);text('#recommendation',s.verdict.recommendation);
   for(const [id,items]of [['#works',s.verdict.works],['#limits',s.verdict.limits]] as const)for(const item of items){const li=document.createElement('li');li.textContent=item;document.querySelector(id)!.append(li);}
   const video=document.querySelector<HTMLVideoElement>('#comparison-video')!;video.src=s.comparisonVideo;

@@ -66,7 +66,7 @@ PYTORCH_ENABLE_MPS_FALLBACK=0 data/tools/diffusion-venv/bin/python \
 data/tools/venv/bin/python scripts/seed-street-model.py data/jobs/NEW panda
 ```
 
-Actual execution outcomes and public-release evidence will be appended below.
+Completed execution outcomes are recorded below; release verification is recorded separately.
 An imported module, successful download or static test is not model execution.
 
 ## Upstream findings and actual selection
@@ -172,16 +172,19 @@ for name in ['panda','da3','moge','da2']:
     subprocess.run(['data/tools/diffusion-venv/bin/python',
         'scripts/infer-street-model.py',name,str(job/name),
         '--research',str(job/'research')],check=True,env=env)
-    subprocess.run(['data/tools/venv/bin/python','scripts/seed-street-model.py',
-        str(job),name],check=True)
+    variant='panda-supported' if name=='panda' else name
+    seed=['data/tools/venv/bin/python','scripts/seed-street-model.py',str(job),name]
+    if name=='panda':
+        seed+=['--variant',variant,'--proximity-floor','0.46721203379743004']
+    subprocess.run(seed,check=True)
     subprocess.run(['data/tools/venv/bin/python','scripts/reconstruct.py',
-        str(job/'datasets'/name),str(job/('training-'+name)),
+        str(job/'datasets'/variant),str(job/('training-'+variant)),
         '--steps','8000','--resolution','512','--max-splats','400000',
-        '--title','Street model '+name,'--id','street-model-'+name],check=True)
+        '--title','Street model '+variant,'--id','street-model-'+variant],check=True)
 # Reuse the previous actual export explicitly, without claiming a new training.
 (job/'training-dav2').symlink_to((base/'training-dense').resolve(),target_is_directory=True)
 PY
-node scripts/prepare-street-evaluation.mjs data/jobs/NEW dav2 panda da3 moge da2
+node scripts/prepare-street-evaluation.mjs data/jobs/NEW dav2 da3 moge da2 panda-supported
 node scripts/render-street.mjs data/jobs/NEW/render-config.json data/jobs/NEW/renders
 data/tools/venv/bin/python scripts/measure-street.py \
   data/jobs/NEW data/jobs/NEW/renders data/jobs/NEW/evaluation --baseline-model dav2
@@ -230,3 +233,111 @@ data/tools/venv/bin/python scripts/seed-street-model.py data/jobs/NEW panda \
 
 Use the resulting `datasets/panda-supported` and a **new** native output folder.
 The four-full-run bound remains; the cancelled attempt is separately accounted.
+
+### Runtime confound found during the queue
+
+At approximately10:40–10:44 UTC, CUA inspected this conversation's retained
+Groundshift IAB pages. Seven pages had a canvas and reported `visibility=visible`,
+including an older street viewer displaying56fps and several old point-cloud
+reports. They were navigated to existing static reports/lab pages; zero canvas /
+iframe counts were verified. No other application or unrelated browser tab was
+changed. Source results remain intact and reachable.
+
+These concurrent views are a plausible common GPU-contention source. Whole-GPU
+utilization is not a per-process profile, and no matched isolated timing trial
+was performed. In particular, do **not** infer that the original PanDA slowdown
+was caused solely by close seeds, or rank models by these mixed-condition wall
+times. The numerical repair remains disclosed separately. Quality comparisons
+use the same saved cameras; runtime observations remain real but uncontrolled.
+
+
+## Executed result and decision
+
+**Four actual new GS exports; no clear qualitative breakthrough. Keep the existing
+DAV2 pipeline as the incumbent. MoGe-2 Small is the most promising new candidate.**
+The claim is about this fixed short-street input and these practical pipelines,
+not a universal ranking of the models or all their possible settings.
+
+| Pipeline | Full inference including load | Actual native8k time | Held-level MAE ↓ | Views better than DAV2 | Alpha≥.95 coverage |
+|---|---:|---:|---:|---:|---:|
+| DAV2 incumbent, reused export | Prior run12.924s; NOT RUN again | Prior409.759s | 27.750556 | — | 22.463% |
+| DA3-Small | 66.516s /96 crops,12 joint groups | 1367.028s | 28.530537 | 2/6 | 19.353% |
+| MoGe-2 Small | 142.559s /96 crops | 508.599s | 27.586708 | 4/6 | 20.973% |
+| DA² | 83.619s /8 ERP | 451.129s | 28.109868 | 1/6 | 23.074% |
+| PanDA-Small, repaired seeds | 16.610s /8 ERP | 453.772s | 29.911612 | 0/6 | 33.294% |
+
+All four native exports contain400,000 Gaussians,36,800,652 bytes. Initial seeds
+are183,124 points each. Native maximum recorded process footprints are
+1.295–1.299GB; these are process counters, not all-GPU/system memory peaks.
+The completed new native runs consumed2780.529s in total, plus1320.265s for the
+cancelled original PanDA attempt. Timing includes the GPU-contention confound
+above; do not interpret the table as controlled model-speed rankings.
+
+Headed Chrome156.0.8078.81 reports `ANGLE Metal Renderer: Apple M2` and actually
+renders **375 views in87.666s**:75 views for each of five models. Every model has
+12 withheld-camera views,12 training-camera views,49 interpolated route frames
+and2 off-path views. Six actual49-frame videos (five individual,one comparison)
+were encoded at6fps; this playback rate is not measured viewer FPS. Appearance
+measurement and encoding took15.129s. Checksum-linked raw render, native and
+measurement reports remain in `data/jobs/model-selection-20261106/`.
+
+Visual review compared all30 withheld horizontal frames,35 sampled route frames
+and10 off-path frames in labeled contact sheets. The recognizable path, trees,
+parked scooters and facade persist in each model, but elongated foliage,
+ghosting around thin rails and doubled facade details remain. MoGe can look a
+little cleaner in some directions; it does not visibly eliminate these defects.
+PanDA fills more high-alpha pixels while worsening all six held color errors:
+more opacity is not more accurate geometry. Off-path photographs are unavailable,
+so those views have no reference-image accuracy claim.
+
+MoGe reduces mean error by0.163849/255, **0.5904%** relative, with1.490 percentage
+points lower alpha-threshold coverage. It passes the existing appearance screen
+(at least3/6 directions improve and coverage drops no more than5 points), but
+that screen is not geometric acceptance or statistical significance. Each
+pipeline has one actual seed42 training run. No repeated-seed confidence estimate
+was run. Do not replace the incumbent based on this tiny numerical difference.
+
+The useful conclusion is that **changing among these four depth families alone
+does not establish a large gain at the current camera/GS budget**. It does not
+rule out a better model or an integrated geometry/training engine. Preserve
+MoGe as one next candidate; avoid an exhaustive model-size/resolution grid.
+A next useful bounded question is whether it maintains a single stable wall,
+road and tree structure across neighboring centers, with actual cross-view
+surface evidence. Simply extending these same8k runs or increasing opacity
+is not evidence that the street geometry works.
+
+## Validation and observation release
+
+- PASS: MPS inference for all four selected models; Metal training/export for
+  all four;375 actual headed Chrome renders; six decoded path-video exports.
+- FAIL, corrected: the two strict-checkpoint-loading smoke attempts described
+  above. Failed outputs/logs remain alongside corrected executions.
+- CANCELLED: original PanDA training and full DepthMaster inference, for the
+  distinct reasons above. Neither is relabeled a completed export.
+- PASS:166 distinct JS tests;224 distinct Python tests across required
+  environments, including actual HDR conversion, spherical/depth contracts,
+  rigid-frame proximity invariance and blocked-candidate behavior. An initial
+  test discovery included an ignored archived checkout twice; current Vitest
+  discovery is scoped to current source/tests. Skips in one Python environment
+  are executed in the other, with exact per-test union evidence retained.
+- PASS: TypeScript, lint and production build. All71 distinct local headed
+  browser cases have passing evidence: the full initial suite passed70/71 in
+  4.6min; one old-scene reload received404 while our concurrent packaging build
+  temporarily replaced `dist/`. Serialize build/test, preserve the failure and
+  rerun that case plus all six new/strengthened cases:7/7 PASS in22.5s. The final
+  change also routes each new scene's history link to its correct model report.
+  New cases exercise actual image/depth loading, video decode/playback,
+  four real GS renders/route movement, mobile layout and explicit503 recovery.
+- PASS: all103 frozen baseline file hashes remain unchanged.
+- Browser UI, build and public release verification are recorded with their
+  actual completed outcomes in [DEPLOYMENT.md](DEPLOYMENT.md). Static tests are
+  distinct from model execution and actual GS browser rendering.
+- NOT RUN: independent measured geometry, repeated-seed significance, collision
+  surfaces, unrestricted-walking acceptance, CUDA engine inference and model
+  size/resolution grids. P2 geometry remains NOT ACCEPTED.
+
+The new report preserves every export, candidate status, failed stage, actual
+runtime, raw depth visualization and initialization PLY. The unmodified PanDA
+initialization is a diagnostic download; the repaired initialization is linked
+from its actual GS card. DepthMaster predictions/code/weights are excluded from
+publication. Earlier worlds, report datasets and immutable releases remain.
