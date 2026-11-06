@@ -36,6 +36,29 @@ bytes change. Anonymous complete archive readback verifies its size/SHA in0.9637
 Public rollout/hash/browser checks follow dispatch. Private packaging evidence
 stays under `data/validation/fly-20261107/publications/initial/`.
 
+Initial pointer `3ad95c76dc946b1818949fef3e61b0b53ace240e` deploys as
+`d7a20321-7d8a-44f6-9772-7972d5322f66`: created2026-11-06T23:48:46.325Z,
+**SUCCESS** at23:49:40.190Z. All6 changed public files match their exact byte
+sizes/SHA-256 in3.841025s. Initial local mobile dual-touch, portrait/landscape and
+release checks pass; foreground desktop actions expose a real `InvalidStateError`
+when pointer capture follows pointer lock. That failed evidence is retained.
+A mechanical viewer-only correction follows; rollout/hash checks do not by
+themselves establish Fly interaction acceptance.
+
+The next snapshot captures fallback dragging before requesting pointer lock and
+skips capture once locked; it also clears pending Orbit damping while preserving
+the current pose, focuses the canvas and retains the speed selection on re-entry.
+Release `viewer-fly-capture-fix-2026-11-07`, archive
+`groundshift-fly-capture-fix-20261107.tar.gz`: **1,060,355 bytes**, SHA-256
+`45483b2edb661f41537c6cbdf9fd33e23ac72c645004675e10c953b16ab93db7`.
+Apply after the first24 layers. Fresh production build passes in4.9s; explicit
+curation and full base/target/archive/composed checks pass in9.252733s. Exactly6
+compiled/HTML files change, with1,185 target public and1,245 composed files.
+All39 scenes and report/photo/pose/provenance files stay unchanged. Corrected
+local/public interaction checks run alongside/after dispatch and are **NOT RUN**
+in the frozen initial evidence for this recovery. Evidence is retained under
+`data/validation/fly-20261107/publications/capture-fix/`.
+
 ## Paris reconstruction and spatial serving progress — 2026-11-07
 
 The first real pipeline result is published immediately while crop/depth and
@@ -598,7 +621,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the Fly controls layer, in order. The command below includes all twenty-four
+reconstruction/paging layers and the two Fly controls/recovery layers, in order. The command below includes all twenty-five
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -692,6 +715,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-fly-controls-2026-11-07 \
     groundshift-fly-controls-20261107.tar.gz \
     d6c36d42cd00575ffb22a5516052e26a50d920d3d9cefe9195c5467e63bf87d7
+  gs_restore_layer viewer-fly-capture-fix-2026-11-07 \
+    groundshift-fly-capture-fix-20261107.tar.gz \
+    45483b2edb661f41537c6cbdf9fd33e23ac72c645004675e10c953b16ab93db7
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

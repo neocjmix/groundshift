@@ -164,6 +164,13 @@ RUN wget -q -O /tmp/fly-controls.tar.gz https://github.com/neocjmix/groundshift/
  && mkdir /out \
  && tar -xzf /tmp/fly-controls.tar.gz -C /out
 
+# Mechanical pointer-lock/capture recovery; same world and report artifacts.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS fly_capture_fix
+RUN wget -q -O /tmp/fly-capture-fix.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-fly-capture-fix-2026-11-07/groundshift-fly-capture-fix-20261107.tar.gz \
+ && echo '45483b2edb661f41537c6cbdf9fd33e23ac72c645004675e10c953b16ab93db7  /tmp/fly-capture-fix.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/fly-capture-fix.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -187,5 +194,6 @@ COPY --from=paris_lod /out/www /srv
 COPY --from=paris_compact /out/www /srv
 COPY --from=paris_verified /out/www /srv
 COPY --from=fly_controls /out/www /srv
+COPY --from=fly_capture_fix /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
