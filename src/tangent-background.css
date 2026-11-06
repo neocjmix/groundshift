@@ -1,0 +1,3 @@
+/* Compact numeric diagnostic tokens must wrap without widening the mobile page. */
+.tangent-observation p,.tangent-observation .status,.tangent-observation .eyebrow { overflow-wrap:anywhere; }
+.tangent-observation .status { max-width:100%; }

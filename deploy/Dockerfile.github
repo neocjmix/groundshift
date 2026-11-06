@@ -37,10 +37,18 @@ RUN wget -q -O /tmp/tangent-evidence.tar.gz https://github.com/neocjmix/groundsh
     && mkdir /out \
     && tar -xzf /tmp/tangent-evidence.tar.gz -C /out
 
+# Actual background-limit evidence and report-only mobile wrap repair.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS limits
+RUN wget -q -O /tmp/tangent-limits.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-limits-2026-11-06/groundshift-tangent-limits-20261106.tar.gz \
+    && echo 'd08bfc7ffd29de440870a2c8fd4b001d4c09204ed8688559fb999c4e29f71463  /tmp/tangent-limits.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tangent-limits.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
 COPY --from=tangent /out/www /srv
 COPY --from=evidence /out/www /srv
+COPY --from=limits /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

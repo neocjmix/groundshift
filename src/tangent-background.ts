@@ -1,6 +1,7 @@
 import './experiment.css';
 import './street-experiment.css';
 import './final-quality.css';
+import './tangent-background.css';
 
 type Stage={title:string;status:string;detail:string};
 type Picture={title:string;highres:string;baseline?:string;caption:string};
