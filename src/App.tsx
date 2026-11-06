@@ -10,6 +10,7 @@ const experimentReport = "/experiments/mapillary/index.html";
 const videoExperimentReport = "/experiments/video-4to6/";
 const depthExperimentReport = "/experiments/depth-v2/";
 const depthWarpReport = "/experiments/depth-warp/";
+const streetReport = "/experiments/street/";
 const categories = {
   capture: "Personal capture",
   reconstruction: "Local reconstruction",
@@ -39,6 +40,7 @@ export default function App() {
   const experimentCount = scenes.filter((scene) => scene.category === "experiment").length;
   const videoExperimentAvailable = scenes.some((scene) => scene.id === "beijing-video-rife");
   const depthWarpAvailable = scenes.some((scene) => scene.id === "beijing-depth");
+  const streetAvailable = scenes.some((scene) => scene.id.startsWith("street-"));
   const selectedScene = scenes.find((scene) => scene.manifestPath === request.path);
 
   useEffect(() => {
@@ -175,6 +177,7 @@ export default function App() {
       </a>
       <div className="header-right">
         {viewerOpen && <a className="collection-link" href="/" onClick={(event) => follow(event, null)}>← Back to scenes</a>}
+        {streetAvailable && <a className="collection-link" href={streetReport}>거리 GS · 전체 비교 ↗</a>}
         {videoExperimentAvailable && <a className="collection-link" href={videoExperimentReport}>65-frame video ↗</a>}
         {experimentCount > 0 && <a className="collection-link experiment-report-link" href={experimentReport}>Experiment report ↗</a>}
         {scenes.some(scene => scene.id === "scooter-object") && <a className="collection-link" href="/experiments/lab/">실험실 · 시간순 ↗</a>}
@@ -196,6 +199,7 @@ export default function App() {
           <h2 id="experiment-heading">Real photos, generated gaps, actual results.</h2>
           <p>Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately.</p>
         </div>
+        {streetAvailable && <a href={streetReport}>최신 · 짧은 거리 GS의 결론 <span aria-hidden="true">↗</span></a>}
         {scenes.some(scene => scene.id === "scooter-object") && <a href="/experiments/lab/">실험실 · 최신 결과부터 <span aria-hidden="true">↗</span></a>}
         <a href={experimentReport}>Compare source, warp &amp; diffusion <span aria-hidden="true">↗</span></a>
         {videoExperimentAvailable && <a href={videoExperimentReport}>Watch 65-frame panorama <span aria-hidden="true">↗</span></a>}
@@ -241,7 +245,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={selectedScene.id.startsWith("scooter-nodepth-") ? "/experiments/object-nodepth/" : selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id.startsWith("street-") ? streetReport : selectedScene.id.startsWith("scooter-nodepth-") ? "/experiments/object-nodepth/" : selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}

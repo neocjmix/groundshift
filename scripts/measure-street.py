@@ -28,7 +28,7 @@ def metrics(reference,rgba,mask):
     return result
 
 
-def run(job,rendered,output,config_path=None,reference_metrics=None):
+def run(job,rendered,output,config_path=None,reference_metrics=None,baseline_model='sparse'):
     output.mkdir(parents=True,exist_ok=False);start=time.monotonic();report=dict(status='RUNNING',startedAt=P.now())
     try:
         config_path=config_path or job/'render-config.json'
@@ -61,14 +61,15 @@ def run(job,rendered,output,config_path=None,reference_metrics=None):
                 native['heldLevelPsnrMean']=float(np.mean([r['regions']['band']['psnrDb'] for r in selected]))
             summary.append(native)
         reference=P.read(reference_metrics) if reference_metrics else rows
-        base={r['view']:r for r in reference if r['model']=='sparse' and r['kind']=='held' and r['ring']=='level'}
+        base={r['view']:r for r in reference if r['model']==baseline_model and r['kind']=='held' and r['ring']=='level'}
+        if len(base)!=6:raise ValueError('Comparison requires all six actual held level views for baseline '+baseline_model)
         comparisons=[]
         for native in models:
-            if native['id']=='sparse':continue
+            if native['id']==baseline_model:continue
             candidate={r['view']:r for r in rows if r['model']==native['id'] and r['kind']=='held' and r['ring']=='level'};common=sorted(base.keys()&candidate.keys())
             improved=sum(candidate[v]['regions']['band']['mae']<base[v]['regions']['band']['mae'] for v in common)
             delta=float(np.mean([candidate[v]['regions']['band']['opacityCoverage95']-base[v]['regions']['band']['opacityCoverage95'] for v in common])) if common else None
-            comparisons.append(dict(id=native['id'],views=len(common),maeImprovedViews=improved,meanCoverageDifference=delta,
+            comparisons.append(dict(id=native['id'],baseline=baseline_model,views=len(common),maeImprovedViews=improved,meanCoverageDifference=delta,
                 comparisonScreen='PASS' if len(common)==6 and improved>=3 and delta>=-.05 else 'FAIL',
                 meaning='Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes.'))
         (output/'videos').mkdir();video_results=[]
@@ -99,5 +100,5 @@ def run(job,rendered,output,config_path=None,reference_metrics=None):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('job',type=Path);p.add_argument('renders',type=Path);p.add_argument('output',type=Path);p.add_argument('--config',type=Path);p.add_argument('--reference-metrics',type=Path)
-    a=p.parse_args();run(a.job.resolve(),a.renders.resolve(),a.output.resolve(),a.config.resolve() if a.config else None,a.reference_metrics.resolve() if a.reference_metrics else None)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('job',type=Path);p.add_argument('renders',type=Path);p.add_argument('output',type=Path);p.add_argument('--config',type=Path);p.add_argument('--reference-metrics',type=Path);p.add_argument('--baseline-model',default='sparse')
+    a=p.parse_args();run(a.job.resolve(),a.renders.resolve(),a.output.resolve(),a.config.resolve() if a.config else None,a.reference_metrics.resolve() if a.reference_metrics else None,a.baseline_model)

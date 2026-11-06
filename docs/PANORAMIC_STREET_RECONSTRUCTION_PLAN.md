@@ -1,6 +1,19 @@
 # Panoramic street reconstruction: staged experiment plan
 
-Status: P0 baseline frozen; one-panorama and [adjacent-pair P1 diagnostics executed](PANORAMIC_PAIR_P1.md). [Common-track calibration and perspective controls](PANORAMIC_CALIBRATION.md) are executed. [Dense perspective coverage/overlap](PERSPECTIVE_OVERLAP.md) now executes on two panoramas: road agreement improves, facade disagreement and error tails remain; P2 geometry is NOT ACCEPTED. Fusion, full P0 evaluation renders and P3–P5 remain NOT RUN. Baseline: branch `feat/local-viewer-reconstruction`, 2026-11-06. This plan is for a *continuous explorable street*, not optimizing the scooter in isolation. No performance or quality claims below are new measurements.
+Status2026-11-06: the user's instruction to continue to a product conclusion
+extends the earlier bounded runs. [The end-to-end street run](STREET_CONCLUSION.md)
+executes local96-crop depth, common-frame initialization, multiple native Metal
+Gaussian controls and matched actual street renders. P2 geometric accuracy
+remains **NOT ACCEPTED**; training is an explicitly disclosed diagnostic beyond
+the earlier gate. A recognizable short segment is distinct from a geometrically
+validated or unrestricted street. The run report records actual outcomes,
+comparisons and the current release status. P5 remains NOT RUN.
+
+P0 baseline and the strongest scooter remain frozen. Earlier [adjacent-pair P1](PANORAMIC_PAIR_P1.md),
+[common-track calibration](PANORAMIC_CALIBRATION.md), [dense overlap](PERSPECTIVE_OVERLAP.md)
+and their failures are preserved. Branch `feat/local-viewer-reconstruction`.
+This roadmap remains for a *continuous explorable street*, not optimizing the
+scooter alone. Hypotheses and gates below are plans, not new benchmark claims.
 
 ## Decision and hypotheses
 

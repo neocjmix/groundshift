@@ -50,3 +50,6 @@ public/worlds/scooter-real-context/
 
 public/worlds/scooter-nodepth-object/
 public/worlds/scooter-nodepth-context/
+
+# Derived street worlds are curated into release attachments, not Git.
+public/worlds/street-*/

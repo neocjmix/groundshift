@@ -1,0 +1,437 @@
+{
+  "recordedAt": "2026-11-06T08:14:09.476180+00:00",
+  "nativeStatus": "PASS",
+  "quality": "Recognizable short route; globally accurate full-sphere geometry NOT ACCEPTED",
+  "dataset": {
+    "panoramas": 9,
+    "physicalTrainingCenters": 8,
+    "trainingRealCrops": 96,
+    "heldRgbPhysical": 5,
+    "sfmUsesAll9": true,
+    "originalSourceManifestSha256": "2d659ec73dd0044fc463c3f3f351203fdb59d5ac9e9fc46877a2b43f2e8ea2b4",
+    "inputAuditSha256": "cad5934035bd9b0c21cea291f16afacaff8d4c5bda8dcdc1489cc223ea9a905d"
+  },
+  "inference": {
+    "status": "PASS",
+    "device": "mps",
+    "model": "depth-anything/Depth-Anything-V2-Small-hf",
+    "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+    "torchVersion": "2.15.0",
+    "elapsedSeconds": 12.923943625064567
+  },
+  "stereo": {
+    "status": "FAIL",
+    "points": 96667,
+    "elapsedSeconds": 31.436838791007176
+  },
+  "calibrationFits": 96,
+  "models": [
+    {
+      "id": "sparse",
+      "status": "PASS",
+      "trainingSeconds": 216.81102787493728,
+      "maxResidentSetBytes": 270663680,
+      "peakMemoryFootprintBytes": 1047855944,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 3124,
+      "splats": 112080,
+      "bytes": 10312012,
+      "sha256": "15dc79779655fdabc48f8027109f1dc5cd2a5a34a41addaf9a36076746d7f766",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 35.54059363572707,
+      "heldLevelCoverage95Mean": 0.11783797001255962,
+      "heldLevelPsnrMean": 14.894645553872571
+    },
+    {
+      "id": "dense",
+      "status": "PASS",
+      "trainingSeconds": 409.75906254095025,
+      "maxResidentSetBytes": 317669376,
+      "peakMemoryFootprintBytes": 1299235776,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 183124,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 27.75055635210852,
+      "heldLevelCoverage95Mean": 0.22463164056566376,
+      "heldLevelPsnrMean": 16.333515481103763
+    },
+    {
+      "id": "filtered",
+      "status": "PASS",
+      "trainingSeconds": 424.4016257079784,
+      "maxResidentSetBytes": 314114048,
+      "peakMemoryFootprintBytes": 1298285504,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 183124,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "6121177f36e3d78356604f4936339574cd5e96993102e5985a1ce7ce03e89a08",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.019209893558294,
+      "heldLevelCoverage95Mean": 0.1991817733862393,
+      "heldLevelPsnrMean": 16.25812258588744
+    },
+    {
+      "id": "stereo",
+      "status": "PASS",
+      "trainingSeconds": 418.1333595830947,
+      "maxResidentSetBytes": 329629696,
+      "peakMemoryFootprintBytes": 1305330624,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 99230,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "09554eaf6b271c6efa761440af38e2852c298598debdc39ed16b34006116f0f5",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.450163571224806,
+      "heldLevelCoverage95Mean": 0.15592153768066006,
+      "heldLevelPsnrMean": 16.223065502653704
+    },
+    {
+      "id": "sphere",
+      "status": "PASS",
+      "trainingSeconds": 399.387536166003,
+      "maxResidentSetBytes": 324927488,
+      "peakMemoryFootprintBytes": 1294844912,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 183124,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "7a95e6e8d2b69cddb9ac99d0f42130d69abc71a9c69b22e68e6f8e41676cd2a8",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.62351449047162,
+      "heldLevelCoverage95Mean": 0.17712651854486447,
+      "heldLevelPsnrMean": 16.10853511208198
+    },
+    {
+      "id": "dense-long",
+      "status": "PASS",
+      "trainingSeconds": 868.0684142920654,
+      "maxResidentSetBytes": 313294848,
+      "peakMemoryFootprintBytes": 1292436440,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 183124,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "ee936ff754cf1ad5cbea090a7d4fab0d4f3a6f8db331fce36d471953b2e4622b",
+      "steps": 16000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.910600823228222,
+      "heldLevelCoverage95Mean": 0.20670827266563674,
+      "heldLevelPsnrMean": 15.999833049782572
+    },
+    {
+      "id": "sparse-long",
+      "status": "PASS",
+      "trainingSeconds": 730.9193422079552,
+      "maxResidentSetBytes": 320831488,
+      "peakMemoryFootprintBytes": 1321632704,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "initialPoints": 3124,
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "c3d15722044eca881e90e9efb43419c18aa75c56e5afee8eb9f569d9a2cc3a14",
+      "steps": 16000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 32.212156633186744,
+      "heldLevelCoverage95Mean": 0.13810375935949734,
+      "heldLevelPsnrMean": 15.461781385180638
+    }
+  ],
+  "matchedBudget": [
+    {
+      "id": "dense-long",
+      "baseline": "sparse-long",
+      "views": 6,
+      "maeImprovedViews": 4,
+      "meanCoverageDifference": 0.06860451330613938,
+      "comparisonScreen": "PASS",
+      "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+    }
+  ],
+  "best": "dense",
+  "rendering": {
+    "models": 7,
+    "rendersPerModel": 75,
+    "totalRenders": 525,
+    "browsers": [
+      "156.0.8078.81",
+      "156.0.8078.81",
+      "156.0.8078.81"
+    ],
+    "gpus": [
+      "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)"
+    ],
+    "video": "49 actual route frames,6fps encoding; not renderer FPS"
+  },
+  "tests": {
+    "status": "PASS",
+    "runs": [
+      {
+        "environment": "opencv",
+        "passed": 215,
+        "skipped": 2
+      },
+      {
+        "environment": "colmap",
+        "passed": 188,
+        "skipped": 29
+      }
+    ],
+    "distinctPassed": 217,
+    "unexecutedTests": []
+  },
+  "publicCatalog": {
+    "scenes": 29,
+    "reports": 14,
+    "timelineEntries": 43
+  },
+  "initialProtocolSha256": "7aec6590c745af19eb4e807332f9dbc6317c73580bf5a226593281a0059359fd",
+  "initialPlanSnapshotSha256": "25682a518332a434eea9642c83376b1273858632ff18ff2f36711e420991f576",
+  "executedStereoSourceSnapshotSha256": "3a082e331fe35584f08b472cec287b5aade3b3820002419999ab64ae0a97b4c2",
+  "release": "PENDING",
+  "limitations": [
+    "One dataset, jointly estimated all-nine camera/SfM geometry, not independent measured truth.",
+    "Initial point density and kind differ; this is a practical pipeline comparison.",
+    "Thin structures ghost, walls double, arbitrary SfM units; upper sphere unsupported.",
+    "Only selected motion/held/offpath frames visually reviewed; no independent offpath RGB."
+  ],
+  "localBrowser": {
+    "full": {
+      "startTime": "2026-11-06T08:12:54.332Z",
+      "duration": 240065.87699999998,
+      "expected": 61,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "finalCtaAndAllStreetModels": {
+      "startTime": "2026-11-06T08:17:40.378Z",
+      "duration": 57593.081,
+      "expected": 11,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "samples": [
+      {
+        "time": "2026-11-06T08:18:09.201Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "filtered",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-filtered%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 280570,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:16.164Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "stereo",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-stereo%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 266952,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:30.676Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense-long",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-dense-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270946,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:23.218Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sphere",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sphere%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 277366,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:02.086Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-dense%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270849,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:17:55.137Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sparse%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 287867,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:37.647Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse-long",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sparse-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 256402,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      }
+    ]
+  }
+}

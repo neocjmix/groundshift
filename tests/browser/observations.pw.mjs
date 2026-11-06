@@ -53,7 +53,13 @@ test('observation report shows real comparisons, generation masks and every outc
 
   const scenePaths = await page.locator('a[href*="?world="]').evaluateAll(links =>
     [...new Set(links.map(link => new URL(link.href).searchParams.get('world')))].sort());
-  expect(scenePaths).toEqual(catalog.scenes.map(scene => scene.manifestPath).sort());
+  // This immutable report describes its original release, while the current
+  // catalog/lab also contain later scooter and street runs. Check its complete
+  // recorded set and ensure none of those links disappeared from the catalog.
+  const preserved = [...summary.worlds.map(world => world.manifest),
+    ...catalog.scenes.filter(scene => ['desk', 'independent', 'reconstructed', 'sample'].includes(scene.id)).map(scene => scene.manifestPath)];
+  expect(scenePaths).toEqual([...new Set(preserved)].sort());
+  expect(scenePaths.every(path => catalog.scenes.some(scene => scene.manifestPath === path))).toBe(true);
   const history = page.locator('details');
   await history.locator('summary').click();
   await expect(history.locator('tbody tr')).toHaveCount(summary.history.length);
@@ -75,7 +81,7 @@ test('observation report shows real comparisons, generation masks and every outc
   await writeFile(info.outputPath('observation-checks.json'), JSON.stringify({
     time: new Date().toISOString(), browser: browser.version(), mode: process.env.HEADLESS === '1' ? 'headless' : 'headed',
     origin: new URL(page.url()).origin, imageChecks, scenePaths, historyRows: summary.history.length,
-    checks: ['both comparison cases load actual 512px images and masks', 'gray baseline rows and image links', 'overlay slider endpoints', 'all catalog scene links', 'failed, cancelled and unrun history retained', '390px mobile overflow', 'return to all scenes'],
+    checks: ['both comparison cases load actual 512px images and masks', 'gray baseline rows and image links', 'overlay slider endpoints', 'all historical report links retained in current catalog', 'failed, cancelled and unrun history retained', '390px mobile overflow', 'return to all current scenes'],
     gaussianRequests, errors,
     evidenceLimit: 'UI and stored image verification only; this test does not rerun reconstruction or inference, or imply quality acceptance.',
   }, null, 2));

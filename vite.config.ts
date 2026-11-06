@@ -15,6 +15,7 @@ export default defineConfig({
     perspectiveOverlap: "experiments/perspective-overlap/index.html",
     stereoAnchors: "experiments/stereo-anchors/index.html",
     roadThirdView: "experiments/road-third-view/index.html",
+    street: "experiments/street/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },
