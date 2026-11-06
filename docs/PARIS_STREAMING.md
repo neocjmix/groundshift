@@ -99,9 +99,11 @@ that SPZ region streaming is the best final city-scale format.
 First reproduce the pinned24-source acquisition from[TOURIST_STREAMING.md](TOURIST_STREAMING.md).
 Use a **new** job directory and preserve every failed attempt. The experiment
 script currently pins the acquired Paris source location, not arbitrary cities.
-Copy its explicitly public provenance JSON to the new job, then:
+Copy the tracked public provenance JSON to the new job, then:
 
 ```sh
+mkdir JOB
+cp scripts/samples/paris-seine-provenance.json JOB/provenance.json
 data/tools/venv/bin/python scripts/prepare-panoramas.py \
   data/jobs/tourist-streaming-20261107/hd-initial/images JOB/sfm-inputs \
   --provenance JOB/provenance.json --size 512 --hfov 100

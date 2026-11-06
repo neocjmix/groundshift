@@ -17,9 +17,9 @@ test('actual Paris SPZ lazy rendering, forward/reverse/jumps, eviction and whole
  const requests=[],errors=[];page.on('request',r=>{if(r.url().endsWith('.spz'))requests.push(new URL(r.url()).pathname);});page.on('pageerror',e=>errors.push(e.message));
  const started=performance.now();await page.goto('/?world='+world);
  await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:120000});
- const firstUsableMs=performance.now()-started;await settled(page);const first=await state(page);
+ const readySignalMs=performance.now()-started;await settled(page);const first=await state(page);
  expect(first.resident).toBe(3);expect(first.requested).toBe(3);expect(first.errors).toEqual([]);expect(requests.every(r=>r.includes('/chunks/'))).toBe(true);
- const firstPixels=await capture(page,info,'start-lazy');
+ const firstPixels=await capture(page,info,'start-lazy'),firstVerifiedVisibleMs=performance.now()-started;
  const slider=page.getByRole('slider',{name:'Recorded camera view'}),before=await page.locator('canvas').getAttribute('data-camera-position');
  await slider.focus();await slider.press('End');await expect.poll(()=>page.locator('canvas').getAttribute('data-path-progress').then(Number)).toBe(23);await settled(page);
  const end=await state(page);expect(end.resident).toBeLessThanOrEqual(3);expect(end.evicted).toBeGreaterThanOrEqual(3);expect(await page.locator('canvas').getAttribute('data-camera-position')).not.toBe(before);await capture(page,info,'end-lazy');
@@ -29,7 +29,7 @@ test('actual Paris SPZ lazy rendering, forward/reverse/jumps, eviction and whole
  await page.getByRole('button',{name:'구간 로딩으로 전환',exact:true}).click();await settled(page);
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:info.outputPath('mobile-ui.png')});
  expect(errors).toEqual([]);
- await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',scope:'Actual short Paris GS spatial lazy loading, not 2.19km reconstruction or geometry truth',browser:browser.version(),headed:process.env.HEADLESS!=='1',cacheDisabled:true,firstUsableMs,first,end,reverse,firstPixels,requests,errors},null,2));
+ await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',scope:'Actual short Paris GS spatial lazy loading, not 2.19km reconstruction or geometry truth',browser:browser.version(),headed:process.env.HEADLESS!=='1',cacheDisabled:true,readySignalMs,firstVerifiedVisibleMs,visibleTimingMeaning:'Upper bound measured after 3 chunks settle and a screenshot proves visible pixels; includes test/screenshot overhead, not first visible GPU timestamp',first,end,reverse,firstPixels,requests,errors},null,2));
 });
 
 test('a failed real chunk shows an error, keeps other content and retries without a whole download',async({page},info)=>{

@@ -476,7 +476,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       {world.streaming&&<div className="stream-panel" aria-label="Spatial streaming status">
         <strong>{streamEnabled?'구간 로딩':'전체 로딩 비교'}</strong>
         <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 로딩으로 비교':'구간 로딩으로 전환'}</button>
-        {streamEnabled&&streamStats&&<><span>상주 {streamStats.resident}/{world.streaming.index.chunks.length}구간 · {streamStats.splats.toLocaleString()}점 · 누적 전송 {(streamStats.transferredBytes/1e6).toFixed(2)}MB</span><span>해제 {streamStats.evicted}회 · 대기 {streamStats.pending} · 파일 합 {(streamStats.residentBytes/1e6).toFixed(2)}MB (GPU 메모리 아님)</span>
+        {streamEnabled&&streamStats&&<><span>상주 {streamStats.resident}/{world.streaming.index.chunks.length}구간 · {streamStats.splats.toLocaleString()}점 · 누적 전송 {(streamStats.transferredBytes/1e6).toFixed(2)}MB</span><span>해제 {streamStats.evicted}회 · {streamStats.pending?'주변 구간 불러오는 중…':'주변 구간 준비됨'} · 파일 합 {(streamStats.residentBytes/1e6).toFixed(2)}MB (GPU 메모리 아님)</span>
         {streamStats.errors.length>0&&<><p role="alert">구간 오류: {streamStats.errors.join('; ')}</p><button onClick={()=>retryChunks.current()}>구간 다시 시도</button></>}</>}
         <small>가까운 구간과 인접 구간만 표시합니다. 멀리 보이는 장면은 빠질 수 있습니다.</small>
       </div>}

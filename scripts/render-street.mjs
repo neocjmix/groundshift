@@ -15,7 +15,7 @@ const config = JSON.parse(await readFile(configPath,'utf8'));
 const resolution=config.resolution??512;
 if(!Number.isInteger(resolution)||resolution<64||resolution>2048||config.cameras.some(c=>c.w!==resolution||c.h!==resolution))throw new Error('Require matching square camera/output resolution64..2048');
 const output = path.resolve(outputPath);await mkdir(output,{ recursive:false });
-const started=performance.now();const report={status:'RUNNING',startedAt:new Date().toISOString(),models:[],poseMeaning:'Observed poses from preserved all-nine SfM, or explicitly interpolated/extrapolated display poses. No independent geometry truth.'};
+const started=performance.now();const report={status:'RUNNING',startedAt:new Date().toISOString(),models:[],poseMeaning:config.poseMeaning??'Observed poses from preserved all-nine SfM, or explicitly interpolated/extrapolated display poses. No independent geometry truth.'};
 let server,browser;
 try {
   const assets=new Map(config.models.map(m=>[m.id,path.resolve(m.ply)]));

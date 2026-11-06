@@ -1,0 +1,8 @@
+{
+  "sourceType": "images",
+  "sourceUrl": "https://api.panoramax.xyz/api/collections/9fe7f3ab-14e3-4174-8731-b06e31d9577b",
+  "license": "etalab-2.0",
+  "licenseUrl": "https://github.com/etalab/licence-ouverte/blob/master/open-licence.md",
+  "attribution": "Immergis pour la Ville de Paris / Panoramax IGN. Captured 2025-05-08; source catalog accessed 2026-11-07.",
+  "notes": "24 real public highest-resolution 12288x6144 ERP photographs, original ranks988-1011. Original public privacy-processed bytes preserved. No generated RGB. GPS and azimuth are source estimates, not SfM poses or metric geometry."
+}
