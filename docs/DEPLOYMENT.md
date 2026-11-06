@@ -232,6 +232,24 @@ Final deployment, public hash and23-layer fresh-restore checks run after dispatc
 no extra app/scene tests or quality claim is inferred from this metadata layer.
 Evidence remains local under`data/jobs/paris-streaming-20261107/publications/verified/`.
 
+Final report pointer`3945e50` deploys as`c06ca903-8976-41c9-8fc3-d8df8f0bba0a`:
+created2026-11-06T17:57:30.575Z, **SUCCESS** at17:58:29.267Z. Server build logs
+confirm`/tmp/paris-verified.tar.gz: OK`. Anonymous full archive readback passes
+in0.624014s. The changed public summary matches all12,555bytes and SHA-256
+`fced7ac128f630e214532704e55c6be8c111af8ed6f3e30882f47fc243a6b9a9`.
+Fresh empty-directory ordered extraction verifies all23 archive checksums and
+every1,235 composed file size/hash in7.923231s. All39worlds, prior reports,
+rejected observations and rollback packages remain retained. Consolidated
+publication evidence is`data/jobs/paris-streaming-20261107/publication-evidence.json`;
+actual GPU/render and quality evidence remains separate from these integrity checks.
+The final report-only public smoke passes **2/2 in12.2s** on this SUCCESS rollout:
+all four comparison images actually decode, with poster,876-source route,
+24HD acquisition/private-HD404, mobile width and lab navigation checked.
+Artifacts stay local under`data/jobs/paris-streaming-20261107/browser-report-final-public/`.
+No additional GPU/quality success is inferred from the final JSON-only layer.
+A documentation-only commit records these completed checks without another
+self-referential deployment.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
