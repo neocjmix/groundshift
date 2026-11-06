@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [PLY/SPZ storage comparison](https://groundshift-viewer-production.up.railway.app/experiments/compression/) · [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -89,8 +89,23 @@ remain byte-identical. The explicit target has 1,110 public files; the actual
 composition has 1,143 including inert superseded bundles. Every local target,
 base/archive and composed size/hash passes in 3.576246 s. Current full rebuild
 passes; no additional reconstruction, model evaluation sweep or geometry claim
-is introduced. Final deployment/hash/fresh-restore checks run after dispatch;
-a final targeted public-report case follows separately.
+is introduced. Final pointer `2df7875` deploys as
+`910b6065-f924-4d03-b75a-783951562e6d`: created
+2026-11-06T16:17:26.731Z, **SUCCESS** at 16:18:11.856Z. All three changed
+public file sizes/SHA-256 values pass in 1.751347 s. Anonymous full release
+readback passes in 0.949417 s. Fresh empty-directory extraction of all thirteen
+pinned archives reproduces every one of the 1,143 composed file sizes/hashes in
+4.490582 s. Server build logs confirm `/tmp/spz-verified.tar.gz: OK`.
+The final actual public-report case passes **1/1 in 9.8 s**: all four comparison
+images, mobile layout, lab discovery/report links and decoded movie-frame change
+from media time 0.2 to 2.3 s are checked. The earlier actual scene/interaction
+and matched-render evidence remains unchanged by these three JSON files. This
+metadata release does not imply another full GPU or growing browser-suite run.
+Final browser evidence stays local under
+`data/jobs/street-spz-20261107/browser-public-final/`; the consolidated three-phase
+publication evidence is `data/jobs/street-spz-20261107/publication-evidence.json`.
+The final documentation-only commit records checks without publishing a fourth
+self-referential metadata release.
 
 ## Current GS-only display — 2026-11-07
 
@@ -247,13 +262,14 @@ depth diagnostics; every image/movie/compiled-code/scene/background byte is
 unchanged. Three distinct targeted public cases have passing evidence; later
 metadata-only inspection does not imply another full GPU run.
 
-### Current 35-world restoration
+### Current 36-world restoration
 
 Apply the four immutable final-quality layers in the preceding campaign's
-restoration table, followed by these **four** layers, in order. The complete
-native overlay supersedes the earlier tangent plan/input/depth/viewer overlays;
-those early archives remain available for rollback but are **not** required to
-restore the final surface.
+restoration table, followed by these **four** tangent layers, the two GS-only
+layers and the three SPZ layers, in order. The command below includes all
+thirteen layers for the current surface. The complete native overlay supersedes
+the earlier tangent plan/input/depth/viewer overlays; those early archives remain
+available for rollback but are **not** required to restore the final surface.
 
 | Layer | Release / archive | Bytes | SHA-256 |
 |---|---|---:|---|
@@ -302,6 +318,15 @@ restore the final surface.
   gs_restore_layer viewer-gs-only-verified-2026-11-07 \
     groundshift-gs-only-verified-20261107.tar.gz \
     d708a008e31932fd1d03a775c64ba7e0e95822b75ad9bbe900490facf8214ca8
+  gs_restore_layer viewer-spz-export-2026-11-07 \
+    groundshift-spz-export-20261107.tar.gz \
+    744e31f5f78825b54ea69456d8f2561e4f023a4b348111f25274e677bf8e7b7d
+  gs_restore_layer viewer-spz-measured-2026-11-07 \
+    groundshift-spz-measured-20261107.tar.gz \
+    5750e201747c383f8237e791ff7b25be37e61c65fc41584eee13061f26edfcc5
+  gs_restore_layer viewer-spz-verified-2026-11-07 \
+    groundshift-spz-verified-20261107.tar.gz \
+    7ec943885054826b1dc5e62722868ba85c4c73e8f915e7274eb886837b3c5600
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
