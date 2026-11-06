@@ -1,6 +1,6 @@
-# Final same-data quality: 300 matched renders; appearance improves; geometry unverified.
+# Historical34-scene surface remains pinned; tangent-native is a separate additive layer.
 # The release archive is separate from Git history and contains only www/.
-FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS historical
 RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-model-selection-2026-11-06/groundshift-model-selection-20261106-v2.tar.gz \
     && echo 'cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
@@ -21,28 +21,18 @@ RUN wget -q -O /tmp/verified.tar.gz https://github.com/neocjmix/groundshift/rele
     && echo 'e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48  /tmp/verified.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/verified.tar.gz -C /out
 
-# Newly user-authorized tangent/background experiment: plan first, execution pending.
-RUN wget -q -O /tmp/tangent-plan.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-plan-2026-11-06/groundshift-tangent-plan-20261106.tar.gz \
-    && echo '841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe  /tmp/tangent-plan.tar.gz' | sha256sum -c - \
-    && tar -xzf /tmp/tangent-plan.tar.gz -C /out
-
-# Real 20-direction input evidence while DAV2/MPS inference runs locally.
-RUN wget -q -O /tmp/tangent-inputs.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-inputs-2026-11-06/groundshift-tangent-inputs-20261106.tar.gz \
-    && echo '7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26  /tmp/tangent-inputs.tar.gz' | sha256sum -c - \
-    && tar -xzf /tmp/tangent-inputs.tar.gz -C /out
-
-# Actual calibrated spherical-depth diagnostics, while the single native training runs.
-RUN wget -q -O /tmp/tangent-depth.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-depth-2026-11-06/groundshift-tangent-depth-20261106.tar.gz \
-    && echo '1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823  /tmp/tangent-depth.tar.gz' | sha256sum -c - \
-    && tar -xzf /tmp/tangent-depth.tar.gz -C /out
-
-# Background resource cancellation fix; actual new-scene GPU checks remain NOT RUN.
-RUN wget -q -O /tmp/tangent-viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-viewer-2026-11-06/groundshift-tangent-viewer-20261106.tar.gz \
-    && echo '8a1098731040e84aecfa4e54476210447f75c780a02241d83f4fb1ff89190c49  /tmp/tangent-viewer.tar.gz' | sha256sum -c - \
-    && tar -xzf /tmp/tangent-viewer.tar.gz -C /out
+# New native output supersedes the early tangent plan/input/depth/viewer overlays.
+# Keep this download in a separate stage and COPY layer: later small observations
+# must not push a rebuilt1.2GB historical-world layer.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS tangent
+RUN wget -q -O /tmp/tangent-native.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-native-2026-11-06/groundshift-tangent-native-20261106.tar.gz \
+    && echo '8c09b353a96551ea5fa7eab357ebe67bc61961b0237858fbee5aa94e8ed306da  /tmp/tangent-native.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tangent-native.tar.gz -C /out
 
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
-COPY --from=artifact /out/www /srv
+COPY --from=historical /out/www /srv
+COPY --from=tangent /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

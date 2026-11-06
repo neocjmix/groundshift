@@ -15,6 +15,10 @@ test('tangent observation shows actual phase, selected inputs, pending stages an
   await expect.poll(()=>images.evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth>0)),{timeout:30000}).toBe(true);
   for(const img of await page.locator('#comparisons img').all()){await img.scrollIntoViewIfNeeded();await expect.poll(()=>img.evaluate(i=>i.complete&&i.naturalWidth>0)).toBe(true);}
   if(summary.run?.world)await expect(page.locator('#new-world')).toHaveAttribute('href','/?world='+summary.run.world);else await expect(page.locator('#new-world')).toBeHidden();
+  const rows=page.locator('#metrics tbody tr');await expect(rows).toHaveCount(summary.metrics?.length??0);
+  for(let i=0;i<(summary.metrics?.length??0);i++){const m=summary.metrics[i];await expect(rows.nth(i).locator('td').nth(0)).toHaveText(m.label);await expect(rows.nth(i).locator('td').nth(1)).toHaveText(m.baseline.toFixed(3)+(m.unit??''));await expect(rows.nth(i).locator('td').nth(2)).toHaveText(m.candidate.toFixed(3)+(m.unit??''));}
+  if(summary.video){const video=page.locator('#motion');await video.scrollIntoViewIfNeeded();await video.evaluate(v=>v.load());await expect.poll(()=>video.evaluate(v=>v.readyState),{timeout:30000}).toBeGreaterThanOrEqual(2);expect(await video.evaluate(v=>v.duration)).toBeGreaterThan(1);
+    await video.evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=Math.min(3,v.duration/2);}));const frame=await video.evaluate(v=>{const c=document.createElement('canvas');c.width=128;c.height=128;c.getContext('2d').drawImage(v,0,0,128,128);return c.toDataURL();});expect(Buffer.from(frame.split(',')[1],'base64').length).toBeGreaterThan(1000);}
   await expect(page.locator('canvas,iframe')).toHaveCount(0);
   await page.screenshot({path:info.outputPath('report.png'),fullPage:true});
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);

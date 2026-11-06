@@ -270,6 +270,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "street-tangent20",
+      "source": "data/jobs/street-tangent-background-20261106/public-worlds/street-tangent20/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
