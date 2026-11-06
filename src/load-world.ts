@@ -3,7 +3,6 @@ import {
   resolveAssetUrl,
   type WorldManifest,
 } from "./world";
-import { parseBackground, type LoadedBackground } from "./background";
 import { parseCameraPath, type CameraPath } from "./camera-path";
 
 export interface LoadedWorld {
@@ -13,8 +12,6 @@ export interface LoadedWorld {
   location: string;
   cameraPath?: CameraPath;
   cameraPathError?: string;
-  background?: LoadedBackground;
-  backgroundError?: string;
   release?: () => void;
 }
 
@@ -51,14 +48,8 @@ export async function loadWorld(
     if (!cameraResponse.ok) throw new Error(`Camera metadata: HTTP ${cameraResponse.status}`);
     return cameraResponse.json();
   });
-  const backgrounds = await loadOptionalBackground(manifest, signal, async (path) => {
-    const backgroundResponse = await fetch(resolveAssetUrl(response.url, path), { signal });
-    if (!backgroundResponse.ok) throw new Error(`Background metadata: HTTP ${backgroundResponse.status}`);
-    const parsed = parseBackground(await backgroundResponse.json());
-    const base = backgroundResponse.url || resolveAssetUrl(response.url, path);
-    return { ...parsed, views: parsed.views.map(v => ({ ...v, imageUrl: resolveAssetUrl(base, v.imagePath),
-      meshUrl: v.meshPath ? resolveAssetUrl(base, v.meshPath) : undefined })) };
-  });
+  // Retired panorama/shell references remain parseable in archived manifests,
+  // but the viewer never fetches them: translated backgrounds degraded UX.
   signal.throwIfAborted();
   return {
     instanceId: crypto.randomUUID(),
@@ -66,7 +57,6 @@ export async function loadWorld(
     assetUrl: resolveAssetUrl(response.url, manifest.assets[0].path),
     location: url.pathname,
     ...cameras,
-    ...backgrounds,
   };
 }
 
@@ -95,29 +85,7 @@ export async function loadLocalWorld(files: File[], signal?: AbortSignal): Promi
     if (!cameraFile) throw new Error(`The selected folder is missing ${cameraPath}`);
     return JSON.parse(await cameraFile.text()) as unknown;
   });
-  const backgroundUrls: string[] = [];
-  const backgrounds = await loadOptionalBackground(manifest, signal, async (path) => {
-    const metadataFile = files.find(f => (f.webkitRelativePath || f.name) === base + path);
-    if (!metadataFile) throw new Error(`Missing ${path}`);
-    const parsed = parseBackground(JSON.parse(await metadataFile.text()));
-    signal?.throwIfAborted();
-    const directory = path.slice(0, path.lastIndexOf('/') + 1);
-    const selected = parsed.views.map(v => {
-      const find = (p: string) => {
-        const f = files.find(f => (f.webkitRelativePath || f.name) === base + directory + p);
-        if (!f) throw new Error(`Missing background file ${p}`);
-        return f;
-      };
-      return { view: v, image: find(v.imagePath), mesh: v.meshPath ? find(v.meshPath) : undefined };
-    });
-    const objectUrl = (f: File) => { const url = URL.createObjectURL(f); backgroundUrls.push(url); return url; };
-    return { ...parsed, views: selected.map(v => ({ ...v.view, imageUrl: objectUrl(v.image), meshUrl: v.mesh ? objectUrl(v.mesh) : undefined })) };
-  }).catch(error => {
-    backgroundUrls.forEach(url => URL.revokeObjectURL(url));
-    throw error;
-  });
-  if (!backgrounds.background) backgroundUrls.splice(0).forEach(url => URL.revokeObjectURL(url));
-  if (signal?.aborted) { backgroundUrls.forEach(url => URL.revokeObjectURL(url)); signal.throwIfAborted(); }
+  signal?.throwIfAborted();
   const assetUrl = URL.createObjectURL(asset);
   return {
     instanceId: crypto.randomUUID(),
@@ -125,8 +93,7 @@ export async function loadLocalWorld(files: File[], signal?: AbortSignal): Promi
     assetUrl,
     location: file.webkitRelativePath,
     ...cameras,
-    ...backgrounds,
-    release: () => [assetUrl, ...backgroundUrls].forEach(url => URL.revokeObjectURL(url)),
+    release: () => URL.revokeObjectURL(assetUrl),
   };
 }
 
@@ -144,19 +111,5 @@ async function loadOptionalCameras(
     signal?.throwIfAborted();
     if (error instanceof Error && error.name === 'AbortError') throw error;
     return { cameraPathError: `Camera path unavailable. Orbit remains available. ${error instanceof Error ? error.message : String(error)}` };
-  }
-}
-
-async function loadOptionalBackground(manifest: WorldManifest, signal: AbortSignal | undefined,
-  read: (path: string) => Promise<LoadedBackground>): Promise<Pick<LoadedWorld, 'background' | 'backgroundError'>> {
-  if (!manifest.background) return {};
-  try {
-    const background = await read(manifest.background.path);
-    signal?.throwIfAborted();
-    return { background };
-  } catch (error) {
-    signal?.throwIfAborted();
-    if (error instanceof Error && error.name === 'AbortError') throw error;
-    return { backgroundError: `Background unavailable; GS remains unchanged. ${error instanceof Error ? error.message : String(error)}` };
   }
 }

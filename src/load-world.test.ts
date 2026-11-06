@@ -281,50 +281,33 @@ describe('local world folder loading', () => {
   });
 });
 
-const backgroundFile = () => ({ schemaVersion: 1, views: [{ id: 'synthetic-background', center: [0,0,0], panoramaToWorld: [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], imagePath: 'photo.jpg', meshPath: 'mesh.json' }] });
-describe('optional background metadata and local lifecycle (synthetic fixtures)', () => {
-  it('revokes selected local background URLs if cancellation happens before returning the asset', async () => {
-    const input = manifest(); input.background = { path: 'background/background.json' };
-    const controller = new AbortController();
-    const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(f => { controller.abort(); return 'blob:'+((f as File).webkitRelativePath); });
-    const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
-    await expect(loadLocalWorld([localFile('capture/world.json',JSON.stringify(input)),localFile('capture/assets/scene.ply','fixture'),
-      localFile('capture/background/background.json',JSON.stringify(backgroundFile())),localFile('capture/background/photo.jpg','fixture'),localFile('capture/background/mesh.json','fixture')],controller.signal)).rejects.toMatchObject({name:'AbortError'});
-    expect(create).toHaveBeenCalledTimes(2);expect(revoke).toHaveBeenCalledTimes(2);
-  });
-  it('retains the GS asset and creates no background URLs when a nested local image is absent', async () => {
-    const input = manifest();input.background={path:'background/background.json'};
-    const create=vi.spyOn(URL,'createObjectURL').mockReturnValue('blob:gs-only');
-    const result=await loadLocalWorld([localFile('capture/world.json',JSON.stringify(input)),localFile('capture/assets/scene.ply','fixture'),
-      localFile('capture/background/background.json',JSON.stringify(backgroundFile()))]);
-    expect(result.backgroundError).toContain('Missing background file');expect(result.background).toBeUndefined();expect(result.assetUrl).toBe('blob:gs-only');expect(create).toHaveBeenCalledTimes(1);
-  });
-  it('resolves background files beside redirected metadata and does not fetch texture/mesh during GS load', async () => {
+describe('retired background references (synthetic archived manifests)', () => {
+  it('loads the HTTP GS without requesting legacy background metadata, images or meshes', async () => {
     const input = manifest(); input.background = { path: 'background/background.json' };
     vi.stubGlobal('window', { location: { href: 'http://127.0.0.1:5173/' } });
-    const fetchMock = vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json'))
-      .mockResolvedValueOnce(jsonResponse(backgroundFile(), 'https://example.com/redirected/background.json'));
+    const fetchMock = vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json'));
     vi.stubGlobal('fetch', fetchMock);
     const result = await loadWorld('/world.json', new AbortController().signal);
-    expect(result.background?.views[0].imageUrl).toBe('https://example.com/redirected/photo.jpg');
-    expect(result.background?.views[0].meshUrl).toBe('https://example.com/redirected/mesh.json');
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(result.assetUrl).toBe('https://example.com/assets/scene.ply');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(result).not.toHaveProperty('background');
+    expect(result).not.toHaveProperty('backgroundError');
   });
-  it('preserves GS if optional background fails and propagates cancellation', async () => {
-    const input = manifest(); input.background = { path: 'background.json' };
-    vi.stubGlobal('window', { location: { href: 'http://127.0.0.1:5173/' } });
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json')).mockResolvedValueOnce(new Response('', { status: 404 })));
-    expect((await loadWorld('/world.json', new AbortController().signal)).backgroundError).toContain('HTTP 404');
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json')).mockRejectedValueOnce(new DOMException('cancelled', 'AbortError')));
-    await expect(loadWorld('/world.json', new AbortController().signal)).rejects.toMatchObject({ name: 'AbortError' });
-  });
-  it('resolves exact nested local background files and releases every object URL', async () => {
+  it.each(['absent', 'malformed'])('ignores %s local background metadata and creates only the GS object URL', async state => {
     const input = manifest(); input.background = { path: 'background/background.json' };
-    const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(f => 'blob:'+((f as File).webkitRelativePath));
+    const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:gs-only');
     const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
-    const result = await loadLocalWorld([localFile('capture/world.json', JSON.stringify(input)), localFile('capture/assets/scene.ply','fixture'),
-      localFile('capture/background/background.json',JSON.stringify(backgroundFile())), localFile('capture/background/photo.jpg','fixture'), localFile('capture/background/mesh.json','fixture')]);
-    expect(result.background?.views[0].imageUrl).toBe('blob:capture/background/photo.jpg');
-    expect(create).toHaveBeenCalledTimes(3); result.release?.(); expect(revoke).toHaveBeenCalledTimes(3);
+    const stale = localFile('capture/background/background.json', 'THIS IS NOT JSON');
+    const read = vi.spyOn(stale, 'text').mockRejectedValue(new Error('Retired metadata must not be read'));
+    const result = await loadLocalWorld([
+      localFile('capture/world.json', JSON.stringify(input)),
+      localFile('capture/assets/scene.ply', 'synthetic bytes'),
+      ...(state === 'malformed' ? [stale] : []),
+    ]);
+    expect(result.assetUrl).toBe('blob:gs-only');
+    expect(read).not.toHaveBeenCalled();
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(result).not.toHaveProperty('background');
+    result.release?.(); expect(revoke).toHaveBeenCalledExactlyOnceWith('blob:gs-only');
   });
 });

@@ -33,27 +33,36 @@ test('tangent report errors remain explicit and previous observations remain dis
 });
 
 function colored(png){let n=0;for(let i=0;i<png.data.length;i+=4)if(Math.max(...png.data.subarray(i,i+3))>65)n++;return n;}
-function backdropPixels(png){let n=0;for(let i=0;i<png.data.length;i+=4)if(Math.abs(png.data[i]-17)<=3&&Math.abs(png.data[i+1]-22)<=3&&Math.abs(png.data[i+2]-20)<=3)n++;return {width:png.width,height:png.height,clearColorLikePixels:n,clearColorLikeFraction:n/(png.width*png.height)};}
 async function captureCanvas(page,canvas,path){const style=await page.addStyleTag({content:'.scene-shell > :not(.canvas-mount){visibility:hidden!important}'});try{return PNG.sync.read(await canvas.screenshot({path}));}finally{await style.evaluate(e=>e.remove());}}
 
-test('actual tangent GS renders independently before optional photo and depth backgrounds',async({page,browser},info)=>{
-  test.skip(!summary.run?.world,'New native scene has not exported; actual GS/background rendering NOT RUN.');
+for(const legacy of [false,true])test(`actual tangent GS explores without background controls or requests${legacy?' even from an archived background reference':''}`,async({page,browser},info)=>{
+  test.skip(!summary.run?.world,'New native scene has not exported; actual GS rendering NOT RUN.');
   const errors=[],backgroundRequests=[];page.on('pageerror',e=>errors.push(e.message));
-  page.on('request',r=>{if(/\/background\/.*\.(jpg|png|json)/.test(r.url())&&!r.url().endsWith('/background.json'))backgroundRequests.push(r.url());});
+  page.on('request',r=>{if(/\/background\//.test(r.url()))backgroundRequests.push(r.url());});
+  if(legacy){
+    // Only the retired metadata reference is a fixture. GS bytes and poses are real.
+    await page.route('**/worlds/street-tangent20/world.json',async route=>{
+      const response=await route.fetch();const world=await response.json();world.background={path:'background/background.json'};
+      await route.fulfill({response,json:world});
+    });
+  }
   await page.goto('/?world='+encodeURIComponent(summary.run.world));
   await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:120000});
   await expect(page.getByRole('link',{name:'Comparison & stage history ↗'})).toHaveAttribute('href','/experiments/tangent-background/');
-  const canvas=page.locator('canvas');await expect(canvas).toHaveAttribute('data-background-mode','gs');expect(backgroundRequests).toEqual([]);
+  const canvas=page.locator('canvas');
+  await expect(page.getByRole('combobox',{name:'Background completion'})).toHaveCount(0);
+  await expect(page.locator('.background-panel,.background-warning')).toHaveCount(0);
   await expect.poll(()=>canvas.getAttribute('data-frame-count').then(Number)).toBeGreaterThan(12);
-  const gsOnly=await captureCanvas(page,canvas,info.outputPath('gs-only.png'));const gsColored=colored(gsOnly);expect(gsColored).toBeGreaterThan(10000);const modePixels={gs:backdropPixels(gsOnly)};
-  const control=page.getByRole('combobox',{name:'Background completion'});await expect(control).toHaveValue('gs');
-  await control.selectOption('panorama');await expect(canvas).toHaveAttribute('data-background-mode','panorama');
-  await expect.poll(()=>canvas.getAttribute('data-background-source'),{timeout:60000}).not.toBe('');
-  await expect(page.locator('.background-panel [role="status"]')).toContainText('presentation only');
-  modePixels.panorama=backdropPixels(await captureCanvas(page,canvas,info.outputPath('panorama.png')));
-  await control.selectOption('depth-shell');await expect(canvas).toHaveAttribute('data-background-mode','depth-shell');
-  modePixels.depthShell=backdropPixels(await captureCanvas(page,canvas,info.outputPath('depth-shell.png')));
-  await page.getByRole('button',{name:'Play path',exact:true}).click();await expect.poll(()=>canvas.getAttribute('data-path-progress').then(Number)).toBeGreaterThan(.05);await page.getByRole('button',{name:'Pause path',exact:true}).click();
-  await control.selectOption('gs');await expect(canvas).toHaveAttribute('data-background-mode','gs');await expect(canvas).toHaveAttribute('data-background-source','');
-  expect(errors).toEqual([]);await writeFile(info.outputPath('evidence.json'),JSON.stringify({browser:browser.version(),world:summary.run.world,gsOnlyColoredPixels:gsColored,modePixels,pixelMeaning:'Clear-color-like display pixels only; neither geometric completeness nor accuracy. All three mode captures use the same camera before path movement.',backgroundRequests,errors,geometryAccuracy:'NOT RUN'},null,2));
+  const gsOnly=await captureCanvas(page,canvas,info.outputPath('gs-only.png'));const gsColored=colored(gsOnly);expect(gsColored).toBeGreaterThan(10000);
+  const positionBefore=await canvas.getAttribute('data-camera-position');
+  await page.getByRole('button',{name:'Play path',exact:true}).click();
+  await expect.poll(()=>canvas.getAttribute('data-path-progress').then(Number)).toBeGreaterThan(.1);
+  await page.getByRole('button',{name:'Pause path',exact:true}).click();
+  expect(await canvas.getAttribute('data-camera-position')).not.toBe(positionBefore);
+  await canvas.focus();for(let i=0;i<20;i++)await canvas.press('ArrowUp');
+  await captureCanvas(page,canvas,info.outputPath('look-up.png'));
+  for(let i=0;i<40;i++)await canvas.press('ArrowDown');
+  await captureCanvas(page,canvas,info.outputPath('look-down.png'));
+  expect(backgroundRequests).toEqual([]);expect(errors).toEqual([]);
+  await writeFile(info.outputPath('evidence.json'),JSON.stringify({browser:browser.version(),world:summary.run.world,gsOnlyColoredPixels:gsColored,backgroundRequests,legacyReferenceFixture:legacy,actualNativeScene:true,translation:true,freeLook:true,errors,geometryAccuracy:'NOT RUN'},null,2));
 });

@@ -91,6 +91,7 @@ const worldManifestSchema = z.object({
       context.addIssue({ code: 'custom', path: ['camerasPath'], message: 'Camera-path mode requires camerasPath' });
     }
   }),
+  // Archived field accepted for compatibility; no longer loaded or rendered.
   background: z.object({ path: relativePathSchema }).strict().optional(),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
