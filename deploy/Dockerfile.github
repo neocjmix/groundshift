@@ -1,10 +1,15 @@
-# Four alternative local model trials and measured comparison: 96857d4.
+# Last same-data quality attempt: publish actual1024px inputs while Metal training runs.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
 RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-model-selection-2026-11-06/groundshift-model-selection-20261106-v2.tar.gz \
     && echo 'cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
+
+# Fresh public-only overlay; immutable base above remains a cached rollback.
+RUN wget -q -O /tmp/overlay.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-final-quality-inputs-2026-11-06/groundshift-final-quality-inputs-20261106.tar.gz \
+    && echo '448671b42001be303d8dd06a9a99c9cd9523ac737e36cd67e188b59d004898cf  /tmp/overlay.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/overlay.tar.gz -C /out
 
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile

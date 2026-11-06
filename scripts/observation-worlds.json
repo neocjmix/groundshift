@@ -1092,6 +1092,15 @@
     "experiments/model-selection/renders/da2/train-4-level-240.png",
     "experiments/model-selection/renders/da2/train-6-level-060.png",
     "experiments/model-selection/renders/da2/held-5-down-060.png",
-    "experiments/model-selection/index.html"
+    "experiments/model-selection/index.html",
+    "experiments/final-quality/index.html",
+    "experiments/final-quality/summary.json",
+    "experiments/final-quality/ATTRIBUTION.txt",
+    "experiments/final-quality/samples/02-highres.png",
+    "experiments/final-quality/samples/00-baseline.png",
+    "experiments/final-quality/samples/01-baseline.png",
+    "experiments/final-quality/samples/01-highres.png",
+    "experiments/final-quality/samples/02-baseline.png",
+    "experiments/final-quality/samples/00-highres.png"
   ]
 }
