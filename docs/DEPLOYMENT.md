@@ -15,6 +15,29 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Paris reconstruction and spatial serving progress — 2026-11-07
+
+The first real pipeline result is published immediately while crop/depth and
+chunk-viewer implementation continue locally. Actual fixed-rig SfM registers
+144/144 perspective crops from24 physical Paris panoramas, producing8,686 sparse
+points with0.5964px mean reprojection error in57.833s. This diagnostic is not
+surveyed/metric geometry accuracy. This increment still marks Gaussian training,
+new-scene rendering and GS lazy serving **NOT RUN**.
+
+Release `viewer-paris-sfm-2026-11-07`, archive
+`groundshift-paris-sfm-20261107.tar.gz`: **3,560 bytes**, SHA-256
+`97cb6eb2b9efaf7c41323a67ccf7752db31d70ca811ba8f4effdf27268e079cc`.
+Apply it after the fifteen tourist/SPZ/historical layers. Exactly one dynamic
+report JSON changes. All previously built static app, scene, source preview and
+camera bytes remain unchanged, so this package reuses that accepted production
+build rather than compiling the in-progress chunk implementation. Privacy checks
+and complete base/target/decompressed-overlay/composed size/hash checks pass for
+all1,157 files in3.890945s. All36 prior worlds and observation history remain
+available. Source HD data, raw local logs and weights remain local. Public
+deployment/hash/browser checks run after dispatch; their status is initially
+NOT RUN. Private publication evidence is retained under
+`data/jobs/paris-streaming-20261107/publications/sfm/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)

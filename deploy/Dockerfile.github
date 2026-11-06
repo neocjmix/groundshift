@@ -101,6 +101,13 @@ RUN wget -q -O /tmp/tourist-acquired.tar.gz https://github.com/neocjmix/groundsh
     && mkdir /out \
     && tar -xzf /tmp/tourist-acquired.tar.gz -C /out
 
+# Actual local SfM progress: one dynamic report JSON; GS/streaming not yet executed.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_sfm
+RUN wget -q -O /tmp/paris-sfm.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-sfm-2026-11-07/groundshift-paris-sfm-20261107.tar.gz \
+    && echo '97cb6eb2b9efaf7c41323a67ccf7752db31d70ca811ba8f4effdf27268e079cc  /tmp/paris-sfm.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-sfm.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -115,5 +122,6 @@ COPY --from=spz_measured /out/www /srv
 COPY --from=spz_verified /out/www /srv
 COPY --from=tourist_source /out/www /srv
 COPY --from=tourist_acquired /out/www /srv
+COPY --from=paris_sfm /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
