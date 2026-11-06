@@ -17,6 +17,11 @@ test('real tourist source route, photograph switching and honest stage boundarie
   for(const title of ['새 관광지 GS 재구성','SPZ 구간 스트리밍·레이지로딩'])await expect(page.locator('.street-stage').filter({has:page.getByText(title,{exact:true})})).toContainText('NOT RUN');
   const route=await page.request.get('/experiments/tourist-streaming/route.json');expect(route.ok()).toBe(true);const data=await route.json();
   expect(data.images).toHaveLength(876);expect(data.images.every(i=>i.license==='etalab-2.0'&&i.dimensions[0]===12288&&i.dimensions[1]===6144)).toBe(true);
+  await expect(page.locator('#metrics')).toContainText('24장 · 202.5MB');
+  const acquisition=await page.request.get('/experiments/tourist-streaming/acquisition.json');expect(acquisition.ok()).toBe(true);const a=await acquisition.json();
+  expect(a.status).toBe('PASS');expect(a.frames).toHaveLength(24);expect(a.fullRouteAcquired).toBe(false);expect(a.totalBytes).toBe(202545787);
+  expect(data.images.filter(i=>i.hdSha256)).toHaveLength(24);
+  const missing=await page.request.get('/experiments/tourist-streaming/images/00988_'+a.frames[0].id+'.jpg');expect(missing.status()).toBe(404);
   await page.screenshot({path:info.outputPath('source-report.png'),fullPage:true});
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await expect(page.locator('canvas')).toHaveCount(0);expect(sceneRequests).toEqual([]);expect(errors).toEqual([]);
