@@ -368,7 +368,7 @@
       "manifestPath": "/worlds/paris-58m-spz/world.json",
       "thumbnailPath": "/worlds/paris-58m-spz/preview.jpg",
       "createdAt": "2026-11-06T17:19:26.762517+00:00",
-      "detail": "최초 실제 렌더 확인.상세 화질/구간 로딩 검증은 진행 중."
+      "detail": "첫 실제GS 렌더 확인.6개SPZ영역 분할·3개상주 구현.실제 구간전환·공개검증과 정밀 비교는 진행 중."
     }
   ]
 }
