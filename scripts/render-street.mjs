@@ -12,6 +12,8 @@ import { PNG } from 'pngjs';
 const [configPath, outputPath] = process.argv.slice(2);
 if (!configPath || !outputPath) throw new Error('Usage: render-street.mjs CONFIG.json NEW_OUTPUT');
 const config = JSON.parse(await readFile(configPath,'utf8'));
+const resolution=config.resolution??512;
+if(!Number.isInteger(resolution)||resolution<64||resolution>2048||config.cameras.some(c=>c.w!==resolution||c.h!==resolution))throw new Error('Require matching square camera/output resolution64..2048');
 const output = path.resolve(outputPath);await mkdir(output,{ recursive:false });
 const started=performance.now();const report={status:'RUNNING',startedAt:new Date().toISOString(),models:[],poseMeaning:'Observed poses from preserved all-nine SfM, or explicitly interpolated/extrapolated display poses. No independent geometry truth.'};
 let server,browser;
@@ -25,7 +27,7 @@ const pause=()=>new Promise(requestAnimationFrame);
 window.loadStreet=async(id)=>{
  if(mesh){scene.remove(mesh);mesh.dispose();spark.dispose();renderer.dispose();document.body.replaceChildren();}
  renderer=new THREE.WebGLRenderer({alpha:true,premultipliedAlpha:true,antialias:false,preserveDrawingBuffer:true});
- renderer.setPixelRatio(1);renderer.setSize(512,512);renderer.setClearColor(0x000000,0);document.body.append(renderer.domElement);
+ renderer.setPixelRatio(1);renderer.setSize(${resolution},${resolution});renderer.setClearColor(0x000000,0);document.body.append(renderer.domElement);
  scene=new THREE.Scene();camera=new THREE.PerspectiveCamera();spark=new SparkRenderer({renderer});scene.add(spark);
  mesh=new SplatMesh({url:'/street-asset/'+id});scene.add(mesh);await mesh.initialized;
  const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
@@ -51,7 +53,7 @@ window.renderStreet=async(c,waitFrames)=>{
       }else next();});},resolveId(id){if(id==='/street-render/main.js')return '\0street-render';},load(id){if(id==='\0street-render')return source;}}],
     optimizeDeps:{include:['three','@sparkjsdev/spark']},server:{host:'127.0.0.1',port:4326,strictPort:true}});
   await server.listen();browser=await chromium.launch({channel:'chrome',headless:false});
-  const page=await browser.newPage({viewport:{width:512,height:512},deviceScaleFactor:1});const errors=[];page.on('pageerror',error=>errors.push(error.message));
+  const page=await browser.newPage({viewport:{width:resolution,height:resolution},deviceScaleFactor:1});const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('http://127.0.0.1:4326/street-render/');await page.waitForFunction(()=>typeof window.renderStreet==='function');
   for(const model of config.models){
     const folder=path.join(output,model.id);await mkdir(folder);const item={id:model.id,status:'RUNNING',renders:[]};report.models.push(item);const before=performance.now();
@@ -73,7 +75,7 @@ window.renderStreet=async(c,waitFrames)=>{
     }catch(error){item.status='FAIL';item.error=String(error.stack??error);}
     item.elapsedSeconds=(performance.now()-before)/1000;await writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
   }
-  report.errors=errors;report.browser=browser.version();report.headed=true;report.status=report.models.every(m=>m.status==='PASS')&&errors.length===0?'PASS':'FAIL';
+  report.errors=errors;report.browser=browser.version();report.headed=true;report.resolution=resolution;report.status=report.models.every(m=>m.status==='PASS')&&errors.length===0?'PASS':'FAIL';
 }catch(error){report.status='FAIL';report.error=String(error.stack??error);}
 finally{await browser?.close();await server?.close();report.finishedAt=new Date().toISOString();report.elapsedSeconds=(performance.now()-started)/1000;await writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(report.status,report.models.map(m=>({id:m.id,status:m.status,splats:m.splats,renders:m.renders.length,error:m.error})));}
 if(report.status!=='PASS')process.exitCode=1;

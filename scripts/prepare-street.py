@@ -35,7 +35,9 @@ def panorama_poses():
     return {int(r['id'].split('-')[1]):np.array(r['worldFromPanorama']) for r in records if r['kind']=='observed'}
 
 
-def prepare_inputs(output):
+def prepare_inputs(output,resolution=512):
+    if not isinstance(resolution,int) or isinstance(resolution,bool) or not 64<=resolution<=4096:
+        raise ValueError('Resolution must be an integer from64 through4096')
     C=module('crops','prepare-panoramas.py'); output.mkdir(parents=True,exist_ok=False);start=time.monotonic()
     report=dict(status='RUNNING',startedAt=now(),heldPhysicalPanorama=5,frames=[])
     try:
@@ -43,7 +45,8 @@ def prepare_inputs(output):
         sources=sorted((ROOT/'data/samples/mapillary-beijing/images').glob('*.jpg'))
         for folder in ['images','masks','evaluation']: (output/folder).mkdir()
         frames=[];evaluation=[];inference=[]
-        yy,xx=np.indices((512,512));camera_rays=np.stack([(xx+.5-256)/256,(yy+.5-256)/256,np.ones((512,512))],axis=-1)
+        half=resolution/2
+        yy,xx=np.indices((resolution,resolution));camera_rays=np.stack([(xx+.5-half)/half,(yy+.5-half)/half,np.ones((resolution,resolution))],axis=-1)
         camera_rays/=np.linalg.norm(camera_rays,axis=-1,keepdims=True)
         for physical,path in enumerate(sources,1):
             if sha(path)!=manifest['images'][physical-1]['sha256']:raise ValueError('Source provenance hash mismatch')
@@ -52,9 +55,9 @@ def prepare_inputs(output):
                 for yaw in range(0,360,60):
                     name=f'p{physical:02d}-{ring}-{yaw:03d}.png'
                     rotation=C.crop_rotation(yaw,pitch);world=poses[physical].copy();world[:3,:3]=poses[physical][:3,:3]@rotation
-                    frame=dict(file_path='images/'+name,w=512,h=512,fl_x=256,fl_y=256,cx=256,cy=256,
+                    frame=dict(file_path='images/'+name,w=resolution,h=resolution,fl_x=half,fl_y=half,cx=half,cy=half,
                         physicalPanorama=physical,ring=ring,yaw=yaw,pitch=pitch,transform_matrix=(world@np.diag([1,-1,-1,1])).tolist())
-                    rgb=C.crop_panorama(pixels,512,90,yaw,pitch)
+                    rgb=C.crop_panorama(pixels,resolution,90,yaw,pitch)
                     rays=camera_rays@rotation.T;_,v=directions_to_erp(rays,546,1092);uv_v=(v+.5)/546
                     # Only exclude the known camera/nadir band; do not invent sky geometry.
                     valid=uv_v<=.85
@@ -72,7 +75,7 @@ def prepare_inputs(output):
         write(output/'provenance.json',provenance)
         (output/'LICENSE').write_text('Original photographs: Cicero101 / Mapillary via Wikimedia Commons. CC BY-SA4.0. https://creativecommons.org/licenses/by-sa/4.0/\nDerived perspective crops, depth diagnostics and reconstruction. Original source URLs/hashes: scripts/samples/mapillary-beijing.json\n')
         write(output/'inference-inputs.json',inference)
-        report.update(status='PASS',trainingImages=len(frames),evaluationImages=len(evaluation),physicalTrainingCenters=8,
+        report.update(status='PASS',trainingImages=len(frames),evaluationImages=len(evaluation),physicalTrainingCenters=8,resolution=resolution,
             maskConvention='Brush v0.3: dataset/masks/same-stem.png, white255 participates, black0 ignored; same angular nadir exclusion for all methods.',
             sourceManifestSha256=sha(ROOT/'scripts/samples/mapillary-beijing.json'),poseDocumentSha256=sha(BASE/'evaluation-cameras.json'))
     except Exception as error:report.update(status='FAIL',error=f'{type(error).__name__}: {error}');raise
@@ -127,5 +130,7 @@ def extract_anchors(output):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('stage',choices=['inputs','anchors']);p.add_argument('output',type=Path)
-    a=p.parse_args();(prepare_inputs if a.stage=='inputs' else extract_anchors)(a.output.resolve())
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('stage',choices=['inputs','anchors']);p.add_argument('output',type=Path);p.add_argument('--resolution',type=int,default=512)
+    a=p.parse_args()
+    if a.stage=='inputs':prepare_inputs(a.output.resolve(),a.resolution)
+    else:extract_anchors(a.output.resolve())

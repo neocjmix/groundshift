@@ -44,7 +44,7 @@ def run(job,rendered,output,config_path=None,reference_metrics=None,baseline_mod
                 camera=by_id[rendered_view['id']]
                 if not camera.get('reference'):continue
                 reference=np.asarray(Image.open(camera['reference']).convert('RGB'));rgba=np.asarray(Image.open(rendered/model['id']/(camera['id']+'-rgba.png')).convert('RGBA'))
-                yy,xx=np.indices(reference.shape[:2]);ray=np.stack([(xx+.5-256)/256,(yy+.5-256)/256,np.ones_like(xx)],axis=-1)
+                yy,xx=np.indices(reference.shape[:2]);ray=np.stack([(xx+.5-camera['cx'])/camera['fl_x'],(yy+.5-camera['cy'])/camera['fl_y'],np.ones_like(xx)],axis=-1)
                 ray/=np.linalg.norm(ray,axis=-1,keepdims=True);ray=ray@C.crop_rotation(camera['yaw'],camera['pitch']).T
                 _,v=directions_to_erp(ray,546,1092);vn=(v+.5)/546
                 regions={}
