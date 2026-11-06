@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "meaning": "Posthoc diagnostic only: frozen4/5 XYZ predicts5/6 disparity. These are hypotheses, never inputs to matcher or true correspondences.",
+  "unsupportedTracks": 247,
+  "expectedWithinSearch": 247,
+  "expectedAboveSearch": 0,
+  "expectedNonpositive": 0,
+  "expectedDisparityPercentiles": [
+    294.1105841251148,
+    345.2304297900823,
+    405.35363233190736
+  ],
+  "predictedOutsideThirdCrop": 17,
+  "predictedNadirBand": 1,
+  "rawMatcherInvalid": 3
+}

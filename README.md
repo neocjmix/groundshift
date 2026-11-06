@@ -12,7 +12,18 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: observed road correspondences and calibration
+## Current experiment: a third real photo checks road consistency
+
+The [executed third-view check](docs/ROAD_THIRD_VIEW.md) independently matches
+real photos5/6 against frozen4/5 road tracks:44/291 (15.1%) are supported,247
+remain unconfirmed. Supported angular disagreement is0.069° median. On39 common
+valid depth predictions, adding road anchors reduces radial disagreement with
+5/6 stereo from0.430% to0.384%; previous-held6 points improve0.507%→0.243%.
+Small local evidence, jointly estimated cameras, no independent depth truth.
+No new inference, pose fitting, fusion or GS. Full P2 geometry NOT ACCEPTED.
+[Observation](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/).
+
+## Previous experiment: observed road correspondences and calibration
 
 The [executed correspondence experiment](docs/STEREO_ANCHORS.md) retains five
 cloud controls and actual match overlays. SIFT alone left the road unsupported.

@@ -9,6 +9,13 @@ and stereo road evidence. Expanding an inadequate256px search to512px yields291
 road candidates and a local calibration improvement. Far/face-of-building
 regressions remain; no P2 acceptance, full fusion or GS expansion is claimed.
 
+[Third observed view](ROAD_THIRD_VIEW.md): real5/6 stereo supports44/291 old4/5
+road tracks(15.1%), with0.069° median camera6 angular disagreement. Frozen-map
+comparison on39 common valid tracks shows a modest augmented-calibration gain;
+only6 previously held tracks are supported.247 remain unconfirmed. Cameras
+share all-nine SfM; no independent geometry truth or P2 acceptance. Next inspect
+direction/range support and unsupported road/facade/far regions before fusion.
+
 Preserve the strongest observed scooter recipe: nine real 512x512 / 45-degree target-facing crops from nine Mapillary panoramas, original-image camera estimation, Depth Anything V2 Small relative depth calibrated against SfM and cross-view evidence, fused dense initialization, Brush 0.3.0 Metal 5,000 steps, no RIFE or diffusion. Its reported 41,533 initial points / 46,807 Gaussians / 160.298 s are **single-run observations**, not benchmarks. The no-learned-depth control (115 selected SfM points / 569 Gaussians) was substantially less recognizable, but simultaneously changed initialization density; it does not prove depth accuracy. The synthetic-image comparison has a documented one-pixel border preprocessing difference. See OBJECT_REAL_ONLY.md, OBJECT_NO_DEPTH.md, OBJECT_FOCUS_EXPERIMENT.md.
 
 Main hypothesis: globally registered panoramas can produce a *cross-view-consistent, full-sphere dense initialization* that enables a continuous street Gaussian world. Increasing crop count alone adds angular coverage, not independent camera centers. The nine panoramas are only nine physical viewpoints; do not claim 9 x N crops are independent observations.

@@ -1,0 +1,5 @@
+#comparison { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+#comparison th, #comparison td { padding: 12px; border-bottom: 1px solid #293740; text-align: right; white-space: nowrap; }
+#comparison th:first-child, #comparison td:first-child { text-align: left; }
+#comparison th { color: #9eb6c4; font-weight: 500; }
+#comparison tr[data-variant="augmented"] { background: #17322d; }

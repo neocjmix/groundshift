@@ -1,0 +1,55 @@
+{
+  "declaredAt": "2026-11-06T04:14:09.700875+00:00",
+  "variants": [
+    "baseline",
+    "augmented",
+    "new-only"
+  ],
+  "physicalSource": 5,
+  "target": 6,
+  "measurement": "Sample frozen5 radial maps at the exact shared panorama5 bearing. Compare to supported preferred5/6 stereo, retaining invalid predictions. Same support set for all variants. No fitting, thresholds or camera changes.",
+  "split": "Report all previously supported tracks and previous training/held separately. RGB6 was withheld from calibration; its SfM pose was not. Old training observations are not independent geometry truth.",
+  "units": "SfM arbitrary units. Relative range difference uses new5/6 stereo range as denominator; angle measured at center6.",
+  "files": [
+    {
+      "path": "data/jobs/road-third-view-20261106/report.json",
+      "bytes": 4367,
+      "sha256": "f7eb0ad84db3ffc6a4baa323d985d95f03bce4bde0ef47d0e117f27e1c484e0b"
+    },
+    {
+      "path": "data/jobs/road-third-view-20261106/tracks.json",
+      "bytes": 403098,
+      "sha256": "789b31903b06c50f038282022abf9e3c288c71f8320851940eb09659fcddf3cf"
+    },
+    {
+      "path": "data/jobs/stereo-calibration-wide-20261106/report.json",
+      "bytes": 127861,
+      "sha256": "71e502845def651f6893c2ac653c928dd0c02df6d570b99ef81433d89629f8ac"
+    },
+    {
+      "path": "scripts/evaluate-road-third-view.py",
+      "bytes": 6238,
+      "sha256": "1217000a15003e1fb4c7ad4a688f2b714c67e6774e68a1a382265489ebee3e48"
+    },
+    {
+      "path": "scripts/third_view_geometry.py",
+      "bytes": 3976,
+      "sha256": "50da945f5967ffc46eeb6206cffaa4d11e43e815c7d35207b55a3a2243f76ba2"
+    },
+    {
+      "path": "data/jobs/stereo-calibration-wide-20261106/baseline/5-map.npz",
+      "bytes": 5105265,
+      "sha256": "9edf9287b1071c71dc8a35c58ba50d1417b679b19946e76bf455995a920bd705"
+    },
+    {
+      "path": "data/jobs/stereo-calibration-wide-20261106/augmented/5-map.npz",
+      "bytes": 5056690,
+      "sha256": "da14ee72154e7c178b36ebd05a1157145831f17a3e8c987c53d6012f5de06341"
+    },
+    {
+      "path": "data/jobs/stereo-calibration-wide-20261106/new-only/5-map.npz",
+      "bytes": 4886593,
+      "sha256": "e06c983d91593efd5efa5b975640d06e3c5cdf155a69ec6eb70891b368194836"
+    }
+  ]
+}

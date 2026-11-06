@@ -1,0 +1,377 @@
+{
+  "status": "PASS",
+  "startedAt": "2026-11-06T04:14:09.699662+00:00",
+  "qualityStatus": "NOT ACCEPTED",
+  "stereoReportSha256": "f7eb0ad84db3ffc6a4baa323d985d95f03bce4bde0ef47d0e117f27e1c484e0b",
+  "calibrationReportSha256": "71e502845def651f6893c2ac653c928dd0c02df6d570b99ef81433d89629f8ac",
+  "supportedTracks": 44,
+  "results": {
+    "baseline": {
+      "all": {
+        "total": 44,
+        "valid": 39,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 39,
+          "median": 0.05849432806251695,
+          "p90": 0.18831656019602513,
+          "maximum": 0.7829331556326664
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 39,
+          "median": 0.004299399531785025,
+          "p90": 0.01416106519635369,
+          "maximum": 0.04209865122356963
+        }
+      },
+      "previous-held": {
+        "total": 6,
+        "valid": 6,
+        "invalid": 0,
+        "angularResidualDegrees": {
+          "samples": 6,
+          "median": 0.0773551281485858,
+          "p90": 0.10788779600498635,
+          "maximum": 0.10960341146625706
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 6,
+          "median": 0.005067276141777492,
+          "p90": 0.006580009568610799,
+          "maximum": 0.006909448545386625
+        }
+      },
+      "previous-training": {
+        "total": 38,
+        "valid": 33,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 33,
+          "median": 0.05699967431819611,
+          "p90": 0.33831192127925064,
+          "maximum": 0.7829331556326664
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 33,
+          "median": 0.004299399531785025,
+          "p90": 0.023872098888594675,
+          "maximum": 0.04209865122356963
+        }
+      }
+    },
+    "augmented": {
+      "all": {
+        "total": 44,
+        "valid": 39,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 39,
+          "median": 0.04605541854310116,
+          "p90": 0.10887396695694383,
+          "maximum": 0.17394797702059567
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 39,
+          "median": 0.0038383756068819733,
+          "p90": 0.0075054923831656675,
+          "maximum": 0.012093890699544408
+        }
+      },
+      "previous-held": {
+        "total": 6,
+        "valid": 6,
+        "invalid": 0,
+        "angularResidualDegrees": {
+          "samples": 6,
+          "median": 0.03743950917435924,
+          "p90": 0.07966918288355539,
+          "maximum": 0.09376592325060977
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 6,
+          "median": 0.002429247288891747,
+          "p90": 0.004773510070050892,
+          "maximum": 0.005250369703551369
+        }
+      },
+      "previous-training": {
+        "total": 38,
+        "valid": 33,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 33,
+          "median": 0.04605541854310116,
+          "p90": 0.10906913382136381,
+          "maximum": 0.17394797702059567
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 33,
+          "median": 0.003996461819555809,
+          "p90": 0.008352493270417868,
+          "maximum": 0.012093890699544408
+        }
+      }
+    },
+    "new-only": {
+      "all": {
+        "total": 44,
+        "valid": 39,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 39,
+          "median": 0.040032332177358534,
+          "p90": 0.1414430033974405,
+          "maximum": 0.1672896722395631
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 39,
+          "median": 0.003525466362805479,
+          "p90": 0.007355944303468602,
+          "maximum": 0.015782995317545113
+        }
+      },
+      "previous-held": {
+        "total": 6,
+        "valid": 6,
+        "invalid": 0,
+        "angularResidualDegrees": {
+          "samples": 6,
+          "median": 0.027101007372992092,
+          "p90": 0.06987448105996447,
+          "maximum": 0.08473789321944729
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 6,
+          "median": 0.0017286514753709794,
+          "p90": 0.004172906613598948,
+          "maximum": 0.004743067252933487
+        }
+      },
+      "previous-training": {
+        "total": 38,
+        "valid": 33,
+        "invalid": 5,
+        "angularResidualDegrees": {
+          "samples": 33,
+          "median": 0.040032332177358534,
+          "p90": 0.1424706062289731,
+          "maximum": 0.1672896722395631
+        },
+        "absoluteRelativeRangeDifference": {
+          "samples": 33,
+          "median": 0.0037833985703621333,
+          "p90": 0.008065707045797567,
+          "maximum": 0.015782995317545113
+        }
+      }
+    }
+  },
+  "paired": [
+    {
+      "reference": "baseline",
+      "comparison": "augmented",
+      "subset": "all",
+      "total": 44,
+      "commonValid": 39,
+      "referenceAngleDegrees": {
+        "samples": 39,
+        "median": 0.05849432806251695,
+        "p90": 0.18831656019602513,
+        "maximum": 0.7829331556326664
+      },
+      "augmentedAngleDegrees": {
+        "samples": 39,
+        "median": 0.04605541854310116,
+        "p90": 0.10887396695694383,
+        "maximum": 0.17394797702059567
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 39,
+        "median": 0.004299399531785025,
+        "p90": 0.01416106519635369,
+        "maximum": 0.04209865122356963
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 39,
+        "median": 0.0038383756068819733,
+        "p90": 0.0075054923831656675,
+        "maximum": 0.012093890699544408
+      },
+      "angleImproved": 22,
+      "rangeImproved": 22
+    },
+    {
+      "reference": "baseline",
+      "comparison": "augmented",
+      "subset": "previous-held",
+      "total": 6,
+      "commonValid": 6,
+      "referenceAngleDegrees": {
+        "samples": 6,
+        "median": 0.0773551281485858,
+        "p90": 0.10788779600498635,
+        "maximum": 0.10960341146625706
+      },
+      "augmentedAngleDegrees": {
+        "samples": 6,
+        "median": 0.03743950917435924,
+        "p90": 0.07966918288355539,
+        "maximum": 0.09376592325060977
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 6,
+        "median": 0.005067276141777492,
+        "p90": 0.006580009568610799,
+        "maximum": 0.006909448545386625
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 6,
+        "median": 0.002429247288891747,
+        "p90": 0.004773510070050892,
+        "maximum": 0.005250369703551369
+      },
+      "angleImproved": 4,
+      "rangeImproved": 4
+    },
+    {
+      "reference": "baseline",
+      "comparison": "augmented",
+      "subset": "previous-training",
+      "total": 38,
+      "commonValid": 33,
+      "referenceAngleDegrees": {
+        "samples": 33,
+        "median": 0.05699967431819611,
+        "p90": 0.33831192127925064,
+        "maximum": 0.7829331556326664
+      },
+      "augmentedAngleDegrees": {
+        "samples": 33,
+        "median": 0.04605541854310116,
+        "p90": 0.10906913382136381,
+        "maximum": 0.17394797702059567
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 33,
+        "median": 0.004299399531785025,
+        "p90": 0.023872098888594675,
+        "maximum": 0.04209865122356963
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 33,
+        "median": 0.003996461819555809,
+        "p90": 0.008352493270417868,
+        "maximum": 0.012093890699544408
+      },
+      "angleImproved": 18,
+      "rangeImproved": 18
+    },
+    {
+      "reference": "new-only",
+      "comparison": "augmented",
+      "subset": "all",
+      "total": 44,
+      "commonValid": 39,
+      "referenceAngleDegrees": {
+        "samples": 39,
+        "median": 0.040032332177358534,
+        "p90": 0.1414430033974405,
+        "maximum": 0.1672896722395631
+      },
+      "augmentedAngleDegrees": {
+        "samples": 39,
+        "median": 0.04605541854310116,
+        "p90": 0.10887396695694383,
+        "maximum": 0.17394797702059567
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 39,
+        "median": 0.003525466362805479,
+        "p90": 0.007355944303468602,
+        "maximum": 0.015782995317545113
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 39,
+        "median": 0.0038383756068819733,
+        "p90": 0.0075054923831656675,
+        "maximum": 0.012093890699544408
+      },
+      "angleImproved": 8,
+      "rangeImproved": 8
+    },
+    {
+      "reference": "new-only",
+      "comparison": "augmented",
+      "subset": "previous-held",
+      "total": 6,
+      "commonValid": 6,
+      "referenceAngleDegrees": {
+        "samples": 6,
+        "median": 0.027101007372992092,
+        "p90": 0.06987448105996447,
+        "maximum": 0.08473789321944729
+      },
+      "augmentedAngleDegrees": {
+        "samples": 6,
+        "median": 0.03743950917435924,
+        "p90": 0.07966918288355539,
+        "maximum": 0.09376592325060977
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 6,
+        "median": 0.0017286514753709794,
+        "p90": 0.004172906613598948,
+        "maximum": 0.004743067252933487
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 6,
+        "median": 0.002429247288891747,
+        "p90": 0.004773510070050892,
+        "maximum": 0.005250369703551369
+      },
+      "angleImproved": 0,
+      "rangeImproved": 0
+    },
+    {
+      "reference": "new-only",
+      "comparison": "augmented",
+      "subset": "previous-training",
+      "total": 38,
+      "commonValid": 33,
+      "referenceAngleDegrees": {
+        "samples": 33,
+        "median": 0.040032332177358534,
+        "p90": 0.1424706062289731,
+        "maximum": 0.1672896722395631
+      },
+      "augmentedAngleDegrees": {
+        "samples": 33,
+        "median": 0.04605541854310116,
+        "p90": 0.10906913382136381,
+        "maximum": 0.17394797702059567
+      },
+      "referenceAbsoluteRelativeRange": {
+        "samples": 33,
+        "median": 0.0037833985703621333,
+        "p90": 0.008065707045797567,
+        "maximum": 0.015782995317545113
+      },
+      "augmentedAbsoluteRelativeRange": {
+        "samples": 33,
+        "median": 0.003996461819555809,
+        "p90": 0.008352493270417868,
+        "maximum": 0.012093890699544408
+      },
+      "angleImproved": 8,
+      "rangeImproved": 8
+    }
+  ],
+  "protocolSha256": "b5fbc693b3afd92dd0452138e0eb77eb65191d2af4599d9b531ae96cd4cfafff",
+  "samplesSha256": "aaa18a09cbfda9fb420b0f8d21b875bac19bf85cbdb8706c1f6c27ef335ffb98",
+  "calibration": "NOT RUN; frozen maps only",
+  "depthInference": "NOT RUN",
+  "gaussianTraining": "NOT RUN",
+  "finishedAt": "2026-11-06T04:14:09.769436+00:00",
+  "elapsedSeconds": 0.06978841708041728,
+  "maxResidentSetBytes": 58163200
+}

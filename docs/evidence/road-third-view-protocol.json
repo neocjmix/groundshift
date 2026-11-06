@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "declaredAt": "2026-11-06T04:12:45.092591+00:00",
+  "physicalPanoramas": [
+    4,
+    5,
+    6
+  ],
+  "operation": "Match actual RGB5/6 without using 4/5 XYZ or any depth prediction. Then compare frozen 4/5 road tracks at the same observed panorama5 ray.",
+  "poseCaveat": "RGB6 withheld from preceding depth calibration and 4/5 stereo; cameras jointly estimated using all nine images. Not independent camera/depth ground truth.",
+  "settings": {
+    "size": 1024,
+    "hfovDegrees": 90,
+    "pitchDegrees": -30,
+    "yaws": [
+      0,
+      60,
+      120,
+      180,
+      240,
+      300
+    ],
+    "rectifiedScale": 2,
+    "maxDisparity": 512,
+    "blockSize": 5,
+    "lrTolerancePixels": 0.5,
+    "photoTolerance255": 15,
+    "subpixelMaxDisparitySpread": 2,
+    "minParallaxDegrees": 3,
+    "maxReprojectionPixels": 1
+  },
+  "selection": "Choose one preferred crop per old panorama5 ray BEFORE matching, highest original-camera ray Z among own-valid finite rectified canvases. No best-residual or nearest-valid selection; retain all other crop trials diagnostically.",
+  "diagnosticGate": {
+    "minSupportedTracks": 30,
+    "angleDegrees": 1,
+    "absoluteRelativeRange": 0.05,
+    "minimumStableFractionAmongSupported": 0.8,
+    "meaning": "Predeclared internal repeatability screen, not calibrated street accuracy or fusion acceptance. Unsupported tracks remain in total denominator."
+  },
+  "range": "5/6 radial ranges from positive fixed-pose triangulation, SfM arbitrary units. No learned-depth/range prior or cap in new matcher.",
+  "files": [
+    {
+      "path": "data/samples/mapillary-beijing/images/003_1677293342921360.jpg",
+      "bytes": 3917173,
+      "sha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/004_679966948337536.jpg",
+      "bytes": 3885062,
+      "sha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/005_23989291350709625.jpg",
+      "bytes": 3878894,
+      "sha256": "1add8ca4bd6ad6e7d60ca90db7ad7c542de532873afd5a9a757e9b96148cc473"
+    },
+    {
+      "path": "data/jobs/road-stereo-wide-20261106/report.json",
+      "bytes": 2152,
+      "sha256": "85157375b34c8c8394657256d17c88b95ac2c549dc1a1a4cfafe99b047bf4d08"
+    },
+    {
+      "path": "data/jobs/road-stereo-wide-20261106/tracks.json",
+      "bytes": 274655,
+      "sha256": "9f6a9c0bc31e42430680b3d4d25a44c1ed5b677de4724649653d6c6792e29c67"
+    },
+    {
+      "path": "data/jobs/panoramic-baseline-20261106/evaluation-cameras.json",
+      "bytes": 25919,
+      "sha256": "87ece93541ec2504fd0e2586ff3f8866e627b06e817d69551a2cf0cf053754db"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/transforms.json",
+      "bytes": 39677,
+      "sha256": "eb4f8cbfc38ef8be860e337cfa4dc8be037143f7e87a36f143be7a78c117b106"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-crops/crops.json",
+      "bytes": 35101,
+      "sha256": "431a88e3e89f9d5c96dc91eb078704305748742a8ea88afe0bf020f83bb54741"
+    },
+    {
+      "path": "scripts/check-road-third-view.py",
+      "bytes": 16829,
+      "sha256": "979d34d5347aeffba3a1d28f7bcc7720bc70b8c8a688077eff055067a52367c4"
+    },
+    {
+      "path": "scripts/third_view_geometry.py",
+      "bytes": 3976,
+      "sha256": "50da945f5967ffc46eeb6206cffaa4d11e43e815c7d35207b55a3a2243f76ba2"
+    },
+    {
+      "path": "scripts/warp-panorama-gap.py",
+      "bytes": 19107,
+      "sha256": "51f95abca5295aec8fd883e8b57d644979a47af7eb08b0b09d9cacb08f46c6d2"
+    },
+    {
+      "path": "scripts/stereo_tracks.py",
+      "bytes": 3270,
+      "sha256": "52d6590688bcf00c0057c5815d68e1550cc2fb84a94906fa19f87ebcc18ef890"
+    },
+    {
+      "path": "scripts/prepare-panoramas.py",
+      "bytes": 14886,
+      "sha256": "2de5b74e98deaab29e346e7dcb26cebe8161af0e471bc1f63e15eba4f097de63"
+    }
+  ]
+}

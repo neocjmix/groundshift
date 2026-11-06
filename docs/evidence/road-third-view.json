@@ -1,0 +1,189 @@
+{
+  "status": "PASS",
+  "startedAt": "2026-11-06T04:12:45.029673+00:00",
+  "opencv": "5.0.0",
+  "qualityStatus": "NOT ACCEPTED",
+  "totalTracks": 291,
+  "supportedTracks": 44,
+  "stableTracks": 44,
+  "unsupportedTracks": 247,
+  "supportFraction": 0.15120274914089346,
+  "stableFractionOfAll": 0.15120274914089346,
+  "stableFractionOfSupported": 1.0,
+  "statuses": {
+    "supported": 44,
+    "lr-photo-unsupported": 247
+  },
+  "angularResidualDegrees": {
+    "samples": 44,
+    "median": 0.06865586509632686,
+    "p90": 0.3588387032340238,
+    "maximum": 0.6685002098751658
+  },
+  "absoluteRelativeRangeDifference": {
+    "samples": 44,
+    "median": 0.0057060087011918045,
+    "p90": 0.017936592682130003,
+    "maximum": 0.0258042382876091
+  },
+  "crossRangeSfm": {
+    "samples": 44,
+    "median": 0.00513783765086605,
+    "p90": 0.0197784296875144,
+    "maximum": 0.03170314138573753
+  },
+  "alternativeSupportedTracks": 86,
+  "diagnosticGate": "PASS",
+  "groups": [
+    {
+      "yaw": 0,
+      "status": "PASS",
+      "axis": 0,
+      "swapped": true,
+      "baselineSfm": 1.3888870567035292,
+      "leftPhysical": 6,
+      "lrPhotoPixels5": 325034,
+      "elapsedSeconds": 2.1153047089464962
+    },
+    {
+      "yaw": 60,
+      "status": "PASS",
+      "axis": 0,
+      "swapped": true,
+      "baselineSfm": 1.3888870567035294,
+      "leftPhysical": 6,
+      "lrPhotoPixels5": 368930,
+      "elapsedSeconds": 2.119483915856108
+    },
+    {
+      "yaw": 120,
+      "status": "PASS",
+      "axis": 1,
+      "swapped": false,
+      "baselineSfm": 1.3888870567035285,
+      "leftPhysical": 5,
+      "lrPhotoPixels5": 501090,
+      "elapsedSeconds": 2.364313291152939
+    },
+    {
+      "yaw": 180,
+      "status": "PASS",
+      "axis": 0,
+      "swapped": false,
+      "baselineSfm": 1.3888870567035292,
+      "leftPhysical": 5,
+      "lrPhotoPixels5": 329529,
+      "elapsedSeconds": 1.974843957927078
+    },
+    {
+      "yaw": 240,
+      "status": "PASS",
+      "axis": 0,
+      "swapped": false,
+      "baselineSfm": 1.388887056703529,
+      "leftPhysical": 5,
+      "lrPhotoPixels5": 320456,
+      "elapsedSeconds": 2.0655518751591444
+    },
+    {
+      "yaw": 300,
+      "status": "PASS",
+      "axis": 1,
+      "swapped": true,
+      "baselineSfm": 1.3888870567035292,
+      "leftPhysical": 6,
+      "lrPhotoPixels5": 403385,
+      "elapsedSeconds": 2.183202916989103
+    }
+  ],
+  "protocolSha256": "b9bd748c2a69313892a03a8547ceec834b5bec349f262b60879224428de8303f",
+  "tracksSha256": "789b31903b06c50f038282022abf9e3c288c71f8320851940eb09659fcddf3cf",
+  "worldFromPanorama": {
+    "4": [
+      [
+        0.49909839559830316,
+        -0.0020811840255146596,
+        0.8665428207447404,
+        0.39885420968807694
+      ],
+      [
+        0.001785569913569902,
+        0.9999974629214237,
+        0.0013732773935778283,
+        0.026588320145542504
+      ],
+      [
+        -0.8665434803004884,
+        0.0008618722456956927,
+        0.4991008454460367,
+        -1.4510694419678707
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "5": [
+      [
+        0.49724071463648767,
+        -0.0026805625109673327,
+        0.8676084867567974,
+        0.05462509850207492
+      ],
+      [
+        0.0025155461679313472,
+        0.9999954782421595,
+        0.0016478843138267854,
+        0.02479679791198489
+      ],
+      [
+        -0.867608980898234,
+        0.0013631140302802882,
+        0.49724520931314,
+        -0.14827394328437257
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "6": [
+      [
+        0.49560584367876437,
+        -0.0031533829774023745,
+        0.8685418262163651,
+        -0.33905766091741885
+      ],
+      [
+        0.0032637170490301963,
+        0.9999931106062819,
+        0.0017683017265647757,
+        0.00948836417780385
+      ],
+      [
+        -0.8685414186223273,
+        0.0019582940969454193,
+        0.49561272100476383,
+        1.1835619298888396
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "depthInference": "NOT RUN",
+  "poseEstimation": "NOT RUN; existing jointly estimated poses",
+  "calibration": "NOT RUN; unchanged",
+  "fusion": "NOT RUN",
+  "gaussianTraining": "NOT RUN",
+  "finishedAt": "2026-11-06T04:13:01.295985+00:00",
+  "elapsedSeconds": 16.266311042010784,
+  "maxResidentSetBytes": 795639808
+}

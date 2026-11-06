@@ -580,6 +580,18 @@
     "experiments/stereo-anchors/sift-augmented/4-to-5-overlap.png",
     "experiments/stereo-anchors/sift-augmented/4-to-5-warp.png",
     "experiments/stereo-anchors/sift-augmented/cloud.ply",
-    "experiments/stereo-anchors/sift-augmented/4-to-5-range.png"
+    "experiments/stereo-anchors/sift-augmented/4-to-5-range.png",
+    "experiments/road-third-view/summary.json",
+    "experiments/road-third-view/track-examples.jpg",
+    "experiments/road-third-view/ATTRIBUTION.txt",
+    "experiments/road-third-view/third-overlay.jpg",
+    "experiments/road-third-view/cloud.json",
+    "experiments/road-third-view/track-diagnostics.json",
+    "experiments/road-third-view/observed56.ply",
+    "experiments/road-third-view/source-6.jpg",
+    "experiments/road-third-view/previous45.ply",
+    "experiments/road-third-view/source-5.jpg",
+    "experiments/road-third-view/source-4.jpg",
+    "experiments/road-third-view/index.html"
   ]
 }
