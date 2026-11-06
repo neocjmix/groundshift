@@ -261,6 +261,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "street-final-hires",
+      "source": "data/jobs/street-final-quality-20261106/public-worlds/street-final-hires/world",
+      "asset": "scene.ply",
+      "format": "ply",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [

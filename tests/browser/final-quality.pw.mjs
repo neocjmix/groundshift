@@ -14,6 +14,21 @@ test('final quality report displays the actual publication phase and real source
   for(const image of await images.all())await image.scrollIntoViewIfNeeded();
   await expect.poll(()=>images.evaluateAll(imgs=>imgs.map(i=>i.complete?i.naturalWidth:0)),{timeout:30000}).toEqual(summary.samples.flatMap(s=>s.baseline?[1024,512]:[1024]));
   const link=page.locator('#new-world');if(summary.run?.world){await expect(link).toBeVisible();await expect(link).toHaveAttribute('href','/?world='+summary.run.world);}else await expect(link).toBeHidden();
+  const comparisons=page.locator('#comparisons img');await expect(comparisons).toHaveCount(summary.comparisons?.length??0);
+  for(const image of await comparisons.all())await image.scrollIntoViewIfNeeded();
+  if(summary.comparisons?.length)await expect.poll(()=>comparisons.evaluateAll(imgs=>imgs.every(i=>i.complete&&i.naturalWidth>0)),{timeout:30000}).toBe(true);
+  const rows=page.locator('#metrics tbody tr');await expect(rows).toHaveCount(summary.metrics?.length??0);
+  for(let i=0;i<(summary.metrics?.length??0);i++){
+    const metric=summary.metrics[i];await expect(rows.nth(i).locator('td').nth(0)).toHaveText(metric.label);
+    await expect(rows.nth(i).locator('td').nth(1)).toHaveText(metric.baseline.toFixed(3)+(metric.unit??''));
+    await expect(rows.nth(i).locator('td').nth(2)).toHaveText(metric.candidate.toFixed(3)+(metric.unit??''));
+  }
+  if(summary.video){const video=page.locator('#motion');await video.scrollIntoViewIfNeeded();await video.evaluate(v=>v.load());
+    await expect.poll(()=>video.evaluate(v=>v.readyState),{timeout:30000}).toBeGreaterThanOrEqual(2);expect(await video.evaluate(v=>v.duration)).toBeGreaterThan(1);
+    await video.evaluate(v=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=Math.min(3,v.duration/2);}));
+    const decoded=await video.evaluate(v=>{const c=document.createElement('canvas');c.width=128;c.height=128;c.getContext('2d').drawImage(v,0,0,128,128);return c.toDataURL();});
+    expect(Buffer.from(decoded.split(',')[1],'base64').length).toBeGreaterThan(1000);
+  }
   await expect(page.locator('iframe,canvas')).toHaveCount(0);
   await page.locator('h1').scrollIntoViewIfNeeded();await page.screenshot({path:info.outputPath('final-quality-report.png'),fullPage:true});
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
