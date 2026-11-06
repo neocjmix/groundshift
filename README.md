@@ -2,6 +2,11 @@
 
 Revisit real places as explorable 3D worlds.
 
+**New viewer control:** choose **Fly ↗** beside Orbit for fullscreen exploration.
+Mobile uses two joysticks (move/look) and rise/descend buttons; desktop uses
+WASD + mouse, Q/E height and Shift boost. No collisions or inferred floor.
+[Controls,actual checks and device limits](docs/FLY.md).
+
 **Latest actual result:** [Paris · first58m and native LoD streaming](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
 · [Explore3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/paris-58m-lod/world.json).
 24real12K panoramas → image-estimated poses → calibrated DAV2 → M2 Metal GS:

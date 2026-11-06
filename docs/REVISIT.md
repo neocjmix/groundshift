@@ -1,5 +1,10 @@
 # Revisit recovered camera views
 
+The later user-requested [fullscreen Fly mode](FLY.md) adds free camera movement
+beside Orbit on every world,including worlds without camera metadata. It starts
+at the current view and preserves the renderer/streaming session. This does not
+change recorded-pose continuity or infer a floor/collision surface.
+
 The viewer now loads optional `cameras.json` and offers **Orbit** and **Camera
 path** modes. Camera path supports forward/backward playback, pause, speed in
 views per second, a view slider, previous/next checkpoints, free look and reset.

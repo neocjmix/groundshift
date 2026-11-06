@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SparkRenderer, SplatMesh, SplatFileType,PagedSplats } from "@sparkjsdev/spark";
@@ -7,9 +7,11 @@ import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-pat
 import "./Viewer.css";
 import { ChunkStream,type StreamStats } from './streaming';
 import {radFetcher,type RadTransfer} from './rad-fetcher';
+import {FlyNavigation,flySpeed} from './fly-navigation';
+import FlyControls from './FlyControls';
 
 type NavigationState = {
-  mode: 'orbit' | 'camera-path';
+  mode: 'orbit' | 'camera-path' | 'fly';
   cursor: number;
   playing: boolean;
   speed: number;
@@ -47,6 +49,11 @@ interface Metrics {
 
 export default function Viewer({ world }: { world: LoadedWorld }) {
   const mount = useRef<HTMLDivElement>(null);
+  const shell = useRef<HTMLDivElement>(null);
+  const fly = useRef<FlyNavigation|null>(null);
+  const fullscreenAttempt=useRef(0);
+  const cancelFullscreen=useCallback(()=>++fullscreenAttempt.current,[]);
+  const getFly=useCallback(()=>fly.current,[]);
   const reset = useRef<() => void>(() => {});
   const zoom = useRef<(direction: number) => void>(() => {});
   const navigate = useRef<(action: NavigationAction) => void>(() => {});
@@ -61,6 +68,40 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
   const retryChunks=useRef<()=>void>(()=>{});
   const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;errors:string[]}|null>(null);
+
+  const exitFly=useCallback(()=>{
+    cancelFullscreen();
+    navigate.current({type:'mode',mode:'orbit'});
+    // Exit must remain available even after a renderer/context error.
+    fly.current?.clear();if(fly.current)fly.current.enabled=false;
+    setNavigation(current=>({...current,mode:'orbit',playing:false}));
+    if(document.pointerLockElement&&shell.current?.contains(document.pointerLockElement))document.exitPointerLock();
+    if(document.fullscreenElement===shell.current)void document.exitFullscreen().catch(()=>{});
+  },[cancelFullscreen]);
+  const enterFly=()=>{
+    navigate.current({type:'mode',mode:'fly'});
+    mount.current?.querySelector('canvas')?.focus({preventScroll:true});
+    const element=shell.current,token=cancelFullscreen();
+    if(element?.requestFullscreen&&document.fullscreenEnabled){
+      try{void element.requestFullscreen().then(()=>{
+        if(token!==fullscreenAttempt.current&&document.fullscreenElement===element)void document.exitFullscreen().catch(()=>{});
+      }).catch(()=>{/* Fixed viewport remains usable when native fullscreen is unavailable. */});}catch{/* Same viewport fallback. */}
+    }
+  };
+  useEffect(()=>{
+    if(navigation.mode!=='fly')return;
+    const element=shell.current,previousOverflow=document.body.style.overflow;
+    document.body.style.overflow='hidden';
+    let hadFullscreen=document.fullscreenElement===element;
+    const fullscreenChange=()=>{if(document.fullscreenElement===element)hadFullscreen=true;else if(hadFullscreen)exitFly();};
+    const escape=(event:KeyboardEvent)=>{if(event.key==='Escape')exitFly();};
+    document.addEventListener('fullscreenchange',fullscreenChange);window.addEventListener('keydown',escape);
+    return()=>{
+      cancelFullscreen();document.body.style.overflow=previousOverflow;
+      document.removeEventListener('fullscreenchange',fullscreenChange);window.removeEventListener('keydown',escape);
+      if(document.fullscreenElement===element)void document.exitFullscreen().catch(()=>{});
+    };
+  },[navigation.mode,exitFly,cancelFullscreen]);
 
   useEffect(() => {
     const container = mount.current!;
@@ -83,6 +124,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         failed = true;
         abort.abort();
         stream?.dispose();
+        fly.current?.clear();
         mesh?.paged?.dispose();
         renderer?.setAnimationLoop(null);
         setStatus({
@@ -149,6 +191,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       controls.saveState();
       const path = world.cameraPath;
       const nav = initialNavigation(world);
+      const flight=new FlyNavigation(camera,flySpeed(path,camera.position.distanceTo(controls.target)));
+      fly.current=flight;
       let yaw = 0;
       let pitch = 0;
       const look = new THREE.Quaternion();
@@ -169,6 +213,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       reset.current = () => {
         if (disposed || failed) return;
         if (nav.mode === 'orbit') resetOrbit();
+        else if(nav.mode==='fly')flight.reset();
         else {
           nav.cursor = 0;
           nav.playing = false;
@@ -180,13 +225,30 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         }
       };
       navigate.current = (action) => {
-        if (disposed || failed || !path || !controls) return;
+        if (disposed || failed || !controls) return;
         if (action.type === 'mode') {
+          const wasFly=nav.mode==='fly';
+          if(action.mode==='camera-path'&&!path)return;
+          flight.clear();flight.enabled=false;
+          if(document.pointerLockElement===renderer?.domElement)document.exitPointerLock();
           nav.mode = action.mode;
           nav.playing = false;
           controls.enabled = nav.mode === 'orbit';
-          if (nav.mode === 'orbit') resetOrbit();
-        } else if (action.type === 'seek') {
+          if(nav.mode==='fly'){
+            const position=camera.position.clone(),orientation=camera.quaternion.clone(),target=controls.target.clone();
+            const damping=controls.enableDamping;controls.enableDamping=false;controls.update();controls.enableDamping=damping;
+            camera.position.copy(position);camera.quaternion.copy(orientation);controls.target.copy(target);
+            flight.enter();
+          }
+          else if (nav.mode === 'orbit') {
+            if(wasFly){
+              // Keep the explored position and heading when leaving Fly.
+              camera.getWorldDirection(controls.target).multiplyScalar(Math.max(flight.baseSpeed*3,pose.near*10)).add(camera.position);
+              controls.update();
+            }else resetOrbit();
+          }
+        } else if(!path)return;
+        else if (action.type === 'seek') {
           nav.cursor = sampleCameraPath(path, Math.round(action.cursor)).cursor;
           nav.playing = false;
         } else if (action.type === 'step') {
@@ -207,14 +269,25 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       const canvas = renderer.domElement;
       let drag: { id: number; x: number; y: number } | undefined;
       const pointerDown = (event: PointerEvent) => {
-        if (nav.mode !== 'camera-path' || event.button !== 0 || drag || failed) return;
+        if (!['camera-path','fly'].includes(nav.mode) || event.button !== 0 || drag || failed) return;
         event.preventDefault();
         canvas.focus();
+        if(document.pointerLockElement===canvas)return;
+        // Pointer capture is invalid once pointer lock owns the mouse. Capture
+        // the fallback drag first, then let the lock release it if successful.
         canvas.setPointerCapture(event.pointerId);
         drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+        if(nav.mode==='fly'&&event.pointerType==='mouse'){
+          try{const request=canvas.requestPointerLock?.();if(request)void request.catch(()=>{});}catch{/* Drag look remains available. */}
+        }
       };
       const pointerMove = (event: PointerEvent) => {
-        if (!drag || drag.id !== event.pointerId || nav.mode !== 'camera-path') return;
+        if (!drag || drag.id !== event.pointerId) return;
+        if(nav.mode==='fly'){
+          if(document.pointerLockElement!==canvas)flight.rotate((event.clientX-drag.x)*.003,(event.clientY-drag.y)*.003);
+          drag={id:drag.id,x:event.clientX,y:event.clientY};return;
+        }
+        if(nav.mode!=='camera-path')return;
         yaw -= (event.clientX - drag.x) * 0.004;
         pitch = THREE.MathUtils.clamp(pitch - (event.clientY - drag.y) * 0.004, -Math.PI * 0.45, Math.PI * 0.45);
         drag = { id: drag.id, x: event.clientX, y: event.clientY };
@@ -237,8 +310,20 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         pitch = THREE.MathUtils.clamp(pitch, -Math.PI * 0.45, Math.PI * 0.45);
         applyPath();
       };
+      const flyKeys=new Set(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space','ControlLeft','ControlRight','ShiftLeft','ShiftRight']);
+      const flightKeyDown=(event:KeyboardEvent)=>{
+        if(nav.mode!=='fly'||failed||event.metaKey||event.altKey||!flyKeys.has(event.code))return;
+        const target=event.target instanceof Element?event.target:null;
+        if(target?.closest('input,select,textarea,[contenteditable="true"]')||(event.code==='Space'&&target?.closest('button')))return;
+        event.preventDefault();flight.keys.add(event.code);
+      };
+      const flightKeyUp=(event:KeyboardEvent)=>flight.keys.delete(event.code);
+      const mouseLook=(event:MouseEvent)=>{if(nav.mode==='fly'&&document.pointerLockElement===canvas)flight.rotate(event.movementX*.002,event.movementY*.002);};
+      const releaseInput=()=>{flight.clear();drag=undefined;};
+      const pointerLockChange=()=>{releaseInput();};
       const visibilityChange = () => {
         if (document.hidden) {
+          releaseInput();
           nav.playing = false;
           publishNavigation();
         }
@@ -247,19 +332,29 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       canvas.addEventListener('pointermove', pointerMove);
       canvas.addEventListener('pointerup', pointerUp);
       canvas.addEventListener('pointercancel', pointerUp);
+      canvas.addEventListener('lostpointercapture',pointerUp);
       canvas.addEventListener('keydown', keyDown);
       document.addEventListener('visibilitychange', visibilityChange);
+      window.addEventListener('keydown',flightKeyDown);window.addEventListener('keyup',flightKeyUp);
+      window.addEventListener('blur',releaseInput);document.addEventListener('mousemove',mouseLook);
+      document.addEventListener('pointerlockchange',pointerLockChange);
       navigationCleanup = () => {
         canvas.removeEventListener('pointerdown', pointerDown);
         canvas.removeEventListener('pointermove', pointerMove);
         canvas.removeEventListener('pointerup', pointerUp);
         canvas.removeEventListener('pointercancel', pointerUp);
+        canvas.removeEventListener('lostpointercapture',pointerUp);
         canvas.removeEventListener('keydown', keyDown);
         document.removeEventListener('visibilitychange', visibilityChange);
+        window.removeEventListener('keydown',flightKeyDown);window.removeEventListener('keyup',flightKeyUp);
+        window.removeEventListener('blur',releaseInput);document.removeEventListener('mousemove',mouseLook);
+        document.removeEventListener('pointerlockchange',pointerLockChange);
+        if(document.pointerLockElement===canvas)document.exitPointerLock();
+        flight.enabled=false;flight.clear();if(fly.current===flight)fly.current=null;
       };
       zoom.current = (direction) => {
         if (!controls) return;
-        if (nav.mode === 'camera-path') {
+        if (nav.mode !== 'orbit') {
           camera.fov = THREE.MathUtils.clamp(camera.fov * (direction > 0 ? 0.8 : 1.25), 15, 110);
           camera.updateProjectionMatrix();
           return;
@@ -417,7 +512,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
               }
             }
             applyPath();
-          } else controls?.update();
+          } else if(nav.mode==='fly')flight.update(elapsed);
+          else controls?.update();
           if(stream){
             stream.update(camera.position.toArray());
             renderer.domElement.dataset.stream=JSON.stringify(stream.stats());
@@ -487,7 +583,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     navigation.direction > 0 ? Math.floor(navigation.cursor) + 1 : Math.ceil(navigation.cursor)) : null;
 
   return (
-    <div className="scene-shell" data-phase={status.phase}>
+    <div ref={shell} className={'scene-shell'+(navigation.mode==='fly'?' is-fly':'')} data-phase={status.phase}>
+      {navigation.mode==='fly'&&<FlyControls getMotion={getFly} onExit={exitFly} onReset={()=>reset.current()}
+        disabled={status.phase!=='ready'} detail={world.paging&&pagingStats?`${pagingStats.selected.toLocaleString()} GS · ${pagingStats.pages} pages`:metrics?`${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
       <div ref={mount} className="canvas-mount" />
       {world.paging&&<div className="stream-panel" aria-label="Native LoD paging status">
         <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
@@ -507,15 +605,15 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         <span className="live-dot" /> WORLD VIEW{" "}
         <span className="topline-separator">/</span> {world.manifest.id}
       </div>
-      {world.cameraPath && (
-        <div className="path-panel" aria-label="Camera path controls">
+      <div className="path-panel" aria-label="Navigation controls">
           <div className="path-mode" role="group" aria-label="Navigation mode">
             <button aria-pressed={navigation.mode === 'orbit'} disabled={status.phase !== 'ready'}
               onClick={() => navigate.current({ type: 'mode', mode: 'orbit' })}>Orbit</button>
-            <button aria-pressed={navigation.mode === 'camera-path'} disabled={status.phase !== 'ready'}
-              onClick={() => navigate.current({ type: 'mode', mode: 'camera-path' })}>Camera path</button>
+            <button aria-label="Fly" aria-pressed={navigation.mode === 'fly'} disabled={status.phase !== 'ready'} onClick={enterFly}>Fly ↗</button>
+            {world.cameraPath&&<button aria-pressed={navigation.mode === 'camera-path'} disabled={status.phase !== 'ready'}
+              onClick={() => navigate.current({ type: 'mode', mode: 'camera-path' })}>Camera path</button>}
           </div>
-          {navigation.mode === 'camera-path' && (
+          {navigation.mode === 'camera-path' && world.cameraPath && (
             <>
               <label className="path-progress">Jump to recorded view
                 <input type="range" min={0} max={world.cameraPath.poses.length - 1} step={1}
@@ -552,7 +650,6 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             </>
           )}
         </div>
-      )}
       {world.cameraPathError && <p className="path-warning" role="status">{world.cameraPathError}</p>}
       {status.phase !== "ready" && (
         <div

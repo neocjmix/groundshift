@@ -4,6 +4,12 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-07
 
+Viewer UX follow-up:[Fly](FLY.md) adds mobile dual-joystick and desktop
+WASD/mouse fullscreen exploration,explicit lift/speed/reset/exit,with no
+collisions or inferred ground. It shares the existing renderer and paging
+session and changes no world artifact or native reconstruction. Actual input
+and deployment checks are recorded separately from geometry acceptance.
+
 New-data/serving result,2026-11-07: [Paris first58m](PARIS_STREAMING.md)
 executes144/144SfM views,480DAV2 predictions and one8k/768px/800k Metal run
 (1018.286s). WholeSPZ15.92MB is preserved. Nearest3spatial regions pass bounded
