@@ -13,6 +13,7 @@ export default defineConfig({
     panoramicPair: "experiments/panoramic-pair/index.html",
     panoramicCalibration: "experiments/panoramic-calibration/index.html",
     perspectiveOverlap: "experiments/perspective-overlap/index.html",
+    stereoAnchors: "experiments/stereo-anchors/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },

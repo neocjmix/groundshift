@@ -37,6 +37,12 @@ lens calibration or poses. See [actual evidence](ORIGINAL_VIDEO.md).
 The strict schema in `src/world.ts` and [world format reference](WORLD_FORMAT.md) replace the illustrative shape below for real artifacts. Version 1 supports one Gaussian asset, orbit and optional camera-path navigation. The viewer world is right-handed, +Y-up with arbitrary or meter units, an explicit uniform asset transform and camera position/target/up/clipping. Three.js cameras look along local −Z. The manifest never silently assumes an asset's up-axis or invents a safe origin. Native exports retain genuine world-space camera matrices in `cameras.json`; the viewer must not apply the asset transform to them again. Explicit sequence edges permit interpolated movement; unknown edges and different components stop it. Free look changes orientation without moving off the selected camera route.
 
 ## Reconstruction backend boundary
+The [observed-correspondence experiment](STEREO_ANCHORS.md) reuses fixed camera
+poses and the existing OpenCV stereo functions as local CPU processes. It adds
+calibration evidence and diagnostic point clouds, not a new service or GPU
+abstraction. Panorama crop cameras remain analytically co-located with their
+physical panorama; actual RGB matches do not add camera centers.
+
 The [one-panorama P1 experiment](PANORAMIC_DEPTH_P1.md) adds a pinned local depth
 process plus explicitly calibrated spherical projection. Raw prediction semantics,
 SfM radial calibration and measured-by-image-estimation pose metadata stay separate.

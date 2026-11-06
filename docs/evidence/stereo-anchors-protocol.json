@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "declaredAt": "2026-11-06T02:50:36.521886+00:00",
+  "sourcePhysicalPanoramas": [
+    4,
+    5
+  ],
+  "source": "Observed original licensed ERP images; reprojected level/downward 90-degree crops at1024, not generated views",
+  "calibration": "Existing SfM frame/poses and old predictions fixed; augment original training with new training correspondences, compare new-only where >=30 support. No217 historical holdout IDs in original training; exclude new training within0.5deg of historical held rays in either panorama.",
+  "matching": {
+    "detector": "SIFT",
+    "nfeatures": 6000,
+    "ratio": 0.75,
+    "mutualRatio": true,
+    "size": 1024,
+    "opencvCornerConversion": "+0.5 to SIFT array-index xy before pinhole geometry"
+  },
+  "geometry": {
+    "maxReprojectionPixels": 1.0,
+    "minParallaxDegrees": 3.0,
+    "positiveZBoth": true,
+    "maxRange": "Existing training SfM P99 per panorama",
+    "dedupBothRayDegrees": 0.35,
+    "protectedHistoricalHoldoutDegrees": 0.5
+  },
+  "split": "After dedup: source ERP1092x546 tile64; held when(tile_x+2*tile_y)%5==0. Entire retained correspondence held together in both panoramas. Internal calibration holdout, not independent geometry truth.",
+  "model": "Reuse pinned DAV2 MPS predictions without inference. Inverse camera-Z affine Huber calibration, radial=Z/unit_ray_z. SfM arbitrary units; unknown gravity.",
+  "controls": [
+    "baseline preserved calibration",
+    "original training plus new training anchors",
+    "new training anchors only with explicit unchanged-fit fallback if unsupported"
+  ],
+  "diagnostics": "Same angular band, ranges, ROI rectangles, stride3, central crop selection and pair reference as preceding experiment. Keep all failures, coverage, joint support and old/new residuals. No threshold tuning or pose changes.",
+  "files": [
+    {
+      "path": "data/jobs/panoramic-pair-20261106/anchors-4/selected-panorama.json",
+      "bytes": 1851624,
+      "sha256": "ec505de9b13683774fb848359f230a174dfe374bface11ec0624415c9cb2583c"
+    },
+    {
+      "path": "data/jobs/panoramic-baseline-20261106/selected-panorama.json",
+      "bytes": 1851655,
+      "sha256": "a3e563a5abe4d4443beb84d056963aae834ff67fd946aea1c4645ef0ba27f9fd"
+    },
+    {
+      "path": "data/jobs/perspective-overlap-verified-20261106/report.json",
+      "bytes": 133635,
+      "sha256": "b69ff5d5402044af8080b2266991fbe86f042373a0f1f50e94ee73ee52fa3fbd"
+    },
+    {
+      "path": "data/jobs/perspective-overlap-verified-20261106/down-calibrations.json",
+      "bytes": 79377,
+      "sha256": "e3e2fb929412572cf3c8320524d702cecf1978672f162194bfb25bebd1e2a99f"
+    },
+    {
+      "path": "data/jobs/panoramic-perspective-control-audited-20261106/crop-calibrations.json",
+      "bytes": 32255,
+      "sha256": "eb41bbfb318dbad6b4700b3554d5872352eb9bd9dc30f41d69a402b215c55f23"
+    },
+    {
+      "path": "data/jobs/panoramic-calibration-20261106/dav2/calibration.json",
+      "bytes": 11135,
+      "sha256": "2ad2d3175f366dd20f75b99f4d23ddb1a8fe4e719ff46e21748249eaf21fa283"
+    },
+    {
+      "path": "data/jobs/panoramic-perspective-depth-20261106/report.json",
+      "bytes": 7374,
+      "sha256": "2494b3772b9ee59f5f62b8dee83bff5509f0dceae0203e5b5ec82f07c758e990"
+    },
+    {
+      "path": "data/jobs/perspective-overlap-inference-20261106/report.json",
+      "bytes": 7261,
+      "sha256": "cbfda932b08085d413b4b23cc24cbfacac2b71acf865dac413b20f3b4a4fb785"
+    },
+    {
+      "path": "data/jobs/perspective-overlap-input-20261106/protocol.json",
+      "bytes": 11798,
+      "sha256": "c9c0d0257117f022ca96c8dea97cd79b546de50b97c9cb2e7762ab5110324234"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/003_1677293342921360.jpg",
+      "bytes": 3917173,
+      "sha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/004_679966948337536.jpg",
+      "bytes": 3885062,
+      "sha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391"
+    },
+    {
+      "path": "scripts/experiment-stereo-anchors.py",
+      "bytes": 12519,
+      "sha256": "b7ca2fd4083bb54a179a7c02ddc60b96f41e4826d78ca8b42d3ede7abe507068"
+    },
+    {
+      "path": "scripts/stereo_tracks.py",
+      "bytes": 3270,
+      "sha256": "52d6590688bcf00c0057c5815d68e1550cc2fb84a94906fa19f87ebcc18ef890"
+    },
+    {
+      "path": "scripts/prepare-panoramas.py",
+      "bytes": 14886,
+      "sha256": "2de5b74e98deaab29e346e7dcb26cebe8161af0e471bc1f63e15eba4f097de63"
+    }
+  ],
+  "groundFeatureSearch": {
+    "enabled": true,
+    "mask": "ERP v=.70\u2013.85 in both source crops; all longitudes",
+    "nfeatures": 3000,
+    "contrastThreshold": 0.01,
+    "reason": "Initial global6000 SIFT search produced zero accepted source4 road tracks. Add a masked low-contrast search without relaxing fixed geometric filters; preserve original run."
+  }
+}

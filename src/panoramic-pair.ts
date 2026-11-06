@@ -21,6 +21,7 @@ type Model = {
 };
 type Summary = {
   heading?: string; intro?: string; docHref?: string; maskCaption?: string;
+  evidence?: { title: string; image: string; caption: string }[];
   completedAt: string; status: Status; qualityStatus: QualityStatus; conclusion: string;
   sources: { id: string; title: string; image: string; sourceUrl: string; licenseUrl: string }[];
   models: Model[]; notes: string[]; nextStep: string;
@@ -70,6 +71,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <figure hidden><img id="direction-mask" alt="출발 ERP 격자에 표시한 재투영 비교 유효 영역과 제외 영역"><figcaption id="mask-caption">출발 ERP 격자의 겹침·가려짐 마스크 · 원본 전체에 대한 정확도 점수가 아님</figcaption></figure>
       <figure hidden><img id="direction-overlap" alt="같은 촬영 위치의 크롭들이 예측한 방사 거리의 로그 범위"><figcaption>같은 촬영 위치 · 크롭 간 log 거리 범위 · 초록은 낮은 불일치, 빨강은 기준 이상 · 검정은 비교 미지원 · 정확도나 가려짐 판정 아님</figcaption></figure>
     </div>
+  </section>
+  <section class="section" id="matching-evidence" hidden>
+    <h2>실제 사진에서 찾은 대응점</h2>
+    <details><summary>촬영 방향별 대응점 증거 펼쳐보기</summary><div class="image-pair" id="evidence-images"></div></details>
   </section>
   <section class="section">
     <h2>이 결과로 말할 수 있는 범위</h2>
@@ -236,6 +241,15 @@ fetch('./summary.json').then(async response => {
   if (summary.intro) document.querySelector('#intro')!.textContent = summary.intro;
   if (summary.maskCaption) document.querySelector('#mask-caption')!.textContent = summary.maskCaption;
   if (summary.docHref) document.querySelector<HTMLAnchorElement>('#doc-link')!.href = summary.docHref;
+  if (summary.evidence?.length) {
+    document.querySelector<HTMLElement>('#matching-evidence')!.hidden = false;
+    document.querySelector('#evidence-images')!.replaceChildren(...summary.evidence.map(item => {
+      const figure = document.createElement('figure'); const image = document.createElement('img');
+      image.src = item.image; image.alt = item.title; image.loading = 'lazy';
+      const caption = document.createElement('figcaption'); caption.textContent = `${item.title} · ${item.caption}`;
+      figure.append(image, caption); return figure;
+    }));
+  }
   for (const model of summary.models) select.add(new Option(`${model.title} · ${model.status}`, model.id));
   select.value = summary.models.find(model => model.cloud)?.id ?? summary.models[0].id; select.disabled = false;
   document.querySelector('#execution-status')!.textContent = `로컬 실행 ${summary.status}`;

@@ -1,0 +1,23 @@
+{
+  "declaredAt": "2026-11-06T02:51:07.241449+00:00",
+  "matchingReportSha256": "2b719000d5b166b619e75ff2f985b1c48d449e0666ac9c3299ed0e4a4a5f699c",
+  "method": "Existing fixed-pose stereo rectification and CPU SGBM_3WAY. No learned-depth prior, camera refinement or new RGB.",
+  "settings": {
+    "size": 1024,
+    "rectifiedScale": 2,
+    "maxDisparity": 256,
+    "blockSize": 5,
+    "uniquenessRatio": 10,
+    "lrTolerance": 0.5,
+    "photoTolerance255": 15,
+    "rectifiedStride": 16,
+    "minParallaxDegrees": 3
+  },
+  "selection": "Both positive ranges <= previous training SfM P99; source4 predeclared road ROI only. No relaxed geometry thresholds. Spatial holdout/protected historical rays as SIFT run.",
+  "caveat": "LR/photo consistency and triangulation are internal to same two RGB images/poses, not proven correspondence or independently accurate depth.",
+  "implementation": {
+    "probe-road-stereo.py": "1ce70cc73ef21f1fb936de942f38ed26243f2d9ede9a8ff79f397f087ecc510e",
+    "warp-panorama-gap.py": "51f95abca5295aec8fd883e8b57d644979a47af7eb08b0b09d9cacb08f46c6d2",
+    "stereo_tracks.py": "52d6590688bcf00c0057c5815d68e1550cc2fb84a94906fa19f87ebcc18ef890"
+  }
+}

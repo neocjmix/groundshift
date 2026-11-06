@@ -12,7 +12,17 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: dense perspective coverage and overlap
+## Current experiment: observed road correspondences and calibration
+
+The [executed correspondence experiment](docs/STEREO_ANCHORS.md) retains five
+cloud controls and actual match overlays. SIFT alone left the road unsupported.
+Diagnosing a too-small stereo search range and expanding256→512px recovered291
+road candidates; combined calibration improves matched road4→5 disagreement
+from2.43% to0.45%. The reverse direction changes little; facade/far-depth problems
+remain, including invalid historical holdout predictions. No new model inference,
+fusion or GS training. [Observation](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/).
+
+## Previous experiment: dense perspective coverage and overlap
 
 The [executed two-panorama perspective experiment](docs/PERSPECTIVE_OVERLAP.md)
 adds twelve real downward crops to cover the road, reuses the existing level
