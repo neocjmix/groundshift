@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "experimentDate": "2026-11-07",
+  "scope": "Source selection and bounded local acquisition; no new Gaussian reconstruction or streaming executed",
+  "selection": {
+    "name": "Paris Notre-Dame south bank and connected streets",
+    "collection": "9fe7f3ab-14e3-4174-8731-b06e31d9577b",
+    "ranks": [
+      808,
+      1683
+    ],
+    "dimensions": [
+      12288,
+      6144
+    ],
+    "license": "etalab-2.0",
+    "count": 876,
+    "lengthMeters": 2185.306585764598,
+    "medianSpacingMeters": 2.530076475824626,
+    "maximumSpacingMeters": 3.227323667633924,
+    "minimumSpacingMeters": 0.01707390834149576,
+    "distanceMeaning": "Approximate source GPS polyline length, not surveyed distance or SfM geometry"
+  },
+  "acquisition": {
+    "status": "PASS",
+    "requested": 24,
+    "acquired": 24,
+    "fullRouteAcquired": false,
+    "totalRouteObservations": 876,
+    "firstRank": 988,
+    "lastRank": 1011,
+    "totalBytes": 202545787,
+    "elapsedSeconds": 249.66857245890424,
+    "sourceManifestSha256": "ffc8d549ffb5c11869c29fc5da889f55131d4a794fc1d7a5b827e0cbe6732aa3"
+  },
+  "pixelDecode": {
+    "status": "PASS",
+    "checks": [
+      {
+        "rank": 988,
+        "dimensions": [
+          12288,
+          6144
+        ],
+        "mode": "RGB",
+        "pixelDecode": "PASS"
+      },
+      {
+        "rank": 1000,
+        "dimensions": [
+          12288,
+          6144
+        ],
+        "mode": "RGB",
+        "pixelDecode": "PASS"
+      },
+      {
+        "rank": 1011,
+        "dimensions": [
+          12288,
+          6144
+        ],
+        "mode": "RGB",
+        "pixelDecode": "PASS"
+      }
+    ],
+    "seconds": 0.8255964170675725
+  },
+  "automatedChecks": {
+    "sourcePythonTests": {
+      "status": "PASS",
+      "passed": 9
+    },
+    "viewerJsTests": {
+      "status": "PASS",
+      "passed": 188
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS"
+  },
+  "browser": {
+    "localFinal": {
+      "status": "PASS",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "observations": 876,
+      "polylinePoints": 876,
+      "realSdImageDecode": true,
+      "selectedRanks": [
+        1008,
+        1683,
+        808
+      ],
+      "mobileOverflow": false,
+      "sceneRequests": [],
+      "errors": [],
+      "privateHdResponseStatus": 200,
+      "privateHdImageReturned": false,
+      "scope": "Source-scoping page, not Gaussian reconstruction or streaming acceptance",
+      "casesPassed": 2,
+      "seconds": 4.0
+    },
+    "publicFinal": {
+      "status": "PASS",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "observations": 876,
+      "polylinePoints": 876,
+      "realSdImageDecode": true,
+      "selectedRanks": [
+        1008,
+        1683,
+        808
+      ],
+      "mobileOverflow": false,
+      "sceneRequests": [],
+      "errors": [],
+      "privateHdResponseStatus": 404,
+      "privateHdImageReturned": false,
+      "scope": "Source-scoping page, not Gaussian reconstruction or streaming acceptance",
+      "casesPassed": 2,
+      "seconds": 9.5
+    },
+    "initialLocalAcquiredAttempt": {
+      "status": "FAIL",
+      "reason": "Expected 404 but Vite preview SPA fallback returned HTML 200. Test now checks the environment-specific status and rejects image MIME/JPEG bytes; initial failure evidence retained locally."
+    },
+    "publicScreenshotInspection": "PASS; real source photo, 876-point route, acquisition metrics and NOT RUN reconstruction stages visibly inspected"
+  },
+  "publicFilePins": {
+    "summary.json": {
+      "bytes": 7389,
+      "sha256": "4066f8c58794682a0f50d0e9684883b0b953aff3cfdd66df38a8d6dc14424a65"
+    },
+    "route.json": {
+      "bytes": 785747,
+      "sha256": "481a204ead7d2d3b665b1a5c560ec1cf00c3d46bce3d340f493dd54f882a7875"
+    },
+    "acquisition.json": {
+      "bytes": 7944,
+      "sha256": "251a9d53333f3eba2a9be4f4256b3b846a98bfeec44235eef6175afd4262e477"
+    }
+  },
+  "publication": [
+    {
+      "phase": "source",
+      "pointerCommit": "4b88c82",
+      "railwayDeployment": "88dbde1f-c2c2-4c9e-8ad0-f80577facc1b",
+      "status": "SUCCESS",
+      "archive": {
+        "bytes": 1499174,
+        "sha256": "09c91393bd069225e82b03bec77d8528b191952272d73d571fef2a009231522c",
+        "targetFiles": 1122,
+        "overlayFiles": 13,
+        "assembledFiles": 1155
+      },
+      "publicHashChecks": {
+        "status": "PASS",
+        "count": 13
+      },
+      "ordinaryRestore": {
+        "status": "PASS",
+        "layers": 14,
+        "files": 1155,
+        "seconds": 4.95742925000377,
+        "meaning": "Fresh empty-directory ordered extraction of all14immutable archives matches every composed size/SHA."
+      }
+    },
+    {
+      "phase": "acquired",
+      "pointerCommit": "0a61b81",
+      "railwayDeployment": "db32ae29-a46f-4e51-aab6-4b532656e785",
+      "status": "SUCCESS",
+      "archive": {
+        "bytes": 99199,
+        "sha256": "05e46898feacbaa0f3070f356d74d94e314a89c09262df8b943ea43de32e89d1",
+        "targetFiles": 1123,
+        "overlayFiles": 6,
+        "assembledFiles": 1157
+      },
+      "publicHashChecks": {
+        "status": "PASS",
+        "count": 6
+      },
+      "ordinaryRestore": {
+        "status": "PASS",
+        "layers": 15,
+        "files": 1157,
+        "seconds": 4.94813495897688,
+        "meaning": "Fresh empty-directory ordered extraction of all15immutable archives matches every composed size/SHA."
+      }
+    }
+  ],
+  "notRun": [
+    "Full pixel decode of all 24 HD images",
+    "Acquisition of the remaining 852 HD images",
+    "New Paris SfM/depth/Gaussian training and export",
+    "Lazy Gaussian streaming, transition quality and performance"
+  ],
+  "reportUrl": "https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/"
+}

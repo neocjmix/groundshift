@@ -89,6 +89,8 @@ are published or committed.
 | Viewer JS tests/typecheck/lint/build | PASS188JS tests plus TypeScript/ESLint and actual production build |
 | Local source report/browser | PASS2/2in5.4s |
 | Initial public source report/browser | PASS2/2in10.9s |
+| Final acquisition report/browser | PASS local2/2in4.0s, public2/2in9.5s;24HD hash pins, real previews, route and HD binary exclusion checked |
+| Railway publication and public integrity | PASS two incremental deployments;13 then6 changed public file size/SHA checks; fresh15-layer restore1157files |
 | New local SfM, depth, GS export and lazy GS serving | NOT RUN |
 
 Nine synthetic tests reject missing/duplicate ranks, mismatched provider links,
@@ -98,6 +100,16 @@ capture handling and preserved failure reports. These tests are **not** an SfM
 or GPU test. Actual browser checks decode real source JPEG previews, verify the
 876-point GPS line, change photo selection, inspect mobile overflow and follow
 the lab link. No Gaussian request or canvas is created on the source page.
+The final public screenshot was also visually inspected. A first local
+acquisition-page test **FAIL** expected HTTP404 for an unpublished HD path;
+Vite preview returns its SPA HTML with200. The corrected check rejects image
+MIME/JPEG bytes and expects that local fallback while retaining the deployed
+server's404 assertion. Both final runs pass; the initial failure is retained
+with its trace. This is not a claim that a raw HD image was published.
+
+[Committed evidence summary](evidence/tourist-source.json) retains measured
+source/acquisition values, final browser observations, public metadata hashes
+and the two actual deployment IDs without publishing raw logs or HD binaries.
 
 An initial probe of a guessed `api.panoramax.ign.fr` hostname fails DNS. Current
 official docs identify `panoramax.ign.fr`; discovery continues through the

@@ -21,11 +21,16 @@ test('real tourist source route, photograph switching and honest stage boundarie
   const acquisition=await page.request.get('/experiments/tourist-streaming/acquisition.json');expect(acquisition.ok()).toBe(true);const a=await acquisition.json();
   expect(a.status).toBe('PASS');expect(a.frames).toHaveLength(24);expect(a.fullRouteAcquired).toBe(false);expect(a.totalBytes).toBe(202545787);
   expect(data.images.filter(i=>i.hdSha256)).toHaveLength(24);
-  const missing=await page.request.get('/experiments/tourist-streaming/images/00988_'+a.frames[0].id+'.jpg');expect(missing.status()).toBe(404);
+  const missing=await page.request.get('/experiments/tourist-streaming/images/00988_'+a.frames[0].id+'.jpg');
+  // Vite preview falls back to index.html; the deployed static server returns 404.
+  expect(missing.status()).toBe(process.env.GS_BASE_URL?404:200);
+  expect(missing.headers()['content-type']||'').not.toMatch(/^image\//i);
+  const missingBody=await missing.body();expect(missingBody.subarray(0,3).equals(Buffer.from([0xff,0xd8,0xff]))).toBe(false);
   await page.screenshot({path:info.outputPath('source-report.png'),fullPage:true});
   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await expect(page.locator('canvas')).toHaveCount(0);expect(sceneRequests).toEqual([]);expect(errors).toEqual([]);
   await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',browser:browser.version(),headed:process.env.HEADLESS!=='1',observations:876,polylinePoints:876,realSdImageDecode:true,selectedRanks:[1008,1683,808],mobileOverflow:false,sceneRequests,errors,
+    privateHdResponseStatus:missing.status(),privateHdImageReturned:false,
     scope:'Source-scoping page, not Gaussian reconstruction or streaming acceptance'},null,2));
 });
 
