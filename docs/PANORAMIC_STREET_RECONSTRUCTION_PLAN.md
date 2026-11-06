@@ -1,6 +1,6 @@
 # Panoramic street reconstruction: staged experiment plan
 
-User stop rule2026-11-06: [the final same-data quality run](FINAL_QUALITY.md)
+User stop rule2026-11-06 (campaign now executed and CLOSED): [the final same-data quality run](FINAL_QUALITY.md)
 uses fresh1024 crops and an800k ceiling with the retained DAV2/poses. After this
 campaign, close quality tuning on the existing nine panoramas. Historical P2–P5
 research below is not authorization for more same-data sweeps. Move to new

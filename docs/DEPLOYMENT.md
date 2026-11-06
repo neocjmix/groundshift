@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -14,6 +14,127 @@ parallel. Show provisional results and pending checks as NOT RUN; publish later
 validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
+
+## Final same-data quality release — 2026-11-06
+
+[New best observed3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-final-hires/world.json)
+· [Actual comparisons, movie and limits](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/)
+· [Execution evidence and stop rule](FINAL_QUALITY.md).
+34 Gaussian scenes,16 reports,50 chronological entries. Retain all previous
+worlds and reports. Same-data quality tuning is CLOSED; the improved appearance
+does not accept measured geometry or unrestricted walking.
+
+Publication is incremental: actual1024px input evidence ships while training
+runs; native export packaging begins while matched renders continue, with full
+browser checks still NOT RUN; measured comparisons ship while the full local
+browser suite is still running. Each
+phase retains an immutable release and explicit pending statuses. The first
+inputs-only overlay is superseded by the export overlay; it is **not** required
+in the final restoration chain.
+
+| Publication phase | Source pointer | Railway deployment | Created UTC → SUCCESS UTC |
+|---|---|---|---|
+|Actual inputs while native training runs|`1cca577`|`9a014c19-1c89-4c49-9a8c-a64e81407c03`|11:53:57.620 →11:55:34.595|
+|Actual800k native world, quality verdict pending|`54f1531`|`0770c34a-b9b9-444c-9a8f-cc776796b336`|12:18:28.022 →12:20:17.313|
+|Measured comparisons while local suite runs|`819b654`|`58cd663b-46eb-4c96-830d-54436d5016fc`|12:22:27.164 →12:23:49.102|
+|Verified public-browser status, metadata only|`6d23be3`|`221b650d-f410-4fdb-b57b-22e29522b09d`|12:33:25.400 →12:35:34.006|
+
+Native training runs11:51:18.972–12:15:34.629 UTC. Native publication preparation
+starts12:16:25 while the1024 render batch continues until12:17:54; its metrics
+finish12:18:15 during packaging/upload. The full local75-case browser run starts
+12:21:24.989; measured-evidence deployment is dispatched during that run, without
+waiting for its result. Explicit latest-branch connector triggers were used;
+push-only autodeploy remains unverified.
+
+**PASS:** server logs verify each added archive checksum. The final service
+reports SUCCESS and `/healthz` returns200/`ok`. Each new release attachment is
+read back anonymously with the same full-byte checksum. Post-dispatch public
+changed-file checks pass19/25/12/2 files across the four phases. A complete
+phase3 readback separately checks **all1,046 public file sizes/SHA-256 hashes**
+in449.290s, zero mismatches; phase4 changes only two metadata files and their
+fresh public hashes match. The other1,044 composed files are unchanged. Four
+missing/private-path probes return404.
+
+**PASS:**75 distinct local browser cases have passing evidence (initial74/75,
+a failed paused-callback retry retained, then actual-playback corrected1/1).
+Seven targeted public headed Chrome cases pass in2.0min as rounded by the CLI;
+exact public-run seconds were not recorded. They cover the new actual scene's
+render/path change, decoded report images/video and metrics,34 gallery previews,
+mobile/error handling, chronology and shared older reports. A full75-case public
+rerun is **NOT RUN**. After the metadata-only update, one fresh static public
+Chrome case passes in11.318682s (Playwright stats), confirming the final phase
+and published validation scope without repeating GPU scene tests. [Public new scene](evidence/final-quality-public.jpg) ·
+[Final public report](evidence/final-quality-report-public.jpg) ·
+[Sanitized evidence](evidence/final-quality.json). Full execution/test failures
+and precise acceptance limits are in [FINAL_QUALITY.md](FINAL_QUALITY.md).
+
+The final status overlay is10,846 bytes and changes only
+`experiments/final-quality/summary.json` and `experiments/lab/timeline.json`.
+It reuses the exact earlier scene, camera, comparison JPEGs, movie, metric values
+and compiled code. Full geometry accuracy and unrestricted walking remain
+unaccepted after successful execution, publication and browser interaction.
+
+### Current34-world display restoration
+
+The complete current display consists of the following immutable layers, applied
+**in order**. Each archive contains only selected public `www/` files; no original ERP
+photos, private footage, weights or raw native logs are restored. Explicitly
+licensed comparison crops remain included with attribution.
+
+| Layer | Release / archive | Bytes | SHA-256 |
+|---|---|---:|---|
+|1 · model-selection base|`viewer-model-selection-2026-11-06` / `groundshift-model-selection-20261106-v2.tar.gz`|928,736,619|`cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d`|
+|2 · final native export|`viewer-final-quality-export-2026-11-06` / `groundshift-final-quality-export-20261106.tar.gz`|77,310,230|`a278ecd09b7c1bddf74195161e2a75d1afa1757bb6626e0e59b9b981a9440c9c`|
+|3 · measured evidence|`viewer-final-quality-evidence-2026-11-06` / `groundshift-final-quality-evidence-20261106.tar.gz`|4,198,465|`070d3b51b9224bd0dd9fa0815ef4be82d6c2e5f5a8e2d03e6f56083142e52abd`|
+|4 · verified public status|`viewer-final-quality-verified-2026-11-06` / `groundshift-final-quality-verified-20261106.tar.gz`|10,846|`e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48`|
+
+In a fresh checkout of this feature branch:
+
+```sh
+(
+  set -e
+  gs_restore_dir=$(mktemp -d)
+  gs_restore_layer() {
+    curl --fail --location --output "$gs_restore_dir/$2" \
+      "https://github.com/neocjmix/groundshift/releases/download/$1/$2"
+    printf '%s  %s\n' "$3" "$gs_restore_dir/$2" | shasum -a 256 -c -
+    tar -xzf "$gs_restore_dir/$2" -C "$gs_restore_dir"
+  }
+  gs_restore_layer viewer-model-selection-2026-11-06 \
+    groundshift-model-selection-20261106-v2.tar.gz \
+    cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d
+  gs_restore_layer viewer-final-quality-export-2026-11-06 \
+    groundshift-final-quality-export-20261106.tar.gz \
+    a278ecd09b7c1bddf74195161e2a75d1afa1757bb6626e0e59b9b981a9440c9c
+  gs_restore_layer viewer-final-quality-evidence-2026-11-06 \
+    groundshift-final-quality-evidence-20261106.tar.gz \
+    070d3b51b9224bd0dd9fa0815ef4be82d6c2e5f5a8e2d03e6f56083142e52abd
+  gs_restore_layer viewer-final-quality-verified-2026-11-06 \
+    groundshift-final-quality-verified-20261106.tar.gz \
+    e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48
+  mkdir -p public/worlds public/experiments
+  cp -R "$gs_restore_dir/www/worlds/." public/worlds/
+  cp -R "$gs_restore_dir/www/experiments/." public/experiments/
+  for gs_entry in experiments/*/index.html; do
+    rm -f "public/$gs_entry"
+  done
+)
+npm ci
+npm run dev
+```
+
+This restores the public display; it does not repeat native reconstruction.
+Overlay assembly preserves the base files and verifies every target hash. Six
+superseded compiled bundle files remain inert in the final assembled surface;
+the current target inventory contains1,040 files, while the actual layer
+composition contains1,046. Do not report a target-only absence proof. Historical
+observation data remains included; no previous scene was removed.
+
+**PASS:** ordinary ordered extraction of all four checksum-verified local release
+archives into an empty directory reproduced all1,046 composed file sizes/hashes
+in4.593s. This tests display restoration; a fresh-source/npm-ci reconstruction
+of this current package and another native training are NOT RUN.
+
 
 ## Alternative-model observation release — 2026-11-06 KST
 
@@ -939,13 +1060,13 @@ acceptance is still NOT RUN.
 
 Complete this sequence for viewer changes and all experiment outcomes already authorized for observation. Routine approval is not needed again; preserve explicit privacy and licensing limits.
 
-1. Finish the change and run relevant TypeScript, lint, automated, production-build and browser checks. Verify actual rendering for exported scenes. Inspect and report quality separately; FAIL quality is published rather than filtered out.
-2. Inventory all exported worlds and experimental outcomes. Publish each distinct scene with public metadata and an actual render preview. Record failed/cancelled/unexecuted stages and duplicate-export lineage in the report. Keep downloaded samples, measured/supplied-pose reconstructions, original video and generated-input trials distinct.
+1. As soon as a small authorized result is deployable, prepare its minimum static build/content/integrity checks and dispatch asynchronously. Do not wait for all local tests, browser checks, benchmarks or the final conclusion. Mark pending verification NOT RUN and update it afterward. FAIL quality is published rather than filtered out.
+2. Inventory all exported worlds and experimental outcomes as they appear. Publish each distinct scene with public metadata and an actual render preview when available; any temporary neutral preview must be explicitly labeled NOT RUN. Record failed/cancelled/unexecuted stages and duplicate-export lineage in the report. Keep downloaded samples, measured/supplied-pose reconstructions, original video and generated-input trials distinct.
 3. Build the curated static package locally using the explicit inclusion flags below. Inspect its complete inventory for private source paths, URLs, footage, frames and raw logs. Only explicitly allowlisted licensed public crops/comparisons belong in the report. Do not upload the repository or raw `dist/` directory.
 4. Archive only `www/`, record its SHA-256, publish it under a fresh GitHub release tag, then download it and compare the hash. Keep the prior archive available.
 5. Update the release URL/checksum in `deploy/Dockerfile.github`, commit the reviewable deployment pointer, and push it to the connected branch as part of the same workflow. A source-code push without this step leaves the old package live.
 6. Observe Railway's deployment history, revision and healthcheck. A source-connection response is insufficient evidence of push-triggered deployment. If the expected new deployment does not appear, explicitly trigger the latest intended branch revision through the connector, continue validation, and record which trigger actually worked. The standing instruction already authorizes this routine fallback.
-7. Compare every public file against the curated inventory. Verify missing/private paths return 404. Open the public viewer, visually inspect all included worlds, and exercise changed navigation/catalog behavior.
+7. After dispatch, run the remaining relevant TypeScript, lint, automated, build and browser checks. Compare public files with the curated inventory, record any reused historical checks, verify missing/private paths return404, and inspect actual rendering/navigation. Do not claim a partial public check as a full inventory or full browser pass.
 8. Record the release tag, source/deployment revisions, archive hash, Railway deployment ID and public-browser evidence here. Report any failed or unexecuted gate accurately; completion requires a verified live result.
 
 ### Branch request and explicit deployment fallback
@@ -959,8 +1080,9 @@ The working release procedure must observe a new deployment and use an explicit 
 ## Restore scene assets in a fresh checkout
 
 The catalog/recipe are tracked; generated scenes and comparison images are
-ignored. `npm run sample` supplies only Houseplant. For the current29-world
-surface, restore this immutable archive in a **fresh checkout**. These commands
+ignored. `npm run sample` supplies only Houseplant. The historical29-world
+snapshot below remains reproducible. For the current34-world surface use the
+four-layer restoration above. Restore only in a **fresh checkout**. These commands
 replace the named generated paths; keep personal variants elsewhere.
 
 ```sh

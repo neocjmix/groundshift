@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-06T12:38:40.629946+00:00",
+  "scope": "Final single quality trial on the existing nine panoramas; no additional same-data quality sweeps.",
+  "protocol": {
+    "declaredAt": "2026-11-06T11:50:08.154590+00:00",
+    "purpose": "Final quality attempt on the same nine panorama source images. No future same-data quality sweeps.",
+    "config": {
+      "native": "Brush0.3.0 Metal",
+      "depth": "Reuse actual calibrated DAV2 dense initialization; no new depth inference",
+      "resolution": 1024,
+      "maxSplats": 800000,
+      "steps": 8000,
+      "seed": 42,
+      "shDegree": 1,
+      "trainingImages": 96,
+      "trainingPhysicalCenters": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "retained": [
+      "original nine hashes",
+      "camera matrices/FOV/crop directions",
+      "same183124initialpointsandcolors",
+      "same angular masks",
+      "panorama5appearance withholding; all-nineSfMgeometry"
+    ],
+    "evaluation": "Existing75same512pxcameras for common comparison; additional1024samecamera diagnostics for actual fine detail. No independent geometry ground truth.",
+    "stoppingRule": "One completed declared trial. No model/filter/resolution/cap/step grid, no silent downscale. Mechanical retries preserve this protocol and retain failed evidence. Geometry-preserving training investigated separately, not silently claimed implemented.",
+    "publication": "Publish fresh1024crop evidence immediately, nativeexport immediately when available, measurements as later updates; deployment subagent works in parallel."
+  },
+  "preservation": {
+    "status": "PASS",
+    "initialPoints": 183124,
+    "initialPlySha256": "e86d0745d59c33936e87db5bfc3e056c4a08273dc230da05426b1874bb82233a",
+    "baselineSceneSha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+    "sourceManifestSha256": "2d659ec73dd0044fc463c3f3f351203fdb59d5ac9e9fc46877a2b43f2e8ea2b4",
+    "poseDocumentSha256": "87ece93541ec2504fd0e2586ff3f8866e627b06e817d69551a2cf0cf053754db",
+    "trainingImages": 96,
+    "physicalTrainingCenters": 8,
+    "heldPhysicalPanorama": 5
+  },
+  "tests": {
+    "status": "PASS",
+    "distinctPassed": 233,
+    "discovered": 233,
+    "perEnvironment": [
+      {
+        "status": "PASS",
+        "passed": 231,
+        "skipped": 2,
+        "seconds": 13.091054334072396
+      },
+      {
+        "status": "PASS",
+        "passed": 204,
+        "skipped": 29,
+        "seconds": 11.557284665992483
+      }
+    ]
+  },
+  "geometryTrainingFeasibility": {
+    "status": "SOURCE INVESTIGATION COMPLETE; native integration NOT RUN",
+    "observedAt": "2026-11-06T12:00:14.245245+00:00",
+    "upstreamPullRequest": "https://github.com/ArthurBrussee/brush/pull/497",
+    "prState": "open",
+    "merged": false,
+    "pinnedHead": "e658b9ccaeacf3aa303e1d0c334673eab51c2fb0",
+    "repository": "Deepthought73/brush",
+    "repositoryLicense": "Apache-2.0; separate changed-dependency installation audit NOT RUN because not adopted",
+    "releasedVersion": "0.3.0 remains the executed comparison backend",
+    "findings": [
+      "Released0.3.0 CLI has no depth-supervision input/weight; current pipeline supplies only depth-initialized PLY.",
+      "Pinned openPR adds disparityL1 supervision, fifth forward depth channel and native backward changes. Alpha denominator is detached and depth gradient into opacity is removed in pinned source. These are source observations, not executed gradient tests here.",
+      "Depth files are single-channelfloat32TIFF with0invalid; loader rejects size mismatch. Our NaN calibration holes require explicit0conversion.",
+      "Nerfstudio loader still constructs depth:None; current transforms.json input cannot gain supervision by droppingTIFFfiles beside it. COLMAP adapter or loader change is required.",
+      "Optional estimate-metric-scale flag defaultsfalse. Our calibrated camera-Z is arbitrarySfM scale and must not be relabeled metres or trigger metric rescaling. Radial range is not camera-Z.",
+      "No fork releases or Actions artifacts were listed at inspection; no cargo executable was installed. This does not prove Metal incompatibility. Source compilation, dependency audit, importer and actual gradients still need validation.",
+      "PR changes37files and includes unreleased code beyond depth loss; comparing it directly against0.3.0 would conflate backend changes."
+    ],
+    "decision": "Do not silently substitute this unreleased fork or start an extra same-data training search. Keep one declared1024/800k trial; close current nine-panorama quality optimization. Revisit geometry-aware training on new capture evidence or explicit future user authorization.",
+    "executedDepthSupervisedTraining": "NOT RUN",
+    "metalGradientValidation": "NOT RUN",
+    "newCheckpoint": "NONE",
+    "sourceHashes": {
+      "fork-train.txt": "e453ce4a03d88f909013abce594e494303aa38601a7882772a35dcbba99d485f",
+      "fork-data-config.txt": "6844faff387edcde3a2215aa5ad6a2dc10002eefb7b98de7934624caad472a24",
+      "fork-config.txt": "e8eeef695c6a98ac6c9be8c8017aaacb62d742a6a0e68e34ce92d1d20d0f4d31",
+      "fork-colmap-loader.txt": "dad5548671bf5287550709395ce97328fdbcf70895703040dd79b84320c2a067",
+      "fork-backward.txt": "c8d976e181a3f3265f9f0b34d8bd6383177d25959aca3dd0be26acc2e1f4bdf4",
+      "fork-depth-loader.txt": "634cf8db75f930c0f66752043dba318a9ff3ee8f18e1da9b0e309aa1bf5b49da",
+      "fork-cargo.txt": "d673e4df5851307e95aba084c12f549f0e687ca05c973f0b6adce47cd2a83cea",
+      "fork-loss.txt": "05f69c0831bf37fb7eb502ddc12678412cc8cf7c8efd09959ba6f8beec61e14a",
+      "fork-nerfstudio-loader.txt": "a685514459dc3ab4d3005b4d66ae7d28af54623767bbddd270a10fe004a7670a",
+      "fork-license.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  },
+  "native": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T11:51:18.971827+00:00",
+    "finishedAt": "2026-11-06T12:15:34.628645+00:00",
+    "elapsedSeconds": 1455.6505130419973,
+    "maximumResidentSetBytes": 666107904,
+    "peakMemoryFootprintBytes": 2386281696,
+    "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+    "toolVersion": "brush-cli 0.3.0",
+    "imageCount": 96,
+    "options": {
+      "steps": 8000,
+      "resolution": 1024,
+      "maxSplats": 800000
+    },
+    "artifact": {
+      "splats": 800000,
+      "bytes": 73600652,
+      "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352"
+    },
+    "localReportSha256": "dc7a5484bee7d260cf063d1c8cff3711b797592d9d380825da8be860d71254c0"
+  },
+  "commonEvaluation": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T12:16:23.319292+00:00",
+    "geometryStatus": "NOT ACCEPTED",
+    "models": [
+      {
+        "id": "baseline",
+        "status": "PASS",
+        "trainingSeconds": 409.75906254095025,
+        "maxResidentSetBytes": 317669376,
+        "peakMemoryFootprintBytes": 1299235776,
+        "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+        "initialPoints": null,
+        "splats": 400000,
+        "bytes": 36800652,
+        "sha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+        "steps": 8000,
+        "renderStatus": "PASS",
+        "heldLevelViews": 6,
+        "heldLevelMaeMean": 27.75055635210852,
+        "heldLevelCoverage95Mean": 0.22463164056566376,
+        "heldLevelPsnrMean": 16.333515481103763
+      },
+      {
+        "id": "hires",
+        "status": "PASS",
+        "trainingSeconds": 1455.6505130419973,
+        "maxResidentSetBytes": 666107904,
+        "peakMemoryFootprintBytes": 2386281696,
+        "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+        "initialPoints": null,
+        "splats": 800000,
+        "bytes": 73600652,
+        "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+        "steps": 8000,
+        "renderStatus": "PASS",
+        "heldLevelViews": 6,
+        "heldLevelMaeMean": 24.41442983479862,
+        "heldLevelCoverage95Mean": 0.2714522827725971,
+        "heldLevelPsnrMean": 17.482927321261187
+      }
+    ],
+    "comparisons": [
+      {
+        "id": "hires",
+        "baseline": "baseline",
+        "views": 6,
+        "maeImprovedViews": 6,
+        "meanCoverageDifference": 0.04682064220693335,
+        "comparisonScreen": "PASS",
+        "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+      }
+    ],
+    "videos": [
+      {
+        "id": "baseline",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6,
+        "meaning": "Actual GS renders from interpolated recovered cameras; playback rate is encoding, not measured renderer FPS."
+      },
+      {
+        "id": "hires",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6,
+        "meaning": "Actual GS renders from interpolated recovered cameras; playback rate is encoding, not measured renderer FPS."
+      },
+      {
+        "id": "comparison",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6
+      }
+    ],
+    "renderReportSha256": "6a0b33f0685d2be291fa0d82fa26e7033d18e77e0e3e0ab81907938da16ccb2e",
+    "configSha256": "3a5727e31635cde60e5dceacbff7c4f92ff6d9c683f77ccd20c46743f8678ff2",
+    "metricsSha256": "f07363282cf58a8c0fd71fc8ba52fcd1aa925a3c9fcd4d2520912f77f0530450",
+    "referenceMetricsSha256": null,
+    "evaluation": "Physical5 RGB excluded from GS optimization and dense initialization. Camera/sparse geometry use all-nine SfM. Actual same-pose photometry, not independent measured geometry.",
+    "novelGeometryGroundTruth": "NOT RUN",
+    "diffusion": "NOT RUN",
+    "finishedAt": "2026-11-06T12:16:30.358887+00:00",
+    "elapsedSeconds": 7.039596625138074,
+    "localReportSha256": "7ecc0ddd89fbb31274f8b88c787bac8405b37d4cd1d3f96889a7cc8128edfff7"
+  },
+  "detailEvaluation": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T12:17:54.447264+00:00",
+    "geometryStatus": "NOT ACCEPTED",
+    "models": [
+      {
+        "id": "baseline",
+        "status": "PASS",
+        "trainingSeconds": 409.75906254095025,
+        "maxResidentSetBytes": 317669376,
+        "peakMemoryFootprintBytes": 1299235776,
+        "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+        "initialPoints": null,
+        "splats": 400000,
+        "bytes": 36800652,
+        "sha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+        "steps": 8000,
+        "renderStatus": "PASS",
+        "heldLevelViews": 6,
+        "heldLevelMaeMean": 27.991820395078467,
+        "heldLevelCoverage95Mean": 0.23692181662248846,
+        "heldLevelPsnrMean": 16.204998378067412
+      },
+      {
+        "id": "hires",
+        "status": "PASS",
+        "trainingSeconds": 1455.6505130419973,
+        "maxResidentSetBytes": 666107904,
+        "peakMemoryFootprintBytes": 2386281696,
+        "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+        "initialPoints": null,
+        "splats": 800000,
+        "bytes": 73600652,
+        "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+        "steps": 8000,
+        "renderStatus": "PASS",
+        "heldLevelViews": 6,
+        "heldLevelMaeMean": 24.344902326348176,
+        "heldLevelCoverage95Mean": 0.2960763829073888,
+        "heldLevelPsnrMean": 17.458603436016425
+      }
+    ],
+    "comparisons": [
+      {
+        "id": "hires",
+        "baseline": "baseline",
+        "views": 6,
+        "maeImprovedViews": 6,
+        "meanCoverageDifference": 0.05915456628490031,
+        "comparisonScreen": "PASS",
+        "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+      }
+    ],
+    "videos": [
+      {
+        "id": "baseline",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6,
+        "meaning": "Actual GS renders from interpolated recovered cameras; playback rate is encoding, not measured renderer FPS."
+      },
+      {
+        "id": "hires",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6,
+        "meaning": "Actual GS renders from interpolated recovered cameras; playback rate is encoding, not measured renderer FPS."
+      },
+      {
+        "id": "comparison",
+        "status": "PASS",
+        "exitCode": 0,
+        "error": "",
+        "frames": 49,
+        "fps": 6
+      }
+    ],
+    "renderReportSha256": "9e79869cefa5d950690293cc5d4ed2462af312e895f8a1bb1ec82cdcfd23321f",
+    "configSha256": "45b00b38cee98f5f81f061dc88ebb4665c682f9733e7974b17515a61c087dd6b",
+    "metricsSha256": "2e747df4c490bd4a86211cecdfb8191d0f2e7d5112f8bb57aae0950a1fc7acf2",
+    "referenceMetricsSha256": null,
+    "evaluation": "Physical5 RGB excluded from GS optimization and dense initialization. Camera/sparse geometry use all-nine SfM. Actual same-pose photometry, not independent measured geometry.",
+    "novelGeometryGroundTruth": "NOT RUN",
+    "diffusion": "NOT RUN",
+    "finishedAt": "2026-11-06T12:18:15.277832+00:00",
+    "elapsedSeconds": 20.83051637513563,
+    "localReportSha256": "f2be4fe59e5c617a3ba02962e20b46be3503cdae6d5b6530ea8c9a85463a953c"
+  },
+  "codeChecks": {
+    "typescript": "PASS",
+    "lint": "PASS, including repaired browser test",
+    "productionBuild": "PASS in each publication package before dispatch",
+    "jsTests": {
+      "status": "PASS",
+      "passed": 166
+    },
+    "pythonTests": {
+      "status": "PASS",
+      "distinctPassed": 233
+    },
+    "baselineHashesAfterNative": {
+      "status": "PASS",
+      "files": 103
+    }
+  },
+  "localBrowser": {
+    "status": "PASS",
+    "distinctCases": 75,
+    "distinctPassed": 75,
+    "initial": {
+      "startTime": "2026-11-06T12:21:24.989Z",
+      "duration": 228220.15999999997,
+      "expected": 74,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "pausedFrameCallbackRetry": {
+      "startTime": "2026-11-06T12:27:04.031Z",
+      "duration": 15147.983,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "actualPlaybackRetry": {
+      "startTime": "2026-11-06T12:27:49.100Z",
+      "duration": 10396.23,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "initialFailures": [
+      {
+        "file": "street.pw.mjs",
+        "title": "street conclusion exposes every actual outcome, matching images, metrics, decoded motion and mobile layout",
+        "statuses": [
+          "failed"
+        ]
+      }
+    ],
+    "repair": "Actual playback with matching requestVideoFrameCallback media timestamp and distinct raw-pixel SHA256; no app/asset change. Paused callback retry also failed and is retained.",
+    "scope": "Fulllocal75case run74PASS/1FAIL, targetedcorrected1PASS. All34actualscene deep-links/reloads,newfinalreport/video/source/metrics/mobile and recovered-path UI included. Not fullpublic75."
+  },
+  "publicBrowser": {
+    "status": "PASS",
+    "cases": 7,
+    "cliDuration": "2.0min rounded",
+    "exactSeconds": "NOT RECORDED",
+    "scope": "Three final-quality cases including actual GS rendering/path, decoded images/metricvalues/video/mobile; gallery34previews/noautomaticWebGL; chronological lab; shared modelhistory and streetactualvideo report. Full75public NOT RUN."
+  },
+  "fullPublicFileReadback": {
+    "status": "PASS",
+    "observedAt": "2026-11-06T12:33:11.484469+00:00",
+    "files": 1046,
+    "passed": 1046,
+    "elapsedSeconds": 449.29039483400993,
+    "inventorySha256": "7bb99714f9785a9a981dac9ba433483565874775aa6d4d1602d9b65cc30d0cdb",
+    "meaning": "Actual public bytes against phase3 composed inventory; any concurrent phase4 metadata change requires explicit final recheck, not hidden retry."
+  },
+  "privatePathProbes": {
+    "status": "PASS",
+    "observedAt": "2026-11-06T12:32:46.698718+00:00",
+    "results": [
+      {
+        "path": "/.env",
+        "httpStatus": 404,
+        "status": "PASS"
+      },
+      {
+        "path": "/data/jobs/street-final-quality-20261106/training-hires/job.json",
+        "httpStatus": 404,
+        "status": "PASS"
+      },
+      {
+        "path": "/experiments/final-quality/training.log",
+        "httpStatus": 404,
+        "status": "PASS"
+      },
+      {
+        "path": "/worlds/street-final-hires/missing.ply",
+        "httpStatus": 404,
+        "status": "PASS"
+      }
+    ]
+  },
+  "displayRestore": {
+    "status": "PASS",
+    "finishedAt": "2026-11-06T12:33:16.320750+00:00",
+    "elapsedSeconds": 4.593082999810576,
+    "layers": [
+      {
+        "name": "groundshift-model-selection-20261106-v2.tar.gz",
+        "bytes": 928736619,
+        "sha256": "cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d"
+      },
+      {
+        "name": "groundshift-final-quality-export-20261106.tar.gz",
+        "bytes": 77310230,
+        "sha256": "a278ecd09b7c1bddf74195161e2a75d1afa1757bb6626e0e59b9b981a9440c9c"
+      },
+      {
+        "name": "groundshift-final-quality-evidence-20261106.tar.gz",
+        "bytes": 4198465,
+        "sha256": "070d3b51b9224bd0dd9fa0815ef4be82d6c2e5f5a8e2d03e6f56083142e52abd"
+      },
+      {
+        "name": "groundshift-final-quality-verified-20261106.tar.gz",
+        "bytes": 10846,
+        "sha256": "e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48"
+      }
+    ],
+    "expectedFiles": 1046,
+    "actualFiles": 1046,
+    "mismatches": [],
+    "meaning": "Actual ordinary ordered tar extraction from four checksum-pinned local release archives into a new empty directory; all composed display file hashes checked. No new native reconstruction or clean-source/npm-ci claim."
+  },
+  "visualDecision": {
+    "status": "PASS for comparative appearance; geometry NOT ACCEPTED",
+    "reviewedAt": "2026-11-06T12:19:25.959036+00:00",
+    "selected": "street-final-hires",
+    "sameDataQualityCampaign": "CLOSED; no new quality training",
+    "actualSources": "300 matched browser renders plus1quickpreview, samecamera held/route/offpath/detail sheets inspected",
+    "notes": [
+      "실행은 로컬 Apple M2 Metal, Brush 0.3.0, 8,000단계, SH1, seed42입니다. 기존과 동일한 183,124점 DAV2 초기화와 카메라를 재사용했고 새 깊이 추론·디퓨전·추가 촬영 이미지는 없습니다.",
+      "512px 검사 색 오차는 27.750556→24.414430, 1024px 검사에서는 27.991820→24.344902입니다. 서로 다른 해상도의 수치를 직접 비교하지 않습니다. 여섯 방향은 한 거리의 관련된 관측이며 반복 실행이나 통계적 유의성 검증은 아닙니다.",
+      "1024px 세부 이미지에서 창문·기둥·난간의 윤곽과 원경이 더 선명합니다. 나뭇가지, 스쿠터와 가까운 물체는 여전히 뭉개지거나 겹칩니다. 경로 바깥 이동에는 새 실제 사진이나 독립 기하 정답이 없습니다.",
+      "해상도와 Gaussian 상한을 함께 올린 조합 하나이므로 어느 변경이 개선을 얼마나 만들었는지는 분리하지 못했습니다. 학습 시간과 메모리는 한 번의 실제 프로세스 관측이며 통제된 속도 벤치마크나 전체 시스템/GPU 메모리 측정이 아닙니다.",
+      "사진5 RGB는 학습과 초기 점군 색에서 제외했지만 카메라와 희소 형상은 전체9장으로 추정했습니다. 색 일치나 높은 alpha는 깊이·벽·바닥이 정확하다는 증거가 아닙니다.",
+      "깊이 손실을 추가하는 Brush PR497은 아직 병합되지 않았고 현재 입력 로더의 변경이 필요합니다. 소스 조사만 했으며 빌드·Metal gradient 검증·깊이 제약 학습은 NOT RUN입니다.",
+      "9개 실제 촬영 위치 사이의 경로 보간은 보기용 카메라 제어입니다. 거리 단위는 임의 SfM 단위이고 실측 미터·중력·충돌 바닥이나 자유 보행을 확보한 것이 아닙니다.",
+      "이9장 데이터의 품질 탐색은 완료합니다. 추가 모델·필터·해상도·단계·seed 조합 실험을 자동으로 시작하지 않습니다. 다음 작업은 새 촬영 근거나 활용 경험으로 넘어갑니다."
+    ]
+  },
+  "actualRenderBatches": [
+    {
+      "status": "PASS",
+      "resolution": 512,
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "elapsedSeconds": 34.693202,
+      "models": [
+        {
+          "id": "baseline",
+          "status": "PASS",
+          "splats": 400000,
+          "assetSha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+          "elapsedSeconds": 16.736389166000002,
+          "actualFrames": 75
+        },
+        {
+          "id": "hires",
+          "status": "PASS",
+          "splats": 800000,
+          "assetSha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+          "elapsedSeconds": 16.791317500000005,
+          "actualFrames": 75
+        }
+      ],
+      "errors": []
+    },
+    {
+      "status": "PASS",
+      "resolution": 1024,
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "elapsedSeconds": 83.18428712499998,
+      "models": [
+        {
+          "id": "baseline",
+          "status": "PASS",
+          "splats": 400000,
+          "assetSha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+          "elapsedSeconds": 39.999516542,
+          "actualFrames": 75
+        },
+        {
+          "id": "hires",
+          "status": "PASS",
+          "splats": 800000,
+          "assetSha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352",
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+          "elapsedSeconds": 39.74887520799999,
+          "actualFrames": 75
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "finalPublicStaticReadback": {
+    "status": "PASS",
+    "exitCode": 0,
+    "wallSeconds": 12.21592833288014,
+    "stats": {
+      "startTime": "2026-11-06T12:36:03.465Z",
+      "duration": 11318.681999999999,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "scope": "One fresh static final-report case after the two JSON metadata update. No GPU scene rerun."
+  },
+  "finalMetadataReadback": {
+    "status": "PASS",
+    "scope": "Both2 changed public metadata files. Allother1044files byte-identical to the completed phase3public1046crawl.",
+    "files": [
+      {
+        "path": "experiments/final-quality/summary.json",
+        "status": "PASS",
+        "bytes": 12494
+      },
+      {
+        "path": "experiments/lab/timeline.json",
+        "status": "PASS",
+        "bytes": 27346
+      }
+    ],
+    "seconds": 1.4226545828860253
+  },
+  "publications": [
+    {
+      "status": "SUCCESS",
+      "deploymentId": "9a014c19-1c89-4c49-9a8c-a64e81407c03",
+      "commit": "1cca577703a12ffd51c7e9f7e21ecdac75945559",
+      "createdAt": "2026-11-06T11:53:57.620Z",
+      "successAt": "2026-11-06T11:55:34.595Z",
+      "overlayChecksumLogAt": "2026-11-06T11:54:07.811671223Z",
+      "origin": "https://groundshift-viewer-production.up.railway.app",
+      "report": "/experiments/final-quality/",
+      "publicChangedFileHashes": "PASS19",
+      "browser": "Two distinct static public headed Chrome cases have passing evidence: report/source1024/512/mobile plus explicit503/discovery. Initial1/2 selector failure retained; corrected aria-hidden arrow expectation targeted1/1PASS7.2s. No GPU viewer checks during native training.",
+      "checksBeforeDispatch": [
+        "Explicit authorized-content package",
+        "production build",
+        "native status RUNNING readback",
+        "actual assembled base+overlay complete checksum"
+      ]
+    },
+    {
+      "status": "SUCCESS",
+      "deploymentId": "58cd663b-46eb-4c96-830d-54436d5016fc",
+      "commit": "819b654c9c13edca0c404e14f452de5ce7a6247b",
+      "createdAt": "2026-11-06T12:22:27.164Z",
+      "successAt": "2026-11-06T12:23:49.102Z",
+      "overlayChecksumLogAt": "2026-11-06T12:22:35.619359526Z",
+      "publicChangedFileHashes": "PASS12",
+      "publicBrowser": "NOT RUN pending root local75 GPU release",
+      "origin": "https://groundshift-viewer-production.up.railway.app"
+    },
+    {
+      "status": "SUCCESS",
+      "deploymentId": "0770c34a-b9b9-444c-9a8f-cc776796b336",
+      "commit": "54f1531bafcd54998fe0e08e797268210f5e9b18",
+      "createdAt": "2026-11-06T12:18:28.022Z",
+      "successAt": "2026-11-06T12:20:17.313Z",
+      "overlayChecksumLogAt": "2026-11-06T12:18:40.610160435Z",
+      "publicChangedFileHashes": "PASS25 including actual native scene bytes",
+      "publicBrowser": "NOT RUN for this phase; final phase checked after dispatch",
+      "origin": "https://groundshift-viewer-production.up.railway.app"
+    },
+    {
+      "status": "SUCCESS",
+      "deploymentId": "221b650d-f410-4fdb-b57b-22e29522b09d",
+      "commit": "6d23be3447d7859bd230ff9470ce120c53a764f7",
+      "createdAt": "2026-11-06T12:33:25.400Z",
+      "successAt": "2026-11-06T12:35:34.006Z",
+      "overlayChecksumLogAt": "2026-11-06T12:33:38.809510439Z",
+      "health": {
+        "status": 200,
+        "body": "ok",
+        "seconds": 0.5612757909111679
+      },
+      "publicChangedFileHashes": "PASS2; other1044files identical to phase3",
+      "phase": "verified-publication",
+      "publicBrowserStage": {
+        "title": "공개 브라우저 검사",
+        "status": "PASS",
+        "detail": "실제 공개 Railway에서 headed Chrome 7개 표적 검사 통과: 새 GS 실제 렌더·경로 이동, 실제1024/512 입력·비교 이미지·6개 측정행·영상 디코드/탐색, 명시적 오류,34개 갤러리 미리보기·모바일·0WebGL,시간순,기존 모델/거리 보고서 회귀. 전체75개 공개 재검사는 NOT RUN입니다."
+      },
+      "publicBrowser": "Seven distinct targeted headed Chrome cases PASS before metadata-only update; fresh final static check separately recorded",
+      "origin": "https://groundshift-viewer-production.up.railway.app"
+    }
+  ]
+}

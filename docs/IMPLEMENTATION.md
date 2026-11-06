@@ -4,10 +4,14 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
-[Final same-data quality campaign](FINAL_QUALITY.md): one1024/800k/8k native
-trial using unchanged DAV2 seed and real cameras, with immediate asynchronous
-partial publication. The user ends quality tuning on these nine sources after
-this run. No automatic follow-up parameter/model/filter sweep is authorized.
+[Final same-data quality campaign](FINAL_QUALITY.md) complete: one1024/800k/8k
+Metal export,1455.651s,73.6MB,300 matched browser renders. Same512-output
+held-view MAE improves27.751→24.414; actual windows/railings look sharper while
+branch/near-object ghosting and wall doubling remain. Retain this new result as
+the best observed on these nine sources. **Same-data quality tuning is CLOSED**;
+no automatic parameter/model/filter follow-up. Fresh inputs, native world and
+measurements publish separately as each becomes available. Geometry supervision
+was investigated from pinned upstream source, not executed.
 
 The [completed model-family comparison](MODEL_SELECTION.md) adds four real
 8k Metal GS exports (PanDA-Small,DA3-Small,MoGe-2 Small,DA²) and375 actual matched
@@ -47,6 +51,7 @@ completion time, newest first, with an oldest-first option.
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
+| Final same-data quality attempt | PASS for actual Metal export/300 matched renders and comparative appearance; geometry NOT ACCEPTED | [Final quality](FINAL_QUALITY.md): fresh1024px crops,800k cap, unchanged DAV2 seed/poses,8k steps; same-data quality campaign CLOSED. |
 | Alternative depth/geometry model families | PASS for4 actual MPS/Metal exports and375 actual renders; major quality gain NOT ESTABLISHED | [Model selection](MODEL_SELECTION.md); corrected strict loads, PanDA cancelled attempt/one repair, DepthMaster dependency blocker, mixed-condition timings. |
 | Short street, real images and calibrated dense initialization | PASS for7 actual Metal exports/525 renders; recognizable route, geometric quality partial | [Seven controls and conclusion](STREET_CONCLUSION.md); same16k/400k budget comparison,61 full local browser cases plus11 final-layout checks. |
 | Observed correspondences and road calibration | PASS for actual CPU execution and seven local/seven public headed Chrome checks; P2 NOT ACCEPTED | [Matched evidence](STEREO_ANCHORS.md): SIFT-only failures, inadequate256px stereo search, successful512px retry, five cloud controls and invalid-depth counts. No new GPU operation. |
@@ -57,7 +62,7 @@ completion time, newest first, with an oldest-first option.
 | M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 165 viewer/packager tests, 25 local headed Chrome tests, inspected desktop/mobile views; original M0 hardware evidence in [VALIDATION.md](VALIDATION.md) and current release checks in [DEPLOYMENT.md](DEPLOYMENT.md) |
 | M1 local image input, obtained real camera poses, native Metal training, PLY export and viewer rendering | PASS | 40-image dozer dataset, 1,500 steps, 80.35-second job, 194,789 splats; [M1.md](M1.md) |
 | New CPU pose estimation and training on raw images | PASS with supplied lens calibration | 120/120 newly estimated poses, 30,468 new sparse points, 3,000 Metal steps and actual browser inspection; [evidence](INDEPENDENT_RECONSTRUCTION.md). Earlier 16/40 failure remains recorded |
-| User-requested static Railway observation surface | PASS for model comparison release;33 GS scenes and15 reports | All1,019 public file hashes match;11 focused post-deployment Chrome checks pass, including all4 new actual GS worlds, plus13 passes from a partial broader run. All71 distinct local cases have passing evidence; full public71 run NOT RUN to completion. [DEPLOYMENT.md](DEPLOYMENT.md) records failures/retries, async dispatch and exact release. Push-only autodeploy unverified |
+| User-requested static Railway observation surface | PASS for final-quality release;34 GS scenes and16 reports | Actual inputs/native world/comparisons/status publish in separate asynchronous phases. All1,046 phase3 public file hashes match; final status changes only two metadata paths, checked separately.75 distinct local cases have passing evidence after the retained video-test repair;7 targeted public Chrome cases pass. Full75 public suite NOT RUN. [DEPLOYMENT.md](DEPLOYMENT.md) records exact releases and scopes. Push-only autodeploy unverified |
 | Scooter without learned depth | PASS for local Metal execution and public Chrome rendering; recognizable object quality FAIL | Identical nine RGB files and cameras; depth inference/calibration/fusion removed. 115 triangulated object points → 5,000 Metal steps in 116.339 s → 569 full / 237 selected Gaussians. [OBJECT_NO_DEPTH.md](OBJECT_NO_DEPTH.md). Public deployment and file checks passed. |
 | Real-only scooter ablation | PASS for local Metal training and public Chrome rendering; quality comparison NOT RUN | All intermediate image generation removed. Nine real crops → nine calibrated depth maps → 41,533 initial points → 5,000 Metal steps in 160.298 s. [OBJECT_REAL_ONLY.md](OBJECT_REAL_ONLY.md) |
 | One-object crops → whole-frame diffusion → calibrated depth → point fusion → GS | PASS for executed pipeline/export/rendering; partial camera/depth rejection; quality gain NOT RUN | Nine real crops + 56 MPS img2img candidates → 47 registered cameras → 34 accepted depth maps → 93,595 initial points → 5,000 M2 Metal steps. Focused export has 93,101 Gaussians; recognizable but blurred/streaked. [OBJECT_FOCUS_EXPERIMENT.md](OBJECT_FOCUS_EXPERIMENT.md) |
@@ -70,7 +75,7 @@ completion time, newest first, with an oldest-first option.
 
 Implementation decisions: use the official Brush arm64 release, optional PyCOLMAP CPU wheels instead of requiring the Homebrew executable, and supplied measured poses for the first M1 acceptance run. Undistort the sample's actual fisheye images before Brush because its released importer does not handle their distortion. Preserve reconstruction internals in the native process and use the explicit v1 world format at the viewer boundary. These decisions keep the initial local-only design intact.
 
-The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains33 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
+The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains34 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
 
 ## Observation publication policy — 2026-11-05
 
