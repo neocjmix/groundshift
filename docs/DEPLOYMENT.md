@@ -38,6 +38,28 @@ deployment/hash/browser checks run after dispatch; their status is initially
 NOT RUN. Private publication evidence is retained under
 `data/jobs/paris-streaming-20261107/publications/sfm/`.
 
+Pointer `1674c8e` deploys as`6cb8cd4d-350d-4208-983b-b7ca83b1447a`:
+created2026-11-06T17:00:07.426Z, **SUCCESS** at17:03:03.408Z. Anonymous full
+release readback passes in0.569679s; the changed public summary matches all7,769
+bytes and SHA-256`570f358277aec92e39f9b1a1629cbd7406832a6a682000cc22d8f77d921e4ef8`.
+These checks do not assert new GS rendering or streaming.
+
+The next incremental report records480 actual DAV2 MPS predictions in71.916s,
+309 accepted and171 rejected depth calibration fits, and186,899 initialization
+points. Native768px/8k-step/800k-cap training is **RUNNING**, not completed or
+visually verified, while stream-viewer code is still being implemented locally.
+Relative depth/calibration diagnostics do not establish metric geometry truth.
+
+Release `viewer-paris-depth-2026-11-07`, archive
+`groundshift-paris-depth-20261107.tar.gz`: **3,735 bytes**, SHA-256
+`b6e9ff323696944af80eb46c5ae8ee697e56c047a291445eb9cc28a606d4af5a`.
+Apply it after the sixteen preceding layers. Exactly one dynamic report JSON
+changes; all accepted compiled/static/photo/GS/camera bytes remain unchanged.
+Privacy and base/target/archive/composed size/hash checks pass for all1,157 files
+in5.485057s. No in-progress chunk code, weights, original sourceHD or raw logs
+are published. Deployment/hash/browser checks run after dispatch; evidence stays
+local under`data/jobs/paris-streaming-20261107/publications/depth/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)

@@ -108,6 +108,13 @@ RUN wget -q -O /tmp/paris-sfm.tar.gz https://github.com/neocjmix/groundshift/rel
     && mkdir /out \
     && tar -xzf /tmp/paris-sfm.tar.gz -C /out
 
+# Actual MPS depth and running native-training status; unchanged viewer/assets.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_depth
+RUN wget -q -O /tmp/paris-depth.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-depth-2026-11-07/groundshift-paris-depth-20261107.tar.gz \
+    && echo 'b6e9ff323696944af80eb46c5ae8ee697e56c047a291445eb9cc28a606d4af5a  /tmp/paris-depth.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-depth.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -123,5 +130,6 @@ COPY --from=spz_verified /out/www /srv
 COPY --from=tourist_source /out/www /srv
 COPY --from=tourist_acquired /out/www /srv
 COPY --from=paris_sfm /out/www /srv
+COPY --from=paris_depth /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
