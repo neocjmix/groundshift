@@ -1110,6 +1110,11 @@
     "experiments/final-quality/samples/01-baseline.png",
     "experiments/final-quality/samples/01-highres.png",
     "experiments/final-quality/samples/02-baseline.png",
-    "experiments/final-quality/samples/00-highres.png"
+    "experiments/final-quality/samples/00-highres.png",
+    "experiments/final-quality/comparison/measured-conclusion-motion.mp4",
+    "experiments/final-quality/comparison/measured-conclusion-01.jpg",
+    "experiments/final-quality/comparison/measured-conclusion-00.jpg",
+    "experiments/final-quality/comparison/measured-conclusion-02.jpg",
+    "experiments/final-quality/comparison/measured-conclusion-03.jpg"
   ]
 }

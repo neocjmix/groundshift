@@ -1,4 +1,4 @@
-# Final same-data quality attempt: actual1024px native GS export; comparisons pending.
+# Final same-data quality:300matchedrenders,12%lowerRGBerror;geometryunverified.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
 RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-model-selection-2026-11-06/groundshift-model-selection-20261106-v2.tar.gz \
@@ -10,6 +10,11 @@ RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releas
 RUN wget -q -O /tmp/overlay.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-final-quality-export-2026-11-06/groundshift-final-quality-export-20261106.tar.gz \
     && echo 'a278ecd09b7c1bddf74195161e2a75d1afa1757bb6626e0e59b9b981a9440c9c  /tmp/overlay.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/overlay.tar.gz -C /out
+
+# Measured evidence overlays the cached native export without republishing its PLY.
+RUN wget -q -O /tmp/evidence.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-final-quality-evidence-2026-11-06/groundshift-final-quality-evidence-20261106.tar.gz \
+    && echo '070d3b51b9224bd0dd9fa0815ef4be82d6c2e5f5a8e2d03e6f56083142e52abd  /tmp/evidence.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/evidence.tar.gz -C /out
 
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
