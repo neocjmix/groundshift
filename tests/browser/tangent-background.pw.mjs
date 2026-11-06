@@ -1,7 +1,8 @@
 import {test,expect} from '@playwright/test';
 import {readFile,writeFile} from 'node:fs/promises';
 import {PNG} from 'pngjs';
-const summary=JSON.parse(await readFile('public/experiments/tangent-background/summary.json','utf8'));
+import path from 'node:path';
+const summary=JSON.parse(await readFile(path.join(process.env.GS_EXPECTATION_ROOT||'public','experiments/tangent-background/summary.json'),'utf8'));
 
 test('tangent observation shows actual phase, selected inputs, pending stages and retained history',async({page},info)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
