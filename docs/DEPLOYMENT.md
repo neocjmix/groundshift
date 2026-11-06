@@ -106,6 +106,33 @@ unchanged. RawHD/nativePLY/logs/weights remain local. Public deployment/hash and
 actual browser behavior checks follow dispatch. Evidence is local under
 `data/jobs/paris-streaming-20261107/publications/stream/`.
 
+Native pointer`b0c83ce` deploys as`f5e08664-9156-4d45-b23d-bf579624a7c0`:
+created2026-11-06T17:23:32.084Z, **SUCCESS** at17:24:30.707Z. All16 changed
+public size/hash checks pass in28.025543s, including the actual full-SPZ and
+preview. Anonymous archive readback passes in3.782807s. These are deployment
+integrity checks, distinct from actual public GPU rendering and geometry.
+
+Stream pointer`c6b6111` deploys as`37fcb203-5c9c-4eab-a241-c7c094755f34`:
+created2026-11-06T17:26:05.036Z, **SUCCESS** at17:26:56.941Z. All11 changed
+public sizes/hashes pass in10.400767s; anonymous archive readback passes in4.306502s.
+
+The next report immediately records a concrete **appearance FAIL** for the
+nearest-three subset: distant/sky coverage disappears, with33.45/255 mean RGB
+error in the initial comparison view versus the full scene. Local4/4 browser
+mechanics pass in11.5s, but that does not establish visual acceptability. The
+report recommends the preserved whole-SPZ control while coverage-preserving
+paging is investigated locally. No RAD/LoD output or success is claimed here.
+
+Release `viewer-paris-subset-fail-2026-11-07`, archive
+`groundshift-paris-subset-fail-20261107.tar.gz`: **4,071 bytes**, SHA-256
+`5524ff5c9456257e4077717c9b392b0a1ea04b16fcf748328295bc494db736ba`.
+Apply it after the nineteen preceding layers. Exactly one dynamic report JSON
+changes; all accepted compiled viewer/native/chunk/photo/camera bytes stay
+unchanged. Privacy/base/target/archive/composed integrity checks pass for
+all1,175files in3.336672s. Publication status and hash readback follow dispatch;
+quality FAIL remains even after successful publication. Evidence stays local
+under`data/jobs/paris-streaming-20261107/publications/subset-fail/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
