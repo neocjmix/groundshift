@@ -171,6 +171,13 @@ RUN wget -q -O /tmp/fly-capture-fix.tar.gz https://github.com/neocjmix/groundshi
  && mkdir /out \
  && tar -xzf /tmp/fly-capture-fix.tar.gz -C /out
 
+# Touch-target/help layout and usable exit on renderer failure; no scene changes.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS fly_ui_recovery
+RUN wget -q -O /tmp/fly-ui-recovery.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-fly-ui-recovery-2026-11-07/groundshift-fly-ui-recovery-20261107.tar.gz \
+ && echo '028f4272ef68c8756312a0a20ea8fe53b96e811620d2afe6d880bec928c99f43  /tmp/fly-ui-recovery.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/fly-ui-recovery.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -195,5 +202,6 @@ COPY --from=paris_compact /out/www /srv
 COPY --from=paris_verified /out/www /srv
 COPY --from=fly_controls /out/www /srv
 COPY --from=fly_capture_fix /out/www /srv
+COPY --from=fly_ui_recovery /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

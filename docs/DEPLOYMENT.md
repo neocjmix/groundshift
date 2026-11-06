@@ -59,6 +59,38 @@ local/public interaction checks run alongside/after dispatch and are **NOT RUN**
 in the frozen initial evidence for this recovery. Evidence is retained under
 `data/validation/fly-20261107/publications/capture-fix/`.
 
+Recovery pointer `273ef01c84b183cd4855745d467cdee5ea22c174` deploys as
+`0e8ab334-83e2-4807-bd3b-0a7a6553044f`: created2026-11-06T23:51:47.139Z,
+**SUCCESS** at23:52:39.081Z. Anonymous full recovery archive readback verifies its
+size/SHA in1.829811s. All6 changed public files match exact sizes/SHA-256 in
+3.996561s, including the new index SHA-256
+`ae792e3d3e26bf6e748189f9f5654bdce8a44d654952b19ebc9d6f766a1444cd`.
+Fresh ordinary extraction of all25 immutable archives verifies every archive
+SHA and all1,245 composed file sizes/hashes in10.034810s. This restoration retains
+all39 scenes and the17 inactive historical background files; it does not rerun
+reconstruction or establish new geometry/streaming quality.
+
+Post-recovery actual public-browser checks **PASS3/3 in27.5s**: native desktop
+fullscreen/pointer lock, WASD/mouse/reset/Orbit handoff; mobile dual-touch in both
+orientations; and the no-pose sample under forced pointer-lock denial using drag
+fallback. Actual screenshots are inspected. These checks do not assert collision
+or recovered navigation surfaces. Inspection identifies touch-target and help-text
+layout refinements; the next viewer-only increment preserves this passed evidence.
+
+The third viewer increment makes mode buttons44px touch targets, moves desktop
+help clear of lift controls, corrects the navigation group label and keeps Exit
+Fly available after rendering failure. Release
+`viewer-fly-ui-recovery-2026-11-07`, archive
+`groundshift-fly-ui-recovery-20261107.tar.gz`: **1,060,362 bytes**, SHA-256
+`028f4272ef68c8756312a0a20ea8fe53b96e811620d2afe6d880bec928c99f43`.
+Apply after the first25 layers. Fresh production build passes in3.38s; explicit
+curation and full base/target/archive/composed checks pass in5.439686s, with6
+compiled/HTML changes,1,185 target public files and1,250 composed files. All39
+worlds and all report/source-image/camera/provenance bytes remain unchanged.
+R3 public interaction and actual context-loss checks are **NOT RUN** at dispatch;
+R2 passed runtime evidence remains preserved. Private publication records stay
+under `data/validation/fly-20261107/publications/ui-recovery/`.
+
 ## Paris reconstruction and spatial serving progress — 2026-11-07
 
 The first real pipeline result is published immediately while crop/depth and
@@ -621,7 +653,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the two Fly controls/recovery layers, in order. The command below includes all twenty-five
+reconstruction/paging layers and the three Fly controls/recovery layers, in order. The command below includes all twenty-six
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -718,6 +750,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-fly-capture-fix-2026-11-07 \
     groundshift-fly-capture-fix-20261107.tar.gz \
     45483b2edb661f41537c6cbdf9fd33e23ac72c645004675e10c953b16ab93db7
+  gs_restore_layer viewer-fly-ui-recovery-2026-11-07 \
+    groundshift-fly-ui-recovery-20261107.tar.gz \
+    028f4272ef68c8756312a0a20ea8fe53b96e811620d2afe6d880bec928c99f43
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
