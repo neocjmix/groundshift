@@ -1,8 +1,63 @@
 # Railway viewer deployment
 
-**Live:** [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Common calibration and perspective depth — 2026-11-06 KST
+
+The [new report](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/)
+shows the original/common784 calibration comparison, actual photo feature-error
+mosaics and an additional DAV2 perspective-depth control on 12 actual local MPS
+inputs. High-parallax held-out median pixel errors improve from about 7px to
+2.2–2.6px in that control. New displayed clouds belong to the common-fit ERP
+experiment; perspective dense fusion and new GS remain **NOT RUN**.
+All 22 previous GS scenes remain. The chronological lab has 32 entries: 22 scenes,
+ten reports. [Measurements and limits](PANORAMIC_CALIBRATION.md).
+
+| Item | Verified value |
+| --- | --- |
+| Experiment/report source | `3fee797` |
+| Release | [viewer-panoramic-calibration-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-panoramic-calibration-2026-11-06) |
+| Archive | `groundshift-panoramic-calibration-20261106.tar.gz`, 309,450,561 bytes |
+| SHA-256 | `1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f` |
+| Static archive contents | 424 `www/` files, 355,408,740 bytes |
+| Staged inventory | 427 files, 355,409,427 bytes including three deployment-support files |
+| Deployment-pointer commit | `461eb00` |
+| Railway deployment | `7563f716-a903-4609-b2ef-d4325dcb60d5` — SUCCESS at 2026-11-06 00:13:47 UTC |
+| Trigger | Explicit connector request for existing branch-backed service, no commit pin |
+
+**PASS:** full local archive readback matches its curated inventory; GitHub
+re-download matches byte length and SHA-256; Railway build log independently
+reports `/tmp/viewer.tar.gz: OK` at 00:12:59 UTC. `/healthz` is 200/`ok`. All 113
+selected new/shared public files match staged sizes/hashes, covering new and
+prior panorama reports, lab, bundles, catalog and preserved scooter assets.
+A full 424-file public recrawl is **NOT RUN**.
+
+Five targeted headed Chrome 156 tests pass at the public origin in 50.5s: actual
+original/common cloud pixels and controls, perspective images and numeric
+tables, parallax/longitude strata, simulated 503 recovery, lab sorting and
+preserved pair/one-panorama rendering. Actual public screenshots were inspected;
+source-colored layers remain offset and perspective output is not a fused cloud.
+Existing bounded 60-second remote asset waits were sufficient; no public retry
+was needed in this release. The full historical browser suite is **NOT RUN**.
+
+TypeScript, lint, build and 166 JS tests pass. Python discovers 175 tests in each
+existing environment, skips 5/31, and executes 172 distinct tests across their
+union. Three unrelated HDR/FFmpeg tests are **NOT RUN**. Thirteen new camera,
+calibration and depth-conversion tests are included. All 103 frozen baseline
+hashes are unchanged, and expected no-overwrite rejections preserve existing
+reports. Native inference and runtime measurements are in the experiment doc.
+
+Local evidence: `data/jobs/panoramic-calibration-input-20261106/` (release,
+Railway status/checksum, 113-file hashes, health, logs and browser evidence),
+`data/jobs/panoramic-calibration-20261106/`,
+`data/jobs/panoramic-perspective-depth-20261106/`, and
+`data/jobs/panoramic-perspective-control-audited-20261106/`.
+[Compact record](evidence/panoramic-calibration.json). Original-resolution
+inputs, raw arrays, weights, private URLs and local logs are excluded from the
+archive. Documentation-only changes retain this release and its rollback
+predecessor below. Push-triggered autodeploy remains unverified.
 
 ## Adjacent panorama depth — 2026-11-06 KST
 
@@ -625,11 +680,11 @@ would be replaced; keep any personal variants elsewhere.
 (
   set -e
   gs_release_dir=$(mktemp -d)
-  gs_archive=groundshift-panoramic-pair-20261106.tar.gz
+  gs_archive=groundshift-panoramic-calibration-20261106.tar.gz
   curl --fail --location --output "$gs_release_dir/$gs_archive" \
-    "https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-pair-2026-11-06/$gs_archive"
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-calibration-2026-11-06/$gs_archive"
   printf '%s  %s\n' \
-    'd0000f6be2998163665c31900cbb9ae144dc160fd5d29406d09581aff008e2ac' \
+    '1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f' \
     "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
   tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
   for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-depth beijing-20k beijing-2k beijing-video-baseline beijing-video-rife dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s scooter-object scooter-context scooter-real-object scooter-real-context scooter-nodepth-object scooter-nodepth-context; do

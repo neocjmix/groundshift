@@ -3,7 +3,7 @@
   "baseCommit": "cebcadc58bff0cf8c7a8aab2fcc620102e081ae5",
   "execution": "PASS",
   "geometryAcceptance": "NOT RUN",
-  "publication": "NOT RUN: pending release verification",
+  "publication": "PASS",
   "protocolSha256": "3f8f50e7e6e7673bee184b423da91a8193f6365e54f2788f80945bff5e28ddf4",
   "perspectiveProtocolSha256": "df68227a73874a86765738fc24ddc4b210add9f0dbab471ee252c83a7ba64cca",
   "sourceLicense": "Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA 4.0",
@@ -2024,6 +2024,15 @@
       "seconds": 15.8,
       "mode": "headed Chrome156",
       "coverage": "Actual original/common clouds, actual perspective control images/tables, controls, simulated503 recovery, lab order and preserved pair/one-ERP report"
+    },
+    "publicBrowser": {
+      "status": "PASS",
+      "tests": 5,
+      "seconds": 50.5,
+      "browser": "156.0.8078.81",
+      "mode": "headed",
+      "pageErrors": [],
+      "visualInspection": "Actual report cloud screenshots inspected; source-colored offset surfaces remain. Perspective result is a feature reprojection control, not a fused cloud."
     }
   },
   "archive": {
@@ -2035,5 +2044,59 @@
     "wwwBytes": 355408740,
     "stage": "data/deploy/viewer-1793923380092",
     "inventory": "data/deploy/viewer-1793923380092.inventory.json"
+  },
+  "sourceCommit": "3fee797adca33177f13c24a85460e0cff974d1e4",
+  "deploymentPointerCommit": "461eb00d3a13f8b76cd863ce87b2f83b46d82df0",
+  "release": {
+    "id": "7563f716-a903-4609-b2ef-d4325dcb60d5",
+    "status": "SUCCESS",
+    "createdAt": "2026-11-06T00:12:39.527Z",
+    "updatedAt": "2026-11-06T00:13:47.093Z",
+    "tag": "viewer-panoramic-calibration-2026-11-06",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "publicFileHashes": {
+      "status": "PASS",
+      "files": 113
+    },
+    "checksumLogTimestamp": "2026-11-06T00:12:59.079358302Z",
+    "health": {
+      "url": "https://groundshift-viewer-production.up.railway.app/healthz",
+      "status": 200,
+      "body": "ok"
+    },
+    "download": {
+      "status": "PASS",
+      "sha256": "1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f",
+      "bytes": 309450561
+    }
+  },
+  "postRunInterpretationLimit": {
+    "meaning": "Projection, angular resolution and appropriate depth target differ; no pure projection-only or independent geometry claim. Declared protocols remain unchanged.",
+    "processorShapes": {
+      "erp": {
+        "workingSize": [
+          1092,
+          546
+        ],
+        "networkTensor": [
+          1,
+          3,
+          518,
+          1036
+        ]
+      },
+      "perspective": {
+        "workingSize": [
+          512,
+          512
+        ],
+        "networkTensor": [
+          1,
+          3,
+          518,
+          518
+        ]
+      }
+    }
   }
 }

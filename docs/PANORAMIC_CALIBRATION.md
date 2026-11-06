@@ -109,7 +109,12 @@ directions; 141 / 134 individual points improve over global ERP. Counts, paired
 changes and longitude/parallax strata remain in raw reports.
 
 This is a practical input/calibration comparison, not a pure single-factor
-projection ablation. Global-to-local changes parameter count; ERP-local and
+projection ablation. Angular sampling is also not equalized: perspective crops are
+512×512 at 90° FOV, while the ERP is 1092×546 over the full sphere (DAV2 network
+1036×518 versus 518×518 for each crop, verified from the pinned processor). The crop pipeline can retain
+more local detail. This is a post-run interpretation limit, not an amended
+predeclared protocol or an isolated measurement of resolution benefit.
+Global-to-local changes parameter count; ERP-local and
 perspective-local hold point subsets and parameter count fixed, but input
 projection and the appropriate depth target differ. It supports investigating
 perspective depth as the next candidate, not declaring accurate geometry.
@@ -157,7 +162,7 @@ pair/one-panorama report; broad historical browser suite is **NOT RUN**.
 
 **NOT RUN:** independent geometry truth, perspective dense overlap/seam evaluation,
 full-sphere perspective-cloud fusion, all-nine inference/fusion and new GS.
-Publication status is tracked separately in [DEPLOYMENT.md](DEPLOYMENT.md).
+**Publication PASS:** Railway deployed the checksum-pinned archive; 113 selected public file hashes and five targeted headed Chrome checks passed. Public cloud screenshots were inspected. [Release evidence](DEPLOYMENT.md) records IDs, timings and rollback package.
 
 ## Reproduce
 
