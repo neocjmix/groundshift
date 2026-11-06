@@ -65,7 +65,11 @@ test('failed cloud recovers and chronological lab retains earlier pair report',a
   await expect(page.locator('#cloud-status')).toContainText('점군 불러오기 실패'); await expect(page.locator('#reset')).toBeDisabled();
   await page.screenshot({ path:info.outputPath('simulated-503.png') }); await page.unroute(cloud);
   await page.selectOption('#fit-select','original'); await ready(page,'da2','original'); await page.selectOption('#fit-select','common'); await ready(page,'da2','common');
-  await page.goto('/experiments/lab/'); await expect(page.locator('.entry').first()).toHaveAttribute('data-id','report-panoramic-calibration');
+  await page.goto('/experiments/lab/');
+  const timeline = await (await page.request.get(new URL('timeline.json',page.url()).href)).json();
+  const newest = timeline.entries.filter(entry => entry.createdAt).sort((a,b) => Date.parse(b.createdAt)-Date.parse(a.createdAt))[0];
+  await expect(page.locator('.entry').first()).toHaveAttribute('data-id',newest.id);
+  await expect(page.locator('.entry[data-id="report-panoramic-calibration"]')).toHaveCount(1);
   await expect(page.locator('.entry[data-id="report-panoramic-pair"]')).toHaveCount(1); await page.selectOption('#order','oldest');
   const times = await page.locator('.entry[data-created-at]').evaluateAll(nodes => nodes.map(n => Date.parse(n.dataset.createdAt)));
   expect(times.every((t,i) => !i || t >= times[i - 1])).toBe(true);

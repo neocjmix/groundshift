@@ -4,7 +4,7 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
-The [calibration follow-up](PANORAMIC_CALIBRATION.md) tests the same 784 common training IDs and 217 excluded IDs, then runs a DAV2 perspective-depth control. High-parallax reprojection medians drop from about 7px to 2.2–2.6px; dense overlap/fusion is the next unexecuted boundary.
+The [dense perspective follow-up](PERSPECTIVE_OVERLAP.md) runs twelve additional downward crops on M2 MPS and evaluates two-panorama spherical coverage and same-center disagreement. Matched road residuals improve; facade residuals and overall tails worsen. P2 geometry is NOT ACCEPTED; fusion and new GS remain NOT RUN. The preceding [calibration control](PANORAMIC_CALIBRATION.md) and all baseline artifacts are preserved.
 
 The latest direction is the [panoramic street plan](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md).
 The bounded [P0/P1 run](PANORAMIC_DEPTH_P1.md) preserves the best scooter result,
@@ -22,6 +22,7 @@ completion time, newest first, with an oldest-first option.
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
+| Dense perspective coverage and overlap | PASS for actual MPS/CPU execution and six local headed Chrome checks; P2 geometry NOT ACCEPTED | [Measured controls](PERSPECTIVE_OVERLAP.md): two physical panoramas, augmented/filtered/level/ERP point clouds. Road calibration lacks sparse anchors; filtering is not uniformly beneficial. No fusion or new GS. |
 | Common-track calibration and perspective input control | PASS for actual CPU/MPS execution and targeted local browser; independent geometry NOT RUN | [Measured results](PANORAMIC_CALIBRATION.md): common calibration alone brings no consistent improvement; local perspective depth reduces withheld-feature reprojection errors. No new GS. |
 | Adjacent-pair P1 / P2 diagnostic | PASS for actual MPS execution, pair projection and local browser; geometry not accepted for fusion | [Two-panorama results](PANORAMIC_PAIR_P1.md): 1,001 shared sparse tracks, weak median 1.94° parallax, 3.6–5.1% median pair range differences; regional bias and unsupported road calibration remain. |
 | P0 + one-panorama P1 | PASS for preserved baseline, actual MPS inference, projection tests and public browser inspection; global geometry NOT RUN | DA² 2.570 s / DAV2 1.408 s; 1,195 calibration + 326 withheld SfM tracks; colored clouds and [limitations](PANORAMIC_DEPTH_P1.md). No new GS training. |

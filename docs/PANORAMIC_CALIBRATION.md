@@ -160,8 +160,11 @@ unrelated HDR/FFmpeg tests are **NOT RUN**. All 103 frozen baseline hashes remai
 unchanged. Five targeted headed Chrome checks cover the new page and preserved
 pair/one-panorama report; broad historical browser suite is **NOT RUN**.
 
-**NOT RUN:** independent geometry truth, perspective dense overlap/seam evaluation,
+**At this experiment's completion NOT RUN:** independent geometry truth, perspective dense overlap/seam evaluation,
 full-sphere perspective-cloud fusion, all-nine inference/fusion and new GS.
+The subsequent [two-panorama perspective overlap experiment](PERSPECTIVE_OVERLAP.md)
+now evaluates coverage and same-center disagreement; it still does not accept
+P2 geometry or perform fusion/GS.
 **Publication PASS:** Railway deployed the checksum-pinned archive; 113 selected public file hashes and five targeted headed Chrome checks passed. Public cloud screenshots were inspected. [Release evidence](DEPLOYMENT.md) records IDs, timings and rollback package.
 
 ## Reproduce

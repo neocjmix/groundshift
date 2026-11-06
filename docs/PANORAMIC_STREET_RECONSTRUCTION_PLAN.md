@@ -1,6 +1,6 @@
 # Panoramic street reconstruction: staged experiment plan
 
-Status: P0 baseline frozen; one-panorama and [adjacent-pair P1 diagnostics executed](PANORAMIC_PAIR_P1.md). [Common-track calibration and perspective controls](PANORAMIC_CALIBRATION.md) are executed: global ERP calibration remains insufficient; perspective reprojection improves at held-out tracks. Validated P2 geometry acceptance, dense perspective overlap/fusion, full P0 evaluation renders and P3–P5 remain NOT RUN. Baseline: branch `feat/local-viewer-reconstruction`, 2026-11-06. This plan is for a *continuous explorable street*, not optimizing the scooter in isolation. No performance or quality claims below are new measurements.
+Status: P0 baseline frozen; one-panorama and [adjacent-pair P1 diagnostics executed](PANORAMIC_PAIR_P1.md). [Common-track calibration and perspective controls](PANORAMIC_CALIBRATION.md) are executed. [Dense perspective coverage/overlap](PERSPECTIVE_OVERLAP.md) now executes on two panoramas: road agreement improves, facade disagreement and error tails remain; P2 geometry is NOT ACCEPTED. Fusion, full P0 evaluation renders and P3–P5 remain NOT RUN. Baseline: branch `feat/local-viewer-reconstruction`, 2026-11-06. This plan is for a *continuous explorable street*, not optimizing the scooter in isolation. No performance or quality claims below are new measurements.
 
 ## Decision and hypotheses
 

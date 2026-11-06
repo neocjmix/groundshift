@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "declaredAt": "2026-11-06T02:12:46.742360+00:00",
+  "scope": "Two existing physical panoramas; no synthesis, new pose estimation, fusion, voxelization or GS",
+  "dimensions": [
+    1092,
+    546
+  ],
+  "params": [
+    256.0,
+    256.0,
+    256.0,
+    256.0
+  ],
+  "crops": [
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_000.png",
+      "yaw": 0,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          1.0,
+          -0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.0,
+          -0.49999999999999994,
+          0.8660254037844387
+        ]
+      ],
+      "sha256": "f2c9246bcb0fca739a14c78fc87dad08812d2fcd9ddddf8510c889e10606bf08"
+    },
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_060.png",
+      "yaw": 60,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          0.5000000000000001,
+          -0.43301270189221924,
+          0.75
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.8660254037844386,
+          -0.25,
+          0.43301270189221946
+        ]
+      ],
+      "sha256": "108b2d555aa5018f67034b8c9204e0a3c1e5a101acaa8ee29996858d20034895"
+    },
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_120.png",
+      "yaw": 120,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -0.49999999999999983,
+          -0.4330127018922193,
+          0.7500000000000001
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.8660254037844387,
+          0.2499999999999999,
+          -0.4330127018922192
+        ]
+      ],
+      "sha256": "55d7e8377d8d8f94a3c805cdd8ffef1a6f1680266451fbe06b693cc3ce5affea"
+    },
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_180.png",
+      "yaw": 180,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -1.0,
+          -6.123233995736765e-17,
+          1.0605752387249069e-16
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -1.2246467991473532e-16,
+          0.49999999999999994,
+          -0.8660254037844387
+        ]
+      ],
+      "sha256": "9930f501fdb18ef192eb18dcb9c6c4f1aa78717c81fc8afdc2a3d98fa027c229"
+    },
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_240.png",
+      "yaw": 240,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -0.5000000000000004,
+          0.43301270189221913,
+          -0.7499999999999998
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          0.8660254037844384,
+          0.25000000000000017,
+          -0.43301270189221974
+        ]
+      ],
+      "sha256": "106caaf20f034c73edf9fd5b29dbd5bd438e2e5a4584a8bdea98e69f1e8615b5"
+    },
+    {
+      "panorama": 4,
+      "name": "pano_000004_down_300.png",
+      "yaw": 300,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          0.5000000000000001,
+          0.43301270189221924,
+          -0.75
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          0.8660254037844386,
+          -0.25,
+          0.43301270189221946
+        ]
+      ],
+      "sha256": "36770bdd5ef30a8de344b3bbaa195b526ef58353955c1eab9bc80281cdcc21b8"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_000.png",
+      "yaw": 0,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          1.0,
+          -0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.0,
+          -0.49999999999999994,
+          0.8660254037844387
+        ]
+      ],
+      "sha256": "f8f8e5e6d77e8f748cf5b81c6a0e5737b84c970da1b79520819881d96adf61ee"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_060.png",
+      "yaw": 60,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          0.5000000000000001,
+          -0.43301270189221924,
+          0.75
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.8660254037844386,
+          -0.25,
+          0.43301270189221946
+        ]
+      ],
+      "sha256": "50e406768eb76b052fcf088e5c4189ce86394a2df851818f830da1a3bb563730"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_120.png",
+      "yaw": 120,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -0.49999999999999983,
+          -0.4330127018922193,
+          0.7500000000000001
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -0.8660254037844387,
+          0.2499999999999999,
+          -0.4330127018922192
+        ]
+      ],
+      "sha256": "e81f4d9046c164fd34849f042f5b719c1539170f244904ef9a2196f3625d0a0b"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_180.png",
+      "yaw": 180,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -1.0,
+          -6.123233995736765e-17,
+          1.0605752387249069e-16
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          -1.2246467991473532e-16,
+          0.49999999999999994,
+          -0.8660254037844387
+        ]
+      ],
+      "sha256": "e18cf9b425b9e81466c08ce4bb3260f83cf065e9cb03bc1605601c1a6e70761d"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_240.png",
+      "yaw": 240,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          -0.5000000000000004,
+          0.43301270189221913,
+          -0.7499999999999998
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          0.8660254037844384,
+          0.25000000000000017,
+          -0.43301270189221974
+        ]
+      ],
+      "sha256": "19a664b77f4c63fd2aea486423e98eaa03f8e70ccb9b382a3d82a8476ecab226"
+    },
+    {
+      "panorama": 5,
+      "name": "pano_000005_down_300.png",
+      "yaw": 300,
+      "pitch": -30,
+      "cameraToPanorama": [
+        [
+          0.5000000000000001,
+          0.43301270189221924,
+          -0.75
+        ],
+        [
+          0.0,
+          0.8660254037844387,
+          0.49999999999999994
+        ],
+        [
+          0.8660254037844386,
+          -0.25,
+          0.43301270189221946
+        ]
+      ],
+      "sha256": "3feed3971e68f72bb938481fbeefbe5d32cd316dfd980f933ed3baf9dfad4e9c"
+    }
+  ],
+  "geometry": "CV +X right +Y down +Z forward; camera-Z affine inverse calibration, then radial=Z/unit_camera_ray_z. Fixed-rig SfM arbitrary units, unknown gravity.",
+  "calibration": "Original level fits preserved. Downward fits use only projected common784 training IDs visible in crop; no217 withheld IDs. Projected features are not newly observed correspondences.",
+  "selection": "Most central positive calibrated crop per spherical ray; stable input-order tie. No depth averaging or cross-panorama alignment.",
+  "consensus": "At least two same-center positive predictions, max(log range)-min(log range) <= prior sparse reference. This rejects disagreement, not proof of correct geometry or occlusion.",
+  "logDiagnosticBand": 0.2908611928637798,
+  "referenceSamples": 434,
+  "referenceMeaning": "P90 absolute log range error at previous434 withheld directional samples (217 distinct IDs); internal SfM comparator, NOT acceptance/confidence. No new dense predictions used.",
+  "regionPolicy": "Unchanged predeclared road/facade boxes and cross-view relative diagnostic band from previous pair protocol. No geometrical PASS inferred.",
+  "mask": "ERP normalized v in[.48,.85], finite positive range <= per-panorama training SfM P99; raw unmasked arrays retained. No semantic sky/ground confidence.",
+  "cloudStride": 3,
+  "qualityGate": "NOT ACCEPTED until supported static surfaces agree; road lacks common sparse anchors. Do not equate export or filtering with acceptance.",
+  "files": [
+    {
+      "path": "data/jobs/panoramic-pair-20261106/anchors-4/selected-panorama.json",
+      "bytes": 1851624,
+      "sha256": "ec505de9b13683774fb848359f230a174dfe374bface11ec0624415c9cb2583c"
+    },
+    {
+      "path": "data/jobs/panoramic-baseline-20261106/selected-panorama.json",
+      "bytes": 1851655,
+      "sha256": "a3e563a5abe4d4443beb84d056963aae834ff67fd946aea1c4645ef0ba27f9fd"
+    },
+    {
+      "path": "data/jobs/panoramic-perspective-depth-20261106/report.json",
+      "bytes": 7374,
+      "sha256": "2494b3772b9ee59f5f62b8dee83bff5509f0dceae0203e5b5ec82f07c758e990"
+    },
+    {
+      "path": "data/jobs/panoramic-perspective-control-audited-20261106/crop-calibrations.json",
+      "bytes": 32255,
+      "sha256": "eb41bbfb318dbad6b4700b3554d5872352eb9bd9dc30f41d69a402b215c55f23"
+    },
+    {
+      "path": "data/jobs/panoramic-perspective-control-audited-20261106/feature-samples.json",
+      "bytes": 760280,
+      "sha256": "37ded256534bbc28aa2fe5788304da9bedc0a17bb235de3ef8f827b4f2401003"
+    },
+    {
+      "path": "data/jobs/panoramic-calibration-20261106/dav2/calibration.json",
+      "bytes": 11135,
+      "sha256": "2ad2d3175f366dd20f75b99f4d23ddb1a8fe4e719ff46e21748249eaf21fa283"
+    },
+    {
+      "path": "docs/evidence/panoramic-pair-protocol.json",
+      "bytes": 1840,
+      "sha256": "ffbd08dbf57671f8b517a7e4ed4127431369d4d74f32790351ec28d9fdd57a2a"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/cameras.bin",
+      "bytes": 344,
+      "sha256": "438ed6c285270c8d1360c92de38ed72934573e36add05e7e8d5b2025dc9b64d2"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/frames.bin",
+      "bytes": 1484,
+      "sha256": "bc0e4288156c0b037ce04d6f7d4f3eb11cee99efbfee48707a839165bfbb3a6f"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/images.bin",
+      "bytes": 3815648,
+      "sha256": "8df33b0cbee4353c61b002378ab7c829f7716b51564af2af41e62ab2c14b4a83"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/points3D.bin",
+      "bytes": 289376,
+      "sha256": "b9fa64c979bc63b7814f4e3eb5e7b0cc8482fedb1bdee6799992136c52eea98e"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/rigs.bin",
+      "bytes": 349,
+      "sha256": "8450104e07cb4c624cf7b4b629f8e8dcca0e7e1f862e72d1107e210e127b1b23"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/raw.npy",
+      "bytes": 2385056,
+      "sha256": "e2816ea83f41d047e7bd72e7221a6d4b5e4724daac0fbccf03531d922416beff"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/source.png",
+      "bytes": 955209,
+      "sha256": "30c5e1890e0090e77ef7a0d60bc5b32f58a443348195fb1b2a5363ef58231fae"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/raw.npy",
+      "bytes": 2385056,
+      "sha256": "f56d3beece7bfe2b269429324ec65efd8dff3bced5a5f5d3a66b36ae096d4c05"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/source.png",
+      "bytes": 945606,
+      "sha256": "cb90d65e077b43540d8e0bccf51f14c041c5e2e7969a50a37efc3867b3098c6a"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/003_1677293342921360.jpg",
+      "bytes": 3917173,
+      "sha256": "d8b73aa169ba2db46ea44a8dc45b9bc3d2340e3a19537b3c2b9c45ed43c6c9f8"
+    },
+    {
+      "path": "data/samples/mapillary-beijing/images/004_679966948337536.jpg",
+      "bytes": 3885062,
+      "sha256": "8274b91c22f42bc85db075573078ff3943482f6aa727b1bf81a5339631c6b391"
+    }
+  ],
+  "prepareSeconds": 1.1226065829396248
+}

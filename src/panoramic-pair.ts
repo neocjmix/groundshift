@@ -13,13 +13,14 @@ type Cloud = {
 type Metric = { label: string; value: number | null; unit?: string; precision?: number };
 type Direction = {
   id: string; title: string; source?: string; target?: string; depth?: string;
-  warp?: string; residual?: string; mask?: string; metrics: Metric[]; notes: string[];
+  warp?: string; residual?: string; mask?: string; overlap?: string; metrics: Metric[]; notes: string[];
 };
 type Model = {
   id: string; title: string; status: Status; qualityStatus: QualityStatus; meaning: string;
   cloud?: string; ply?: string; metrics: Metric[]; directions: Direction[]; notes: string[];
 };
 type Summary = {
+  heading?: string; intro?: string; docHref?: string; maskCaption?: string;
   completedAt: string; status: Status; qualityStatus: QualityStatus; conclusion: string;
   sources: { id: string; title: string; image: string; sourceUrl: string; licenseUrl: string }[];
   models: Model[]; notes: string[]; nextStep: string;
@@ -29,8 +30,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <header><a href="/">GROUND SHIFT</a><a href="/experiments/lab/">← 시간순 실험실</a></header>
 <main>
   <span class="eyebrow">Panoramic street reconstruction · adjacent pair</span>
-  <h1>두 사진이 말하는 거리,<br>같은 공간일까?</h1>
-  <p>연속해서 촬영한 360도 사진 4·5번에서 각각 깊이를 추정했습니다. 기존 SfM 카메라 좌표에 놓은 두 점군이 같은 도로와 벽면을 가리키는지 비교합니다. 색을 합쳐 그럴듯하게 보이는 것과, 두 추정이 실제로 일치하는 것은 다릅니다.</p>
+  <h1 id="heading">두 사진이 말하는 거리,<br>같은 공간일까?</h1>
+  <p id="intro">연속해서 촬영한 360도 사진 4·5번에서 각각 깊이를 추정했습니다. 기존 SfM 카메라 좌표에 놓은 두 점군이 같은 도로와 벽면을 가리키는지 비교합니다. 색을 합쳐 그럴듯하게 보이는 것과, 두 추정이 실제로 일치하는 것은 다릅니다.</p>
   <div class="actions"><span id="execution-status" class="status" role="status">실행 기록을 불러오는 중…</span><span id="quality-status" class="status pending"></span><a href="/experiments/panoramic-depth/">앞선 한 파노라마 실험 ↗</a></div>
   <div class="note" id="conclusion"></div>
   <div class="steps" style="margin-top:24px"><span>실제 ERP 사진 2장</span><span>→ 각각 깊이 추정·보정</span><span>→ 기존 공통 좌표</span><span>→ 양방향 겹침 검사</span></div>
@@ -41,7 +42,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </section>
   <section class="section">
     <h2>두 점군을 같은 좌표에 겹쳐 보기</h2>
-    <div class="toolbar"><label>깊이 모델 <select id="model-select" disabled aria-label="깊이 모델 선택"></select></label><span id="model-status" class="status" role="status"></span></div>
+    <div class="toolbar"><label>표시 결과 <select id="model-select" disabled aria-label="표시 결과 선택"></select></label><span id="model-status" class="status" role="status"></span></div>
     <p id="model-meaning"></p><div id="metrics" class="metrics"></div>
     <div class="actions">
       <label>표시 색 <select id="color-mode" disabled><option value="rgb">원본 사진 RGB</option><option value="source">출처별 색 · 4번 청록 / 5번 주황</option></select></label>
@@ -66,7 +67,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <figure hidden><img id="direction-depth" alt="출발 사진의 보정된 방사 깊이"><figcaption>보정된 방사 거리 · SfM 임의 단위</figcaption></figure>
       <figure hidden><img id="direction-warp" alt="도착 사진의 관측 색을 가져와 출발 ERP 격자에 표시한 역방향 워프"><figcaption>도착 사진 RGB를 출발 ERP 격자에 가져온 역방향 워프 · 검정은 제외·미지원 영역 · 생성 이미지 아님</figcaption></figure>
       <figure hidden><img id="direction-residual" alt="출발 ERP 격자에 표시한 두 시점의 방사 거리 불일치"><figcaption>출발 ERP 격자의 거리 불일치 · 정의와 색 범위는 방향별 기록 참조</figcaption></figure>
-      <figure hidden><img id="direction-mask" alt="출발 ERP 격자에 표시한 재투영 비교 유효 영역과 제외 영역"><figcaption>출발 ERP 격자의 겹침·가려짐 마스크 · 원본 전체에 대한 정확도 점수가 아님</figcaption></figure>
+      <figure hidden><img id="direction-mask" alt="출발 ERP 격자에 표시한 재투영 비교 유효 영역과 제외 영역"><figcaption id="mask-caption">출발 ERP 격자의 겹침·가려짐 마스크 · 원본 전체에 대한 정확도 점수가 아님</figcaption></figure>
+      <figure hidden><img id="direction-overlap" alt="같은 촬영 위치의 크롭들이 예측한 방사 거리의 로그 범위"><figcaption>같은 촬영 위치 · 크롭 간 log 거리 범위 · 초록은 낮은 불일치, 빨강은 기준 이상 · 검정은 비교 미지원 · 정확도나 가려짐 판정 아님</figcaption></figure>
     </div>
   </section>
   <section class="section">
@@ -76,7 +78,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </section>
   <footer>Cicero101 / Mapillary via Wikimedia Commons · 출처와 CC BY-SA 4.0 링크는 각 원본 사진 아래 표시합니다.<br>
     기존 원본 사진, 카메라, 한 파노라마 결과와 스쿠터 GS는 보존했습니다.<br>
-    <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/PANORAMIC_PAIR_P1.md">실행 기록과 제한 사항 ↗</a> · <span id="completed"></span>
+    <a id="doc-link" href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/PANORAMIC_PAIR_P1.md">실행 기록과 제한 사항 ↗</a> · <span id="completed"></span>
   </footer>
 </main>`;
 
@@ -188,7 +190,7 @@ function showDirection() {
   const direction = model.directions.find(item => item.id === directionSelect.value);
   showMetrics('direction-metrics', direction?.metrics ?? []);
   document.querySelector('#direction-notes')!.textContent = direction?.notes.join(' ') ?? '방향별 진단 NOT RUN';
-  for (const key of ['source', 'target', 'depth', 'warp', 'residual', 'mask'] as const) {
+  for (const key of ['source', 'target', 'depth', 'warp', 'residual', 'mask', 'overlap'] as const) {
     const image = document.querySelector<HTMLImageElement>(`#direction-${key}`)!;
     const path = direction?.[key]; image.closest('figure')!.hidden = !path;
     if (path) image.src = path; else image.removeAttribute('src');
@@ -230,6 +232,10 @@ fetch('./summary.json').then(async response => {
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   summary = await response.json();
   if (!summary.models?.length || summary.sources?.length !== 2) throw new Error('두 파노라마 실행 기록이 없습니다.');
+  if (summary.heading) document.querySelector('#heading')!.textContent = summary.heading;
+  if (summary.intro) document.querySelector('#intro')!.textContent = summary.intro;
+  if (summary.maskCaption) document.querySelector('#mask-caption')!.textContent = summary.maskCaption;
+  if (summary.docHref) document.querySelector<HTMLAnchorElement>('#doc-link')!.href = summary.docHref;
   for (const model of summary.models) select.add(new Option(`${model.title} · ${model.status}`, model.id));
   select.value = summary.models.find(model => model.cloud)?.id ?? summary.models[0].id; select.disabled = false;
   document.querySelector('#execution-status')!.textContent = `로컬 실행 ${summary.status}`;

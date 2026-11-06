@@ -12,7 +12,19 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: shared calibration and perspective-depth control
+## Current experiment: dense perspective coverage and overlap
+
+The [executed two-panorama perspective experiment](docs/PERSPECTIVE_OVERLAP.md)
+adds twelve real downward crops to cover the road, reuses the existing level
+predictions and compares four spherical point-cloud controls. DAV2 Small ran
+locally on M2 MPS. On matched source samples, road depth disagreement improves,
+but facade disagreement and the overall error tail worsen. Disagreement filtering
+also removes substantial facade coverage. P2 geometry remains NOT ACCEPTED;
+fusion and new Gaussian training remain NOT RUN. The
+[observation page](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/)
+retains raw versus filtered clouds and both viewing directions.
+
+## Previous experiment: shared calibration and perspective-depth control
 
 The [street roadmap](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md) now has an
 [executed common-track calibration study](docs/PANORAMIC_CALIBRATION.md).
@@ -21,7 +33,8 @@ mismatch. An additional local MPS DAV2 control on 12 real perspective crops
 reduced high-parallax withheld-feature median errors from about 7px to
 2.2–2.6px. The report shows actual photo displacement vectors, controls and
 matched-view calibration clouds. These are internal SfM comparisons; dense
-perspective overlap/fusion and new Gaussian training remain NOT RUN.
+perspective overlap was evaluated in the next bounded experiment above; fusion
+and new Gaussian training remain NOT RUN.
 The [pair diagnostic](docs/PANORAMIC_PAIR_P1.md), [one-panorama result](docs/PANORAMIC_DEPTH_P1.md),
 best scooter and all earlier observations remain available.
 [Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
