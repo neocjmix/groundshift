@@ -133,6 +133,34 @@ all1,175files in3.336672s. Publication status and hash readback follow dispatch;
 quality FAIL remains even after successful publication. Evidence stays local
 under`data/jobs/paris-streaming-20261107/publications/subset-fail/`.
 
+Failure-report pointer`fa08dbc` deploys as`52f4f4e4-7c94-4a13-a23c-a6b3ae19c07a`:
+created2026-11-06T17:28:37.718Z, **SUCCESS** at17:29:23.349Z. Anonymous full
+archive readback passes in0.566749s. The changed public summary matches all9,080
+bytes and SHA-256`a946ef71a5fff7fdd98c92f3187d2233507add121aa28695d1bf73f82c9022a8`.
+This successful observation publication does not change its visible qualityFAIL.
+
+The coverage-preserving alternative becomes a separate38th scene, retaining the
+whole-SPZ control and naive-subset FAIL observation. Native Spark RAD/LoD keeps
+coarse coverage across the scene with a350k selection budget and8-page/524,288-slot
+pool. The initial actual headed local Chrome case passes1/1 in11.4s; first-view
+RGB MAE is3.214/255 versus the full scene (nearest-three was33.45), and direct
+inspection finds the black void eliminated. Broader directional/public checks
+remain pending. First payload is14.88MB against15.92MB fullSPZ, so the first
+configuration provides only a small transfer saving; it is not a strong network
+scalability result. No retraining or source-photo background is used.
+
+Release `viewer-paris-lod-2026-11-07`, archive
+`groundshift-paris-lod-20261107.tar.gz`: **43,423,076 bytes**, SHA-256
+`58b04a6f4f6d2e6716d7049315e42090f949d87115c90c206e5318e737e8d5d6`.
+Apply it after the twenty preceding layers. The explicit public package includes
+17 pinned RAD/RADC files (26.26MB), full-SPZ control, actual preview and new paging
+viewer code. Fresh production rebuild passes in4.41s; privacy, referenced paging
+file size/hash and complete base/target/archive/composed checks pass in5.446393s
+(1,158selected public files,33changed members,1,203composed). All37 prior worlds,
+failed observations and rollback packages remain retained. Public deployment/hash
+and actual GPU/render checks follow dispatch. Evidence stays local under
+`data/jobs/paris-streaming-20261107/publications/lod/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)

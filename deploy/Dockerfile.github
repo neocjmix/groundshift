@@ -136,6 +136,13 @@ RUN wget -q -O /tmp/paris-subset-fail.tar.gz https://github.com/neocjmix/grounds
     && mkdir /out \
     && tar -xzf /tmp/paris-subset-fail.tar.gz -C /out
 
+# Native hierarchical RAD/LoD preserves global coverage; first-view result, broader checks pending.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_lod
+RUN wget -q -O /tmp/paris-lod.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-lod-2026-11-07/groundshift-paris-lod-20261107.tar.gz \
+    && echo '58b04a6f4f6d2e6716d7049315e42090f949d87115c90c206e5318e737e8d5d6  /tmp/paris-lod.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-lod.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -155,5 +162,6 @@ COPY --from=paris_depth /out/www /srv
 COPY --from=paris_native /out/www /srv
 COPY --from=paris_stream /out/www /srv
 COPY --from=paris_subset_fail /out/www /srv
+COPY --from=paris_lod /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
