@@ -37,3 +37,12 @@ def range_to_z(radial, unit_crop_rays):
     if rays.shape!=(*radial.shape,3) or not np.isfinite(rays).all() or not np.allclose(np.linalg.norm(rays,axis=-1),1,atol=1e-7):
         raise ValueError('Range conversion requires matching unit camera rays')
     return np.where(np.isfinite(radial)&(radial>0)&(rays[...,2]>0),radial*rays[...,2],np.nan)
+
+
+def outside_camera_proximity(points,centers,floor):
+    """Numerical seed exclusion in shared units, not measured empty space."""
+    points,centers=np.asarray(points,float),np.asarray(centers,float)
+    if (points.ndim!=2 or points.shape[1]!=3 or centers.ndim!=2 or centers.shape[1]!=3 or not len(centers)
+            or not np.isfinite(points).all() or not np.isfinite(centers).all() or not np.isfinite(floor) or floor<0):
+        raise ValueError('Require shared-frame finite points/camera centers and nonnegative floor')
+    return np.linalg.norm(points[:,None,:]-centers[None,:,:],axis=-1).min(axis=1)>=floor

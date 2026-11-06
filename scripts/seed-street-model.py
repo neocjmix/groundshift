@@ -6,7 +6,7 @@ from pathlib import Path
 import time
 import numpy as np
 from PIL import Image
-from model_depth import fit_depth,apply_depth,range_to_z
+from model_depth import fit_depth,apply_depth,range_to_z,outside_camera_proximity
 from perspective_sphere import sample_plane
 from spherical_depth import directions_to_erp,sample_erp_bilinear
 from street_geometry import held_id,project_world,voxel_reduce,validate_stereo_report
@@ -21,7 +21,10 @@ BASE=P.ROOT/'data/jobs/street-conclusion-20261106'
 
 
 def main(a):
-    job=a.job.resolve();out=job/('fusion-'+a.model);out.mkdir(parents=True,exist_ok=False)
+    import re
+    variant=a.variant or a.model
+    if not re.fullmatch('[a-z][a-z0-9-]*',variant) or not np.isfinite(a.proximity_floor) or a.proximity_floor<0:raise ValueError('Require safe local variant and nonnegative SfM proximity floor')
+    job=a.job.resolve();out=job/('fusion-'+variant);out.mkdir(parents=True,exist_ok=False)
     before=time.monotonic();report=dict(status='RUNNING',startedAt=P.now(),model=a.model)
     try:
         folder=job/a.model;inference=P.read(folder/'report.json')
@@ -84,14 +87,20 @@ def main(a):
             xyz=(ray[::3,::3]*z[::3,::3,None]).reshape(-1,3)@pose[:3,:3].T+pose[:3,3];rgb=np.array(Image.open(job/'inputs/images'/name).convert('RGB'))[::3,::3].reshape(-1,3);valid=np.isfinite(xyz).all(axis=1)
             points.append(xyz[valid]);colors.append(rgb[valid]);coverage.append(dict(file=name,validPixels=int(mask.sum()),candidates=int(valid.sum())))
         spacing=float(np.median([np.linalg.norm(poses[p+1][:3,3]-poses[p][:3,3]) for p in range(1,9)]))/120
-        xyz,rgb=voxel_reduce(np.concatenate(points),np.concatenate(colors),spacing);R.CAL.D.CAL.write_ply(out/'full.ply',xyz,rgb)
+        xyz,rgb=voxel_reduce(np.concatenate(points),np.concatenate(colors),spacing)
+        rejected=0
+        if a.proximity_floor:
+            centers=np.array([poses[p][:3,3] for p in [1,2,3,4,6,7,8,9]])
+            keep=outside_camera_proximity(xyz,centers,a.proximity_floor)
+            rejected=int((~keep).sum());xyz,rgb=xyz[keep],rgb[keep]
+        R.CAL.D.CAL.write_ply(out/'full.ply',xyz,rgb)
         take=np.linspace(0,len(xyz)-1,min(len(xyz),180000),dtype=int);old_xyz,old_rgb=R.sparse_seed(job)
-        dest=R.dataset(job,a.model,np.r_[old_xyz,xyz[take]],np.r_[old_rgb,rgb[take]],f'Actual {a.model} {kind}; explicit {len(fits)} calibration groups; common sparse points and real non5 RGB. No independent geometric accuracy or measured metric claim.')
-        report.update(status='PASS',qualityStatus='NOT ACCEPTED',convention=kind,calibrationGroups=len(fits),points=len(old_xyz)+len(take),fullDensePoints=len(xyz),voxelSpacingSfm=spacing,coverage=coverage,initialPlySha256=P.sha(dest/'init.ply'),sourceInferenceSha256=P.sha(folder/'report.json'))
+        dest=R.dataset(job,variant,np.r_[old_xyz,xyz[take]],np.r_[old_rgb,rgb[take]],f'Actual {a.model} {kind}; explicit {len(fits)} calibration groups; common sparse points and real non5 RGB. Numerical proximity exclusion {a.proximity_floor} SfM units, not measured free space. No independent geometric accuracy or measured metric claim.')
+        report.update(status='PASS',qualityStatus='NOT ACCEPTED',variant=variant,convention=kind,calibrationGroups=len(fits),points=len(old_xyz)+len(take),fullDensePoints=len(xyz),voxelSpacingSfm=spacing,coverage=coverage,proximityFloorSfm=a.proximity_floor,proximityRejected=rejected,initialPlySha256=P.sha(dest/'init.ply'),sourceInferenceSha256=P.sha(folder/'report.json'))
     except Exception as error:report.update(status='FAIL',error=f'{type(error).__name__}: {error}');raise
     finally:report.update(finishedAt=P.now(),elapsedSeconds=time.monotonic()-before);P.write(out/'report.json',report)
     print(a.model,report['status'],report['points'],flush=True)
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('job',type=Path);p.add_argument('model',choices=['panda','da2','moge','da3','depthmaster']);main(p.parse_args())
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('job',type=Path);p.add_argument('model',choices=['panda','da2','moge','da3','depthmaster']);p.add_argument('--variant');p.add_argument('--proximity-floor',type=float,default=0);main(p.parse_args())

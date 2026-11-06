@@ -1,9 +1,11 @@
 import sys
 import unittest
+import subprocess
+import tempfile
 from pathlib import Path
 import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from model_depth import fit_depth,apply_depth,range_to_z
+from model_depth import fit_depth,apply_depth,range_to_z,outside_camera_proximity
 
 
 class ModelDepthTests(unittest.TestCase):
@@ -30,6 +32,19 @@ class ModelDepthTests(unittest.TestCase):
         fit=dict(convention='affine-radial',scale=2,offset=-1,units='sfm-arbitrary',evidence='synthetic test')
         self.assertTrue(np.isnan(apply_depth(np.array([0,np.nan]),fit,'affine-radial')).all())
         with self.assertRaises(ValueError):range_to_z(np.array([1]),np.array([[0,0,2]]))
+
+    def test_proximity_exclusion_is_invariant_under_shared_rigid_transform(self):
+        points=np.array([[.001,0,0],[1,0,0],[3.1,0,0]]);centers=np.array([[0,0,0],[3,0,0]])
+        expected=np.array([False,True,False]);rotation=np.array([[0,-1,0],[1,0,0],[0,0,1]]);translation=np.array([10,20,30])
+        np.testing.assert_array_equal(outside_camera_proximity(points,centers,.4),expected)
+        np.testing.assert_array_equal(outside_camera_proximity(points@rotation.T+translation,centers@rotation.T+translation,.4),expected)
+        self.assertTrue(outside_camera_proximity(points,centers,0).all())
+
+    def test_blocked_candidate_never_imports_model_or_creates_output(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output=Path(temporary)/'attempt'
+            result=subprocess.run([sys.executable,str(Path(__file__).resolve().parents[1]/'infer-street-model.py'),'depthmaster',str(output)],capture_output=True,text=True)
+            self.assertEqual(result.returncode,2);self.assertIn('license chain',result.stderr);self.assertFalse(output.exists())
 
 
 if __name__=='__main__':unittest.main()

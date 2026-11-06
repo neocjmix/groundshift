@@ -198,3 +198,35 @@ data/tools/venv/bin/python scripts/publish-model-selection.py \
 
 The recorded experiment is never overwritten by these instructions. Native
 training logs, failed attempts and runtime counters belong in each new job.
+
+## Bounded PanDA repair
+
+The first PanDA8k training was intentionally cancelled after **1320.265s** with
+no final export. The original native terminal report (exit failure after our
+SIGTERM) is retained alongside its explicit external-cancellation classification.
+Actual process sampling found `SplatTrainer::step` / Metal submission and a
+1.1GB current /1.2GB peak process footprint; a separate whole-GPU sample was84%
+busy. AC power, low-power mode off, no recorded macOS thermal warning. These
+observations do not give an iteration count or establish the slowdown's cause.
+
+A concrete candidate pathology: the PanDA seed has172 points within0.1 SfM
+units of an estimated camera, minimum0.0011; the baseline minimum is0.9344,
+and the other selected seeds have no points within0.1. Extremely close points
+can project to large splats; this is a **hypothesis**, not a proved kernel profile.
+
+One repair was declared before another training: exclude dense candidates closer
+to a training camera than **0.4672120338 SfM units**, half the observed baseline
+minimum. Keep the same raw model, calibration, voxel spacing,180k dense sample
+budget and3,124 sparse points. This is a numerical stability heuristic, not a
+measured collision/free-space boundary. Preserve unmodified seeds and all failed
+evidence; do not search floor values. DA3/MoGe/DA² proceed first. The repaired
+variant is `panda-supported` and is disclosed as a pipeline repair, not a pure
+model-only comparison. No completed8k model is discarded.
+
+```sh
+data/tools/venv/bin/python scripts/seed-street-model.py data/jobs/NEW panda \
+  --variant panda-supported --proximity-floor 0.46721203379743004
+```
+
+Use the resulting `datasets/panda-supported` and a **new** native output folder.
+The four-full-run bound remains; the cancelled attempt is separately accounted.
