@@ -20,7 +20,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
     parser.add_argument('images', nargs='+', type=Path)
+    parser.add_argument('--input-size', type=int, help='Explicit neural input edge, multiple14; historical default remains unchanged')
     args = parser.parse_args()
+    if args.input_size is not None and (args.input_size<14 or args.input_size>1400 or args.input_size%14):
+        parser.error('input-size must be a multiple14 from14 through1400')
     if args.output.exists() or args.output.is_symlink():
         parser.error('Output already exists; prior evidence is never overwritten')
     for image in args.images:
@@ -54,6 +57,14 @@ def main():
     save()
     try:
         pipe = pipeline('depth-estimation', model=MODEL, revision=REVISION, device='mps')
+        if args.input_size is not None:
+            pipe.image_processor.size={'height':args.input_size,'width':args.input_size}
+        report['requestedInputSize']=args.input_size
+        observed=[]
+        def observe(_module, positional, keyword):
+            tensor=keyword.get('pixel_values',positional[0] if positional else None)
+            if tensor is not None:observed.append(list(tensor.shape))
+        hook=pipe.model.register_forward_pre_hook(observe,with_kwargs=True)
         report['modelLoadSeconds'] = time.monotonic() - started
         for index, source in enumerate(args.images):
             with Image.open(source) as loaded:
@@ -74,6 +85,7 @@ def main():
                 'source': str(source),
                 'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                 'size': [rgb.width, rgb.height],
+                'actualModelTensorShape': observed[-1] if observed else None,
                 'inferenceSeconds': seconds,
                 'predictionMin': float(depth.min()),
                 'predictionMax': float(depth.max()),
@@ -81,6 +93,7 @@ def main():
                 'visualSha256': hashlib.sha256((args.output / f'{stem}-visual.png').read_bytes()).hexdigest(),
             })
             save()
+        hook.remove()
         report['status'] = 'PASS'
     except Exception as error:
         report['status'] = 'FAIL'
