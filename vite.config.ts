@@ -18,6 +18,7 @@ export default defineConfig({
     street: "experiments/street/index.html",
     modelSelection: "experiments/model-selection/index.html",
     finalQuality: "experiments/final-quality/index.html",
+    tangentBackground: "experiments/tangent-background/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },

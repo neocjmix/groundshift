@@ -1115,6 +1115,9 @@
     "experiments/final-quality/comparison/measured-conclusion-01.jpg",
     "experiments/final-quality/comparison/measured-conclusion-00.jpg",
     "experiments/final-quality/comparison/measured-conclusion-02.jpg",
-    "experiments/final-quality/comparison/measured-conclusion-03.jpg"
+    "experiments/final-quality/comparison/measured-conclusion-03.jpg",
+    "experiments/tangent-background/index.html",
+    "experiments/tangent-background/summary.json",
+    "experiments/tangent-background/ATTRIBUTION.txt"
   ]
 }

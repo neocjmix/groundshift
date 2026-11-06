@@ -12,6 +12,7 @@ const depthExperimentReport = "/experiments/depth-v2/";
 const depthWarpReport = "/experiments/depth-warp/";
 const streetReport = "/experiments/street/";
 const modelReport = "/experiments/model-selection/";
+const tangentBackgroundReport = "/experiments/tangent-background/";
 const finalQualityReport = "/experiments/final-quality/";
 const categories = {
   capture: "Personal capture",
@@ -180,6 +181,7 @@ export default function App() {
       </a>
       <div className="header-right">
         {viewerOpen && <a className="collection-link" href="/" onClick={(event) => follow(event, null)}>← Back to scenes</a>}
+        {modelReportAvailable && <a className="collection-link" href={tangentBackgroundReport}>이십면체 방향 · 배경 보완 ↗</a>}
         {modelReportAvailable && <a className="collection-link" href={finalQualityReport}>마지막 품질 실험 · 진행 상황 ↗</a>}
         {modelReportAvailable && <a className="collection-link" href={modelReport}>거리 모델 · 비교와 결론 ↗</a>}
         {streetAvailable && <a className="collection-link" href={streetReport}>거리 GS · 전체 비교 ↗</a>}
@@ -204,7 +206,8 @@ export default function App() {
           <h2 id="experiment-heading">{modelReportAvailable ? "Same data. One final quality attempt." : "Real photos, generated gaps, actual results."}</h2>
           <p>{modelReportAvailable ? "Follow the final 1024px training attempt as input images, exported scenes and measurements become available. Earlier model comparisons, failures and limitations remain visible." : "Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately."}</p>
         </div>
-        {modelReportAvailable && <a href={finalQualityReport}>최신 · 같은 데이터의 마지막 품질 실험 <span aria-hidden="true">↗</span></a>}
+        {modelReportAvailable && <a href={tangentBackgroundReport}>최신 · 이십면체 방향과 배경 보완 <span aria-hidden="true">↗</span></a>}
+        {modelReportAvailable && <a href={finalQualityReport}>같은 데이터의 마지막 품질 실험 <span aria-hidden="true">↗</span></a>}
         {modelReportAvailable && <a href={modelReport}>앞선 거리 모델 비교와 결론 <span aria-hidden="true">↗</span></a>}
         {streetAvailable && <a href={streetReport}>{modelReportAvailable ? "앞선 짧은 거리 GS의 결론" : "최신 · 짧은 거리 GS의 결론"} <span aria-hidden="true">↗</span></a>}
         {scenes.some(scene => scene.id === "scooter-object") && <a href="/experiments/lab/">실험실 · 최신 결과부터 <span aria-hidden="true">↗</span></a>}
@@ -252,7 +255,7 @@ export default function App() {
           <p>{selectedScene.description}</p>
           <p className="experiment-detail">{selectedScene.detail}</p>
           <small>Inclusion does not imply visual-quality acceptance.</small>
-          <a href={selectedScene.id === "street-final-hires" ? finalQualityReport : selectedScene.id.startsWith("street-model-") ? modelReport : selectedScene.id.startsWith("street-") ? streetReport : selectedScene.id.startsWith("scooter-nodepth-") ? "/experiments/object-nodepth/" : selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
+          <a href={selectedScene.id === "street-tangent20" ? tangentBackgroundReport : selectedScene.id === "street-final-hires" ? finalQualityReport : selectedScene.id.startsWith("street-model-") ? modelReport : selectedScene.id.startsWith("street-") ? streetReport : selectedScene.id.startsWith("scooter-nodepth-") ? "/experiments/object-nodepth/" : selectedScene.id.startsWith("scooter-real-") ? "/experiments/object-real/" : selectedScene.id.startsWith("scooter-") ? "/experiments/object-focus/" : selectedScene.id === "beijing-depth" ? depthWarpReport : selectedScene.id.startsWith("beijing-video-") ? videoExperimentReport : experimentReport}>Comparison &amp; stage history ↗</a>
         </section>}
         {importControls}
         {loading && <p className="manifest-status" role="status">Reading world manifest…</p>}

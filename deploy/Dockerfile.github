@@ -21,6 +21,11 @@ RUN wget -q -O /tmp/verified.tar.gz https://github.com/neocjmix/groundshift/rele
     && echo 'e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48  /tmp/verified.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/verified.tar.gz -C /out
 
+# Newly user-authorized tangent/background experiment: plan first, execution pending.
+RUN wget -q -O /tmp/tangent-plan.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-plan-2026-11-06/groundshift-tangent-plan-20261106.tar.gz \
+    && echo '841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe  /tmp/tangent-plan.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/tangent-plan.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=artifact /out/www /srv
