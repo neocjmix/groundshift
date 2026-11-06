@@ -358,7 +358,7 @@
       "manifestPath": "/worlds/street-tangent20-spz/world.json",
       "thumbnailPath": "/worlds/street-tangent20-spz/preview.jpg",
       "createdAt": "2026-11-06T16:00:08.757Z",
-      "detail": "변환·점 개수·SH·좌표 검사 PASS. 실제 브라우저 렌더·화질 비교 NOT RUN. 카드 그림은 임시 상태 표시."
+      "detail": "이 장면에서는 외관을 거의 유지하면서 파일을78.3% 줄일 수 있었습니다. SPZ를 경량 전달 후보로 채택합니다. 무손실은 아니며, 기존의 번짐·겹침·미검증 형상은 그대로입니다."
     }
   ]
 }

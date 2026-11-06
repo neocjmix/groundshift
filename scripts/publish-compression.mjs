@@ -16,12 +16,14 @@ if (sha256(bytes)!==measurement.output.sha256 || header.count!==measurement.sour
 const manifest=await read(path.join(worldDir,'world.json'));
 if (manifest.id!==id || manifest.background) throw new Error('Unexpected world or background');
 const extra=evidencePath?await read(evidencePath):{};
+// Retain local timing measurements without publishing loopback URLs/host paths.
+if(extra.localBrowser)extra.localBrowser=extra.localBrowser.map(record=>({...record,origin:'local production preview; loopback address redacted'}));
 const summary={schemaVersion:1,updatedAt:new Date().toISOString(),phase:evidencePath?'measured':'export',
   title:'같은 장면, 더 작은 파일',
   summary:`점 ${header.count.toLocaleString()}개와 SH${header.shDegree}를 유지한 저장 형식 비교. PLY ${(measurement.source.bytes/1e6).toFixed(2)}MB → SPZ ${(bytes.length/1e6).toFixed(2)}MB (${measurement.reductionPercent.toFixed(1)}% 절약). 재학습·점 제거·배경 보완 없음.`,
   measurement,...extra};
 const serialized=JSON.stringify({manifest,summary});
-if (/\/(?:Users|home|private|Volumes|tmp)\/|data\/jobs\/|file:\/\/|icloud\.com/i.test(serialized)) throw new Error('Private path or source in publication');
+if (/\/(?:Users|home|private|Volumes|tmp)\/|data\/jobs\/|file:\/\/|icloud\.com|https?:\/\/(?:localhost|127\.0\.0\.1)(?=[:/]|$)/i.test(serialized)) throw new Error('Private path or source in publication');
 const dest=`public/worlds/${id}`, report=`public/${reportDir}`;
 await mkdir(dest,{recursive:true});await mkdir(report,{recursive:true});
 for (const name of ['world.json','cameras.json','SOURCE_LICENSE','scene.spz','preview.jpg']) {
@@ -40,7 +42,7 @@ const entry={id,title:'Street · SPZ 압축 비교',description:'같은 전방�
 catalog.scenes=catalog.scenes.filter(e=>e.id!==id);catalog.scenes.push(entry);await write('public/worlds/catalog.json',catalog);
 const timeline=await read('public/experiments/lab/timeline.json');
 const entries=[{id,kind:'scene',title:entry.title,description:entry.description,image:entry.thumbnailPath,href:'/?world='+entry.manifestPath,createdAt:entry.createdAt,detail:quality},
-  {id:'report-compression',kind:'report',title:'SPZ · 同장면 용량과 화질 비교',description:summary.summary,image:entry.thumbnailPath,href:'/experiments/compression/',createdAt:summary.updatedAt,detail:quality}];
+  {id:'report-compression',kind:'report',title:'SPZ · 같은 장면의 용량과 화질 비교',description:summary.summary,image:entry.thumbnailPath,href:'/experiments/compression/',createdAt:summary.updatedAt,detail:quality}];
 timeline.entries=timeline.entries.filter(e=>!entries.some(n=>n.id===e.id));timeline.entries.push(...entries);await write('public/experiments/lab/timeline.json',timeline);
 const allow=await read('scripts/observation-worlds.json');
 allow.worlds=allow.worlds.filter(e=>e.id!==id);allow.worlds.push({id,source:path.relative(process.cwd(),path.resolve(worldDir)).replaceAll(path.sep,'/'),asset:'scene.spz',format:'spz',credits:['SOURCE_LICENSE']});

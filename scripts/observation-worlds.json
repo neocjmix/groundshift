@@ -1167,6 +1167,11 @@
     "experiments/tangent-background/comparison/measured-comparison-13.jpg",
     "experiments/compression/index.html",
     "experiments/compression/ATTRIBUTION.txt",
-    "experiments/compression/summary.json"
+    "experiments/compression/summary.json",
+    "experiments/compression/comparison-0.jpg",
+    "experiments/compression/comparison-1.jpg",
+    "experiments/compression/comparison-2.jpg",
+    "experiments/compression/comparison-3.jpg",
+    "experiments/compression/motion.mp4"
   ]
 }
