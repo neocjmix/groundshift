@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -14,6 +14,69 @@ parallel. Show provisional results and pending checks as NOT RUN; publish later
 validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
+
+## Alternative-model observation release — 2026-11-06 KST
+
+[All four new models, actual motion and comparisons](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) ·
+[Incumbent DAV2 world](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-dense/world.json) ·
+[New MoGe candidate](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-model-moge/world.json).
+33 Gaussian scenes,15 reports,48 chronological entries. The observed conclusion
+is **no clear qualitative breakthrough**: MoGe mean RGB error27.587 versus
+DAV2 27.751,0.6% lower; retain DAV2. See [actual measurements](MODEL_SELECTION.md).
+
+| Check | Actual evidence |
+|---|---|
+| Source implementation | `96857d4`; bounded PanDA repair `8880560`, model adapters/tests `1e70d75` |
+| Deployment pointer | `1149e42a5ff78b9666f4899fdafce6aaf2fc41e8` |
+| Publication-order instruction | `fce2da9`: immediate asynchronous partial publication in AGENTS/README/implementation/deployment docs |
+| Release | [viewer-model-selection-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-model-selection-2026-11-06) |
+| Archive | `groundshift-model-selection-20261106-v2.tar.gz`,928,736,619 bytes |
+| Archive SHA-256 | `cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d` |
+| Explicit static package | 1,019 public files /1,030,866,148 bytes; all787 previous dataset files unchanged |
+| Anonymous full release download | PASS,928,736,619 bytes and identical SHA;274.420s |
+| Railway | `8e189237-8508-4c91-a2e3-d4baa50ac70e`,SUCCESS at11:25:01.242UTC |
+| Server build checksum | PASS,`/tmp/viewer.tar.gz: OK` at11:23:41.655UTC |
+| Public health | PASS,`/healthz`200 /`ok` |
+| Public browser | PASS,11 focused headed Chrome checks in2.1min; four new actual GS render/path checks, comparison video/depth,33 decoded gallery previews and shared older report regressions |
+| Public file hashes | Readback dispatched after deployment; pending completion is NOT RUN |
+
+A deployment sub-agent committed/pushed the fresh pointer and explicitly
+connected the existing repository/feature branch. No new service, cloud
+reconstruction or GPU backend was introduced. The previous street release and
+rollback deployment remain. Push-only automatic deployment remains unverified;
+the explicit connector trigger is recorded.
+
+The user corrected the workflow during this run: small results must publish
+immediately in parallel with continuing work. This run's local checks had already
+completed before that correction; do not claim they were deferred. After the
+correction the deployment was dispatched while the full anonymous archive
+readback remained in flight, and public verification started after SUCCESS.
+Future partial results must ship before waiting for all tests or all candidates.
+
+TypeScript/lint/production build PASS;166 JS and224 distinct Python tests PASS.
+Local browser evidence covers71 distinct cases: initial70/71, then7/7 targeted
+checks after serializing build/test and correcting model-history links. The
+initial old-scene reload404 coincided with our package rebuild removing preview
+files and is retained, not hidden. Full inference/training, failed strict loads,
+PanDA cancellation/one repair, DepthMaster dependency stop and runtime confounds
+are in [MODEL_SELECTION.md](MODEL_SELECTION.md).
+
+Post-publication browser scope: an initial broad public suite recorded13 passes,
+one gallery timeout and one interrupted case,56 NOT RUN. Its trace shows200
+preview responses including one5.380s response beyond the5s assertion timeout.
+Allow30s for public-network image decode without changing pixel/completion
+criteria. The gallery retry and all ten new/shared-interface release checks pass
+(11/11 in2.1min). Public evidence covers24 distinct cases in total; a complete
+public71-case rerun is **NOT RUN**, not claimed. All71 distinct cases have local
+passing evidence. The broader public run was stopped to focus on changed/new
+surfaces rather than repeatedly downloading unchanged historical worlds.
+
+[Actual public report](evidence/model-selection-public.jpg) ·
+[Actual public MoGe viewer](evidence/model-selection-moge-public.jpg) ·
+[Sanitized execution evidence](evidence/model-selection.json). Original full-res
+photos, weights and raw logs remain local. DepthMaster predictions/code/weights
+are excluded from the archive. Public comparison crops retain CC BY-SA4.0
+attribution. No independent metric geometry or unrestricted-walking acceptance.
 
 ## Short-street reconstruction conclusion — 2026-11-06 KST
 

@@ -309,7 +309,8 @@ is not evidence that the street geometry works.
 ## Validation and observation release
 
 - PASS: MPS inference for all four selected models; Metal training/export for
-  all four;375 actual headed Chrome renders; six decoded path-video exports.
+  all four;375 actual headed Chrome renders; six encoded path-video exports
+  and actual comparison-video decode/playback in the browser.
 - FAIL, corrected: the two strict-checkpoint-loading smoke attempts described
   above. Failed outputs/logs remain alongside corrected executions.
 - CANCELLED: original PanDA training and full DepthMaster inference, for the
@@ -329,8 +330,10 @@ is not evidence that the street geometry works.
   New cases exercise actual image/depth loading, video decode/playback,
   four real GS renders/route movement, mobile layout and explicit503 recovery.
 - PASS: all103 frozen baseline file hashes remain unchanged.
-- Browser UI, build and public release verification are recorded with their
-  actual completed outcomes in [DEPLOYMENT.md](DEPLOYMENT.md). Static tests are
+- PASS after publication:11 focused public Chrome cases, including all four
+  new real GS renders/path movement, decoded video/depth and33 gallery previews.
+  A full public71-case run is NOT RUN to completion; its network timeout and
+  focused retry are preserved in [DEPLOYMENT.md](DEPLOYMENT.md). Static tests are
   distinct from model execution and actual GS browser rendering.
 - NOT RUN: independent measured geometry, repeated-seed significance, collision
   surfaces, unrestricted-walking acceptance, CUDA engine inference and model

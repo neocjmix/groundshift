@@ -1,0 +1,295 @@
+{
+  "run": "model-selection-20261106",
+  "sourceCommit": "96857d4",
+  "status": "PASS for four native exports and 375 actual browser renders; clear quality gain NOT ESTABLISHED",
+  "incumbent": "dav2",
+  "promisingNewCandidate": "moge",
+  "models": [
+    {
+      "id": "dav2",
+      "status": "PASS",
+      "trainingSeconds": 409.75906254095025,
+      "maxResidentSetBytes": 317669376,
+      "peakMemoryFootprintBytes": 1299235776,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "b7544cc317f13f262dd7348199be077d85802cdd75ac175ee461ab8a8907816a",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 27.75055635210852,
+      "heldLevelCoverage95Mean": 0.22463164056566376,
+      "heldLevelPsnrMean": 16.333515481103763
+    },
+    {
+      "id": "da3",
+      "status": "PASS",
+      "trainingSeconds": 1367.0279134579469,
+      "maxResidentSetBytes": 342835200,
+      "peakMemoryFootprintBytes": 1295352768,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "31ba2b52abb6e8809169db5a6846a74fe6a7ec88b2b93b5d251736b5a445caa9",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.53053700019389,
+      "heldLevelCoverage95Mean": 0.19352532112199117,
+      "heldLevelPsnrMean": 16.16619687847115
+    },
+    {
+      "id": "moge",
+      "status": "PASS",
+      "trainingSeconds": 508.5987694999203,
+      "maxResidentSetBytes": 313769984,
+      "peakMemoryFootprintBytes": 1297368024,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "ceadfe6e9169fab2efe4eb25317ee1df747542f4d2002b31a1f984e63bb17f70",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 27.58670756873511,
+      "heldLevelCoverage95Mean": 0.2097314690289093,
+      "heldLevelPsnrMean": 16.36968990538535
+    },
+    {
+      "id": "da2",
+      "status": "PASS",
+      "trainingSeconds": 451.1294835419394,
+      "maxResidentSetBytes": 315523072,
+      "peakMemoryFootprintBytes": 1297580992,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "57b58c9b1d203b0b463846393001806bab5eb7609fdab26c137f5dba1f7edbef",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 28.109868426739975,
+      "heldLevelCoverage95Mean": 0.23073731165227315,
+      "heldLevelPsnrMean": 16.276723339476895
+    },
+    {
+      "id": "panda-supported",
+      "status": "PASS",
+      "trainingSeconds": 453.7723517920822,
+      "maxResidentSetBytes": 289308672,
+      "peakMemoryFootprintBytes": 1299186600,
+      "adapterEvidence": "Using adapter AdapterInfo { name: \"Apple M2\", vendor: 0, device: 0, device_type: IntegratedGpu, driver: \"\", driver_info: \"\", backend: Metal }",
+      "splats": 400000,
+      "bytes": 36800652,
+      "sha256": "3c12b9cc73d279e4db618c5ec108fe382f663b1631638e7148bc39e82dc0e15b",
+      "steps": 8000,
+      "renderStatus": "PASS",
+      "heldLevelViews": 6,
+      "heldLevelMaeMean": 29.9116116427639,
+      "heldLevelCoverage95Mean": 0.33293598307602823,
+      "heldLevelPsnrMean": 15.929515038134602
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "da3",
+      "baseline": "dav2",
+      "views": 6,
+      "maeImprovedViews": 2,
+      "meanCoverageDifference": -0.03110631944367258,
+      "comparisonScreen": "FAIL",
+      "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+    },
+    {
+      "id": "moge",
+      "baseline": "dav2",
+      "views": 6,
+      "maeImprovedViews": 4,
+      "meanCoverageDifference": -0.014900171536754436,
+      "comparisonScreen": "PASS",
+      "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+    },
+    {
+      "id": "da2",
+      "baseline": "dav2",
+      "views": 6,
+      "maeImprovedViews": 1,
+      "meanCoverageDifference": 0.006105671086609384,
+      "comparisonScreen": "FAIL",
+      "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+    },
+    {
+      "id": "panda-supported",
+      "baseline": "dav2",
+      "views": 6,
+      "maeImprovedViews": 0,
+      "meanCoverageDifference": 0.10830434251036446,
+      "comparisonScreen": "FAIL",
+      "meaning": "Predeclared comparative appearance screen, not geometry acceptance. All selected pixels include holes."
+    }
+  ],
+  "rendering": {
+    "status": "PASS",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "elapsedSeconds": 87.66617233299999,
+    "errors": []
+  },
+  "actualRenderCount": 375,
+  "renderGpu": [
+    "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)"
+  ],
+  "tests": {
+    "javascript": 166,
+    "pythonDistinct": 224,
+    "localBrowser": {
+      "initialPassed": 70,
+      "initialFailed": 1,
+      "targetedFinalPassed": 7,
+      "distinctPassing": 71,
+      "initialFailure": "Concurrent build replaced preview dist during old-scene reload; serialized build/test and exact case rerun PASS."
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "frozenBaselineHashes": 103
+  },
+  "geometry": "NOT ACCEPTED; no independent measurements",
+  "repeatedSeedSignificance": "NOT RUN",
+  "failures": [
+    "PanDA checkpoint epoch metadata strict-load FAIL; metadata-only repair PASS.",
+    "DA3 missing six shared Parameter aliases strict-load FAIL; identity-only alias restoration PASS.",
+    "Original PanDA native CANCELLED after 1320.265s; one proximity-seed repair exported. Runtime confounded by seven concurrent old 3D views.",
+    "DepthMaster MPS smoke PASS, full CANCELLED after five of eight outputs due unresolved migrated-code license; native NOT RUN, output publication excluded."
+  ],
+  "limitations": [
+    "Same real96 crops/8 training centers; panorama5 RGB withheld but all-nine estimated camera/sparse geometry reused.",
+    "Per-model input resolution/context/calibration differs; practical pipeline comparison, not pure model accuracy.",
+    "Single seed42 training per pipeline; 0.6% MAE gain is not established significant.",
+    "Recorded native timing conditions differ; not a model-speed ranking."
+  ],
+  "localJob": "data/jobs/model-selection-20261106/",
+  "upstreamManifest": "scripts/samples/street-models.json",
+  "rawReportHashes": {
+    "render": "2a7d86398c8c36ac4c15f1b29003c3897d36b925df22c620f006061c4858a39f",
+    "evaluation": "8f921667156cb96d9eb481b5061ad7262cba7f9f810b07a6fcc05370667a6c98",
+    "metrics": "f8be35a8ea12b3d1c782c3f8ee4c206c0cb171a9404fa7c4d83f42061c836bee",
+    "decision": "f742da86d81ced8c5799261ce76c149d603d497b5e8952338040d15dbd6e96be"
+  },
+  "releaseArchive": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T11:15:10.348900+00:00",
+    "files": 1019,
+    "wwwBytes": 1030866148,
+    "stagedFiles": 1022,
+    "stagedBytes": 1030866835,
+    "archiveBytes": 928736619,
+    "sha256": "cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d",
+    "priorDataUnchanged": 787,
+    "elapsedSeconds": 3.526288541033864
+  },
+  "release": {
+    "schemaVersion": 1,
+    "observedAt": "2026-11-06T11:25:28.438Z",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "pointerCommit": "1149e42a5ff78b9666f4899fdafce6aaf2fc41e8",
+    "archive": {
+      "url": "https://github.com/neocjmix/groundshift/releases/download/viewer-model-selection-2026-11-06/groundshift-model-selection-20261106-v2.tar.gz",
+      "sha256": "cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d"
+    },
+    "trigger": {
+      "kind": "existing-service-source-connect",
+      "repository": "neocjmix/groundshift",
+      "branch": "feat/local-viewer-reconstruction",
+      "commitPin": null,
+      "sequencing": "User corrected publication order during this run. Local suite had already executed before that correction. Deployment sub-agent dispatched immediately while anonymous full archive readback remained pending; public verification follows dispatch. Future partial outputs must not wait for all local checks."
+    },
+    "deployment": {
+      "id": "8e189237-8508-4c91-a2e3-d4baa50ac70e",
+      "status": "SUCCESS",
+      "createdAt": "2026-11-06T11:23:01.475Z",
+      "updatedAt": "2026-11-06T11:25:01.242Z",
+      "serviceId": "2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69",
+      "environmentId": "43346592-217f-414e-b2ad-334e09b37599",
+      "url": null,
+      "snapshotId": "74cc9b2b-e6e2-471d-9294-7312ade2fce6",
+      "canRollback": true,
+      "canRedeploy": true,
+      "regions": [
+        "us-west2"
+      ],
+      "meta": {
+        "reason": "deploy",
+        "commitMessage": "deploy: publish alternative street model comparison",
+        "commitHash": "1149e42a5ff78b9666f4899fdafce6aaf2fc41e8",
+        "branch": "feat/local-viewer-reconstruction"
+      }
+    },
+    "buildChecksum": {
+      "status": "PASS",
+      "timestamp": "2026-11-06T11:23:41.655287247Z",
+      "message": "/tmp/viewer.tar.gz: OK"
+    },
+    "health": {
+      "status": "PASS",
+      "url": "https://groundshift-viewer-production.up.railway.app/healthz",
+      "httpStatus": 200,
+      "body": "ok"
+    },
+    "publicFileReadback": {
+      "status": "NOT RUN",
+      "owner": "parent agent continues asynchronously"
+    },
+    "publicBrowserRendering": {
+      "status": "NOT RUN",
+      "owner": "parent agent continues asynchronously"
+    },
+    "rollback": {
+      "deploymentId": "f70d833a-d15d-41c8-b23e-b4f963ea4819",
+      "release": "viewer-street-conclusion-2026-11-06",
+      "archiveSha256": "d84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f"
+    },
+    "anonymousArchiveReadback": {
+      "status": "PASS",
+      "startedAt": "2026-11-06T11:20:33.894924+00:00",
+      "url": "https://github.com/neocjmix/groundshift/releases/download/viewer-model-selection-2026-11-06/groundshift-model-selection-20261106-v2.tar.gz",
+      "bytes": 928736619,
+      "sha256": "cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d",
+      "elapsedSeconds": 274.4198984170798
+    }
+  },
+  "publicBrowser": {
+    "status": "PASS for focused post-deployment checks",
+    "focusedCasesPassed": 11,
+    "focusedElapsedSeconds": 126,
+    "focusedLog": "validation/browser-public-focused.log",
+    "initialBroadSuite": {
+      "status": "CANCELLED for focused release verification",
+      "passed": 13,
+      "failed": 1,
+      "interrupted": 1,
+      "notRun": 56,
+      "elapsedMinutes": 3.9,
+      "failure": "Gallery image decoded after default5s timeout. Trace retained all preview HTTP200, one5380ms response. Public-only wait increased30s, same decoded-image requirement; exact gallery retry PASS.",
+      "reason": "All71 distinct local cases already have passing evidence. Stop re-downloading every unchanged historical GS and focus public checks on new four models, report, gallery and changed shared street interface."
+    },
+    "fullPublic71": "NOT RUN to completion",
+    "distinctCasesWithPassingEvidence": 24,
+    "checks": [
+      "33 gallery links and actual decoded previews, filters and mobile layout",
+      "four new actual GS renders and recovered-route movement",
+      "matched source/render/depth images and actual comparison-video playback",
+      "correct model report/history links",
+      "old shared street report and actual incumbent viewer regression",
+      "503 fixtures and chronological old/new results"
+    ],
+    "screenshots": [
+      "docs/evidence/model-selection-public.jpg",
+      "docs/evidence/model-selection-moge-public.jpg"
+    ]
+  },
+  "publicFiles": {
+    "status": "NOT RUN to completion; readback in progress after deployment"
+  }
+}

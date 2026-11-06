@@ -37,7 +37,10 @@ test('gallery shows real previews, filters and mobile layout without starting We
     // A growing catalog puts lazy previews below the viewport. Request each one
     // through normal scrolling before checking its actual decoded pixels.
     await card(page, scene).scrollIntoViewIfNeeded();
-    await expect.poll(() => card(page, scene).locator('img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+    // Public-origin traces can exceed5s even for200 responses. Allow network
+    // latency while still requiring a completed, actually decoded image.
+    await expect.poll(() => card(page, scene).locator('img').evaluate(image => image.complete && image.naturalWidth > 0),
+      { timeout: process.env.GS_BASE_URL ? 30_000 : 5_000 }).toBe(true);
   }
   await page.getByRole('heading', { level: 1 }).scrollIntoViewIfNeeded();
   await page.screenshot({ path: info.outputPath('gallery-desktop.png'), fullPage: true });
