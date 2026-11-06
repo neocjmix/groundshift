@@ -117,9 +117,15 @@ def main(a):
             from PIL import Image
             Image.open(preview).convert('RGB').save(dest / 'preview.jpg', quality=91)
         elif not (dest / 'preview.jpg').exists():
-            # Explicit placeholder: never call this an actual new-scene render.
-            shutil.copyfile(PUBLIC / 'worlds/street-dense/preview.jpg', dest / 'preview.jpg')
-            summary['run']['quality'] += ' 카드 그림은 이전 DAV2 기준이며 새 장면의 렌더 미리보기는 NOT RUN.'
+            # Export immediately: a clearly labeled neutral placeholder avoids
+            # presenting another world's render as this new scene.
+            from PIL import Image, ImageDraw
+            image = Image.new('RGB', (640, 400), '#17242d')
+            draw = ImageDraw.Draw(image)
+            draw.text((36, 150), 'NATIVE GS EXPORT READY', fill='#d8f2ee', font_size=26)
+            draw.text((36, 205), 'Browser preview: NOT RUN', fill='#b4c9d4', font_size=22)
+            image.save(dest / 'preview.jpg', quality=91)
+            summary['run']['quality'] += ' 카드 그림은 NOT RUN 임시표시이며 실제 새 장면 렌더는 후속 공개합니다.'
         curated = job / 'public-worlds' / SLUG / 'world'
         curated.mkdir(parents=True, exist_ok=True)
         for name in ['scene.ply', 'world.json', 'cameras.json', 'SOURCE_LICENSE', 'preview.jpg']:
@@ -128,7 +134,7 @@ def main(a):
             shutil.copyfile(dest / name, curated / name)
         entry = dict(id=SLUG, title=metadata['title'], description='같은 실제 거리 사진·DAV2 초기 점군.1024px 학습 입력·80만 Gaussian 상한의 마지막 품질 조합.',
             category='experiment', manifestPath=f'/worlds/{SLUG}/world.json', thumbnailPath=f'/worlds/{SLUG}/preview.jpg',
-            createdAt=native['finishedAt'], detail=selected['quality'])
+            createdAt=native['finishedAt'], detail=summary['run']['quality'])
         catalog['scenes'] = [entry if old['id'] == SLUG else old for old in catalog['scenes']]
         if not any(old['id'] == SLUG for old in catalog['scenes']):
             catalog['scenes'].append(entry)
@@ -153,7 +159,7 @@ def main(a):
         timeline['entries'].append(report)
     allow['files'] = list(dict.fromkeys(allow['files'] + [REPORT+'/index.html'] + [str(p.relative_to(PUBLIC)) for p in out.rglob('*') if p.is_file()]))
     if world_plan:
-        write(PUBLIC / 'worlds/catalog.json', catalog)
+        (PUBLIC / 'worlds/catalog.json').write_text(json.dumps(catalog, indent=2) + '\n')
     write(PUBLIC / 'experiments/lab/timeline.json', timeline); write(allow_path, allow)
     snapshot.mkdir(parents=True)
     write(snapshot / 'summary.json', summary)

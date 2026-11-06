@@ -201,8 +201,8 @@ export default function App() {
       </div>
       {experimentCount > 0 && <section className="experiment-overview" aria-labelledby="experiment-heading">
         <div><span className="eyebrow">CURRENT EXPERIMENT · MAPILLARY 360°</span>
-          <h2 id="experiment-heading">{modelReportAvailable ? "Same street, different depth models." : "Real photos, generated gaps, actual results."}</h2>
-          <p>{modelReportAvailable ? "Compare local model families using the same real street photos and camera poses. Open their actual 3D scenes, matched views and motion videos. Earlier experiments, failures and limitations remain available." : "Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately."}</p>
+          <h2 id="experiment-heading">{modelReportAvailable ? "Same data. One final quality attempt." : "Real photos, generated gaps, actual results."}</h2>
+          <p>{modelReportAvailable ? "Follow the final 1024px training attempt as input images, exported scenes and measurements become available. Earlier model comparisons, failures and limitations remain visible." : "Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately."}</p>
         </div>
         {modelReportAvailable && <a href={finalQualityReport}>최신 · 같은 데이터의 마지막 품질 실험 <span aria-hidden="true">↗</span></a>}
         {modelReportAvailable && <a href={modelReport}>앞선 거리 모델 비교와 결론 <span aria-hidden="true">↗</span></a>}

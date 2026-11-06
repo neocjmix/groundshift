@@ -65,6 +65,6 @@ for(const model of summary.models.filter(m=>m.id!=='dav2'))test(`actual selected
 test('model report error state is explicit and old/new lab entries remain reachable',async({page})=>{
   await page.route('**/experiments/model-selection/summary.json',r=>r.fulfill({status:503,body:'TEST ONLY'}));
   await page.goto('/experiments/model-selection/');await expect(page.locator('#status')).toContainText('FAIL');await expect(page.locator('#open-scene')).toBeDisabled();
-  await page.goto('/experiments/lab/');await expect(page.locator('.entry').first()).toHaveAttribute('data-id','report-model-selection');
+  await page.goto('/experiments/lab/');await expect(page.locator('.entry[data-id="report-model-selection"]')).toHaveCount(1);
   for(const id of ['report-street-conclusion',...summary.models.filter(m=>m.id!=='dav2').map(m=>'street-model-'+m.id)])await expect(page.locator(`.entry[data-id="${id}"]`)).toHaveCount(1);
 });
