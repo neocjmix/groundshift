@@ -1,8 +1,60 @@
 # Railway viewer deployment
 
-**Live:** [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Observed road anchors and calibration — 2026-11-06 KST
+
+[New public report](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/)
+exposes five cloud controls and20 evidence images. It retains SIFT-only failures,
+the inadequate256px stereo search and the512px correction that recovers291 road
+candidates. The lab has34 entries (22 prior GS scenes,12 reports). All previous
+reports/worlds remain. [Native results and limits](STEREO_ANCHORS.md).
+Execution/publication **PASS**; full P2 geometry **NOT ACCEPTED**.
+
+| Item | Verified value |
+|---|---|
+| Implementation | `1cd6913b91aaf749a0064448199631a70500bbf1` |
+| Release | [viewer-stereo-anchors-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-stereo-anchors-2026-11-06) |
+| Archive | `groundshift-stereo-anchors-20261106.tar.gz`,336,387,809 bytes |
+| SHA-256 | `30844c802fff4546dd14a9672e4e62b7e3534d8390ca335e14b810a65db7c0b0` |
+| Static archive | 547 `www/` files,414,570,400 bytes |
+| Staged inventory | 550 files,414,571,087 bytes including three support files |
+| Pointer commit | `1ca35a0c48442aece9fb5ab95a712790bd7a428e` |
+| Railway deployment | `b02ac482-b711-41db-90a0-f6d5451019dc`, SUCCESS at03:12:58 UTC |
+| Trigger | Explicit connector request for existing branch-backed service, no commit pin |
+
+**PASS:** full archive readback matches every curated inventory member; public
+GitHub re-download matches bytes/hash (81.225s); Railway build log reports
+`/tmp/viewer.tar.gz: OK` at03:12:15 UTC. Health is200/`ok`. All236 selected public
+file hashes/sizes match, including all75 new report assets/entry, earlier panorama
+reports, lab, common bundles, catalog and preserved scooter assets. All332 checked
+prior static experiment source files retain their hashes, excluding the appended
+lab timeline. Full547-file public recrawl **NOT RUN**.
+
+Seven targeted **headed Chrome156** public checks PASS; CLI reports **1.3min**
+(rounded). This covers all five actual clouds, rendered pixels, source/camera
+controls, diagnostic images, match gallery, prior panorama reports, chronological
+lab and simulated-failure recovery. No public retries were required. Public
+screenshots were inspected: recognizable lower scene, but crop wedges/strips and
+offset layers remain. Pixel/rendering PASS is not geometry PASS. Local checks
+PASS in28.2s. Full historical browser regression **NOT RUN**.
+
+TypeScript, lint, production build,166 JS tests and190 distinct Python tests PASS;
+three unrelated HDR tests **NOT RUN**. Nine new tests include a real CPU SGBM
+execution on a synthetic known320px shift, separate from real-panorama evidence.
+All103 baseline hashes are unchanged. New depth-model inference, pose refinement,
+fusion and GS training **NOT RUN**; prior MPS predictions are reused.
+
+Local evidence: `data/jobs/stereo-validation-20261106/` contains archive/release
+readbacks, GitHub digest, Railway status/log,236 public hashes, health, no-overwrite
+checks and local/public browser evidence. Matching, disparity, calibration and
+raw diagnostic jobs are listed in [the experiment](STEREO_ANCHORS.md).
+[Compact evidence](evidence/stereo-anchors.json). Raw1024px crops, disparity/raw
+depth arrays, logs, private inputs/URLs and model weights are excluded from the
+archive. The previous perspective-overlap release below remains the rollback
+package. Push-only autodeploy remains unverified.
 
 ## Dense perspective coverage and overlap — 2026-11-06 KST
 

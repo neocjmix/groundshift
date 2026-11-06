@@ -166,6 +166,10 @@ No-overwrite checks reject existing output directories with unchanged hashes.
 Seven targeted local headed Chrome checks PASS (28.2s); screenshots inspected.
 Broad historical browser regression and independent depth truth **NOT RUN**.
 Publication verification is recorded in [deployment evidence](DEPLOYMENT.md).
+Public publication **PASS**:236 selected file hashes, all75 new assets/entry and
+seven headed Chrome156 checks (CLI rounded1.3min). Public screenshots inspected;
+full historical browser regression remains NOT RUN. The public report includes
+all five distinct cloud variants and20 matching-evidence overlays.
 
 ## Reproduce
 

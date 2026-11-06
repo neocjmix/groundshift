@@ -1,0 +1,546 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "1cd6913b91aaf749a0064448199631a70500bbf1",
+  "execution": "PASS",
+  "geometryAcceptance": "NOT ACCEPTED",
+  "publication": "PASS",
+  "depthInference": "NOT RUN: reused pinned DAV2 MPS outputs",
+  "coordinateUnits": "SfM arbitrary, camera-Z calibration -> radial range, unchanged fixed poses",
+  "protocolSha256": "fdbba2c4d9d11cf18958775ce1029e39d07969bc6cfd52dd59a6f61c5fbee3fd",
+  "analysisImplementationSha256": "7b9aa7b12c05e42be175b98d8ffa0e22d4d6fbb53cb671ddd44b06ae74eb71c4",
+  "tracksSha256": "b28aa30995648511ce0b8dad4fd81e7d04c3bff7461ea550030f1714d6c02efa",
+  "matching": {
+    "uniqueSift": 669,
+    "seconds": 13.006441625067964,
+    "rssBytes": 575455232
+  },
+  "stereo256": {
+    "status": "PASS",
+    "roadTracks": 7,
+    "training": 6,
+    "held": 1,
+    "roadCalibrationStatus": "FAIL: fewer than30 candidate road anchors",
+    "elapsedSeconds": 8.362217667046934,
+    "maxResidentSetBytes": 411205632
+  },
+  "stereo512": {
+    "status": "PASS",
+    "roadTracks": 291,
+    "training": 245,
+    "held": 46,
+    "roadCalibrationStatus": "PASS: candidate anchors only, not geometry accuracy",
+    "elapsedSeconds": 12.985639207996428,
+    "maxResidentSetBytes": 410976256
+  },
+  "combined": {
+    "uniqueTracks": 955,
+    "training": 754,
+    "held": 186,
+    "seconds": 9.614333000034094,
+    "rssBytes": 543670272,
+    "points": {
+      "baseline": 48758,
+      "augmented": 48467,
+      "new-only": 48122
+    },
+    "historicalHeld": [
+      {
+        "direction": "4-to-5",
+        "parallaxMinimum": 0,
+        "methods": {
+          "baseline": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.9222946950993457,
+            "p90Pixels": 4.526613319078105,
+            "medianAngularDegrees": 0.16041104855201452
+          },
+          "augmented": {
+            "samples": 217,
+            "validSamples": 211,
+            "invalidSamples": 6,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.9280590522522555,
+            "p90Pixels": 5.959678427752513,
+            "medianAngularDegrees": 0.16797831594118318
+          },
+          "new-only": {
+            "samples": 217,
+            "validSamples": 210,
+            "invalidSamples": 7,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.6902694706049355,
+            "p90Pixels": 6.834173692646801,
+            "medianAngularDegrees": 0.2719729208389925
+          }
+        }
+      },
+      {
+        "direction": "4-to-5",
+        "parallaxMinimum": 10,
+        "methods": {
+          "baseline": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 2.5635472646253934,
+            "p90Pixels": 16.098304735715512,
+            "medianAngularDegrees": 0.4683098668187018
+          },
+          "augmented": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 2.289141957109818,
+            "p90Pixels": 19.79458192580401,
+            "medianAngularDegrees": 0.3689158268314745
+          },
+          "new-only": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.945730846547519,
+            "p90Pixels": 20.59475105555358,
+            "medianAngularDegrees": 0.3442021980156964
+          }
+        }
+      },
+      {
+        "direction": "5-to-4",
+        "parallaxMinimum": 0,
+        "methods": {
+          "baseline": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.0110720642750317,
+            "p90Pixels": 4.020233993319397,
+            "medianAngularDegrees": 0.16585507064781244
+          },
+          "augmented": {
+            "samples": 217,
+            "validSamples": 214,
+            "invalidSamples": 3,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.1075755044127966,
+            "p90Pixels": 4.6364768704897035,
+            "medianAngularDegrees": 0.17782392381375367
+          },
+          "new-only": {
+            "samples": 217,
+            "validSamples": 170,
+            "invalidSamples": 47,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.9460552719571704,
+            "p90Pixels": 5.610890631017844,
+            "medianAngularDegrees": 0.3363373302550672
+          }
+        }
+      },
+      {
+        "direction": "5-to-4",
+        "parallaxMinimum": 10,
+        "methods": {
+          "baseline": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 2.160938618400711,
+            "p90Pixels": 8.892204821152195,
+            "medianAngularDegrees": 0.36824453832114057
+          },
+          "augmented": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 2.666979779713481,
+            "p90Pixels": 8.372483167259732,
+            "medianAngularDegrees": 0.4802960161392608
+          },
+          "new-only": {
+            "samples": 26,
+            "validSamples": 26,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.5949489285241119,
+            "p90Pixels": 9.245503174288986,
+            "medianAngularDegrees": 0.2822200004564973
+          }
+        }
+      }
+    ],
+    "paired": [
+      {
+        "method": "augmented",
+        "direction": "4-to-5",
+        "region": "all",
+        "sharedSelected": 24254,
+        "jointlySupported": 22471,
+        "baseline": {
+          "samples": 22471,
+          "median": 0.021040868283051916,
+          "p90": 0.12335038127751814
+        },
+        "candidate": {
+          "samples": 22471,
+          "median": 0.01578946141436235,
+          "p90": 0.12636519463639853
+        },
+        "candidateMinusBaseline": {
+          "samples": 22471,
+          "median": -0.0012852611698980464,
+          "p90": 0.02305045693159758
+        }
+      },
+      {
+        "method": "augmented",
+        "direction": "4-to-5",
+        "region": "road",
+        "sharedSelected": 1881,
+        "jointlySupported": 1201,
+        "baseline": {
+          "samples": 1201,
+          "median": 0.02427074403968032,
+          "p90": 0.032055262560990845
+        },
+        "candidate": {
+          "samples": 1201,
+          "median": 0.004454600680597949,
+          "p90": 0.00870673278730733
+        },
+        "candidateMinusBaseline": {
+          "samples": 1201,
+          "median": -0.021594591163098614,
+          "p90": 0.00575284199503334
+        }
+      },
+      {
+        "method": "augmented",
+        "direction": "4-to-5",
+        "region": "facade",
+        "sharedSelected": 992,
+        "jointlySupported": 992,
+        "baseline": {
+          "samples": 992,
+          "median": 0.051129439901455354,
+          "p90": 0.2720617012365581
+        },
+        "candidate": {
+          "samples": 992,
+          "median": 0.0557578954976139,
+          "p90": 0.2807739801419023
+        },
+        "candidateMinusBaseline": {
+          "samples": 992,
+          "median": -0.0004131592366194009,
+          "p90": 0.012150254290301038
+        }
+      },
+      {
+        "method": "augmented",
+        "direction": "5-to-4",
+        "region": "all",
+        "sharedSelected": 24200,
+        "jointlySupported": 22425,
+        "baseline": {
+          "samples": 22425,
+          "median": 0.02221512330243979,
+          "p90": 0.12307011654274858
+        },
+        "candidate": {
+          "samples": 22425,
+          "median": 0.017967895783226752,
+          "p90": 0.12755083288378213
+        },
+        "candidateMinusBaseline": {
+          "samples": 22425,
+          "median": -0.00036648248875314343,
+          "p90": 0.019502696927623662
+        }
+      },
+      {
+        "method": "augmented",
+        "direction": "5-to-4",
+        "region": "road",
+        "sharedSelected": 1881,
+        "jointlySupported": 1661,
+        "baseline": {
+          "samples": 1661,
+          "median": 0.009638240785432127,
+          "p90": 0.032051289244636204
+        },
+        "candidate": {
+          "samples": 1661,
+          "median": 0.009832594496056021,
+          "p90": 0.015238373321763945
+        },
+        "candidateMinusBaseline": {
+          "samples": 1661,
+          "median": -0.00249546745053867,
+          "p90": 0.007370789580497694
+        }
+      },
+      {
+        "method": "augmented",
+        "direction": "5-to-4",
+        "region": "facade",
+        "sharedSelected": 992,
+        "jointlySupported": 992,
+        "baseline": {
+          "samples": 992,
+          "median": 0.05405338770138961,
+          "p90": 0.2589703160918697
+        },
+        "candidate": {
+          "samples": 992,
+          "median": 0.05376054296673216,
+          "p90": 0.2637512245154609
+        },
+        "candidateMinusBaseline": {
+          "samples": 992,
+          "median": -0.001399471833788593,
+          "p90": 0.004803890871359046
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "4-to-5",
+        "region": "all",
+        "sharedSelected": 24141,
+        "jointlySupported": 22155,
+        "baseline": {
+          "samples": 22155,
+          "median": 0.020487112885600445,
+          "p90": 0.11970138404656352
+        },
+        "candidate": {
+          "samples": 22155,
+          "median": 0.024274136707069394,
+          "p90": 0.18279007658084861
+        },
+        "candidateMinusBaseline": {
+          "samples": 22155,
+          "median": 0.002071806127387558,
+          "p90": 0.08066596693877831
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "4-to-5",
+        "region": "road",
+        "sharedSelected": 1881,
+        "jointlySupported": 1200,
+        "baseline": {
+          "samples": 1200,
+          "median": 0.024249881035689733,
+          "p90": 0.03202519034420198
+        },
+        "candidate": {
+          "samples": 1200,
+          "median": 0.004913302557756043,
+          "p90": 0.014709220052748022
+        },
+        "candidateMinusBaseline": {
+          "samples": 1200,
+          "median": -0.006590180286502671,
+          "p90": 0.004509881340794374
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "4-to-5",
+        "region": "facade",
+        "sharedSelected": 992,
+        "jointlySupported": 992,
+        "baseline": {
+          "samples": 992,
+          "median": 0.051129439901455354,
+          "p90": 0.2720617012365581
+        },
+        "candidate": {
+          "samples": 992,
+          "median": 0.057018331197264904,
+          "p90": 0.26865233209466033
+        },
+        "candidateMinusBaseline": {
+          "samples": 992,
+          "median": -0.0007261679186878235,
+          "p90": 0.014430949333809943
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "5-to-4",
+        "region": "all",
+        "sharedSelected": 23967,
+        "jointlySupported": 22148,
+        "baseline": {
+          "samples": 22148,
+          "median": 0.02167151896659213,
+          "p90": 0.12054087416183251
+        },
+        "candidate": {
+          "samples": 22148,
+          "median": 0.02489169297008708,
+          "p90": 0.18989862389840678
+        },
+        "candidateMinusBaseline": {
+          "samples": 22148,
+          "median": 0.0028477131859058653,
+          "p90": 0.07699779957893454
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "5-to-4",
+        "region": "road",
+        "sharedSelected": 1881,
+        "jointlySupported": 1661,
+        "baseline": {
+          "samples": 1661,
+          "median": 0.009638240785432127,
+          "p90": 0.032051289244636204
+        },
+        "candidate": {
+          "samples": 1661,
+          "median": 0.012488268636081405,
+          "p90": 0.023766932252594682
+        },
+        "candidateMinusBaseline": {
+          "samples": 1661,
+          "median": 0.003474875037485289,
+          "p90": 0.01555773616816269
+        }
+      },
+      {
+        "method": "new-only",
+        "direction": "5-to-4",
+        "region": "facade",
+        "sharedSelected": 992,
+        "jointlySupported": 992,
+        "baseline": {
+          "samples": 992,
+          "median": 0.05405338770138961,
+          "p90": 0.2589703160918697
+        },
+        "candidate": {
+          "samples": 992,
+          "median": 0.05305210167924439,
+          "p90": 0.26003304187764936
+        },
+        "candidateMinusBaseline": {
+          "samples": 992,
+          "median": -0.005989933151062247,
+          "p90": 0.007531171940164124
+        }
+      }
+    ]
+  },
+  "siftOnly": {
+    "training": 514,
+    "held": 140,
+    "points": {
+      "baseline": 48758,
+      "augmented": 48459,
+      "new-only": 48150
+    }
+  },
+  "validation": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "jsTestsPassed": 166,
+    "pythonDistinctPassed": 190,
+    "pythonNotRun": 3,
+    "newTestsPassed": 9,
+    "baselineHashesUnchanged": 103,
+    "localHeadedChromePassed": 7,
+    "localBrowserSeconds": 28.2,
+    "fullHistoricalBrowserSuite": "NOT RUN",
+    "newInference": "NOT RUN",
+    "fusion": "NOT RUN",
+    "gaussianTraining": "NOT RUN",
+    "publicHeadedChromePassed": 7,
+    "fullPublicRecrawl": "NOT RUN"
+  },
+  "archive": {
+    "status": "PASS",
+    "archive": "data/deploy/groundshift-stereo-anchors-20261106.tar.gz",
+    "bytes": 336387809,
+    "sha256": "30844c802fff4546dd14a9672e4e62b7e3534d8390ca335e14b810a65db7c0b0",
+    "wwwFiles": 547,
+    "wwwBytes": 414570400,
+    "stagedFiles": 550,
+    "stagedBytes": 414571087,
+    "previousPublicFilesPreserved": 332
+  },
+  "railway": {
+    "deploymentId": "b02ac482-b711-41db-90a0-f6d5451019dc",
+    "status": "SUCCESS",
+    "createdAt": "2026-11-06T03:11:51.395Z",
+    "updatedAt": "2026-11-06T03:12:58.321Z",
+    "commit": "1ca35a0c48442aece9fb5ab95a712790bd7a428e",
+    "branch": "feat/local-viewer-reconstruction",
+    "source": {
+      "repo": "neocjmix/groundshift",
+      "branch": "feat/local-viewer-reconstruction",
+      "commitSha": null
+    },
+    "checksum": [
+      {
+        "timestamp": "2026-11-06T03:12:15.383605661Z",
+        "message": "/tmp/viewer.tar.gz: OK"
+      }
+    ]
+  },
+  "publicBrowser": {
+    "status": "PASS",
+    "time": "2026-11-06T03:16:24.251Z",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "observations": [
+      {
+        "id": "augmented",
+        "coloredPixels": 38086,
+        "status": "기존 점 + SIFT + 도로 스테레오 · 48,467개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "baseline",
+        "coloredPixels": 38700,
+        "status": "기존 보정 유지 · 48,758개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "new-only",
+        "coloredPixels": 37119,
+        "status": "새 대응점만 · 도로 포함 · 48,122개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "sift-augmented",
+        "coloredPixels": 38041,
+        "status": "대조군 · SIFT만 추가 · 48,459개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "sift-only",
+        "coloredPixels": 37973,
+        "status": "대조군 · SIFT만 보정 · 48,150개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      }
+    ],
+    "errors": [],
+    "limitation": "Actual rendered diagnostic clouds; geometric accuracy remains NOT ACCEPTED. Gallery lines are algorithmic correspondences, not proven identity.",
+    "cliDurationRounded": "1.3m"
+  },
+  "publicHashes": {
+    "status": "PASS",
+    "files": 236,
+    "elapsedSeconds": 45.55122437491082
+  }
+}
