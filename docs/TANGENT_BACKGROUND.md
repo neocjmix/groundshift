@@ -41,6 +41,18 @@ guard without producing or uploading an overlay. Both failed logs are retained
 locally. No depth inference or native training ran for this removal; preserved
 PLY/camera hashes prove preservation, not execution of a new training run.
 
+The GS-only release is live. Four targeted actual public Chrome cases PASS in
+152.619s, including the real scene with and without a fixture legacy reference;
+each records zero background requests and page errors, actual translation/free
+look and 993,176 GS-only colored pixels with UI hidden. All 21 changed public
+files match the package's size/SHA inventory. Ordinary extraction of nine
+checksum-pinned archives restores all 1,122 composed files in 4.837s. This is a
+local restoration plus incremental public checks, not a fresh full public-file
+scan or complete 80-case public browser run. Tangent and photo-reference PLY,
+cameras, previews and license files retain all eight checked hashes, and the
+tangent asset transform/navigation are identical. Historical background files
+remain unreferenced evidence. [Viewer-removal evidence](evidence/gs-only-viewer.json).
+
 **Executed result:** the new local Metal scene renders, but does not replace
 `street-final-hires`. Its held-view RGB error is 7.32% worse at 512 output and
 6.72% worse at 1024, with zero of six held directions improving at either

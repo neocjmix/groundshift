@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "dateKST": "2026-11-07",
+  "decision": "Withdraw panorama/depth-shell completion due user-observed translation mismatch; retain wider-angle tangent GS. Photo-error, directional coverage and user-reported immersion are distinct.",
+  "nativeTraining": "NOT RUN; existing native bytes preserved",
+  "checks": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "js": {
+      "status": "PASS",
+      "tests": 180
+    },
+    "localBrowser": {
+      "startTime": "2026-11-06T15:26:43.875Z",
+      "duration": 42965.094000000005,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "publicBrowser": {
+      "startTime": "2026-11-06T15:28:59.097Z",
+      "duration": 152619.449,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "publicChangedFiles": {
+      "status": "PASS",
+      "elapsedSeconds": 11.413340415805578,
+      "checks": [
+        {
+          "path": "www/assets/Viewer-_KvKhUJA.js",
+          "status": "PASS",
+          "bytes": 2709112
+        },
+        {
+          "path": "www/assets/camera-path-CqXB3NNi.js",
+          "status": "PASS",
+          "bytes": 2614
+        },
+        {
+          "path": "www/assets/load-world-Bc5z5Rmj.js",
+          "status": "PASS",
+          "bytes": 4665
+        },
+        {
+          "path": "www/assets/main-C_dA3p3N.js",
+          "status": "PASS",
+          "bytes": 325669
+        },
+        {
+          "path": "www/assets/tangentBackground-B8y_zL7I.js",
+          "status": "PASS",
+          "bytes": 7057
+        },
+        {
+          "path": "www/experiments/lab/timeline.json",
+          "status": "PASS",
+          "bytes": 29111
+        },
+        {
+          "path": "www/experiments/object-focus/index.html",
+          "status": "PASS",
+          "bytes": 659
+        },
+        {
+          "path": "www/experiments/object-nodepth/index.html",
+          "status": "PASS",
+          "bytes": 639
+        },
+        {
+          "path": "www/experiments/object-real/index.html",
+          "status": "PASS",
+          "bytes": 656
+        },
+        {
+          "path": "www/experiments/panoramic-calibration/index.html",
+          "status": "PASS",
+          "bytes": 659
+        },
+        {
+          "path": "www/experiments/panoramic-depth/index.html",
+          "status": "PASS",
+          "bytes": 647
+        },
+        {
+          "path": "www/experiments/panoramic-pair/index.html",
+          "status": "PASS",
+          "bytes": 672
+        },
+        {
+          "path": "www/experiments/perspective-overlap/index.html",
+          "status": "PASS",
+          "bytes": 672
+        },
+        {
+          "path": "www/experiments/road-third-view/index.html",
+          "status": "PASS",
+          "bytes": 733
+        },
+        {
+          "path": "www/experiments/stereo-anchors/index.html",
+          "status": "PASS",
+          "bytes": 668
+        },
+        {
+          "path": "www/experiments/tangent-background/ATTRIBUTION.txt",
+          "status": "PASS",
+          "bytes": 686
+        },
+        {
+          "path": "www/experiments/tangent-background/index.html",
+          "status": "PASS",
+          "bytes": 774
+        },
+        {
+          "path": "www/experiments/tangent-background/summary.json",
+          "status": "PASS",
+          "bytes": 17835
+        },
+        {
+          "path": "www/index.html",
+          "status": "PASS",
+          "bytes": 749
+        },
+        {
+          "path": "www/worlds/catalog.json",
+          "status": "PASS",
+          "bytes": 19991
+        },
+        {
+          "path": "www/worlds/street-tangent20/world.json",
+          "status": "PASS",
+          "bytes": 2535
+        }
+      ]
+    },
+    "anonymousArchive": {
+      "status": "PASS",
+      "bytes": 1073680,
+      "sha256": "41683c73ac684d7367bac8df1ac651e7534f26921122ff818dea6675db4a4697",
+      "elapsedSeconds": 2.184167749946937
+    },
+    "ordinaryNineLayerRestore": {
+      "status": "PASS",
+      "layers": 9,
+      "files": 1122,
+      "seconds": 4.836609834106639,
+      "meaning": "Fresh empty-directory ordered extraction of all9 immutablearchives reproduces every current1122file size/SHA. Retired backgroundassets remain inert and world.json hasno reference."
+    },
+    "preservedAssets": [
+      {
+        "path": "worlds/street-tangent20/scene.ply",
+        "unchanged": true,
+        "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e"
+      },
+      {
+        "path": "worlds/street-tangent20/cameras.json",
+        "unchanged": true,
+        "sha256": "fac001f92a0a3881d38befaa843ea7f0f319d20b87c5fe5f63a3d19d72364917"
+      },
+      {
+        "path": "worlds/street-tangent20/SOURCE_LICENSE",
+        "unchanged": true,
+        "sha256": "4eb1554e52f561821125acf4f0ba2ea683f626e33d09f36e28afa8b0f1d18c83"
+      },
+      {
+        "path": "worlds/street-tangent20/preview.jpg",
+        "unchanged": true,
+        "sha256": "8feacd395e9c950e562c7f6e3f9ab2c4240f05ae1bd02b9e0c4a90f26c7d108f"
+      },
+      {
+        "path": "worlds/street-final-hires/scene.ply",
+        "unchanged": true,
+        "sha256": "a5b51f48c24d075fc5d40df797fab3b17d936c92599172281b4cd9e0ebf04352"
+      },
+      {
+        "path": "worlds/street-final-hires/cameras.json",
+        "unchanged": true,
+        "sha256": "14dbf71220c760d94bce4b70126f18244d756f2fdf14ad02d167a558bd4adbaa"
+      },
+      {
+        "path": "worlds/street-final-hires/SOURCE_LICENSE",
+        "unchanged": true,
+        "sha256": "4eb1554e52f561821125acf4f0ba2ea683f626e33d09f36e28afa8b0f1d18c83"
+      },
+      {
+        "path": "worlds/street-final-hires/preview.jpg",
+        "unchanged": true,
+        "sha256": "20e5fe5637cedb3854f5ff99410508c80020fa50f060830441c2f7d4d2d40295"
+      }
+    ],
+    "sameCoordinatesNavigationAssets": true,
+    "liveManifestBackgroundAbsent": true,
+    "complete80CaseSuite": "NOT RUN"
+  },
+  "actualCases": [
+    {
+      "scope": "local",
+      "browser": "156.0.8078.81",
+      "world": "/worlds/street-tangent20/world.json",
+      "gsOnlyColoredPixels": 993176,
+      "backgroundRequests": [],
+      "legacyReferenceFixture": false,
+      "actualNativeScene": true,
+      "translation": true,
+      "freeLook": true,
+      "errors": [],
+      "geometryAccuracy": "NOT RUN"
+    },
+    {
+      "scope": "local",
+      "browser": "156.0.8078.81",
+      "world": "/worlds/street-tangent20/world.json",
+      "gsOnlyColoredPixels": 993176,
+      "backgroundRequests": [],
+      "legacyReferenceFixture": true,
+      "actualNativeScene": true,
+      "translation": true,
+      "freeLook": true,
+      "errors": [],
+      "geometryAccuracy": "NOT RUN"
+    },
+    {
+      "scope": "public",
+      "browser": "156.0.8078.81",
+      "world": "/worlds/street-tangent20/world.json",
+      "gsOnlyColoredPixels": 993176,
+      "backgroundRequests": [],
+      "legacyReferenceFixture": false,
+      "actualNativeScene": true,
+      "translation": true,
+      "freeLook": true,
+      "errors": [],
+      "geometryAccuracy": "NOT RUN"
+    },
+    {
+      "scope": "public",
+      "browser": "156.0.8078.81",
+      "world": "/worlds/street-tangent20/world.json",
+      "gsOnlyColoredPixels": 993176,
+      "backgroundRequests": [],
+      "legacyReferenceFixture": true,
+      "actualNativeScene": true,
+      "translation": true,
+      "freeLook": true,
+      "errors": [],
+      "geometryAccuracy": "NOT RUN"
+    }
+  ]
+}
