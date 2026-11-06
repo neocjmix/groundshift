@@ -1183,6 +1183,7 @@
     "experiments/tourist-streaming/paris-1008.jpg",
     "experiments/tourist-streaming/route.json",
     "experiments/tourist-streaming/paris-808.jpg",
-    "experiments/tourist-streaming/strasbourg.jpg"
+    "experiments/tourist-streaming/strasbourg.jpg",
+    "experiments/tourist-streaming/acquisition.json"
   ]
 }

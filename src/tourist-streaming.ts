@@ -15,13 +15,14 @@ document.querySelector('#app')!.innerHTML=`<header><a href="/">GROUND SHIFT</a><
 <section class="section"><h2>후보를 실제 데이터로 비교</h2><div id="candidates" class="timeline"></div></section>
 <section class="section"><h2>지금 실행한 것과 남은 것</h2><div id="stages"></div></section>
 <section class="section"><h2>다음은 구간 단위의 GS</h2><ol id="steps"></ol><div id="limits" class="note"></div></section>
-<footer><a href="./route.json">선정한876장 메타데이터</a> · <a href="./summary.json">실행 상태 JSON</a> · <a href="./ATTRIBUTION.txt">원본 출처·라이선스</a> · <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/TOURIST_STREAMING.md">취득 명령과 다음 실험 경계</a><p id="updated"></p></footer></main>`;
+<footer><a href="./route.json">선정한876장 메타데이터</a> · <a href="./acquisition.json">HD24장 취득·해시 증빙</a> · <a href="./summary.json">실행 상태 JSON</a> · <a href="./ATTRIBUTION.txt">원본 출처·라이선스</a> · <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/TOURIST_STREAMING.md">취득 명령과 다음 실험 경계</a><p id="updated"></p></footer></main>`;
 const put=(selector:string,text:string)=>{document.querySelector(selector)!.textContent=text;};
 async function start(){
   const response=await fetch('./summary.json');if(!response.ok)throw new Error('Summary HTTP '+response.status);const s:Summary=await response.json();
   const r=await fetch(s.route);if(!r.ok)throw new Error('Route HTTP '+r.status);const route:Route=await r.json(),m=route.statistics;
   put('#summary',s.summary);put('#updated','기록 갱신 '+s.updatedAt);
   const metrics=[['동일 촬영열',m.count.toLocaleString()+'장'],['GPS 경로', (m.lengthMeters/1000).toFixed(2)+'km'],['중앙 촬영 간격',m.medianSpacingMeters.toFixed(2)+'m'],['최대 간격',m.maximumSpacingMeters.toFixed(2)+'m']];
+  if(s.acquisition)metrics.push(['HD 실제 취득',s.acquisition.count+'장 · '+(s.acquisition.bytes/1e6).toFixed(1)+'MB']);
   for(const [name,value] of metrics){const d=document.createElement('div');d.className='metric';const a=document.createElement('strong'),b=document.createElement('span');a.textContent=value;b.textContent=name;d.append(a,b);document.querySelector('#metrics')!.append(d);}
   const ns='http://www.w3.org/2000/svg',svg=document.querySelector('#route')!,lat=route.images.reduce((v,i)=>v+i.gps[1],0)/m.count;
   const xs=route.images.map(i=>i.gps[0]*Math.cos(lat*Math.PI/180)),ys=route.images.map(i=>-i.gps[1]),xMin=Math.min(...xs),yMin=Math.min(...ys);
