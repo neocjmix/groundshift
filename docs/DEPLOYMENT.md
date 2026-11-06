@@ -68,8 +68,27 @@ Release `viewer-tourist-acquired-2026-11-07`, archive
 Apply it after the fourteen preceding pinned archives. Explicit packaging
 verifies all1,123 selected public files, six changed overlay members and all1,157
 composed files in3.936477s. Existing worlds, source preview JPEGs and prior
-observations remain byte-identical. Public deployment/hash/browser checks run
-after dispatch; raw source downloads and logs remain outside the archive.
+observations remain byte-identical. The production rebuild passes in4.44s.
+Acquisition pointer `0a61b81` deploys as
+`db32ae29-a46f-4e51-aab6-4b532656e785`: created
+2026-11-06T16:47:53.583Z, **SUCCESS** at16:49:02.409Z. All six changed public
+file sizes/SHA-256 values pass in5.269376s. Anonymous full release readback passes
+in0.702133s. Fresh empty-directory extraction of all15 pinned archives reproduces
+all1,157 composed sizes/hashes in4.948135s. Server build logs confirm
+`/tmp/tourist-acquired.tar.gz: OK`. Raw source downloads and logs remain outside
+the archive. The final actual headed public Chrome156.0.8078.81 run passes
+**2/2 in9.5s**, checking HD24/202.5MB, all24 route hash pins, actual SD decoding
+and selection, the876-point polyline, lab navigation, no canvas/GS requests,
+zero page errors and mobile width. The private HD probe returns HTTP404 with no
+source-image bytes. Screenshot inspection passes. The local follow-up passes
+2/2 in4.0s; the initial test incorrectly expecting404 from Vite's local HTML
+fallback fails and remains preserved, then its explicit HTML assertion passes.
+These are report/source-presentation checks, not GS reconstruction or streaming.
+Raw browser evidence is local under
+`data/jobs/tourist-streaming-20261107/browser-public-acquired-r2/`; consolidated
+publication evidence is `data/jobs/tourist-streaming-20261107/publication-evidence.json`.
+The final documentation-only commit records completed checks without another
+self-referential metadata release.
 
 ## Conservative SPZ storage observation — 2026-11-07
 
@@ -322,8 +341,8 @@ metadata-only inspection does not imply another full GPU run.
 
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
-layers and the three SPZ layers, in order. The command below includes all
-thirteen layers for the current surface. The complete native overlay supersedes
+layers, the three SPZ layers and the two tourist-source layers, in order.
+The command below includes all fifteen layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
 
@@ -383,6 +402,12 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-spz-verified-2026-11-07 \
     groundshift-spz-verified-20261107.tar.gz \
     7ec943885054826b1dc5e62722868ba85c4c73e8f915e7274eb886837b3c5600
+  gs_restore_layer viewer-tourist-source-2026-11-07 \
+    groundshift-tourist-source-20261107.tar.gz \
+    09c91393bd069225e82b03bec77d8528b191952272d73d571fef2a009231522c
+  gs_restore_layer viewer-tourist-acquired-2026-11-07 \
+    groundshift-tourist-acquired-20261107.tar.gz \
+    05e46898feacbaa0f3070f356d74d94e314a89c09262df8b943ea43de32e89d1
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
