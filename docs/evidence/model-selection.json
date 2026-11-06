@@ -238,12 +238,14 @@
       "body": "ok"
     },
     "publicFileReadback": {
-      "status": "NOT RUN",
-      "owner": "parent agent continues asynchronously"
+      "status": "PASS",
+      "filesVerified": 1019,
+      "allHashesMatch": true
     },
     "publicBrowserRendering": {
-      "status": "NOT RUN",
-      "owner": "parent agent continues asynchronously"
+      "status": "PASS",
+      "focusedCases": 11,
+      "fullPublic71": "NOT RUN to completion"
     },
     "rollback": {
       "deploymentId": "f70d833a-d15d-41c8-b23e-b4f963ea4819",
@@ -290,6 +292,26 @@
     ]
   },
   "publicFiles": {
-    "status": "NOT RUN to completion; readback in progress after deployment"
+    "status": "PASS",
+    "startedAt": "2026-11-06T11:25:32.305313+00:00",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "privateProbes": [
+      {
+        "path": "data/jobs/model-selection-20261106/da3/report.json",
+        "httpStatus": 404
+      },
+      {
+        "path": "experiments/model-selection/training.log",
+        "httpStatus": 404
+      },
+      {
+        "path": "data/tools/depth-hf-cache/config.json",
+        "httpStatus": 404
+      }
+    ],
+    "totalBytes": 1030866148,
+    "elapsedSeconds": 414.04007008392364,
+    "filesVerified": 1019,
+    "fullReadbackReportSha256": "621c52474dba754479fde9c40397e98b58d8e3a7842f21e4bdca6dd18d888399"
   }
 }

@@ -178,6 +178,8 @@ npm run test:browser
 
 Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Restore the observation assets and previews above for the complete gallery suite. Optional native-scene checks are explicitly skipped when their artifacts are absent; `npm run sample` alone supplies only the original sample splat. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
 
+Current model-comparison checks: TypeScript/lint/build, **166 JS tests**, **224 distinct Python tests**, **71 distinct local browser cases with passing evidence**, **11 focused public Chrome checks**, and **1,019 matching public file hashes**. The full71 public suite was not completed; network-timeout evidence and the focused retry are recorded in [DEPLOYMENT.md](docs/DEPLOYMENT.md). Publication precedes post-deployment verification.
+
 Earlier street release checks: TypeScript/lint/build, **166 JS tests**, **217 distinct Python passes** across required environments, **61 full headed Chrome cases**, then **11 street checks on the final layout**, and **20 public headed Chrome cases**. All29 scenes render locally; all7 new scenes also render on the public origin, whose827 packaged file hashes match. Hardware training is recorded separately in the [street result](docs/STREET_CONCLUSION.md); exact public-origin checks and release hashes are in [DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Native reconstruction (M1)

@@ -38,7 +38,7 @@ DAV2 27.751,0.6% lower; retain DAV2. See [actual measurements](MODEL_SELECTION.m
 | Server build checksum | PASS,`/tmp/viewer.tar.gz: OK` at11:23:41.655UTC |
 | Public health | PASS,`/healthz`200 /`ok` |
 | Public browser | PASS,11 focused headed Chrome checks in2.1min; four new actual GS render/path checks, comparison video/depth,33 decoded gallery previews and shared older report regressions |
-| Public file hashes | Readback dispatched after deployment; pending completion is NOT RUN |
+| Public file hashes | PASS,all1,019 files match /1,030,866,148 bytes in414.040s; three unshipped private paths return404 |
 
 A deployment sub-agent committed/pushed the fresh pointer and explicitly
 connected the existing repository/feature branch. No new service, cloud

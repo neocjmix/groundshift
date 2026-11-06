@@ -329,7 +329,9 @@ is not evidence that the street geometry works.
   change also routes each new scene's history link to its correct model report.
   New cases exercise actual image/depth loading, video decode/playback,
   four real GS renders/route movement, mobile layout and explicit503 recovery.
-- PASS: all103 frozen baseline file hashes remain unchanged.
+- PASS: all103 frozen baseline file hashes remain unchanged. All1,019 public
+  package file hashes match after deployment; three private/unshipped paths
+  return404. The earlier787 public dataset files remain byte-identical.
 - PASS after publication:11 focused public Chrome cases, including all four
   new real GS renders/path movement, decoded video/depth and33 gallery previews.
   A full public71-case run is NOT RUN to completion; its network timeout and
