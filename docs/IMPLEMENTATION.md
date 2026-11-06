@@ -30,9 +30,11 @@ executes two depth models on one ERP and exports calibrated spherical clouds.
 The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) now measures both directions and exposes regional bias. That bounded run included no fusion or Gaussian training; the later diagnostic street run above preserves its geometry limitations.
 
 The preceding user direction prioritized a visible one-object result and immediate
-Railway publication. Build/package integrity and a brief actual browser check
-remain necessary to report a working release; broad regression runs and detailed
-quality comparisons follow publication and are labeled NOT RUN until executed.
+Railway publication. The latest user instruction requires immediate asynchronous
+deployment of each small publishable result. Check basic package integrity and
+authorized contents, dispatch deployment, then continue browser checks,
+regressions and detailed quality comparisons in parallel. Pending validation is
+NOT RUN; completing every local check is not a prerequisite to publication.
 The [object-focused experiment](OBJECT_FOCUS_EXPERIMENT.md) keeps whole-frame
 diffusion before depth estimation, then calibrates and fuses depth for GS
 initialization. The chronological lab lists experiments and worlds by recorded
@@ -73,6 +75,19 @@ including poor-quality or superseded results, with failed/cancelled stage eviden
 and real/generated image comparisons. Execution, rendering and quality remain
 separate PASS / FAIL / NOT RUN boundaries. Reconstruction remains local and private
 inputs/model weights are not release files. See [current deployment evidence](DEPLOYMENT.md).
+
+**Immediate asynchronous publication — user instruction, 2026-11-06:** ship
+each deployable partial result as it appears; never wait for the whole
+experiment or all local tests. Assign a deployment sub-agent or background
+process, and continue the next experiment/implementation/validation concurrently.
+Publish provisional evidence and explicit FAIL/NOT RUN labels, then update the
+observation surface as later checks finish. Preserve prior outputs in each
+incremental package. Minimum build/content/integrity checks protect the package;
+full quality, rendering and regression checks follow dispatch and are reported
+honestly. A final comparison publisher's requirement for complete reviewed
+metrics must not prevent an earlier scene or provisional report from shipping
+through the existing observation catalog/package workflow. This supersedes
+older validation-before-release sequencing.
 
 ## User-directed panorama experiment
 

@@ -6,6 +6,11 @@ Revisit real places as explorable 3D worlds.
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
+**Publish as results appear:** start each deployable result's Railway release
+asynchronously and continue the work. Do not wait for the entire experiment or
+all local tests. Pending checks stay NOT RUN and are updated afterward. See the
+mandatory [agent instructions](AGENTS.md) and [publication order](docs/DEPLOYMENT.md).
+
 ## Vision
 Anyone can record a memorable walk, reconstruct an explorable place, and revisit it later. Eventually separately recorded places can connect into a growing shared world. Pedestrian paths, alleys, corners and stairs matter more than driving routes. Recognizability and spatial continuity matter more than survey accuracy or geometric precision.
 

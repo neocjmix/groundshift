@@ -4,6 +4,17 @@
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
+**Required publication order — user instruction, 2026-11-06:** as soon as a
+small result is deployable, start Railway deployment asynchronously and keep
+working. Do not wait for all local tests, complete rendering verification,
+benchmarks, all candidate outputs or the final experiment conclusion. Check the
+minimum static build, authorized contents and artifact integrity, dispatch via
+a deployment sub-agent or background process, and continue the next work in
+parallel. Show provisional results and pending checks as NOT RUN; publish later
+validation updates separately. Keep every prior observation in each incremental
+package and retain rollback archives. Verification below describes evidence
+collected after dispatch, not a reason to postpone the initial publication.
+
 ## Short-street reconstruction conclusion — 2026-11-06 KST
 
 [Recommended street3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-dense/world.json) ·
