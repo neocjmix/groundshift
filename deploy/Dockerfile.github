@@ -122,6 +122,13 @@ RUN wget -q -O /tmp/paris-native.tar.gz https://github.com/neocjmix/groundshift/
     && mkdir /out \
     && tar -xzf /tmp/paris-native.tar.gz -C /out
 
+# Provisional nearest-three spatial SPZ serving; whole-SPZ control remains available.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_stream
+RUN wget -q -O /tmp/paris-stream.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-stream-2026-11-07/groundshift-paris-stream-20261107.tar.gz \
+    && echo '6b861e6007e5987e0e3ac9388d29ea46010848680f2da7dbab6b7207955d62a3  /tmp/paris-stream.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-stream.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -139,5 +146,6 @@ COPY --from=tourist_acquired /out/www /srv
 COPY --from=paris_sfm /out/www /srv
 COPY --from=paris_depth /out/www /srv
 COPY --from=paris_native /out/www /srv
+COPY --from=paris_stream /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

@@ -89,6 +89,23 @@ nativePLY, raw logs and model weights remain local. Public deployment/hash/brows
 checks run after dispatch; evidence is retained under
 `data/jobs/paris-streaming-20261107/publications/native/`.
 
+The next provisional snapshot adds six spatial SPZ chunks and a hash-pinned
+index to the same37th world, with a configured nearest-three resident selection.
+The full native SPZ/cameras/preview bytes remain unchanged and available as the
+control. This frozen increment labels actual stream/appearance checks pending;
+subsequent observations are separate evidence, never a reason to hide the trial.
+
+Release `viewer-paris-stream-2026-11-07`, archive
+`groundshift-paris-stream-20261107.tar.gz`: **15,890,880 bytes**, SHA-256
+`6b861e6007e5987e0e3ac9388d29ea46010848680f2da7dbab6b7207955d62a3`.
+Apply it after the eighteen preceding pinned layers. Production rebuild passes
+in2.88s. Explicit metadata/privacy, referenced chunk count/size/hash and complete
+base/target/archive/composed checks pass in5.579606s:1,135 selected public files,
+11changed archive members,1,175 composed files. Source/geometry/GS training is
+unchanged. RawHD/nativePLY/logs/weights remain local. Public deployment/hash and
+actual browser behavior checks follow dispatch. Evidence is local under
+`data/jobs/paris-streaming-20261107/publications/stream/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
