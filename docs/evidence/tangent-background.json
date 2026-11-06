@@ -2205,7 +2205,20 @@
         }
       ]
     },
-    "frozen103BaselineHashes": "PASS after native completion"
+    "frozen103BaselineHashes": "PASS after native completion",
+    "measuredReportRepair": {
+      "status": "PASS",
+      "publicBrowserStats": {
+        "startTime": "2026-11-06T14:59:57.142Z",
+        "duration": 18089.818,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "change": "Scoped numeric-text wrapping after measured-phase mobile overflow; no native/background artifact change",
+      "initialFailureRetained": true
+    }
   },
   "evidenceHashes": {
     "depth/report.json": "a1f1b1b6739f561f40157603aa8c77e8963d73fb02253b588a837ca93c6b4b8b",
@@ -2222,5 +2235,324 @@
     "source": "Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0; source manifest scripts/samples/mapillary-beijing.json",
     "tangentInspiration": "https://manurare.github.io/360monodepth/",
     "limitations": "Uses existing DAV2 with explicit anchored calibration, does not reproduce complete360MonoDepth optimization."
+  },
+  "publication": {
+    "status": "PASS",
+    "finalDeploymentId": "41cf2731-9060-487f-9d67-d80442906a14",
+    "railwayStatus": "SUCCESS",
+    "finalMetadataDelta": {
+      "status": "PASS",
+      "elapsedSeconds": 0.979517457773909,
+      "checks": [
+        {
+          "path": "www/experiments/lab/timeline.json",
+          "status": "PASS",
+          "bytes": 29002
+        },
+        {
+          "path": "www/experiments/tangent-background/summary.json",
+          "status": "PASS",
+          "bytes": 18419
+        }
+      ]
+    },
+    "anonymousFinalArchive": {
+      "status": "PASS",
+      "bytes": 12479,
+      "sha256": "d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842",
+      "elapsedSeconds": 1.3263295420911163
+    },
+    "finalReportBrowserStats": {
+      "startTime": "2026-11-06T15:05:51.162Z",
+      "duration": 12685.573999999999,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "ordinaryEightArchiveRestore": {
+      "status": "PASS",
+      "layers": 8,
+      "files": 1117,
+      "seconds": 4.440193000016734,
+      "meaning": "Fresh empty-directory ordered extraction of all eight immutable archives reproduces every final composed file and hash; earlier tangent-only overlays are not required."
+    },
+    "scenes": 35,
+    "reports": 17,
+    "timelineEntries": 52,
+    "scope": "Each incremental changed-file set publicly checked; final8-archive composition1117files locally restored/hash-verified. Full1117-file fresh public scan and full79-case public suite NOT RUN. Actual public GS/three modes use unchanged scene/background bytes verified at native phase.",
+    "phaseHistory": [
+      {
+        "phase": "plan-published",
+        "sourceCommit": "b33e697",
+        "railwayDeployment": "f6879798-f8da-4fbf-911d-9f655710aa7c",
+        "createdUtc": "2026-11-06T14:13:33.558Z",
+        "successUtc": "2026-11-06T14:19:03.691Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-plan-20261106.tar.gz",
+          "bytes": 1066556,
+          "sha256": "841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe",
+          "overlayFiles": 13,
+          "assembledFiles": 1056
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 7.123264750000089,
+          "files": 13
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 1066556,
+          "sha256": "841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe",
+          "elapsedSeconds": 1.068554500117898
+        }
+      },
+      {
+        "phase": "real-inputs-depth-running",
+        "sourceCommit": "e80df0f",
+        "railwayDeployment": "99e39d04-45ed-4579-87eb-34c13829f53f",
+        "createdUtc": "2026-11-06T14:20:49.173Z",
+        "successUtc": "2026-11-06T14:22:06.107Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-inputs-20261106.tar.gz",
+          "bytes": 7384830,
+          "sha256": "7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26",
+          "overlayFiles": 32,
+          "assembledFiles": 1075
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 21.671317500062287,
+          "files": 32
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 7384830,
+          "sha256": "7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26",
+          "elapsedSeconds": 2.477557708043605
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:22:44.478Z",
+          "duration": 14345.395,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "depth-fusion-training-running",
+        "sourceCommit": "4531243",
+        "railwayDeployment": "290d191b-3a0a-4f58-9af1-77a10e68d57e",
+        "createdUtc": "2026-11-06T14:25:08.882Z",
+        "successUtc": "2026-11-06T14:30:26.879Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-depth-20261106.tar.gz",
+          "bytes": 5729424,
+          "sha256": "1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823",
+          "overlayFiles": 17,
+          "assembledFiles": 1088
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 12.849247333128005,
+          "files": 17
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 5729424,
+          "sha256": "1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823",
+          "elapsedSeconds": 3.124311957973987
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:30:40.684Z",
+          "duration": 16221.794,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "viewer-resources-checked",
+        "sourceCommit": "8c2cf12",
+        "railwayDeployment": "ed7ee100-286f-45d1-b42a-68588fe0cc6a",
+        "createdUtc": "2026-11-06T14:34:04.400Z",
+        "successUtc": "2026-11-06T14:35:57.592Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-viewer-20261106.tar.gz",
+          "bytes": 1063902,
+          "sha256": "8a1098731040e84aecfa4e54476210447f75c780a02241d83f4fb1ff89190c49",
+          "overlayFiles": 7,
+          "assembledFiles": 1092
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 5.017238958040252,
+          "files": 7
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 1063902,
+          "sha256": "8a1098731040e84aecfa4e54476210447f75c780a02241d83f4fb1ff89190c49",
+          "elapsedSeconds": 0.9922237501014024
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:39:02.355Z",
+          "duration": 14013.056,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "native-export",
+        "sourceCommit": "71aacbe",
+        "railwayDeployment": "aed1ec83-b2cc-4934-838b-453dbe48e625",
+        "createdUtc": "2026-11-06T14:45:48.791Z",
+        "successUtc": "2026-11-06T14:47:02.589Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-native-20261106.tar.gz",
+          "bytes": 88819810,
+          "sha256": "8c09b353a96551ea5fa7eab357ebe67bc61961b0237858fbee5aa94e8ed306da",
+          "overlayFiles": 67,
+          "assembledFiles": 1100
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 64.30156229110435,
+          "files": 67
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 88819810,
+          "sha256": "8c09b353a96551ea5fa7eab357ebe67bc61961b0237858fbee5aa94e8ed306da",
+          "elapsedSeconds": 27.12277500005439
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:49:56.664Z",
+          "duration": 10983.085000000001,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "measured-comparison-checked",
+        "sourceCommit": "98645e2",
+        "railwayDeployment": "4a97c19c-7213-4740-af61-ae703e04eab6",
+        "createdUtc": "2026-11-06T14:49:49.558Z",
+        "successUtc": "2026-11-06T14:51:32.172Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-evidence-20261106.tar.gz",
+          "bytes": 8979570,
+          "sha256": "55b2e885924bb007338a56b0e5c660df242bb2ee49e478006bc3163fccc0a15b",
+          "overlayFiles": 17,
+          "assembledFiles": 1113
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 22.8484749160707,
+          "files": 17
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 8979570,
+          "sha256": "55b2e885924bb007338a56b0e5c660df242bb2ee49e478006bc3163fccc0a15b",
+          "elapsedSeconds": 3.765967749990523
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:52:08.910Z",
+          "duration": 19026.622,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "background-limits-mobile-fix",
+        "sourceCommit": "46aa349",
+        "railwayDeployment": "8260dfd4-ebad-40ad-8708-a9d0f31ec69d",
+        "createdUtc": "2026-11-06T14:58:35.908Z",
+        "successUtc": "2026-11-06T14:59:23.562Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-limits-20261106.tar.gz",
+          "bytes": 1228928,
+          "sha256": "d08bfc7ffd29de440870a2c8fd4b001d4c09204ed8688559fb999c4e29f71463",
+          "overlayFiles": 9,
+          "assembledFiles": 1117
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 5.180502042174339,
+          "files": 9
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 1228928,
+          "sha256": "d08bfc7ffd29de440870a2c8fd4b001d4c09204ed8688559fb999c4e29f71463",
+          "elapsedSeconds": 2.050588000100106
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T14:59:57.142Z",
+          "duration": 18089.818,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "phase": "verified-results-first",
+        "sourceCommit": "50dd8c5",
+        "railwayDeployment": "41cf2731-9060-487f-9d67-d80442906a14",
+        "createdUtc": "2026-11-06T15:04:10.076Z",
+        "successUtc": "2026-11-06T15:04:50.959Z",
+        "status": "PASS",
+        "archive": {
+          "name": "groundshift-tangent-verified-20261106.tar.gz",
+          "bytes": 12479,
+          "sha256": "d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842",
+          "overlayFiles": 2,
+          "assembledFiles": 1117
+        },
+        "publicHashes": {
+          "status": "PASS",
+          "elapsedSeconds": 0.979517457773909,
+          "files": 2
+        },
+        "anonymousRelease": {
+          "status": "PASS",
+          "bytes": 12479,
+          "sha256": "d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842",
+          "elapsedSeconds": 1.3263295420911163
+        },
+        "staticBrowser": {
+          "startTime": "2026-11-06T15:05:51.162Z",
+          "duration": 12685.573999999999,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      }
+    ],
+    "retainedInitialMeasuredMobileFailure": "FAIL: one compact numeric paragraph expanded354px column to501px; actual measured-phase static1/2 before scoped repair. Raw report preserved.",
+    "finalRepairBrowser": {
+      "status": "PASS",
+      "cases": 2,
+      "seconds": 18.089818,
+      "evidence": "publications/background-limits-mobile-fix/browser-static.json"
+    }
   }
 }

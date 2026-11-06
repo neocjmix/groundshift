@@ -6,6 +6,10 @@ post-crop depth and black-background completion, the user authorized
 This permits one declared 1024px DAV2/overlap-calibration/8k-step GS candidate
 and presentation backgrounds. It does not reopen a parameter or model sweep.
 The earlier stop rule and all previous evidence remain in force afterward.
+The bounded run is now **executed and CLOSED**: held-level mean RGB error
+worsens by 7.32% at 512 output and 6.72% at 1024 (0/6 directions improve).
+Preserve the new alternative and its presentation modes, retain the prior
+overall best, and obtain new capture evidence before further quality work.
 
 User stop rule2026-11-06 (campaign now executed and CLOSED): [the final same-data quality run](FINAL_QUALITY.md)
 uses fresh1024 crops and an800k ceiling with the retained DAV2/poses. After this

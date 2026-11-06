@@ -301,6 +301,20 @@ the declared single training is not extended into another mask/crop sweep.
   79-case suite used the native-export phase before that content existed;
   it does not prove the later measured layout. The failure and subsequent
   targeted repair evidence are recorded in deployment history.
+- **PASS after repair:** the scoped text-wrap fix and both additional
+  background-limit comparison sheets are deployed. Two actual public report
+  cases pass in 18.090s, including 390px layout, all decoded comparison images,
+  the four measured values and actual video decoding. All nine changed public
+  files match their size/SHA inventory. No native scene or background asset
+  changed for this repair.
+- **PASS final publication:** Railway deployment
+  `41cf2731-9060-487f-9d67-d80442906a14` succeeds. The final two changed JSON
+  paths match their public size/SHA inventory, and one final public report case
+  passes in 12.686s. GS comparisons and background limitations now precede the
+  retained input/depth diagnostic images. There are 35 worlds, 17 reports and
+  52 timeline entries. Fresh ordinary extraction of all eight pinned archives
+  reproduces all 1,117 composed file hashes in 4.440s. Public checks verify each
+  increment's changed paths; this is not a fresh complete 1,117-file public scan.
 - **FAIL, retained:** the first local Python test wrapper wrote its report to
   an incorrectly concatenated historical job path after unittest execution.
   A corrected runner generated the final two-environment results above; raw
