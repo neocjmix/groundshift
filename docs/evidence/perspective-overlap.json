@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "e146c8bdcc3a36b618e2171f8edc2bd15d5361fd",
+  "execution": "PASS",
+  "geometryAcceptance": "NOT ACCEPTED",
+  "publication": "PASS",
+  "protocolSha256": "c9c0d0257117f022ca96c8dea97cd79b546de50b97c9cb2e7762ab5110324234",
+  "inferenceReportSha256": "cbfda932b08085d413b4b23cc24cbfacac2b71acf865dac413b20f3b4a4fb785",
+  "inference": {
+    "model": "depth-anything/Depth-Anything-V2-Small-hf",
+    "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+    "device": "mps",
+    "torchVersion": "2.15.0",
+    "modelLoadSeconds": 0.3379151669796556,
+    "elapsedSeconds": 2.606446666875854
+  },
+  "cpu": {
+    "elapsedSeconds": 8.700901709031314,
+    "maxResidentSetBytes": 538656768
+  },
+  "coverage": [
+    {
+      "panorama": 4,
+      "bandPixels": 220584,
+      "rangeCap": 121.09464682279356,
+      "selected": {
+        "level": 156326,
+        "best": 220514,
+        "consensus": 209748,
+        "erp": 220582
+      },
+      "overlapLogSpread": {
+        "samples": 220464,
+        "median": 0.04258321177752755,
+        "p90": 0.18010190293585782
+      },
+      "regions": {
+        "road": {
+          "pixels": 16929,
+          "selected": {
+            "level": 0,
+            "best": 16929,
+            "consensus": 16929,
+            "erp": 16929
+          },
+          "multipleSupported": 16929,
+          "logSpread": {
+            "samples": 16929,
+            "median": 0.029369774381244662,
+            "p90": 0.04910463521122366
+          }
+        },
+        "facade": {
+          "pixels": 9114,
+          "selected": {
+            "level": 9114,
+            "best": 9114,
+            "consensus": 5235,
+            "erp": 9114
+          },
+          "multipleSupported": 9114,
+          "logSpread": {
+            "samples": 9114,
+            "median": 0.1490863403044318,
+            "p90": 0.37949409678785556
+          }
+        }
+      }
+    },
+    {
+      "panorama": 5,
+      "bandPixels": 220584,
+      "rangeCap": 121.22092243777504,
+      "selected": {
+        "level": 156321,
+        "best": 220509,
+        "consensus": 211118,
+        "erp": 220584
+      },
+      "overlapLogSpread": {
+        "samples": 220463,
+        "median": 0.04877557334213778,
+        "p90": 0.19183616334013096
+      },
+      "regions": {
+        "road": {
+          "pixels": 16929,
+          "selected": {
+            "level": 0,
+            "best": 16929,
+            "consensus": 16929,
+            "erp": 16929
+          },
+          "multipleSupported": 16929,
+          "logSpread": {
+            "samples": 16929,
+            "median": 0.03515462894415,
+            "p90": 0.052473626996871546
+          }
+        },
+        "facade": {
+          "pixels": 9114,
+          "selected": {
+            "level": 9114,
+            "best": 9114,
+            "consensus": 6143,
+            "erp": 9114
+          },
+          "multipleSupported": 9114,
+          "logSpread": {
+            "samples": 9114,
+            "median": 0.14357920964741988,
+            "p90": 0.3438475107512603
+          }
+        }
+      }
+    }
+  ],
+  "pairedBestVersusErp": [
+    {
+      "direction": "4-to-5",
+      "region": "all",
+      "sharedSelectedSourceSamples": 24380,
+      "jointlySupportedSamples": 22658,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 22658,
+        "median": 0.03988801932043451,
+        "p90": 0.10577839434572664
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 22658,
+        "median": 0.021196982470562016,
+        "p90": 0.12736185573257916
+      },
+      "perspectiveMinusErp": {
+        "samples": 22658,
+        "median": -0.008270960740774786,
+        "p90": 0.06718862346877312
+      },
+      "fractionPerspectiveLower": 0.618986671374349
+    },
+    {
+      "direction": "4-to-5",
+      "region": "road",
+      "sharedSelectedSourceSamples": 1881,
+      "jointlySupportedSamples": 1206,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 1206,
+        "median": 0.057991955884325735,
+        "p90": 0.08672128071215687
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 1206,
+        "median": 0.024299615707554574,
+        "p90": 0.03209478003216866
+      },
+      "perspectiveMinusErp": {
+        "samples": 1206,
+        "median": -0.03951501031534131,
+        "p90": 0.011382247189039267
+      },
+      "fractionPerspectiveLower": 0.8349917081260365
+    },
+    {
+      "direction": "4-to-5",
+      "region": "facade",
+      "sharedSelectedSourceSamples": 992,
+      "jointlySupportedSamples": 992,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 992,
+        "median": 0.04693760494637085,
+        "p90": 0.16042071915200617
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 992,
+        "median": 0.051129439901455354,
+        "p90": 0.2720617012365581
+      },
+      "perspectiveMinusErp": {
+        "samples": 992,
+        "median": 0.00911961678580073,
+        "p90": 0.1815733242002635
+      },
+      "fractionPerspectiveLower": 0.4344758064516129
+    },
+    {
+      "direction": "5-to-4",
+      "region": "all",
+      "sharedSelectedSourceSamples": 24378,
+      "jointlySupportedSamples": 22629,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 22629,
+        "median": 0.03703218432106143,
+        "p90": 0.103993442963557
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 22629,
+        "median": 0.02249705208628749,
+        "p90": 0.12603001008141984
+      },
+      "perspectiveMinusErp": {
+        "samples": 22629,
+        "median": -0.00727092310952553,
+        "p90": 0.06380164358835057
+      },
+      "fractionPerspectiveLower": 0.6079809094524725
+    },
+    {
+      "direction": "5-to-4",
+      "region": "road",
+      "sharedSelectedSourceSamples": 1881,
+      "jointlySupportedSamples": 1662,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 1662,
+        "median": 0.05153469347100907,
+        "p90": 0.0753346044579805
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 1662,
+        "median": 0.00964171017398692,
+        "p90": 0.03205914870539847
+      },
+      "perspectiveMinusErp": {
+        "samples": 1662,
+        "median": -0.041149665728255194,
+        "p90": 0.008953434268488868
+      },
+      "fractionPerspectiveLower": 0.8477737665463297
+    },
+    {
+      "direction": "5-to-4",
+      "region": "facade",
+      "sharedSelectedSourceSamples": 992,
+      "jointlySupportedSamples": 992,
+      "erpAbsoluteRelativeResidual": {
+        "samples": 992,
+        "median": 0.035799512395599094,
+        "p90": 0.12333064942129086
+      },
+      "perspectiveAbsoluteRelativeResidual": {
+        "samples": 992,
+        "median": 0.05405338770138961,
+        "p90": 0.2589703160918697
+      },
+      "perspectiveMinusErp": {
+        "samples": 992,
+        "median": 0.023535651709015573,
+        "p90": 0.22319702966286692
+      },
+      "fractionPerspectiveLower": 0.33669354838709675
+    }
+  ],
+  "nativeLogResourceCounters": {
+    "wholeCommandSeconds": 6.54,
+    "maxResidentSetBytes": 528302080,
+    "peakProcessFootprintBytes": 1626227744
+  },
+  "archive": {
+    "status": "PASS",
+    "archive": "data/deploy/groundshift-perspective-overlap-20261106.tar.gz",
+    "bytes": 318838080,
+    "sha256": "29c22636d18d3c197c58289c3402d8674214a3861ddf49b32d1ab7f047f6a83c",
+    "wwwFiles": 472,
+    "wwwBytes": 378434557,
+    "previousPublicFilesPreserved": 285
+  },
+  "railway": {
+    "deploymentId": "8fa29bf9-31a0-4bc7-a201-3f83f0da086c",
+    "status": "SUCCESS",
+    "createdAt": "2026-11-06T02:29:01.678Z",
+    "updatedAt": "2026-11-06T02:29:56.168Z",
+    "commit": "e0febee172c5c38eda5d9d7a8211932089b3c4e2",
+    "branch": "feat/local-viewer-reconstruction",
+    "source": {
+      "repo": "neocjmix/groundshift",
+      "branch": "feat/local-viewer-reconstruction",
+      "commitSha": null,
+      "image": null
+    },
+    "checksum": [
+      {
+        "timestamp": "2026-11-06T02:29:23.077091284Z",
+        "message": "/tmp/viewer.tar.gz: OK"
+      }
+    ]
+  },
+  "browser": {
+    "status": "PASS",
+    "time": "2026-11-06T02:32:27.749Z",
+    "origin": "https://groundshift-viewer-production.up.railway.app",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "observations": [
+      {
+        "id": "best",
+        "coloredPixels": 38364,
+        "status": "수평 + 아래쪽 크롭 · 48,758개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "consensus",
+        "coloredPixels": 37636,
+        "status": "크롭 불일치 제거 후 · 46,618개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "level",
+        "coloredPixels": 35090,
+        "status": "수평 크롭만 · 34,534개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      },
+      {
+        "id": "erp",
+        "coloredPixels": 44402,
+        "status": "기존 ERP 깊이 대조군 · 48,776개 표시 점 · 4·5번 두 출처, 융합 없음 · SfM 임의 단위"
+      }
+    ],
+    "errors": [],
+    "limitation": "Actual assets and rendered pixels; geometry accuracy requires separate evidence and remains NOT ACCEPTED."
+  },
+  "publicHashes": {
+    "status": "PASS",
+    "files": 161,
+    "elapsedSeconds": 31.487683500163257
+  },
+  "validation": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "jsTestsPassed": 166,
+    "pythonExecutedDistinct": 181,
+    "pythonSkippedEverywhere": 3,
+    "newAnalyticTestsPassed": 9,
+    "localBrowserChecksPassed": 6,
+    "localBrowserSeconds": 20.5,
+    "publicBrowserChecksPassed": 6,
+    "publicBrowserSeconds": 59.1,
+    "frozenInputHashesUnchanged": 103,
+    "fullHistoricalBrowserSuite": "NOT RUN",
+    "independentGeometryTruth": "NOT RUN",
+    "fusion": "NOT RUN",
+    "gaussianTraining": "NOT RUN"
+  }
+}

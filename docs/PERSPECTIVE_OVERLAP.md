@@ -152,6 +152,10 @@ relative source-preview path, now fixed; it also exposed a test's stale
 assumption about which report must be newest. Failed evidence is preserved
 separately. Broad historical browser suite **NOT RUN**. Public verification is
 recorded in [deployment evidence](DEPLOYMENT.md).
+The public release also passes six headed Chrome156 checks (59.1s) and161
+selected file hashes, with public screenshots inspected. All48 new report
+assets/entry are included in that hash check. Publication **PASS** is separate
+from the geometry gate; the observed wedges/strips remain visible online.
 
 **NOT ACCEPTED:** P2 static-surface geometry gate. **NOT RUN:** independent depth
 truth, new GS training, voxel fusion, all-nine inference/fusion, full P0 matched
