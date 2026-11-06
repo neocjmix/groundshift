@@ -306,6 +306,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "paris-58m-lod-compact",
+      "source": "data/jobs/paris-streaming-20261107/publication-paris-58m-lod-compact/world",
+      "asset": "scene.spz",
+      "format": "spz",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
@@ -1202,6 +1211,10 @@
     "experiments/tourist-streaming/route.json",
     "experiments/tourist-streaming/paris-808.jpg",
     "experiments/tourist-streaming/strasbourg.jpg",
-    "experiments/tourist-streaming/acquisition.json"
+    "experiments/tourist-streaming/acquisition.json",
+    "experiments/tourist-streaming/serving-p0-0.jpg",
+    "experiments/tourist-streaming/serving-p8-0.jpg",
+    "experiments/tourist-streaming/route-gs.jpg",
+    "experiments/tourist-streaming/vertical-gs.jpg"
   ]
 }

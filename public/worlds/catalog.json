@@ -379,6 +379,16 @@
       "thumbnailPath": "/worlds/paris-58m-lod/preview.jpg",
       "createdAt": "2026-11-06T17:33:15.236531+00:00",
       "detail": "Native LoD 실제로컬1/1PASS.첫뷰35만표시·8페이지상한,전체SPZ대비평균RGB오차3.21/255,시작/끝/역이동PASS.첫수신14.88MB로전체15.92MB대비전송이득은작음.추가방향·공개검증진행중."
+    },
+    {
+      "id": "paris-58m-lod-compact",
+      "title": "Paris · LoD 스트리밍 · compact",
+      "description": "실제24파노라마 · 같은 M2 GS · 먼영역은거친GS,가까운영역은정밀GS",
+      "category": "experiment",
+      "manifestPath": "/worlds/paris-58m-lod-compact/world.json",
+      "thumbnailPath": "/worlds/paris-58m-lod-compact/preview.jpg",
+      "createdAt": "2026-11-06T17:42:09.792102+00:00",
+      "detail": "같은GS의nativecsplatLoD 비교.실제16방향 평균RGB오차3.55/255,최대6.04여서엄격한개별뷰5기준FAIL.페이지풀8상한PASS.파일합25.95MB로gsplat26.26MB대비1.19%절약.재학습없음."
     }
   ]
 }
