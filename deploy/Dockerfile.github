@@ -66,6 +66,13 @@ RUN wget -q -O /tmp/gs-only-verified.tar.gz https://github.com/neocjmix/groundsh
     && mkdir /out \
     && tar -xzf /tmp/gs-only-verified.tar.gz -C /out
 
+# First SPZ observation publishes before visual comparisons finish; originals remain available.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS spz_export
+RUN wget -q -O /tmp/spz-export.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-spz-export-2026-11-07/groundshift-spz-export-20261107.tar.gz \
+    && echo '744e31f5f78825b54ea69456d8f2561e4f023a4b348111f25274e677bf8e7b7d  /tmp/spz-export.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/spz-export.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -75,5 +82,6 @@ COPY --from=limits /out/www /srv
 COPY --from=verified /out/www /srv
 COPY --from=gs_only /out/www /srv
 COPY --from=gs_only_verified /out/www /srv
+COPY --from=spz_export /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

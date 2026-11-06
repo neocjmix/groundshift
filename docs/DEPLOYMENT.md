@@ -15,6 +15,36 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Conservative SPZ storage observation — 2026-11-07
+
+[PLY/SPZ observation](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
+· [SPZ derivative](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20-spz/world.json)
+· [Preserved PLY](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20/world.json).
+
+The first increment publishes the locally converted 15,936,671-byte SPZ v3
+before actual rendering and quality comparisons finish. Those visual checks are
+explicitly **NOT RUN** in this package. It preserves all 800,000 Gaussians,
+SH1, camera metadata and coordinate transforms; it performs no retraining,
+point pruning or background completion. Numeric quantization is lossy, and
+structural/position diagnostics do not establish perceptual equivalence.
+
+Release `viewer-spz-export-2026-11-07`, archive
+`groundshift-spz-export-20261107.tar.gz`: **17,025,655 bytes**, SHA-256
+`744e31f5f78825b54ea69456d8f2561e4f023a4b348111f25274e677bf8e7b7d`.
+Apply it **after all ten** GS-only layers below; the separate Docker stage/COPY
+preserves historical worlds, prior evidence and rollback releases. The explicit
+package contains 1,104 public files, and the actual composition contains 1,137
+including superseded compiled assets. All target/base files, 19 changed overlay
+members and physically composed files pass local size/hash checks (4.177746 s).
+The 17 inert historical background files remain preserved with no active
+reference. Production build passes (2.56 s); fuller checks run asynchronously.
+
+Publication evidence remains local under
+`data/jobs/street-spz-20261107/publications/export/`. This archive contains only
+selected public `www/` files; source footage, private inputs, absolute paths,
+raw logs, weights and credentials are excluded. Public deployment/hash/browser
+checks are initially NOT RUN and will be updated after dispatch.
+
 ## Current GS-only display — 2026-11-07
 
 The user rejects the panorama/depth-shell background completion because it
