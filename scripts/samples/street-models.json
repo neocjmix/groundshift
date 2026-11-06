@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "models": [
+    {
+      "id": "panda",
+      "repository": "https://github.com/caozidong/PanDA",
+      "codeRevision": "211e4cc391474176fe6949baebfeac61ada7e44c",
+      "checkpoint": {
+        "model": "ZidongC/PanDA",
+        "revision": "f1790c6105aa12a387afa9c1279ad28efa20c069",
+        "file": "panda_small.pth",
+        "bytes": 99538561,
+        "sha256": "2e21ad36025f070959765ea31b9056cc8639d1a80d0344d785506f3ff6100c0d",
+        "seconds": 76.65499487495981,
+        "license": "apache-2.0"
+      }
+    },
+    {
+      "id": "da3",
+      "repository": "https://github.com/ByteDance-Seed/Depth-Anything-3",
+      "codeRevision": "3d835ec1a5802d64a8b8b15f817a1ab54809bfe4",
+      "checkpoint": {
+        "model": "depth-anything/DA3-SMALL",
+        "revision": "e08cab65ca0ec38e7826075418411ab90cab4da3",
+        "file": "model.safetensors",
+        "bytes": 137248940,
+        "sha256": "364492e38a3a06d221ac75da7f6621ada3f2361cd24fde11ba79091e9f40efcf",
+        "seconds": 41.046922208042815,
+        "license": "apache-2.0"
+      }
+    },
+    {
+      "id": "moge",
+      "repository": "https://github.com/microsoft/MoGe",
+      "codeRevision": "74fbce054ebed49800de42d0ad0e83495065719a",
+      "checkpoint": {
+        "model": "Ruicheng/moge-2-vits-normal",
+        "revision": "26b477f41595707c5db6770294c0d1721e8ed4ed",
+        "file": "model.pt",
+        "bytes": 140550416,
+        "sha256": "79a16621928c2bf0ed04659218c55c01075e950507f40bb3332fb4c873d3e1dc",
+        "seconds": 41.985935542033985,
+        "license": "mit"
+      }
+    },
+    {
+      "id": "depthmaster",
+      "repository": "https://github.com/PolyU-VCLab/DepthMaster",
+      "codeRevision": "b6a80836343438f63c1b55883a8e7da94e29e6bc",
+      "checkpoint": {
+        "model": "VCLab-PolyU/DepthMaster",
+        "revision": "add341b64ae9f90372b6483b334ac496a18fe081",
+        "file": "depthmaster.pt",
+        "bytes": 1541004203,
+        "sha256": "e61e617acdd0b40bd2c217def5d60b0bd05352e6ae61d940a49c2374c6c75982",
+        "seconds": 363.4915310840588,
+        "license": "mit"
+      },
+      "adoptionStatus": "BLOCKED",
+      "reason": "Published MIT code/weights; migrated mirror_vgt code has unresolved upstream Tencent community terms excluding South Korea. No GS training or model/output redistribution. Prior inference retained locally only."
+    }
+  ],
+  "dependencyRevisions": {
+    "utils3d-depthmaster": "eeafc2786ec603b2e4f491538c8f2583637905f5",
+    "utils3d-moge": "62f09d58509485564e24d5d9f6aac9ee9ebc0c37"
+  },
+  "depthmasterMpsAdaptation": {
+    "file": "data/tools/depthmaster/depthmaster/model/mirror_vgt/layers/attention.py",
+    "beforeSha256": "0f835fb70c4b4569769be66ead27fd62c37ab010a51ee69b675fac173f2d71fe",
+    "afterSha256": "0d5436d2922b9237e3de31faa09a8529e6fef788345a5f329f7aa86302e48564",
+    "change": "Guard optional flash-attn import; retain upstream torch SDPA branch for MPS. No learned weights or model dimensions changed."
+  }
+}
