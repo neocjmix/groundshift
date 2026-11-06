@@ -273,7 +273,7 @@
     },
     {
       "id": "street-tangent20",
-      "source": "data/jobs/street-tangent-background-20261106/public-worlds/street-tangent20/world",
+      "source": "data/jobs/street-gs-only-20261107/public-worlds/street-tangent20/world",
       "asset": "scene.ply",
       "format": "ply",
       "credits": [

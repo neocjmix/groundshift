@@ -83,45 +83,32 @@ def main(a):
     allow = read(allow_path)
     world_plan = None
     if source.get('world'):
-        selected = source['world']; native_dir = Path(selected['nativeDir']).resolve()
+        selected = source['world']
+        if selected.get('backgroundDir'):
+            raise ValueError('Background completion was rejected; publish GS only, not backgroundDir')
+        native_dir = Path(selected['nativeDir']).resolve()
         native = read(native_dir / 'job.json'); ply = native_dir / 'world/scene.ply'
         if native['status'] != 'PASS' or sha(ply) != native['artifact']['sha256']:
             raise ValueError('Require complete native export with matching SHA')
         presentation = Path(selected['presentationDir']).resolve()
         metadata = read(presentation / 'world.json')
         metadata.update(id=SLUG, title=selected['title'])
+        # Presentation manifests can come from the historical background trial.
+        # Never silently reactivate its rejected presentation in a later release.
+        metadata.pop('background', None)
         metadata['provenance']['notes'] = ('Actual local M2 Metal training,160 real1024px tangent perspective crops from8 of9 existing licensed panoramas. '
             '20 icosahedron face-normal directions,FOV80. DAV2 crop inference, SfM and overlap calibration, arbitrary units. '
             'Panorama5 RGB excluded from optimization and background; all-nine SfM geometry reused.8000steps,SH1,seed42,max800000splats. '
-            'No generated training images. Optional photo-derived backgrounds are presentation completion only; their lower15% uses boundary-tone nadir fill, not new observations or recovered floor geometry. '
+            'No generated training images. GS-only display: photo panorama and estimated-depth backgrounds were rejected by the user because translated views misalign. Historical comparisons remain evidence, not enabled presentation. '
             'Observation /experiments/tangent-background/. Quality: ' + selected['quality'])
-        background_dir = Path(selected['backgroundDir']).resolve() if selected.get('backgroundDir') else None
-        background_files = []
-        if background_dir:
-            background_metadata = read(background_dir / 'background.json')
-            public_text(background_metadata)
-            if background_metadata.get('schemaVersion') != 1 or not background_metadata.get('views'):
-                raise ValueError('Invalid background metadata')
-            names = {'background.json'}
-            for view in background_metadata['views']:
-                for key in ['imagePath', 'meshPath']:
-                    if key in view:
-                        name = view[key]
-                        if not isinstance(name, str) or not re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._/-]*', name) or any(p in ['', '.', '..'] for p in name.split('/')):
-                            raise ValueError('Unsafe selected background path')
-                        names.add(name)
-            background_files = [(background_dir / name, name) for name in sorted(names)]
-            if any(not path.is_file() or path.is_symlink() or not path.resolve().is_relative_to(background_dir) for path, _ in background_files):
-                raise ValueError('Missing or unsafe selected background asset')
-            metadata['background'] = {'path': 'background/background.json'}
         public_text(metadata)
         summary['run'] = dict(status='PASS', splats=native['artifact']['splats'], bytes=native['artifact']['bytes'],
             sha256=native['artifact']['sha256'], seconds=native['elapsedSeconds'], quality=selected['quality'],
             world=f'/worlds/{SLUG}/world.json')
         preview = Path(selected['preview']).resolve() if selected.get('preview') else None
-        if preview:
+        if preview or (PUBLIC / 'worlds' / SLUG / 'preview.jpg').is_file():
             summary['run']['preview'] = f'/worlds/{SLUG}/preview.jpg'
-        world_plan = (native_dir, presentation, metadata, preview, selected, native, background_files)
+        world_plan = (native_dir, presentation, metadata, preview, selected, native)
     elif source.get('run'):
         summary['run'] = deepcopy(source['run'])
     public_text(summary)
@@ -131,23 +118,17 @@ def main(a):
         if dest.exists() and sha(src) != sha(dest):
             raise ValueError('Existing public evidence would be replaced: ' + dest.name)
     if world_plan:
-        native_dir, presentation, metadata, preview, selected, native, background_files = world_plan
+        native_dir, presentation, metadata, preview, selected, native = world_plan
         dest = PUBLIC / 'worlds' / SLUG
         if dest.exists() and sha(dest / 'scene.ply') != native['artifact']['sha256']:
             raise ValueError('Previous exported scene would be overwritten')
         dest.mkdir(exist_ok=True)
         if not (dest / 'scene.ply').exists():
             shutil.copyfile(native_dir / 'world/scene.ply', dest / 'scene.ply')
-        for src, name in background_files:
-            background_dest = dest / 'background' / name
-            if background_dest.exists() and sha(src) != sha(background_dest):
-                raise ValueError('Background asset would be overwritten')
-            background_dest.parent.mkdir(parents=True, exist_ok=True)
-            if not background_dest.exists():
-                shutil.copyfile(src, background_dest)
         write(dest / 'world.json', metadata)
         shutil.copyfile(presentation / 'cameras.json', dest / 'cameras.json')
-        shutil.copyfile(job / 'inputs-tangent/LICENSE', dest / 'SOURCE_LICENSE')
+        source_license = Path(selected['sourceLicense']).resolve() if selected.get('sourceLicense') else job / 'inputs-tangent/LICENSE'
+        shutil.copyfile(source_license, dest / 'SOURCE_LICENSE')
         if preview:
             from PIL import Image
             Image.open(preview).convert('RGB').save(dest / 'preview.jpg', quality=91)
@@ -167,9 +148,7 @@ def main(a):
             if name == 'scene.ply' and (curated / name).exists():
                 continue
             shutil.copyfile(dest / name, curated / name)
-        if background_files:
-            shutil.copytree(dest / 'background', curated / 'background', dirs_exist_ok=True)
-        entry = dict(id=SLUG, title=metadata['title'], description='이십면체20방향·160실제 크롭·DAV2 깊이 보정. GS와 파노라마/깊이 배경을 구분해서 보기.',
+        entry = dict(id=SLUG, title=metadata['title'], description='이십면체20방향·160실제 크롭·DAV2 깊이 보정. 전방위 GS만 표시하며 이동 불일치가 생긴 사진/깊이 배경은 폐기.',
             category='experiment', manifestPath=f'/worlds/{SLUG}/world.json', thumbnailPath=f'/worlds/{SLUG}/preview.jpg',
             createdAt=native['finishedAt'], detail=summary['run']['quality'])
         catalog['scenes'] = [entry if old['id'] == SLUG else old for old in catalog['scenes']]
@@ -180,15 +159,17 @@ def main(a):
         timeline['entries'] = [scene_entry if old['id'] == SLUG else old for old in timeline['entries']]
         if not any(old['id'] == SLUG for old in timeline['entries']):
             timeline['entries'].append(scene_entry)
+        allowed_world = dict(id=SLUG, source=str(curated.relative_to(ROOT)), asset='scene.ply', format='ply', credits=['SOURCE_LICENSE'])
+        allow['worlds'] = [allowed_world if old['id'] == SLUG else old for old in allow['worlds']]
         if not any(old['id'] == SLUG for old in allow['worlds']):
-            allow['worlds'].append(dict(id=SLUG, source=str(curated.relative_to(ROOT)), asset='scene.ply', format='ply', credits=['SOURCE_LICENSE']))
+            allow['worlds'].append(allowed_world)
     for src, dest in copies:
         dest.parent.mkdir(parents=True, exist_ok=True)
         if not dest.exists():
             shutil.copyfile(src, dest)
     write(out / 'summary.json', summary)
-    (out / 'ATTRIBUTION.txt').write_text('Photographs: Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0. https://creativecommons.org/licenses/by-sa/4.0/\nChanges: actual 20-direction tangent reprojection from retained original panoramas, DAV2 crop depth inference and calibrated initialization, local Brush/Metal Gaussian training; explicitly labeled source-photo/estimated-depth background modes. No diffusion/generated training RGB. Original full panoramas, private footage, raw logs and weights excluded. Background processing/modified regions are recorded in background manifest notes; those textures are display completion rather than measured geometry.\n')
-    report = dict(id='report-tangent-background', title='이십면체 방향과 배경 보완', description=summary['summary'],
+    (out / 'ATTRIBUTION.txt').write_text('Photographs: Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0. https://creativecommons.org/licenses/by-sa/4.0/\nChanges: actual 20-direction tangent reprojection from retained original panoramas, DAV2 crop depth inference and calibrated initialization, local Brush/Metal Gaussian training; historical rejected source-photo/estimated-depth background comparisons; current scene is GS only. No diffusion/generated training RGB. Original full panoramas, private footage, raw logs and weights excluded. Historical background processing/modified regions remain documented in preserved evidence; they were rejected for translation misalignment and are not current geometry or display.\n')
+    report = dict(id='report-tangent-background', title='이십면체20방향 GS · 배경 방식 폐기', description=summary['summary'],
         image=summary.get('run', {}).get('preview', '/worlds/street-final-hires/preview.jpg'), href='/experiments/tangent-background/', kind='report',
         createdAt=summary['updatedAt'], detail=summary['phase']+' · '+summary['title'])
     timeline['entries'] = [report if old['id'] == report['id'] else old for old in timeline['entries']]

@@ -51,6 +51,14 @@ RUN wget -q -O /tmp/tangent-verified.tar.gz https://github.com/neocjmix/groundsh
     && mkdir /out \
     && tar -xzf /tmp/tangent-verified.tar.gz -C /out
 
+# User rejects translated panorama/depth-shell completion: current display is GS only.
+# The native PLY/poses and historical comparisons/rollback layers remain unchanged.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS gs_only
+RUN wget -q -O /tmp/gs-only.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-gs-only-2026-11-07/groundshift-gs-only-20261107.tar.gz \
+    && echo '41683c73ac684d7367bac8df1ac651e7534f26921122ff818dea6675db4a4697  /tmp/gs-only.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/gs-only.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -58,5 +66,6 @@ COPY --from=tangent /out/www /srv
 COPY --from=evidence /out/www /srv
 COPY --from=limits /out/www /srv
 COPY --from=verified /out/www /srv
+COPY --from=gs_only /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

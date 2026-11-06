@@ -15,6 +15,47 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Current GS-only display — 2026-11-07
+
+The user rejects the panorama/depth-shell background completion because it
+misaligns during horizontal translation. The current viewer removes its
+controls, loading and rendering. `street-tangent20/world.json` omits the
+background reference. Its PLY, camera poses, coordinate transform, preview and
+source license are byte-identical; no new inference or training is run.
+Historical background comparisons and all prior releases remain available as
+rejected UX evidence. Old files in the immutable layers are not enabled views.
+
+The user observes that the wider angular GS coverage feels more immersive.
+This subjective observation is recorded separately from the earlier six
+horizontal held-view RGB errors, which still favor `street-final-hires` for
+photographic matching. Those errors did not measure full-sphere immersion.
+Both GS scenes remain available; this display removal changes neither model.
+
+The ninth overlay is released immediately after the production build, explicit
+public content and basic integrity checks. Initial public verification is
+**NOT RUN** and follows dispatch while local checks continue. An initial build
+caught an obsolete Retry-button background setter; it is removed and the fresh
+production retry passes (Vite2.67s). The failed log is preserved. A premature
+package attempt against old dist stops at an integrity assertion and emits no
+archive; the successful package uses the completed fresh build.
+
+Release `viewer-gs-only-2026-11-07`, archive
+`groundshift-gs-only-20261107.tar.gz`: **1,073,680bytes**,SHA-256
+`41683c73ac684d7367bac8df1ac651e7534f26921122ff818dea6675db4a4697`.
+Apply it after the eight archived layers below. The explicit target has1,095
+files, including the exact17unreferenced historical background files retained
+from the preceding pinned inventory. The actual composition has1,122files;
+27superseded compiled files remain inert. All composed files match size/hash
+on disk and the decompressed overlay matches21changed files. This is not a
+fresh network readback of the full surface or a geometry acceptance claim.
+
+The publisher now rejects stale `backgroundDir` inputs and always strips an
+inherited background reference rather than silently reactivating it. The
+existing native export, poses, preview, source license and prior best world
+are checked byte-for-byte. Current private evidence is under
+`data/jobs/street-gs-only-20261107/`; archives contain only selected public
+`www/` assets, without raw logs, original footage, weights or credentials.
+
 ## Tangent directions and explicit backgrounds — completed bounded run
 
 [Results and limits](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
