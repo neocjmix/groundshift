@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "paris-seine-20250508",
+  "title": "Paris · Notre-Dame south bank and connected streets",
+  "api": "https://api.panoramax.xyz/api/search",
+  "collection": "9fe7f3ab-14e3-4174-8731-b06e31d9577b",
+  "query": {
+    "bbox": "2.337,48.850,2.355,48.861",
+    "limit": 4000,
+    "filter": "field_of_view = 360",
+    "sortby": "+ts"
+  },
+  "firstRank": 808,
+  "lastRank": 1683,
+  "expectedObservations": 876,
+  "initialHdWindow": { "firstIndex": 180, "count": 24, "firstRank": 988, "lastRank": 1011 },
+  "source": "Immergis pour la Ville de Paris / Panoramax IGN",
+  "license": "etalab-2.0",
+  "licenseUrl": "https://github.com/etalab/licence-ouverte/blob/master/open-licence.md",
+  "notes": "GPS spacing and azimuth are source priors, not full reconstructed camera poses. Source images are vehicle-captured public blurred JPEGs. No new GS/streaming execution is claimed by this manifest."
+}

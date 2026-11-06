@@ -4,6 +4,14 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
+New-data/serving direction,2026-11-07: the user accepts the visual SPZ result
+and moves toward longer-distance lazy loading. [The source-scouting run](TOURIST_STREAMING.md)
+selects a single Paris capture sequence:876consecutive360° records/2.185km
+approximate GPS route,12k raster and2.53m median spacing.24actual HD sources
+are downloaded/verified locally. New-source SfM/depth/GS and long-route
+streaming are NOT RUN. The bounded next serving plan uses a common frame,
+preserved whole-scene control and spatial SPZ partition before scaling distance.
+
 Storage/serving follow-up,2026-11-07: [SPZ compression](COMPRESSION.md)
 retains the same tangent20 reconstruction,800k Gaussians,SH1 and genuine poses,
 reducing73.60→15.94MB (78.35%). Local CPU/WASM conversion and all positions

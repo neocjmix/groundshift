@@ -1,6 +1,7 @@
 """Source-sequence evidence only: GPS lengths are not reconstructed camera poses."""
 import math
 import statistics
+from datetime import datetime
 
 
 def distance(a, b):
@@ -25,12 +26,16 @@ def select_route(features, collection, start, end):
         raise ValueError('Duplicate source IDs')
     for i, f in enumerate(selected):
         p = f['properties']
-        if p.get('license') != 'etalab-2.0' or p.get('pers:interior_orientation', {}).get('field_of_view') != 360:
+        interior = p.get('pers:interior_orientation', {})
+        if p.get('license') != 'etalab-2.0' or interior.get('field_of_view') != 360:
             raise ValueError('Require verified Open Licence 2.0 and full sphere')
+        dimensions = interior.get('sensor_array_dimensions', [])
+        if len(dimensions) != 2 or dimensions[0] != 2*dimensions[1] or dimensions[1] <= 0:
+            raise ValueError('Require an explicit2:1 ERP raster')
         # Provider adjacency, rather than a GPS-nearest-neighbor invention.
         if i and not any(l.get('rel') == 'prev' and l.get('id') == selected[i-1]['id'] for l in f['links']):
             raise ValueError('Source prev link does not confirm adjacency')
-        if i and p['datetime'] < selected[i-1]['properties']['datetime']:
+        if i and datetime.fromisoformat(p['datetime'].replace('Z', '+00:00')) < datetime.fromisoformat(selected[i-1]['properties']['datetime'].replace('Z', '+00:00')):
             raise ValueError('Capture time reversed')
     return selected
 

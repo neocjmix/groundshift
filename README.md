@@ -2,6 +2,13 @@
 
 Revisit real places as explorable 3D worlds.
 
+**Next input selected:** [Paris · longer tourist route](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/).
+876 consecutive licensed360° source records near Notre-Dame's south bank and
+connected streets:2.185km GPS polyline,2.53m median spacing,12,288×6,144.
+24 real HD JPEGs(202.5MB) are acquired locally. This is source acquisition,
+**not a new Paris GS or successful long-distance streaming result**.
+[Source evidence, acquisition and next serving experiment](docs/TOURIST_STREAMING.md).
+
 **Latest delivery experiment:** [Same scene · SPZ compression](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
 · [Lightweight 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20-spz/world.json).
 The existing tangent20 scene becomes15.94MB from73.60MB (**78.35% less**),
@@ -264,6 +271,7 @@ the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
 unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
+- [Paris tourist source selection and bounded lazy-serving experiment](docs/TOURIST_STREAMING.md)
 - [SPZ compression, actual size/appearance evidence and reproduction](docs/COMPRESSION.md)
 - [Alternative-model execution, licensing, measurements and reproduction](docs/MODEL_SELECTION.md)
 - [Short-street result, controls, measurements and reproduction](docs/STREET_CONCLUSION.md)
