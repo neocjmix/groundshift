@@ -35,13 +35,13 @@ The ninth overlay is released immediately after the production build, explicit
 public content and basic integrity checks. Public verification is initially
 **NOT RUN** and then runs after dispatch while local checks continue. The first
 deployment `72ebfada-8097-463b-b1a4-9395279ed533` reaches SUCCESS at
-2026-11-06T15:28:28.821Z (created15:27:02.230Z; pointer`2804c07`).
-All21changed public file hashes pass. Actual headed public Chrome4/4 cases
-pass in152.619449s,0skipped/flaky/failed. Two actual GS cases render993,176
-colored pixels each, translate and look up/down, with0background requests and
-0page errors. Only the retired metadata reference is a fixture in one case;
-the Gaussian bytes and poses are actual. The current local targeted8/8 cases
-pass in42.965094s;180JS tests,typecheck and lint pass. Full current80-case
+2026-11-06T15:28:28.821Z (created 15:27:02.230Z; pointer `2804c07`).
+All 21 changed public file hashes pass. Actual headed public Chrome 4/4 cases
+pass in 152.619449 s,0skipped/flaky/failed. Two actual GS cases render 993,176
+colored pixels each, translate and look up/down, with 0 background requests and
+0 page errors. Only the retired metadata reference is a fixture in one case;
+the Gaussian bytes and poses are actual. The current local targeted 8/8 cases
+pass in 42.965094 s; 180 JS tests, typecheck and lint pass. Full current 80-case
 browser rerun, independent geometry and unrestricted walking are NOT RUN. An initial build
 caught an obsolete Retry-button background setter; it is removed and the fresh
 production retry passes (Vite 2.67 s). The failed log is preserved. A premature
@@ -65,11 +65,17 @@ fresh network readback of the full surface or a geometry acceptance claim.
 
 The completed checks ship immediately in a tenth, metadata-only overlay:
 release `viewer-gs-only-verified-2026-11-07`, archive
-`groundshift-gs-only-verified-20261107.tar.gz`, **12,406bytes**,SHA-256
+`groundshift-gs-only-verified-20261107.tar.gz`, **12,406 bytes**, SHA-256
 `d708a008e31932fd1d03a775c64ba7e0e95822b75ad9bbe900490facf8214ca8`.
 It changes exactly the summary and timeline JSON, preserving all viewer,
-photo, native GS, poses and historical background bytes. Its public readback
-and final report check follow dispatch and are initially NOT RUN.
+photo, native GS, poses and historical background bytes. Deployment `68d0656a-1a63-4387-ba51-edf86c8bce43` reaches SUCCESS at
+2026-11-06T15:35:20.933Z (created 15:33:50.894Z; pointer `654cec2`). The server
+checks the archive checksum. Both changed public hashes pass; anonymous full
+attachment readback passes in 1.838428 s. A fresh public report case passes 1/1
+in18.184869s. Fresh empty-directory extraction of all ten immutable
+archives matches all 1,122 composed files in 4.919464 s. Later metadata does not
+change any compiled viewer, scene, camera, photograph or background bytes;
+it does not imply another full GPU or 80-case rerun.
 
 The publisher now rejects stale `backgroundDir` inputs and always strips an
 inherited background reference rather than silently reactivating it. The
