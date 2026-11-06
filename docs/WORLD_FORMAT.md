@@ -1,5 +1,11 @@
 # World artifact v1
 
+Storage-only derivatives can change the Gaussian asset from PLY to SPZ while
+retaining all coordinate and navigation fields. Keep a separate world ID and
+the original native output; never apply the manifest transform twice. A
+matching point count/SH degree does not mean float values are lossless:
+SPZ quantizes positions and attributes. [Actual SPZ v3 example and checks](COMPRESSION.md).
+
 A world is a directory with `world.json`, one Gaussian Splatting asset, and optionally camera metadata. Serve this directory over HTTP alongside the viewer or select it with **Open world folder**. Asset and camera URLs resolve relative to the manifest URL, so replacing a scene does not require changing viewer code.
 
 `src/world.ts` is the executable contract. The parser rejects missing required fields, unknown fields, unsupported versions, nonfinite numbers, invalid camera bases, and unsafe relative paths. Validation checks metadata structure; it does not establish the accuracy of camera poses, the asset's license, or successful rendering.

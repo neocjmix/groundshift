@@ -2,7 +2,16 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Latest experiment:** [20-direction GS · background completion withdrawn](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
+**Latest delivery experiment:** [Same scene · SPZ compression](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
+· [Lightweight 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20-spz/world.json).
+The existing tangent20 scene becomes15.94MB from73.60MB (**78.35% less**),
+retaining800k Gaussians,SH1,cameras and coordinates.201actual1024px M2 Chrome
+renders show1.348/255 average codec RGB difference across67views; selected
+detail/directional inspection shows no large appearance regression. This is
+lossy storage quantization, with the native PLY preserved; no retraining or
+geometry improvement. [Reproduction, actual measurements and limitations](docs/COMPRESSION.md).
+
+**Latest reconstruction experiment:** [20-direction GS · background completion withdrawn](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
 · [New 3D trial](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20/world.json)
 · [Preserved best result](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-final-hires/world.json).
 Actual M2 reconstruction completed, but GS-only held-view error worsens by
@@ -16,7 +25,7 @@ The live viewer now renders GS only, with no backdrop controls or loading;
 historical comparisons remain available. [Execution, commands and evidence](docs/TANGENT_BACKGROUND.md).
 This was one explicitly reopened experiment; the same-data sweep remains closed.
 
-**Live demo:** [Final quality · 1024px result and comparison](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four new pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 35 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Final quality · 1024px result and comparison](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four new pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 36 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -255,6 +264,7 @@ the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
 unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
+- [SPZ compression, actual size/appearance evidence and reproduction](docs/COMPRESSION.md)
 - [Alternative-model execution, licensing, measurements and reproduction](docs/MODEL_SELECTION.md)
 - [Short-street result, controls, measurements and reproduction](docs/STREET_CONCLUSION.md)
 - [Panoramic street roadmap and current limits](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md)

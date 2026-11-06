@@ -21,7 +21,7 @@ try {
   const assets=new Map(config.models.map(m=>[m.id,path.resolve(m.ply)]));
   const source=`
 import * as THREE from 'three';
-import {SparkRenderer,SplatMesh} from '@sparkjsdev/spark';
+import {SparkRenderer,SplatMesh,SplatFileType} from '@sparkjsdev/spark';
 let renderer,scene,camera,spark,mesh;
 const pause=()=>new Promise(requestAnimationFrame);
 window.loadStreet=async(id)=>{
@@ -29,9 +29,15 @@ window.loadStreet=async(id)=>{
  renderer=new THREE.WebGLRenderer({alpha:true,premultipliedAlpha:true,antialias:false,preserveDrawingBuffer:true});
  renderer.setPixelRatio(1);renderer.setSize(${resolution},${resolution});renderer.setClearColor(0x000000,0);document.body.append(renderer.domElement);
  scene=new THREE.Scene();camera=new THREE.PerspectiveCamera();spark=new SparkRenderer({renderer});scene.add(spark);
- mesh=new SplatMesh({url:'/street-asset/'+id});scene.add(mesh);await mesh.initialized;
+ const downloadStart=performance.now();
+ const response=await fetch('/street-asset/'+id,{cache:'no-store'});if(!response.ok)throw new Error('Asset HTTP '+response.status);
+ const fileBytes=new Uint8Array(await response.arrayBuffer()),downloadMilliseconds=performance.now()-downloadStart;
+ const format=${JSON.stringify(Object.fromEntries(config.models.map(m=>[m.id,path.extname(m.ply).slice(1)])))}[id];
+ const decodeStart=performance.now();
+ mesh=new SplatMesh({fileBytes,fileType:format==='spz'?SplatFileType.SPZ:SplatFileType.PLY});scene.add(mesh);await mesh.initialized;
+ const decodeMilliseconds=performance.now()-decodeStart;
  const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
- return {splats:mesh.numSplats,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)};
+ return {splats:mesh.numSplats,downloadMilliseconds,decodeMilliseconds,assetBytes:fileBytes.length,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)};
 };
 window.renderStreet=async(c,waitFrames)=>{
  const near=.01,far=10000;camera.near=near;camera.far=far;
@@ -51,7 +57,7 @@ window.renderStreet=async(c,waitFrames)=>{
         if(!filename){res.statusCode=404;res.end();return;}
         try{const info=await stat(filename);res.setHeader('Content-Type','application/octet-stream');res.setHeader('Content-Length',info.size);createReadStream(filename).pipe(res);}catch{res.statusCode=404;res.end();}
       }else next();});},resolveId(id){if(id==='/street-render/main.js')return '\0street-render';},load(id){if(id==='\0street-render')return source;}}],
-    optimizeDeps:{include:['three','@sparkjsdev/spark']},server:{host:'127.0.0.1',port:4326,strictPort:true}});
+    optimizeDeps:{include:['three','@sparkjsdev/spark']},server:{host:'127.0.0.1',port:4326,strictPort:true,hmr:false,watch:{ignored:['**/data/**','**/dist/**','**/test-results/**']}}});
   await server.listen();browser=await chromium.launch({channel:'chrome',headless:false});
   const page=await browser.newPage({viewport:{width:resolution,height:resolution},deviceScaleFactor:1});const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto('http://127.0.0.1:4326/street-render/');await page.waitForFunction(()=>typeof window.renderStreet==='function');

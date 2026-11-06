@@ -4,6 +4,14 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
+Storage/serving follow-up,2026-11-07: [SPZ compression](COMPRESSION.md)
+retains the same tangent20 reconstruction,800k Gaussians,SH1 and genuine poses,
+reducing73.60→15.94MB (78.35%). Local CPU/WASM conversion and all positions
+pass;201actual M2 renders across67views pass the declared codec difference
+screen. Selected visual inspection shows no large appearance regression.
+The original PLY and all prior observations remain. No quality training is
+reopened, and independent geometry/GPU-memory improvement is not claimed.
+
 User decision, 2026-11-07: the wider-angle tangent GS gives a substantially
 better sense of presence in the user's observation, despite worse horizontal
 photo-error metrics. Panorama/depth-shell backgrounds are withdrawn because

@@ -115,6 +115,12 @@ interface ReconstructionBackend {
 ```
 
 ## Portable world artifact
+The local storage-only derivative step converts an existing PLY to SPZ v3
+with the pinned Spark CPU/WASM writer. It preserves the native backend output
+and camera/coordinate metadata, performs no new reconstruction, and publishes
+a distinct world. The viewer decodes SPZ through its existing loader.
+No GPU/backend abstraction or new service is added. [Measured codec comparison](COMPRESSION.md).
+
 A directory containing a versioned manifest, renderable assets and optional camera trajectory. The asset format may be PLY, SPZ, GLB or future formats; don't force every backend to export the same internal representation.
 
 Illustrative manifest:
