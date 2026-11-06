@@ -1,8 +1,8 @@
-# Viewer and calibration/perspective-depth observation package: 3fee797.
+# Viewer and dense perspective-overlap observation package: e146c8b.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-calibration-2026-11-06/groundshift-panoramic-calibration-20261106.tar.gz \
-    && echo '1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-perspective-overlap-2026-11-06/groundshift-perspective-overlap-20261106.tar.gz \
+    && echo '29c22636d18d3c197c58289c3402d8674214a3861ddf49b32d1ab7f047f6a83c  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
