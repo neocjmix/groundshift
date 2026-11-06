@@ -4,6 +4,14 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
+User decision, 2026-11-07: the wider-angle tangent GS gives a substantially
+better sense of presence in the user's observation, despite worse horizontal
+photo-error metrics. Panorama/depth-shell backgrounds are withdrawn because
+they misalign during translation and degrade exploration. The viewer renders
+GS only and ignores archived background references without fetching them.
+Original GS bytes, camera poses and historical comparisons are retained. This
+is a viewer change, with no new reconstruction/training.
+
 The explicitly user-reopened [tangent/background trial](TANGENT_BACKGROUND.md)
 is executed: 160 real 1024px crops in 20 directions, DAV2 Small MPS at actual
 1036px neural input, anchored/overlap-calibrated spherical initialization and
@@ -11,7 +19,7 @@ one 8k/800k Metal export in 1188.250s. In 300 actual matched GS-only renders,
 held MAE worsens 24.414→26.203 at 512 output and 24.345→25.981 at 1024;
 zero of six held directions improves. Retain `street-final-hires`, while
 preserving the new renderable trial and its failures. Optional panorama/depth
-backgrounds are presentation only. This bounded reopening is finished; it does
+backgrounds were presentation only and are now withdrawn. This bounded reopening is finished; it does
 not authorize another quality sweep on the same sources.
 
 [Final same-data quality campaign](FINAL_QUALITY.md) complete: one1024/800k/8k

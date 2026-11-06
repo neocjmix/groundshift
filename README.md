@@ -2,14 +2,18 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Latest experiment:** [20-direction tangent crops and background completion](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
+**Latest experiment:** [20-direction GS · background completion withdrawn](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
 · [New 3D trial](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20/world.json)
 · [Preserved best result](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-final-hires/world.json).
 Actual M2 reconstruction completed, but GS-only held-view error worsens by
 7.32% at 512 output and 6.72% at 1024. Some facade overlap looks reduced;
-road seams and thin/near-object ghosting remain. Keep the previous best.
-Optional photo-derived panorama and estimated-depth backgrounds are display
-completion, separate from GS quality. [Execution, commands and evidence](docs/TANGENT_BACKGROUND.md).
+road seams and thin/near-object ghosting remain. Keep the previous scene as
+the photo-error reference. The user reports a substantially better sense of
+being inside the wider-angle GS scene; the old horizontal-view metric does
+not measure that experience. On 2026-11-07 the user rejected panorama and
+depth-shell backdrops because translation misalignment harms exploration.
+The live viewer now renders GS only, with no backdrop controls or loading;
+historical comparisons remain available. [Execution, commands and evidence](docs/TANGENT_BACKGROUND.md).
 This was one explicitly reopened experiment; the same-data sweep remains closed.
 
 **Live demo:** [Final quality · 1024px result and comparison](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four new pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 35 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).

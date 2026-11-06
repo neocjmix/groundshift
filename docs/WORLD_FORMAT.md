@@ -105,7 +105,19 @@ Tests of interpolation and camera loading use explicitly synthetic fixtures. The
 
 The parser uses [Zod's strict object validation and refinements](https://zod.dev/api). Parser tests use synthetic metadata only and do not count as browser, GPU, reconstruction, or dataset-license validation.
 
-## Optional source-photo background v1
+## Retired source-photo background v1 (archival compatibility)
+
+**Withdrawn by the user on 2026-11-07.** Translation misalignment worsens the
+experience. Current live worlds omit `background`; the manifest schema still
+accepts a safe historical reference so old artifacts open as GS-only worlds.
+The current loader never fetches/reads background metadata, photos or meshes,
+creates no background object URLs, and the viewer provides no backdrop controls
+or render pass. Missing or malformed retired background files do not affect
+GS loading. Ordinary cancellation and camera-path behavior remain supported.
+
+The description below records the former experiment's artifact contract and
+behavior, retained for interpreting historical evidence and rollback archives;
+it does not describe an enabled current viewer feature.
 
 A world may declare `"background": { "path": "background/background.json" }`.
 Existing worlds and their bytes remain valid without it. Background completion

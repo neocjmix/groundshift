@@ -33,12 +33,14 @@ The [user-reopened tangent/background experiment](TANGENT_BACKGROUND.md) adds
 perspective crops, then inverse camera-Z is converted to radial range while
 calibrating against SfM and same-center overlap. This changes preprocessing
 inside the existing local job boundary, not the reconstruction service model.
-The optional v1 `background` reference carries photo-derived ERP display textures
-and coarse estimated-depth meshes. The viewer loads these lazily for explicit
-presentation modes, renders them behind GS and clears their depth buffer before
-the Gaussian pass. They provide neither collision nor geometry acceptance;
-GS-only rendering and comparisons remain separate. The native Gaussian export
-and original source assets are preserved. See [artifact schema](WORLD_FORMAT.md).
+The experimental v1 `background` reference carried photo-derived ERP display
+textures and coarse estimated-depth meshes. The user withdrew this treatment
+on 2026-11-07 because translation misalignment degraded exploration. The live
+viewer now contains only the GS render pass and no background controls. The
+loader accepts the archived reference but never fetches its metadata, image or
+mesh, including for local folders; it creates no background object URLs.
+Historical assets/comparisons and native Gaussian exports remain preserved.
+See [artifact compatibility](WORLD_FORMAT.md).
 
 `scripts/build-world.py` now chains `prepare-video.py` (optional), CPU estimation,
 a registration coverage gate and `reconstruct.py`. Each stage remains a local

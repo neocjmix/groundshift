@@ -1,5 +1,46 @@
 # Twenty tangent views and presentation backgrounds
 
+## Current viewer decision — 2026-11-07
+
+The user reports that the wider directional coverage gives a substantially
+better sense of being inside a world. This is a user-observed exploration
+improvement, separate from the old six-horizontal-view photo-error screen;
+neither establishes accurate geometry. The older `street-final-hires` remains
+the photo-error reference, while the new tangent GS remains an experience
+candidate with broader directional inputs.
+
+The user rejects **both panorama and depth-shell background completion**:
+horizontal translation makes the background disagree with GS and the experience
+is worse. The live viewer therefore removes the background selector, renderer
+and HTTP/local background loading. It ignores even archived `background`
+references, while still loading their GS and real camera path. The current
+public manifest omits that reference. Background math/format tests and the
+previous comparison images/archives remain historical evidence, not a live
+feature. No new depth inference, camera estimation or training is performed;
+the original tangent and reference PLY/camera hashes are preserved.
+
+Everything below describes the completed experiment before that product
+decision, including the now-rejected background treatment. New viewer checks
+and deployment evidence are recorded separately from its original training.
+
+Viewer-removal validation: TypeScript, lint, production build and all 180 JS
+tests PASS. The five previous optional-loading cases are replaced by three
+contracts proving no HTTP metadata request, no read of absent/malformed local
+background files and only one GS object URL. Eight targeted actual local headed
+Chrome cases PASS in 42.965s, with no skips/flaky/failing cases. They cover the
+unchanged real tangent scene, an archived-reference fixture using that same real
+scene/poses, substantial GS-only pixels, translation, upward/downward free look,
+no background controls or metadata/image/mesh requests, viewer recovery and
+camera-path regression. The previous full 79-case run remains historical;
+the complete current 80-case suite is NOT RUN.
+
+The initial build caught an obsolete background setter in the retry button;
+it was removed before the successful production retry and deployment. A stale
+package attempt after that failed build correctly stopped at the preservation
+guard without producing or uploading an overlay. Both failed logs are retained
+locally. No depth inference or native training ran for this removal; preserved
+PLY/camera hashes prove preservation, not execution of a new training run.
+
 **Executed result:** the new local Metal scene renders, but does not replace
 `street-final-hires`. Its held-view RGB error is 7.32% worse at 512 output and
 6.72% worse at 1024, with zero of six held directions improving at either

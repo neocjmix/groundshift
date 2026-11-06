@@ -59,9 +59,13 @@ for(const legacy of [false,true])test(`actual tangent GS explores without backgr
   await expect.poll(()=>canvas.getAttribute('data-path-progress').then(Number)).toBeGreaterThan(.1);
   await page.getByRole('button',{name:'Pause path',exact:true}).click();
   expect(await canvas.getAttribute('data-camera-position')).not.toBe(positionBefore);
+  const quaternionBefore=await canvas.getAttribute('data-camera-quaternion');
   await canvas.focus();for(let i=0;i<20;i++)await canvas.press('ArrowUp');
+  await expect.poll(()=>canvas.getAttribute('data-camera-quaternion')).not.toBe(quaternionBefore);
   await captureCanvas(page,canvas,info.outputPath('look-up.png'));
+  const quaternionUp=await canvas.getAttribute('data-camera-quaternion');
   for(let i=0;i<40;i++)await canvas.press('ArrowDown');
+  await expect.poll(()=>canvas.getAttribute('data-camera-quaternion')).not.toBe(quaternionUp);
   await captureCanvas(page,canvas,info.outputPath('look-down.png'));
   expect(backgroundRequests).toEqual([]);expect(errors).toEqual([]);
   await writeFile(info.outputPath('evidence.json'),JSON.stringify({browser:browser.version(),world:summary.run.world,gsOnlyColoredPixels:gsColored,backgroundRequests,legacyReferenceFixture:legacy,actualNativeScene:true,translation:true,freeLook:true,errors,geometryAccuracy:'NOT RUN'},null,2));
