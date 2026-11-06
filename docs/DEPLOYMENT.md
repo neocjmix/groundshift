@@ -60,6 +60,35 @@ in5.485057s. No in-progress chunk code, weights, original sourceHD or raw logs
 are published. Deployment/hash/browser checks run after dispatch; evidence stays
 local under`data/jobs/paris-streaming-20261107/publications/depth/`.
 
+Depth pointer`c728ea3` deploys as`bb2094e5-6331-4dd1-a597-a41aeb4bbc68`:
+created2026-11-06T17:06:44.915Z, **SUCCESS** at17:07:46.839Z. Anonymous full
+archive readback passes in0.919273s. The public summary matches all8,171bytes
+and SHA-256`06984a445dfa9ab191349076874588fafa8d9b414835a109559543646a108e83`.
+Native-render and lazy-serving evidence are still NOT RUN in this snapshot.
+
+The actual native result is released before chunk comparisons finish. Local M2
+Metal training completes8,000steps at768px with800,000Gaussians in1,018.286s.
+The original PLY remains local; a15,921,380-byte full-SPZ derivative and an actual
+first-view GS preview become the37th scene. The initial manifest has no streaming
+field. Actual local first-view rendering passes (588,327 colored pixels); detailed
+quality, chunk behavior and public rendering are still pending in this increment.
+
+Release `viewer-paris-native-2026-11-07`, archive
+`groundshift-paris-native-20261107.tar.gz`: **17,122,200 bytes**, SHA-256
+`c686769695fa40399332eaef5f2171fac7e7615296b70668da505ab6f63d793d`.
+Apply it after the seventeen preceding pinned layers. A fresh production rebuild
+passes in2.81s; privacy and explicit base/target/archive/composed integrity checks
+pass in4.452061s (1,128 selected public files,16changed files,1,168 composed).
+All prior36 scenes,55 timeline entries and17inert backgroundfiles remain retained.
+The first preflight catches the new publisher's noncanonical`spz-world` source
+path and creates no archive. Recovery preserves that original and copies an exact
+independent source snapshot under`publications/native/world`, respecting the
+existing`.../world` publication contract; the fresh retry passes. Native/source
+bytes and rendering are not fabricated by this metadata correction. RawHD,
+nativePLY, raw logs and model weights remain local. Public deployment/hash/browser
+checks run after dispatch; evidence is retained under
+`data/jobs/paris-streaming-20261107/publications/native/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)

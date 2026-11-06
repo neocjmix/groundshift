@@ -115,6 +115,13 @@ RUN wget -q -O /tmp/paris-depth.tar.gz https://github.com/neocjmix/groundshift/r
     && mkdir /out \
     && tar -xzf /tmp/paris-depth.tar.gz -C /out
 
+# First real Paris native result: ordinary full-SPZ world before chunk validation.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_native
+RUN wget -q -O /tmp/paris-native.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-native-2026-11-07/groundshift-paris-native-20261107.tar.gz \
+    && echo 'c686769695fa40399332eaef5f2171fac7e7615296b70668da505ab6f63d793d  /tmp/paris-native.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-native.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -131,5 +138,6 @@ COPY --from=tourist_source /out/www /srv
 COPY --from=tourist_acquired /out/www /srv
 COPY --from=paris_sfm /out/www /srv
 COPY --from=paris_depth /out/www /srv
+COPY --from=paris_native /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
