@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Tangent directions · running observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -14,6 +14,73 @@ parallel. Show provisional results and pending checks as NOT RUN; publish later
 validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
+
+## Tangent directions and explicit backgrounds — 2026-11-06
+
+[New observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
+· [Bounded protocol and actual evidence](TANGENT_BACKGROUND.md).
+The user explicitly reopens **one**20-direction/cropped-depth/background
+combination after the preceding final-quality campaign. That earlier export and
+all earlier evidence remain preserved. Reconstruction remains local; Railway
+serves the selected static display only. The first increments retain34scenes,
+17reports and51chronological entries, including the provisional new report.
+
+| Increment | Pointer | Railway | Created UTC → status UTC |
+|---|---|---|---|
+|Plan, explicit NOT RUN stages|`b33e697`|`f6879798-f8da-4fbf-911d-9f655710aa7c`|14:13:33.558 →SUCCESS14:19:03.691|
+|Actual20-direction crops while MPS depth runs|`e80df0f`|`99e39d04-45ed-4579-87eb-34c13829f53f`|14:20:49.173 →SUCCESS14:22:06.107|
+|Actual calibrated depth while Metal training runs|`4531243`|`290d191b-3a0a-4f58-9af1-77a10e68d57e`|14:25:08.882 →SUCCESS14:30:26.879|
+
+The input preparation takes31.212168s. Actual DAV2/MPS inference runs
+14:17:51.717–14:19:42.636UTC,110.918779s including setup and output;
+all160actual tensors are[1,3,1036,1036]. Calibration/fusion runs16.866375s.
+136/160directions are supported;24are rejected, and dense-depth validity is
+about306–311k of524,288directions per training panorama. Angular crop coverage
+and valid reconstructed depth are different facts. New GS export, visual
+comparison and actual optional-background rendering are still **NOT RUN** at
+this provisional stage. Published relative-depth images and spherical radial
+visualizations are explicitly distinguished from source photos and GS renders.
+
+The portable optional background is documented in[WORLD_FORMAT.md](WORLD_FORMAT.md#optional-source-photo-background-v1).
+**GS only** is the default; image/mesh backgrounds load only after selection.
+The panorama is a far-field source-photo fallback. The estimated depth shell
+is drawn as a backdrop, with depth cleared before Gaussians. Neither is a
+measured surface, a physical occluder, collision geometry or a source of GS
+render-acceptance pixels. Incorrect parallax and duplicate near objects remain
+possible and visibly labeled. Source selection excludes panorama5RGB, matching
+the training RGB exclusion; all-nine estimated SfM geometry is still reused.
+
+**PASS after dispatch:** plan13/13and input32/32changed public file hashes and
+sizes match their selected packages. Both release attachments are read back
+anonymously with identical full-byte SHA-256. Two headed public Chrome cases
+pass on the actual-input phase in14.345395s, checking visible stages, decoded
+licensed input/diagnostic images, errors, chronology and mobile layout. They
+contain no canvas; they do not establish GPU rendering. The depth phase
+subsequently passes17/17changed public hashes, full anonymous archive readback,
+and the same two static Chrome cases in16.221794s. TypeScript,lint and
+production builds pass;182JS tests pass, including33packaging cases. An initial
+two-test fixture-scoping failure and a rejected VitestCLI argument are retained
+locally with corrected successful runs. A new cancellation test also reproduces
+a local-background blob-URL cleanup gap; the rejection path now revokes those
+URLs and the182-case retry passes. Full browser, new GS and independent
+geometry acceptance stay separate from these checks.
+
+These early immutable overlays are applied after the preceding four-layer
+final-quality display, in this order when restoring this provisional phase:
+
+| Release / archive | Bytes | SHA-256 |
+|---|---:|---|
+|`viewer-tangent-plan-2026-11-06` / `groundshift-tangent-plan-20261106.tar.gz`|1,066,556|`841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe`|
+|`viewer-tangent-inputs-2026-11-06` / `groundshift-tangent-inputs-20261106.tar.gz`|7,384,830|`7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26`|
+|`viewer-tangent-depth-2026-11-06` / `groundshift-tangent-depth-20261106.tar.gz`|5,729,424|`1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823`|
+
+Every overlay is built from an explicit public package and physically assembled
+with its pinned base; all composed file hashes are verified. The successive
+actual compositions contain1,056/1,075/1,088files. Superseded compiled assets may
+remain inert; these are not claims of target-only absence. Immutable phase
+archives stay available for rollback even if a later complete export overlay
+supersedes their restoration layers. No source originals, private footage,
+raw execution logs, model weights or credentials enter the archives or Git.
 
 ## Final same-data quality release — 2026-11-06
 

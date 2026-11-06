@@ -112,7 +112,11 @@ export async function loadLocalWorld(files: File[], signal?: AbortSignal): Promi
     });
     const objectUrl = (f: File) => { const url = URL.createObjectURL(f); backgroundUrls.push(url); return url; };
     return { ...parsed, views: selected.map(v => ({ ...v.view, imageUrl: objectUrl(v.image), meshUrl: v.mesh ? objectUrl(v.mesh) : undefined })) };
+  }).catch(error => {
+    backgroundUrls.forEach(url => URL.revokeObjectURL(url));
+    throw error;
   });
+  if (!backgrounds.background) backgroundUrls.splice(0).forEach(url => URL.revokeObjectURL(url));
   if (signal?.aborted) { backgroundUrls.forEach(url => URL.revokeObjectURL(url)); signal.throwIfAborted(); }
   const assetUrl = URL.createObjectURL(asset);
   return {

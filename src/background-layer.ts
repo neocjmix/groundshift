@@ -20,7 +20,7 @@ export class BackgroundLayer {
   setMode(mode: BackgroundMode) {
     this.mode = mode;
     this.failed = -1;
-    if (mode !== 'gs' && this.current >= 0) this.status(`Source photo ${this.source} · ${mode === 'depth-shell' ? 'estimated depth shell + panorama fallback' : 'infinite panorama'} · presentation only`);
+    if (mode !== 'gs' && this.current >= 0) this.status(`Source photo ${this.source} · ${mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
     if (mode === 'gs') {
       this.generation++;
       this.request?.abort(); this.pending = -1;
@@ -63,6 +63,8 @@ export class BackgroundLayer {
       try { texture = await new THREE.TextureLoader().loadAsync(url); }
       finally { URL.revokeObjectURL(url); }
       request.signal.throwIfAborted();
+      const dimensions = texture.image as HTMLImageElement;
+      if (!dimensions.width || dimensions.width !== dimensions.height * 2) throw new Error('Background photo must be a complete2:1 ERP image');
       let shellGeometry: THREE.BufferGeometry | undefined;
       if (view.meshUrl) {
         const response = await fetch(view.meshUrl, { signal: request.signal });
@@ -102,7 +104,7 @@ export class BackgroundLayer {
         this.shell.visible = this.mode === 'depth-shell'; this.scene.add(this.shell);
       }
       this.current = index; this.source = view.id;
-      this.status(`Source photo ${view.id} · ${this.mode === 'depth-shell' ? 'estimated depth shell + panorama fallback' : 'infinite panorama'} · presentation only`);
+      this.status(`Source photo ${view.id} · ${this.mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
     } catch (error) {
       texture?.dispose();
       if (!request.signal.aborted && !this.disposed && generation === this.generation) {

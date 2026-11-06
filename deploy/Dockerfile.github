@@ -36,6 +36,11 @@ RUN wget -q -O /tmp/tangent-depth.tar.gz https://github.com/neocjmix/groundshift
     && echo '1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823  /tmp/tangent-depth.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/tangent-depth.tar.gz -C /out
 
+# Background resource cancellation fix; actual new-scene GPU checks remain NOT RUN.
+RUN wget -q -O /tmp/tangent-viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-viewer-2026-11-06/groundshift-tangent-viewer-20261106.tar.gz \
+    && echo '8a1098731040e84aecfa4e54476210447f75c780a02241d83f4fb1ff89190c49  /tmp/tangent-viewer.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/tangent-viewer.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=artifact /out/www /srv
