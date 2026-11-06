@@ -1,0 +1,2039 @@
+{
+  "schemaVersion": 1,
+  "baseCommit": "cebcadc58bff0cf8c7a8aab2fcc620102e081ae5",
+  "execution": "PASS",
+  "geometryAcceptance": "NOT RUN",
+  "publication": "NOT RUN: pending release verification",
+  "protocolSha256": "3f8f50e7e6e7673bee184b423da91a8193f6365e54f2788f80945bff5e28ddf4",
+  "perspectiveProtocolSha256": "df68227a73874a86765738fc24ddc4b210add9f0dbab471ee252c83a7ba64cca",
+  "sourceLicense": "Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA 4.0",
+  "primary": {
+    "elapsedSeconds": 1.9257975001819432,
+    "maxResidentSetBytes": 225443840,
+    "models": [
+      {
+        "model": "da2",
+        "originalFits": [
+          {
+            "convention": "ray-range",
+            "scale": 596.052443944351,
+            "offset": 0.0,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Median log-range ratio on training anchors only; scale-only"
+          },
+          {
+            "convention": "ray-range",
+            "scale": 526.1355031564486,
+            "offset": 0.0,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Median log-range ratio on training anchors only; scale-only"
+          }
+        ],
+        "commonFits": [
+          {
+            "convention": "ray-range",
+            "scale": 570.1056738793611,
+            "offset": 0.0,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Median log-range ratio on training anchors only; scale-only"
+          },
+          {
+            "convention": "ray-range",
+            "scale": 519.7784886062781,
+            "offset": 0.0,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Median log-range ratio on training anchors only; scale-only"
+          }
+        ],
+        "trainingTracks": 784,
+        "withheldTracks": 217,
+        "cloudPoints": [
+          24076,
+          24074
+        ],
+        "directions": [
+          {
+            "id": "4-to-5",
+            "methods": {
+              "sfmPoint": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.36213587360538513,
+                "p90Pixels": 1.1371477606932705,
+                "medianAngularDegrees": 0.0599730300114963
+              },
+              "sfmRay": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5251314772849909,
+                "p90Pixels": 1.7262638340489562,
+                "medianAngularDegrees": 0.08574725074729843
+              },
+              "original": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 1,
+                "medianPixels": 2.332912022147573,
+                "p90Pixels": 20.53691520620619,
+                "medianAngularDegrees": 0.35236948443077837
+              },
+              "common": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 1,
+                "medianPixels": 2.326566396975204,
+                "p90Pixels": 23.85853767783453,
+                "medianAngularDegrees": 0.34660459480964967
+              }
+            },
+            "paired": {
+              "pairedValidSamples": 217,
+              "excludedPairs": 0,
+              "improved": 118,
+              "medianDeltaPixels": -0.026011563757658673,
+              "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+            },
+            "parallax": [
+              {
+                "group": "parallax",
+                "label": "0-1 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3387538832153969,
+                    "p90Pixels": 0.8029034436619269,
+                    "medianAngularDegrees": 0.05277246237410446
+                  },
+                  "sfmRay": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.4170395958225705,
+                    "p90Pixels": 1.2322628892955159,
+                    "medianAngularDegrees": 0.06375341016903727
+                  },
+                  "original": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.8113495602376948,
+                    "p90Pixels": 3.2629436189652483,
+                    "medianAngularDegrees": 0.2819899436847484
+                  },
+                  "common": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.7303863022491526,
+                    "p90Pixels": 3.306123476877826,
+                    "medianAngularDegrees": 0.2715883843976687
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 94,
+                  "excludedPairs": 0,
+                  "improved": 80,
+                  "medianDeltaPixels": -0.06572283891750663,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "1-3 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3969484842946591,
+                    "p90Pixels": 1.245763569504303,
+                    "medianAngularDegrees": 0.07618091746060252
+                  },
+                  "sfmRay": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.539034708888025,
+                    "p90Pixels": 1.4228847396276851,
+                    "medianAngularDegrees": 0.09537149361521702
+                  },
+                  "original": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.9238564057350973,
+                    "p90Pixels": 4.5220472519543735,
+                    "medianAngularDegrees": 0.31472929016273204
+                  },
+                  "common": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.9637890937433897,
+                    "p90Pixels": 5.07391361086702,
+                    "medianAngularDegrees": 0.31788836736527476
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 63,
+                  "excludedPairs": 0,
+                  "improved": 34,
+                  "medianDeltaPixels": -0.1525844774539935,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "3-10 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3414405919419383,
+                    "p90Pixels": 1.4277316295342415,
+                    "medianAngularDegrees": 0.06722562502281662
+                  },
+                  "sfmRay": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.6371584433067903,
+                    "p90Pixels": 2.4265175305238165,
+                    "medianAngularDegrees": 0.10997782465284783
+                  },
+                  "original": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 8.056033615170687,
+                    "p90Pixels": 20.012332253031765,
+                    "medianAngularDegrees": 1.4494538583507204
+                  },
+                  "common": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 9.174477196380183,
+                    "p90Pixels": 22.482916473827807,
+                    "medianAngularDegrees": 1.7441625385147963
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 34,
+                  "excludedPairs": 0,
+                  "improved": 3,
+                  "medianDeltaPixels": 1.3171494277561664,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "10-180 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.4298234183254953,
+                    "p90Pixels": 1.1060672056693477,
+                    "medianAngularDegrees": 0.06942099216542408
+                  },
+                  "sfmRay": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.830589650222942,
+                    "p90Pixels": 2.1343477015846837,
+                    "medianAngularDegrees": 0.13894890020702516
+                  },
+                  "original": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 1,
+                    "medianPixels": 32.686473019515475,
+                    "p90Pixels": 53.33096971350598,
+                    "medianAngularDegrees": 5.7660595082779516
+                  },
+                  "common": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 1,
+                    "medianPixels": 37.80943300151347,
+                    "p90Pixels": 60.47098328782374,
+                    "medianAngularDegrees": 6.750476223370692
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 26,
+                  "excludedPairs": 0,
+                  "improved": 1,
+                  "medianDeltaPixels": 5.158592258824758,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              }
+            ]
+          },
+          {
+            "id": "5-to-4",
+            "methods": {
+              "sfmPoint": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.35166969094395695,
+                "p90Pixels": 1.0819553624445977,
+                "medianAngularDegrees": 0.058821228170107626
+              },
+              "sfmRay": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5059113397893484,
+                "p90Pixels": 1.7980267967774404,
+                "medianAngularDegrees": 0.08554145039648743
+              },
+              "original": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 2,
+                "medianPixels": 2.149875743992463,
+                "p90Pixels": 20.95410605796876,
+                "medianAngularDegrees": 0.33357274426373074
+              },
+              "common": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 2,
+                "medianPixels": 2.195835049771536,
+                "p90Pixels": 21.593675578650547,
+                "medianAngularDegrees": 0.32983307070555035
+              }
+            },
+            "paired": {
+              "pairedValidSamples": 217,
+              "excludedPairs": 0,
+              "improved": 117,
+              "medianDeltaPixels": -0.007095263388545603,
+              "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+            },
+            "parallax": [
+              {
+                "group": "parallax",
+                "label": "0-1 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3139358234999967,
+                    "p90Pixels": 1.0286897492573372,
+                    "medianAngularDegrees": 0.054522196978813386
+                  },
+                  "sfmRay": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3724354224032108,
+                    "p90Pixels": 1.2036548564802996,
+                    "medianAngularDegrees": 0.06317550096837225
+                  },
+                  "original": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.6990490686495194,
+                    "p90Pixels": 2.780877669236574,
+                    "medianAngularDegrees": 0.27153818031953225
+                  },
+                  "common": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.6811510687908076,
+                    "p90Pixels": 2.777448518072092,
+                    "medianAngularDegrees": 0.26851493975201024
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 94,
+                  "excludedPairs": 0,
+                  "improved": 80,
+                  "medianDeltaPixels": -0.0179420512797841,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "1-3 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3619335101598846,
+                    "p90Pixels": 0.9706208429322275,
+                    "medianAngularDegrees": 0.058821228170107626
+                  },
+                  "sfmRay": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.5059113397893484,
+                    "p90Pixels": 1.5596929402525193,
+                    "medianAngularDegrees": 0.0916479582745489
+                  },
+                  "original": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.5397736951226229,
+                    "p90Pixels": 4.102387815637776,
+                    "medianAngularDegrees": 0.2567262047378944
+                  },
+                  "common": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.504955646461828,
+                    "p90Pixels": 4.290006839782244,
+                    "medianAngularDegrees": 0.2601449467878996
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 63,
+                  "excludedPairs": 0,
+                  "improved": 32,
+                  "medianDeltaPixels": -0.008810911157976165,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "3-10 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.5536890679235437,
+                    "p90Pixels": 1.287842562789141,
+                    "medianAngularDegrees": 0.10170786353356924
+                  },
+                  "sfmRay": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.6649511554364318,
+                    "p90Pixels": 2.5301208197792793,
+                    "medianAngularDegrees": 0.1255793232076091
+                  },
+                  "original": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 8.874039159727147,
+                    "p90Pixels": 21.285775665993615,
+                    "medianAngularDegrees": 1.5749554733442417
+                  },
+                  "common": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 9.397133569656024,
+                    "p90Pixels": 21.74936275055925,
+                    "medianAngularDegrees": 1.672514184606366
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 34,
+                  "excludedPairs": 0,
+                  "improved": 4,
+                  "medianDeltaPixels": 0.4203289133968511,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "10-180 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3968449233019469,
+                    "p90Pixels": 1.19680487389105,
+                    "medianAngularDegrees": 0.07102081135754051
+                  },
+                  "sfmRay": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.868808843550775,
+                    "p90Pixels": 2.4690024200840734,
+                    "medianAngularDegrees": 0.136213439186879
+                  },
+                  "original": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 2,
+                    "medianPixels": 26.255199665760312,
+                    "p90Pixels": 41.57529410874636,
+                    "medianAngularDegrees": 4.402046248695866
+                  },
+                  "common": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 2,
+                    "medianPixels": 27.660551052347287,
+                    "p90Pixels": 44.484184683713956,
+                    "medianAngularDegrees": 4.667206660907125
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 26,
+                  "excludedPairs": 0,
+                  "improved": 1,
+                  "medianDeltaPixels": 1.4053513865869753,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              }
+            ]
+          }
+        ],
+        "dense": [
+          {
+            "id": "4-to-5",
+            "summary": {
+              "selectedSourceSamples": 217672,
+              "candidateSamples": 201103,
+              "unsupportedTargetSamples": 16569,
+              "candidateFraction": 0.9238808850012863,
+              "signedRangeResidual": {
+                "samples": 201103,
+                "mean": -0.03840944455340593,
+                "median": -0.1884891570452849,
+                "p10": -0.6211900523927835,
+                "p90": -0.05735721939558725
+              },
+              "absoluteRangeResidual": {
+                "samples": 201103,
+                "mean": 0.7668541826083408,
+                "median": 0.2043265791518607,
+                "p10": 0.1054857407739033,
+                "p90": 0.8637017780798268
+              },
+              "signedRelativeResidual": {
+                "samples": 201103,
+                "mean": -0.04569100494099581,
+                "median": -0.05917644739980787,
+                "p10": -0.11112743252246489,
+                "p90": -0.010886803286957033
+              },
+              "absoluteRelativeResidual": {
+                "samples": 201103,
+                "mean": 0.09212622209614821,
+                "median": 0.06393284738484495,
+                "p10": 0.031440872737266395,
+                "p90": 0.13801349785708342
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 201103,
+                "mean": 25.409518309391178,
+                "median": 13.69903150702609,
+                "p10": 2.5622419556984597,
+                "p90": 66.11463903410502
+              },
+              "nearestSourceInTargetPixel": {
+                "samples": 128689,
+                "absoluteRelativeResidual": {
+                  "samples": 128689,
+                  "mean": 0.0982561084379234,
+                  "median": 0.07348702513297194,
+                  "p10": 0.032495718905290225,
+                  "p90": 0.1533752823730846
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 128689,
+                  "mean": 26.371887397684468,
+                  "median": 14.029217256936278,
+                  "p10": 2.614665919801062,
+                  "p90": 69.38447147247626
+                }
+              },
+              "residualMeaning": "Projected source radial range minus sampled target radial range; positive is behind target prediction, not proven occlusion",
+              "rgbMeaning": "Observed source RGB versus bilinearly sampled observed target RGB; photos also participated in estimation, not independent appearance truth",
+              "classificationStatus": "NOT RUN"
+            }
+          },
+          {
+            "id": "5-to-4",
+            "summary": {
+              "selectedSourceSamples": 217601,
+              "candidateSamples": 200920,
+              "unsupportedTargetSamples": 16681,
+              "candidateFraction": 0.9233413449386721,
+              "signedRangeResidual": {
+                "samples": 200920,
+                "mean": 0.08183132394803715,
+                "median": 0.258861149465218,
+                "p10": 0.06106614916748807,
+                "p90": 0.5790754381450266
+              },
+              "absoluteRangeResidual": {
+                "samples": 200920,
+                "mean": 0.8193266227193805,
+                "median": 0.27847053793299437,
+                "p10": 0.12118249933956476,
+                "p90": 0.7506255398351706
+              },
+              "signedRelativeResidual": {
+                "samples": 200920,
+                "mean": 0.07635648492546618,
+                "median": 0.08195515862728725,
+                "p10": 0.0140945484869558,
+                "p90": 0.12249713094290661
+              },
+              "absoluteRelativeResidual": {
+                "samples": 200920,
+                "mean": 0.10124641543295125,
+                "median": 0.08465325155853559,
+                "p10": 0.03743658422475992,
+                "p90": 0.14479699231281545
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 200920,
+                "mean": 22.702294269579106,
+                "median": 12.426813643601108,
+                "p10": 2.372457204504851,
+                "p90": 57.39404821334698
+              },
+              "nearestSourceInTargetPixel": {
+                "samples": 132829,
+                "absoluteRelativeResidual": {
+                  "samples": 132829,
+                  "mean": 0.09704362325584227,
+                  "median": 0.07883962684532374,
+                  "p10": 0.0346528853850604,
+                  "p90": 0.14786059817081085
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 132829,
+                  "mean": 24.341691624390688,
+                  "median": 13.21271998690211,
+                  "p10": 2.495131632870621,
+                  "p90": 62.703619371088706
+                }
+              },
+              "residualMeaning": "Projected source radial range minus sampled target radial range; positive is behind target prediction, not proven occlusion",
+              "rgbMeaning": "Observed source RGB versus bilinearly sampled observed target RGB; photos also participated in estimation, not independent appearance truth",
+              "classificationStatus": "NOT RUN"
+            }
+          }
+        ]
+      },
+      {
+        "model": "dav2",
+        "originalFits": [
+          {
+            "convention": "inverse-ray-range",
+            "scale": 0.07920953570763818,
+            "offset": 0.0025023309456306203,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Huber IRLS affine inverse-range fit on training anchors only"
+          },
+          {
+            "convention": "inverse-ray-range",
+            "scale": 0.06979650615424454,
+            "offset": 0.0034205460436870986,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Huber IRLS affine inverse-range fit on training anchors only"
+          }
+        ],
+        "commonFits": [
+          {
+            "convention": "inverse-ray-range",
+            "scale": 0.07931054841152212,
+            "offset": 0.002126598171644168,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Huber IRLS affine inverse-range fit on training anchors only"
+          },
+          {
+            "convention": "inverse-ray-range",
+            "scale": 0.07037752149554906,
+            "offset": 0.0026971148683383283,
+            "units": "sfm-arbitrary",
+            "source": "Existing fixed-rig SfM observed point anchors; all-image geometry, not independent truth",
+            "method": "Huber IRLS affine inverse-range fit on training anchors only"
+          }
+        ],
+        "trainingTracks": 784,
+        "withheldTracks": 217,
+        "cloudPoints": [
+          24388,
+          24388
+        ],
+        "directions": [
+          {
+            "id": "4-to-5",
+            "methods": {
+              "sfmPoint": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.36213587360538513,
+                "p90Pixels": 1.1371477606932705,
+                "medianAngularDegrees": 0.0599730300114963
+              },
+              "sfmRay": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5251314772849909,
+                "p90Pixels": 1.7262638340489562,
+                "medianAngularDegrees": 0.08574725074729843
+              },
+              "original": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 1,
+                "medianPixels": 1.5212099846505227,
+                "p90Pixels": 8.29803024110245,
+                "medianAngularDegrees": 0.25440426198118166
+              },
+              "common": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 1,
+                "medianPixels": 1.4812457596327715,
+                "p90Pixels": 8.22456563221119,
+                "medianAngularDegrees": 0.25902179183627594
+              }
+            },
+            "paired": {
+              "pairedValidSamples": 217,
+              "excludedPairs": 0,
+              "improved": 92,
+              "medianDeltaPixels": 0.01343895787675542,
+              "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+            },
+            "parallax": [
+              {
+                "group": "parallax",
+                "label": "0-1 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3387538832153969,
+                    "p90Pixels": 0.8029034436619269,
+                    "medianAngularDegrees": 0.05277246237410446
+                  },
+                  "sfmRay": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.4170395958225705,
+                    "p90Pixels": 1.2322628892955159,
+                    "medianAngularDegrees": 0.06375341016903727
+                  },
+                  "original": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.1067830959567477,
+                    "p90Pixels": 2.9290775235498594,
+                    "medianAngularDegrees": 0.16398394688893442
+                  },
+                  "common": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.2154999154108068,
+                    "p90Pixels": 2.8741307031942003,
+                    "medianAngularDegrees": 0.16973666365611972
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 94,
+                  "excludedPairs": 0,
+                  "improved": 30,
+                  "medianDeltaPixels": 0.025196583505340236,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "1-3 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3969484842946591,
+                    "p90Pixels": 1.245763569504303,
+                    "medianAngularDegrees": 0.07618091746060252
+                  },
+                  "sfmRay": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.539034708888025,
+                    "p90Pixels": 1.4228847396276851,
+                    "medianAngularDegrees": 0.09537149361521702
+                  },
+                  "original": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 1,
+                    "medianPixels": 1.5487286149004766,
+                    "p90Pixels": 6.332855174607855,
+                    "medianAngularDegrees": 0.2826212873281682
+                  },
+                  "common": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 1,
+                    "medianPixels": 1.5178264543092295,
+                    "p90Pixels": 6.199973527179992,
+                    "medianAngularDegrees": 0.2881236760899194
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 63,
+                  "excludedPairs": 0,
+                  "improved": 50,
+                  "medianDeltaPixels": -0.04724573747197125,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "3-10 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3414405919419383,
+                    "p90Pixels": 1.4277316295342415,
+                    "medianAngularDegrees": 0.06722562502281662
+                  },
+                  "sfmRay": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.6371584433067903,
+                    "p90Pixels": 2.4265175305238165,
+                    "medianAngularDegrees": 0.10997782465284783
+                  },
+                  "original": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 3.078112924465416,
+                    "p90Pixels": 13.767862656800963,
+                    "medianAngularDegrees": 0.50824471626248
+                  },
+                  "common": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 3.180817766406001,
+                    "p90Pixels": 13.650045609340376,
+                    "medianAngularDegrees": 0.5209076123171426
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 34,
+                  "excludedPairs": 0,
+                  "improved": 8,
+                  "medianDeltaPixels": 0.024333028050020022,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "10-180 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.4298234183254953,
+                    "p90Pixels": 1.1060672056693477,
+                    "medianAngularDegrees": 0.06942099216542408
+                  },
+                  "sfmRay": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.830589650222942,
+                    "p90Pixels": 2.1343477015846837,
+                    "medianAngularDegrees": 0.13894890020702516
+                  },
+                  "original": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 6.8779484200046275,
+                    "p90Pixels": 16.895930302254463,
+                    "medianAngularDegrees": 1.129195847907844
+                  },
+                  "common": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 6.935300853364559,
+                    "p90Pixels": 16.92760386501486,
+                    "medianAngularDegrees": 1.1339583405153153
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 26,
+                  "excludedPairs": 0,
+                  "improved": 4,
+                  "medianDeltaPixels": 0.031112965733867903,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              }
+            ]
+          },
+          {
+            "id": "5-to-4",
+            "methods": {
+              "sfmPoint": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.35166969094395695,
+                "p90Pixels": 1.0819553624445977,
+                "medianAngularDegrees": 0.058821228170107626
+              },
+              "sfmRay": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5059113397893484,
+                "p90Pixels": 1.7980267967774404,
+                "medianAngularDegrees": 0.08554145039648743
+              },
+              "original": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.2554611421851334,
+                "p90Pixels": 7.9059141490119735,
+                "medianAngularDegrees": 0.22423177928291887
+              },
+              "common": {
+                "samples": 217,
+                "validSamples": 217,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.3999480095266024,
+                "p90Pixels": 7.859651506014117,
+                "medianAngularDegrees": 0.2445537756782805
+              }
+            },
+            "paired": {
+              "pairedValidSamples": 217,
+              "excludedPairs": 0,
+              "improved": 122,
+              "medianDeltaPixels": -0.007053111179933777,
+              "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+            },
+            "parallax": [
+              {
+                "group": "parallax",
+                "label": "0-1 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3139358234999967,
+                    "p90Pixels": 1.0286897492573372,
+                    "medianAngularDegrees": 0.054522196978813386
+                  },
+                  "sfmRay": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3724354224032108,
+                    "p90Pixels": 1.2036548564802996,
+                    "medianAngularDegrees": 0.06317550096837225
+                  },
+                  "original": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.8414782960506202,
+                    "p90Pixels": 1.9919774785718762,
+                    "medianAngularDegrees": 0.12514622018744584
+                  },
+                  "common": {
+                    "samples": 94,
+                    "validSamples": 94,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.9620913235989581,
+                    "p90Pixels": 2.191304404824374,
+                    "medianAngularDegrees": 0.14046525301265445
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 94,
+                  "excludedPairs": 0,
+                  "improved": 33,
+                  "medianDeltaPixels": 0.029235088415326405,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "1-3 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3619335101598846,
+                    "p90Pixels": 0.9706208429322275,
+                    "medianAngularDegrees": 0.058821228170107626
+                  },
+                  "sfmRay": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.5059113397893484,
+                    "p90Pixels": 1.5596929402525193,
+                    "medianAngularDegrees": 0.0916479582745489
+                  },
+                  "original": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.3994505732654063,
+                    "p90Pixels": 5.603273679720941,
+                    "medianAngularDegrees": 0.26178581036985465
+                  },
+                  "common": {
+                    "samples": 63,
+                    "validSamples": 63,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 1.3907114177134319,
+                    "p90Pixels": 5.476824027728208,
+                    "medianAngularDegrees": 0.2602705036439064
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 63,
+                  "excludedPairs": 0,
+                  "improved": 46,
+                  "medianDeltaPixels": -0.02210422343360663,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "3-10 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.5536890679235437,
+                    "p90Pixels": 1.287842562789141,
+                    "medianAngularDegrees": 0.10170786353356924
+                  },
+                  "sfmRay": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.6649511554364318,
+                    "p90Pixels": 2.5301208197792793,
+                    "medianAngularDegrees": 0.1255793232076091
+                  },
+                  "original": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 3.6274619987470524,
+                    "p90Pixels": 13.80238626569318,
+                    "medianAngularDegrees": 0.6114284475140561
+                  },
+                  "common": {
+                    "samples": 34,
+                    "validSamples": 34,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 3.6462040116768364,
+                    "p90Pixels": 13.69225710458502,
+                    "medianAngularDegrees": 0.6158115270912168
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 34,
+                  "excludedPairs": 0,
+                  "improved": 22,
+                  "medianDeltaPixels": -0.02320942462145248,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              },
+              {
+                "group": "parallax",
+                "label": "10-180 degrees",
+                "methods": {
+                  "sfmPoint": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.3968449233019469,
+                    "p90Pixels": 1.19680487389105,
+                    "medianAngularDegrees": 0.07102081135754051
+                  },
+                  "sfmRay": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 0.868808843550775,
+                    "p90Pixels": 2.4690024200840734,
+                    "medianAngularDegrees": 0.136213439186879
+                  },
+                  "original": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 6.947847809502912,
+                    "p90Pixels": 14.310006579390864,
+                    "medianAngularDegrees": 1.0109774492406722
+                  },
+                  "common": {
+                    "samples": 26,
+                    "validSamples": 26,
+                    "invalidSamples": 0,
+                    "outOfImageSamples": 0,
+                    "medianPixels": 6.75593801601102,
+                    "p90Pixels": 13.853192593944424,
+                    "medianAngularDegrees": 0.9491001569684419
+                  }
+                },
+                "paired": {
+                  "pairedValidSamples": 26,
+                  "excludedPairs": 0,
+                  "improved": 21,
+                  "medianDeltaPixels": -0.3550117905443397,
+                  "meaning": "Common minus original error on the same valid points; not independent geometry truth"
+                }
+              }
+            ]
+          }
+        ],
+        "dense": [
+          {
+            "id": "4-to-5",
+            "summary": {
+              "selectedSourceSamples": 220584,
+              "candidateSamples": 205129,
+              "unsupportedTargetSamples": 15455,
+              "candidateFraction": 0.9299359881043049,
+              "signedRangeResidual": {
+                "samples": 205129,
+                "mean": -0.22189380577999557,
+                "median": -0.07177114882698543,
+                "p10": -0.623509749729757,
+                "p90": 0.35081491596749764
+              },
+              "absoluteRangeResidual": {
+                "samples": 205129,
+                "mean": 0.6285305241610806,
+                "median": 0.1679000675961535,
+                "p10": 0.03268683235312118,
+                "p90": 0.8873578848800312
+              },
+              "signedRelativeResidual": {
+                "samples": 205129,
+                "mean": -0.009053054575744103,
+                "median": -0.014818837489249654,
+                "p10": -0.08732733835252891,
+                "p90": 0.06463991301297252
+              },
+              "absoluteRelativeResidual": {
+                "samples": 205129,
+                "mean": 0.059545489624127444,
+                "median": 0.0397380201340339,
+                "p10": 0.006354037863035624,
+                "p90": 0.10589431586779945
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 205129,
+                "mean": 18.591557875288647,
+                "median": 8.784621211689275,
+                "p10": 1.649135664298631,
+                "p90": 46.20403971090508
+              },
+              "nearestSourceInTargetPixel": {
+                "samples": 146923,
+                "absoluteRelativeResidual": {
+                  "samples": 146923,
+                  "mean": 0.05587159465511254,
+                  "median": 0.03660142342508408,
+                  "p10": 0.005531838712207563,
+                  "p90": 0.10431707667291727
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 146923,
+                  "mean": 18.798709611444053,
+                  "median": 8.585423455498878,
+                  "p10": 1.610915166597015,
+                  "p90": 47.90840615859935
+                }
+              },
+              "residualMeaning": "Projected source radial range minus sampled target radial range; positive is behind target prediction, not proven occlusion",
+              "rgbMeaning": "Observed source RGB versus bilinearly sampled observed target RGB; photos also participated in estimation, not independent appearance truth",
+              "classificationStatus": "NOT RUN"
+            }
+          },
+          {
+            "id": "5-to-4",
+            "summary": {
+              "selectedSourceSamples": 220584,
+              "candidateSamples": 205171,
+              "unsupportedTargetSamples": 15413,
+              "candidateFraction": 0.9301263917600551,
+              "signedRangeResidual": {
+                "samples": 205171,
+                "mean": 0.2905699932406127,
+                "median": -0.009426639247143154,
+                "p10": -0.28578702908416265,
+                "p90": 0.66391069675438
+              },
+              "absoluteRangeResidual": {
+                "samples": 205171,
+                "mean": 0.6205988375263889,
+                "median": 0.15487858140727262,
+                "p10": 0.02883710208143242,
+                "p90": 0.8317304910145147
+              },
+              "signedRelativeResidual": {
+                "samples": 205171,
+                "mean": 0.018201533438657016,
+                "median": -0.0016880061915448255,
+                "p10": -0.06803003994431622,
+                "p90": 0.08835155173526228
+              },
+              "absoluteRelativeResidual": {
+                "samples": 205171,
+                "mean": 0.06330194096188671,
+                "median": 0.03694924894869739,
+                "p10": 0.005424041932876381,
+                "p90": 0.10384900899277012
+              },
+              "rgbMeanAbsoluteError255": {
+                "samples": 205171,
+                "mean": 17.875362275761248,
+                "median": 8.43414852394728,
+                "p10": 1.6464477585073496,
+                "p90": 44.057528276126014
+              },
+              "nearestSourceInTargetPixel": {
+                "samples": 148212,
+                "absoluteRelativeResidual": {
+                  "samples": 148212,
+                  "mean": 0.06203799212359361,
+                  "median": 0.036938820768701405,
+                  "p10": 0.0055540542654480655,
+                  "p90": 0.110638597972053
+                },
+                "rgbMeanAbsoluteError255": {
+                  "samples": 148212,
+                  "mean": 18.694893370986215,
+                  "median": 8.592098984564618,
+                  "p10": 1.6713338850617996,
+                  "p90": 47.281399882741894
+                }
+              },
+              "residualMeaning": "Projected source radial range minus sampled target radial range; positive is behind target prediction, not proven occlusion",
+              "rgbMeaning": "Observed source RGB versus bilinearly sampled observed target RGB; photos also participated in estimation, not independent appearance truth",
+              "classificationStatus": "NOT RUN"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "perspective": {
+    "status": "PASS",
+    "elapsedSeconds": 0.6923786669503897,
+    "maxResidentSetBytes": 127713280,
+    "conventions": {
+      "erpLocal": "Affine inverse radial ray range, matched SfM radial targets",
+      "perspectiveLocal": "Affine inverse pinhole camera-Z, matched SfM camera-Z targets; convert Z to radial using actual observed ray_z before world projection"
+    },
+    "confounders": "Global vs local fits change parameter count; ERP-local and perspective-local use same calibration IDs and parameter count but different input projection and appropriate depth convention. No claim of a pure single-variable projection ablation.",
+    "scope": "Feature reprojection control only. Dense multi-crop spherical fusion, seam/overlap calibration, new GS are NOT RUN.",
+    "uniqueTrainingIdsByPanorama": {
+      "4": 784,
+      "5": 784
+    },
+    "cropTrainingCounts": {
+      "pano_000004_view_01.png": 47,
+      "pano_000004_view_02.png": 169,
+      "pano_000004_view_03.png": 172,
+      "pano_000004_view_04.png": 62,
+      "pano_000004_view_05.png": 249,
+      "pano_000004_view_06.png": 271,
+      "pano_000005_view_01.png": 49,
+      "pano_000005_view_02.png": 162,
+      "pano_000005_view_03.png": 192,
+      "pano_000005_view_04.png": 55,
+      "pano_000005_view_05.png": 259,
+      "pano_000005_view_06.png": 260
+    },
+    "inference": {
+      "device": "mps",
+      "model": "depth-anything/Depth-Anything-V2-Small-hf",
+      "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+      "modelLoadSeconds": 0.35807408299297094,
+      "elapsedSeconds": 2.722507500089705,
+      "inferenceSeconds": [
+        0.8998149170074612,
+        0.11281866696663201,
+        0.08842929196543992,
+        0.0987069581169635,
+        0.10138637502677739,
+        0.08739775000140071,
+        0.08805424999445677,
+        0.08908995892852545,
+        0.0877851671539247,
+        0.08989991596899927,
+        0.08866091584786773,
+        0.08720166608691216
+      ],
+      "relativeNpySha256": [
+        "cbf734583e518dc90b6a82631b689bc4bd1255450824fd9e6ae838a10c3bbb52",
+        "0e1a7428dfee7ed06cc0a8a79525e77fa384ee0bd142bdf311668233d8f276b4",
+        "a95f70ee538aa9c2ff2bed2bb0531eca49b7e13a5bc1033baf479a856850e988",
+        "9498c6cdabc8615dde3cc1768745039a1d83c79c8e8f8e2986b5ace72f78137c",
+        "4f6a8fdb601c1c7257b0bd02bef1339a56b954d19edccf17b23c140021806fe5",
+        "4b8f2f41d1fe5c251666f4e385308369afcc3b3dfa96b62c69a529e63d8f985d",
+        "b863095dd86ebafd38d843bccdf36e4a9cf92ddf2051c59e8320afe2516e0b1f",
+        "37fea098f414489a37f78a50ebaa0c7b8704dbe6cbe220a047ee3d03e05bae42",
+        "549b1881e3534ee2ac0b405fb0efdf69e39399214b542b5ff5e4918812acbc8e",
+        "6520fc2695d76d7134436b04d2676bf6c5f917ce3349c5c4aac5040ca434ea13",
+        "63d9537ae8e22aeacfea551e5a9c4bddb53a1324e563b8f7707cd1c46c163e58",
+        "ea8c1281152ef9f0812b1dc171ee5096bb9da0a4028fcbaeead1ada79e29860b"
+      ]
+    },
+    "inferenceReportSha256": "2494b3772b9ee59f5f62b8dee83bff5509f0dceae0203e5b5ec82f07c758e990",
+    "featureSamplesSha256": "566124e37499a25ee0fc6c7b0f8a812f7f9287fd1a288b724ffb7b556069174b",
+    "cropCalibrationsSha256": "eb41bbfb318dbad6b4700b3554d5872352eb9bd9dc30f41d69a402b215c55f23",
+    "directions": [
+      {
+        "id": "4-to-5",
+        "methods": {
+          "sfmRay": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.5251314772849909,
+            "p90Pixels": 1.7262638340489562,
+            "medianAngularDegrees": 0.08574725074729843
+          },
+          "sfmPoint": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.36213587360538513,
+            "p90Pixels": 1.1371477606932705,
+            "medianAngularDegrees": 0.0599730300114963
+          },
+          "erpGlobal": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 1,
+            "medianPixels": 1.4812457596327715,
+            "p90Pixels": 8.22456563221119,
+            "medianAngularDegrees": 0.25902179183627594
+          },
+          "erpLocal": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.7637433521516885,
+            "p90Pixels": 7.206273450887012,
+            "medianAngularDegrees": 0.27279635614305336
+          },
+          "perspective": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.9222946950994523,
+            "p90Pixels": 4.52661331907814,
+            "medianAngularDegrees": 0.16041104855655866
+          }
+        },
+        "pairedVersusGlobal": {
+          "pairedValidSamples": 217,
+          "excludedPairs": 0,
+          "improved": 141,
+          "medianDeltaPixels": -0.39360134740596386,
+          "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+        },
+        "parallax": [
+          {
+            "group": "parallax",
+            "label": "0-1 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.4170395958225705,
+                "p90Pixels": 1.2322628892955159,
+                "medianAngularDegrees": 0.06375341016903727
+              },
+              "sfmPoint": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3387538832153969,
+                "p90Pixels": 0.8029034436619269,
+                "medianAngularDegrees": 0.05277246237410446
+              },
+              "erpGlobal": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.2154999154108068,
+                "p90Pixels": 2.8741307031942003,
+                "medianAngularDegrees": 0.16973666365611972
+              },
+              "erpLocal": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.2980592390409276,
+                "p90Pixels": 2.7154067079302058,
+                "medianAngularDegrees": 0.2014593985224557
+              },
+              "perspective": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.6032299661144396,
+                "p90Pixels": 1.799583460343876,
+                "medianAngularDegrees": 0.10229553541567833
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 94,
+              "excludedPairs": 0,
+              "improved": 59,
+              "medianDeltaPixels": -0.3118704333990573,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "1-3 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.539034708888025,
+                "p90Pixels": 1.4228847396276851,
+                "medianAngularDegrees": 0.09537149361521702
+              },
+              "sfmPoint": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3969484842946591,
+                "p90Pixels": 1.245763569504303,
+                "medianAngularDegrees": 0.07618091746060252
+              },
+              "erpGlobal": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 1,
+                "medianPixels": 1.5178264543092295,
+                "p90Pixels": 6.199973527179992,
+                "medianAngularDegrees": 0.2881236760899194
+              },
+              "erpLocal": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.6297618305770827,
+                "p90Pixels": 5.238158499705757,
+                "medianAngularDegrees": 0.3181453929414622
+              },
+              "perspective": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.203104875396914,
+                "p90Pixels": 3.6773147522880643,
+                "medianAngularDegrees": 0.20653319816497653
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 63,
+              "excludedPairs": 0,
+              "improved": 43,
+              "medianDeltaPixels": -0.39360134740596386,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "3-10 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.6371584433067903,
+                "p90Pixels": 2.4265175305238165,
+                "medianAngularDegrees": 0.10997782465284783
+              },
+              "sfmPoint": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3414405919419383,
+                "p90Pixels": 1.4277316295342415,
+                "medianAngularDegrees": 0.06722562502281662
+              },
+              "erpGlobal": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 3.180817766406001,
+                "p90Pixels": 13.650045609340376,
+                "medianAngularDegrees": 0.5209076123171426
+              },
+              "erpLocal": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 2.4054489083339217,
+                "p90Pixels": 10.721440909139242,
+                "medianAngularDegrees": 0.4190185958308703
+              },
+              "perspective": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.8142215805366937,
+                "p90Pixels": 10.577875968829899,
+                "medianAngularDegrees": 0.30964611527793806
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 34,
+              "excludedPairs": 0,
+              "improved": 23,
+              "medianDeltaPixels": -0.3340452543483414,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "10-180 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.830589650222942,
+                "p90Pixels": 2.1343477015846837,
+                "medianAngularDegrees": 0.13894890020702516
+              },
+              "sfmPoint": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.4298234183254953,
+                "p90Pixels": 1.1060672056693477,
+                "medianAngularDegrees": 0.06942099216542408
+              },
+              "erpGlobal": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 6.935300853364559,
+                "p90Pixels": 16.92760386501486,
+                "medianAngularDegrees": 1.1339583405153153
+              },
+              "erpLocal": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 6.086905892038359,
+                "p90Pixels": 16.828012509886182,
+                "medianAngularDegrees": 0.946445467103316
+              },
+              "perspective": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 2.563547264625495,
+                "p90Pixels": 16.098304735715427,
+                "medianAngularDegrees": 0.46830986681948894
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 26,
+              "excludedPairs": 0,
+              "improved": 16,
+              "medianDeltaPixels": -4.453782684404347,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5-to-4",
+        "methods": {
+          "sfmRay": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.5059113397893484,
+            "p90Pixels": 1.7980267967774404,
+            "medianAngularDegrees": 0.08554145039648743
+          },
+          "sfmPoint": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 0.35166969094395695,
+            "p90Pixels": 1.0819553624445977,
+            "medianAngularDegrees": 0.058821228170107626
+          },
+          "erpGlobal": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.3999480095266024,
+            "p90Pixels": 7.859651506014117,
+            "medianAngularDegrees": 0.2445537756782805
+          },
+          "erpLocal": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.3065430117974959,
+            "p90Pixels": 6.584356411369191,
+            "medianAngularDegrees": 0.21574073384764794
+          },
+          "perspective": {
+            "samples": 217,
+            "validSamples": 217,
+            "invalidSamples": 0,
+            "outOfImageSamples": 0,
+            "medianPixels": 1.011072064274999,
+            "p90Pixels": 4.020233993319395,
+            "medianAngularDegrees": 0.16585507064781244
+          }
+        },
+        "pairedVersusGlobal": {
+          "pairedValidSamples": 217,
+          "excludedPairs": 0,
+          "improved": 134,
+          "medianDeltaPixels": -0.24744356557324831,
+          "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+        },
+        "parallax": [
+          {
+            "group": "parallax",
+            "label": "0-1 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3724354224032108,
+                "p90Pixels": 1.2036548564802996,
+                "medianAngularDegrees": 0.06317550096837225
+              },
+              "sfmPoint": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3139358234999967,
+                "p90Pixels": 1.0286897492573372,
+                "medianAngularDegrees": 0.054522196978813386
+              },
+              "erpGlobal": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.9620913235989581,
+                "p90Pixels": 2.191304404824374,
+                "medianAngularDegrees": 0.14046525301265445
+              },
+              "erpLocal": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.9761617725824232,
+                "p90Pixels": 2.0843910781536104,
+                "medianAngularDegrees": 0.16570451640891415
+              },
+              "perspective": {
+                "samples": 94,
+                "validSamples": 94,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.738598019363352,
+                "p90Pixels": 1.714192532766706,
+                "medianAngularDegrees": 0.12498225817279765
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 94,
+              "excludedPairs": 0,
+              "improved": 55,
+              "medianDeltaPixels": -0.07432388819105396,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "1-3 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5059113397893484,
+                "p90Pixels": 1.5596929402525193,
+                "medianAngularDegrees": 0.0916479582745489
+              },
+              "sfmPoint": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3619335101598846,
+                "p90Pixels": 0.9706208429322275,
+                "medianAngularDegrees": 0.058821228170107626
+              },
+              "erpGlobal": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.3907114177134319,
+                "p90Pixels": 5.476824027728208,
+                "medianAngularDegrees": 0.2602705036439064
+              },
+              "erpLocal": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.2703866993223847,
+                "p90Pixels": 5.120342293589578,
+                "medianAngularDegrees": 0.2309740706905841
+              },
+              "perspective": {
+                "samples": 63,
+                "validSamples": 63,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.3770867630097718,
+                "p90Pixels": 3.6116246876777374,
+                "medianAngularDegrees": 0.23279962534627957
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 63,
+              "excludedPairs": 0,
+              "improved": 37,
+              "medianDeltaPixels": -0.09020232862054434,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "3-10 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.6649511554364318,
+                "p90Pixels": 2.5301208197792793,
+                "medianAngularDegrees": 0.1255793232076091
+              },
+              "sfmPoint": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.5536890679235437,
+                "p90Pixels": 1.287842562789141,
+                "medianAngularDegrees": 0.10170786353356924
+              },
+              "erpGlobal": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 3.6462040116768364,
+                "p90Pixels": 13.69225710458502,
+                "medianAngularDegrees": 0.6158115270912168
+              },
+              "erpLocal": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 2.617306425097076,
+                "p90Pixels": 11.71449911480622,
+                "medianAngularDegrees": 0.5135620536363683
+              },
+              "perspective": {
+                "samples": 34,
+                "validSamples": 34,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 1.9860760985112353,
+                "p90Pixels": 14.454203225960233,
+                "medianAngularDegrees": 0.34858849593881086
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 34,
+              "excludedPairs": 0,
+              "improved": 23,
+              "medianDeltaPixels": -0.5665478166248739,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          },
+          {
+            "group": "parallax",
+            "label": "10-180 degrees",
+            "methods": {
+              "sfmRay": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.868808843550775,
+                "p90Pixels": 2.4690024200840734,
+                "medianAngularDegrees": 0.136213439186879
+              },
+              "sfmPoint": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 0.3968449233019469,
+                "p90Pixels": 1.19680487389105,
+                "medianAngularDegrees": 0.07102081135754051
+              },
+              "erpGlobal": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 6.75593801601102,
+                "p90Pixels": 13.853192593944424,
+                "medianAngularDegrees": 0.9491001569684419
+              },
+              "erpLocal": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 4.776250620786306,
+                "p90Pixels": 11.970582748192864,
+                "medianAngularDegrees": 0.7193824763686596
+              },
+              "perspective": {
+                "samples": 26,
+                "validSamples": 26,
+                "invalidSamples": 0,
+                "outOfImageSamples": 0,
+                "medianPixels": 2.160938618400724,
+                "p90Pixels": 8.892204821152276,
+                "medianAngularDegrees": 0.36824453832028914
+              }
+            },
+            "pairedVersusGlobal": {
+              "pairedValidSamples": 26,
+              "excludedPairs": 0,
+              "improved": 19,
+              "medianDeltaPixels": -2.3022374014453013,
+              "meaning": "Perspective local minus global ERP error on same valid points; not independent truth"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "javascriptTests": 166,
+    "pythonDistinctPassed": 172,
+    "newPythonTests": 13,
+    "pythonPerEnvironment": 175,
+    "pythonSkips": [
+      5,
+      31
+    ],
+    "pythonNotRunInBoth": "3 FFmpeg/HDR tests",
+    "baselineHashesUnchanged": 103,
+    "noOverwrite": "PASS",
+    "historicalBrowserRegression": "NOT RUN",
+    "localBrowser": {
+      "status": "PASS",
+      "tests": 5,
+      "seconds": 15.8,
+      "mode": "headed Chrome156",
+      "coverage": "Actual original/common clouds, actual perspective control images/tables, controls, simulated503 recovery, lab order and preserved pair/one-ERP report"
+    }
+  },
+  "archive": {
+    "status": "PASS",
+    "archive": "groundshift-panoramic-calibration-20261106.tar.gz",
+    "bytes": 309450561,
+    "sha256": "1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f",
+    "wwwFiles": 424,
+    "wwwBytes": 355408740,
+    "stage": "data/deploy/viewer-1793923380092",
+    "inventory": "data/deploy/viewer-1793923380092.inventory.json"
+  }
+}

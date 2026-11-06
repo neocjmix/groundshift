@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "declaredAt": "2026-11-05T23:55:01.061704+00:00",
+  "parentProtocolSha256": "3f8f50e7e6e7673bee184b423da91a8193f6365e54f2788f80945bff5e28ddf4",
+  "reason": "Common calibration did not remove strong-parallax errors; compare practical perspective and crop-local ERP alternatives",
+  "model": "depth-anything/Depth-Anything-V2-Small-hf",
+  "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+  "input": "Twelve existing original fixed-rig 512x512 perspective crops from panoramas4/5; no synthesis",
+  "fit": "Only common784 training IDs observed in each crop. Same crop-specific point-ID subsets for ERP-local radial and perspective-local camera-Z fits; original global ERP common fit retained. Never fit any of217 withheld IDs.",
+  "depthConventions": {
+    "erpLocal": "Affine inverse radial ray range, matched SfM radial targets",
+    "perspectiveLocal": "Affine inverse pinhole camera-Z, matched SfM camera-Z targets; convert Z to radial using actual observed ray_z before world projection"
+  },
+  "evaluation": "Same selected observed source/target crops and217 withheld IDs per direction as parent; no depth-dependent selection",
+  "confounders": "Global vs local fits change parameter count; ERP-local and perspective-local use same calibration IDs and parameter count but different input projection and appropriate depth convention. No claim of a pure single-variable projection ablation.",
+  "scope": "Feature reprojection control only. Dense multi-crop spherical fusion, seam/overlap calibration, new GS are NOT RUN.",
+  "files": [
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_01.png",
+      "bytes": 627044,
+      "sha256": "7733778e0291f0619704a94e82af37cf97e0c42ac341603bb3cfd56171947b6c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_02.png",
+      "bytes": 575844,
+      "sha256": "06064f18fff7d619f81e8c3a320f63b62b57f4fa55279dc2d166166b11254b0a"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_03.png",
+      "bytes": 477170,
+      "sha256": "24d973e33615a4d4bb8d25b53103c4e029337f1944495d02304da0f36a73dbfc"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_04.png",
+      "bytes": 405461,
+      "sha256": "4ee8eecaf9deda2b755eda88bfd8469d2a953d3fd1ad1b196084888e25367294"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_05.png",
+      "bytes": 433074,
+      "sha256": "4b1c580526bb707baff510d86c47212b2afd9f1f6ef9094c6bbca6164e228e2c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_06.png",
+      "bytes": 547518,
+      "sha256": "c433e9f5f0bff178b42f48f6491125425d8775168c2f53bfac44f69bce3e4899"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_01.png",
+      "bytes": 619549,
+      "sha256": "9926c2cf0156d688712993699809b82d7c0e3810c9cd97c440c5f88e835aad32"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_02.png",
+      "bytes": 574190,
+      "sha256": "f5bc63204687a6d23b9adf442c276fffd6a439dd4706708079e369b432f6e1e7"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_03.png",
+      "bytes": 462246,
+      "sha256": "30659222287af01d1697aa0e43b232d17b61c55e6bc8f02e95184005c81268e9"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_04.png",
+      "bytes": 398103,
+      "sha256": "04e0c4250060dc44c66acef4408ed44e8371acb79214b7cb12fd3b202659e88c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_05.png",
+      "bytes": 427259,
+      "sha256": "c01c6fe85ec3bf4beffebbb0ce48478befc890fea031f4443a9fdde1ddb1847c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_06.png",
+      "bytes": 539092,
+      "sha256": "63b8b206216ab5125021bccf08b7edc73496e9cbeed12ff70733bf1d8bfcf01a"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/cameras.bin",
+      "bytes": 344,
+      "sha256": "438ed6c285270c8d1360c92de38ed72934573e36add05e7e8d5b2025dc9b64d2"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/frames.bin",
+      "bytes": 1484,
+      "sha256": "bc0e4288156c0b037ce04d6f7d4f3eb11cee99efbfee48707a839165bfbb3a6f"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/images.bin",
+      "bytes": 3815648,
+      "sha256": "8df33b0cbee4353c61b002378ab7c829f7716b51564af2af41e62ab2c14b4a83"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/points3D.bin",
+      "bytes": 289376,
+      "sha256": "b9fa64c979bc63b7814f4e3eb5e7b0cc8482fedb1bdee6799992136c52eea98e"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/rigs.bin",
+      "bytes": 349,
+      "sha256": "8450104e07cb4c624cf7b4b629f8e8dcca0e7e1f862e72d1107e210e127b1b23"
+    },
+    {
+      "path": "data/jobs/panoramic-baseline-20261106/selected-panorama.json",
+      "bytes": 1851655,
+      "sha256": "a3e563a5abe4d4443beb84d056963aae834ff67fd946aea1c4645ef0ba27f9fd"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/anchors-4/selected-panorama.json",
+      "bytes": 1851624,
+      "sha256": "ec505de9b13683774fb848359f230a174dfe374bface11ec0624415c9cb2583c"
+    }
+  ]
+}

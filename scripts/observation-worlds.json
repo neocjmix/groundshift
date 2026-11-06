@@ -444,6 +444,19 @@
     "experiments/panoramic-pair/da2/range-4.png",
     "experiments/panoramic-pair/da2/range-5.png",
     "experiments/panoramic-pair/da2/4-to-5-classes.png",
-    "experiments/panoramic-pair/index.html"
+    "experiments/panoramic-pair/index.html",
+    "experiments/panoramic-calibration/summary.json",
+    "experiments/panoramic-calibration/ATTRIBUTION.txt",
+    "experiments/panoramic-calibration/dav2/cloud.json",
+    "experiments/panoramic-calibration/dav2/cloud.ply",
+    "experiments/panoramic-calibration/dav2/5-to-4-features.png",
+    "experiments/panoramic-calibration/dav2/4-to-5-features.png",
+    "experiments/panoramic-calibration/da2/cloud.json",
+    "experiments/panoramic-calibration/da2/cloud.ply",
+    "experiments/panoramic-calibration/da2/5-to-4-features.png",
+    "experiments/panoramic-calibration/da2/4-to-5-features.png",
+    "experiments/panoramic-calibration/index.html",
+    "experiments/panoramic-calibration/perspective/5-to-4-features.png",
+    "experiments/panoramic-calibration/perspective/4-to-5-features.png"
   ]
 }

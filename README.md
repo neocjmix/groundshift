@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -12,17 +12,19 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: adjacent full-sphere depth comparison
+## Current experiment: shared calibration and perspective-depth control
 
-The [panoramic street roadmap](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md)
-now has an [executed two-panorama diagnostic](docs/PANORAMIC_PAIR_P1.md).
-DA² and DAV2-Small ran on the adjacent real ERP on MPS, reusing the preceding
-panorama's predictions and fixed-rig camera poses. The report shows unfused
-source-colored clouds, bidirectional range/RGB comparisons and regional failures.
-Median pair range disagreement is 3.6–5.1%, but facade bias, weak parallax and
-unsupported road calibration prevent geometry acceptance. No new GS training or
-nine-way fusion. The [one-panorama result](docs/PANORAMIC_DEPTH_P1.md), best scooter
-and all earlier observations are preserved. [Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
+The [street roadmap](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md) now has an
+[executed common-track calibration study](docs/PANORAMIC_CALIBRATION.md).
+Using the same 784 calibration tracks did not resolve the two-panorama ERP
+mismatch. An additional local MPS DAV2 control on 12 real perspective crops
+reduced high-parallax withheld-feature median errors from about 7px to
+2.2–2.6px. The report shows actual photo displacement vectors, controls and
+matched-view calibration clouds. These are internal SfM comparisons; dense
+perspective overlap/fusion and new Gaussian training remain NOT RUN.
+The [pair diagnostic](docs/PANORAMIC_PAIR_P1.md), [one-panorama result](docs/PANORAMIC_DEPTH_P1.md),
+best scooter and all earlier observations remain available.
+[Model/license findings](docs/PANORAMIC_DEPTH_MODELS.md).
 
 ## Preserved experiments: one object along the panorama path
 

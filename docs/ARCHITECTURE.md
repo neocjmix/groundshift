@@ -41,7 +41,7 @@ The [one-panorama P1 experiment](PANORAMIC_DEPTH_P1.md) adds a pinned local dept
 process plus explicitly calibrated spherical projection. Raw prediction semantics,
 SfM radial calibration and measured-by-image-estimation pose metadata stay separate.
 The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) adds bidirectional radial/RGB projection without pose refinement or fusion, preserving source IDs and explicit uncertainty. Its point-cloud report uses the existing static viewer infrastructure; a colored
-PLY is not passed off as a trained Gaussian world. No backend framework is added.
+PLY is not passed off as a trained Gaussian world. The [calibration control](PANORAMIC_CALIBRATION.md) reuses these outputs and the existing local MPS perspective-depth CLI, with explicit camera-Z/radial conversion and fixed observed-feature evaluation. No backend framework is added.
 
 
 The public-panorama experiment adds an input preparation step: verified licensed

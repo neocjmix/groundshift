@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "declaredAt": "2026-11-05T23:48:19.875377+00:00",
+  "hypothesis": "Different calibration anchor populations explain some cross-view depth bias",
+  "training": "Same common point IDs in both views; SHA256 point-ID modulo-five holdout unchanged",
+  "calibration": "Same existing DA2 scale-only radial and DAV2 Huber affine inverse-radial fit; SfM-projected ERP sampling unchanged in calibration",
+  "evaluation": "One real crop observation per panorama and shared withheld point, nearest principal point in normalized pinhole coordinates; tie by image name. Evaluate both directions.",
+  "observedRay": "Sample learned depth on the observed source feature bearing, backproject using its estimated camera center, project to the actual observed target crop feature",
+  "controls": [
+    "SfM radial distance along the identical observed source ray",
+    "Original triangulated SfM point projected into selected target crop"
+  ],
+  "strata": {
+    "pairParallaxDegrees": [
+      0,
+      1,
+      3,
+      10,
+      180
+    ],
+    "longitudeBins": 12,
+    "regions": "Unchanged previous source-ERP road/facade rectangles; not guaranteed matching physical surfaces"
+  },
+  "acceptance": "Diagnostic only. No post-hoc winner selection, nine-way fusion, ICP, pose refinement, generation or GS training.",
+  "invalidPolicy": "Retain all withheld IDs in denominators; nonpositive/behind-camera predictions invalid; positive-Z out-of-image projections remain in pixel statistics; paired improvements disclose excluded invalids",
+  "cloudPolicy": "Freeze previous masks, stride3 and comparison camera for original/common overlays; changed ranges only. Invalid ranges excluded with counts. No fusion.",
+  "files": [
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_01.png",
+      "bytes": 627044,
+      "sha256": "7733778e0291f0619704a94e82af37cf97e0c42ac341603bb3cfd56171947b6c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_02.png",
+      "bytes": 575844,
+      "sha256": "06064f18fff7d619f81e8c3a320f63b62b57f4fa55279dc2d166166b11254b0a"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_03.png",
+      "bytes": 477170,
+      "sha256": "24d973e33615a4d4bb8d25b53103c4e029337f1944495d02304da0f36a73dbfc"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_04.png",
+      "bytes": 405461,
+      "sha256": "4ee8eecaf9deda2b755eda88bfd8469d2a953d3fd1ad1b196084888e25367294"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_05.png",
+      "bytes": 433074,
+      "sha256": "4b1c580526bb707baff510d86c47212b2afd9f1f6ef9094c6bbca6164e228e2c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000004_view_06.png",
+      "bytes": 547518,
+      "sha256": "c433e9f5f0bff178b42f48f6491125425d8775168c2f53bfac44f69bce3e4899"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_01.png",
+      "bytes": 619549,
+      "sha256": "9926c2cf0156d688712993699809b82d7c0e3810c9cd97c440c5f88e835aad32"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_02.png",
+      "bytes": 574190,
+      "sha256": "f5bc63204687a6d23b9adf442c276fffd6a439dd4706708079e369b432f6e1e7"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_03.png",
+      "bytes": 462246,
+      "sha256": "30659222287af01d1697aa0e43b232d17b61c55e6bc8f02e95184005c81268e9"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_04.png",
+      "bytes": 398103,
+      "sha256": "04e0c4250060dc44c66acef4408ed44e8371acb79214b7cb12fd3b202659e88c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_05.png",
+      "bytes": 427259,
+      "sha256": "c01c6fe85ec3bf4beffebbb0ce48478befc890fea031f4443a9fdde1ddb1847c"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/images/pano_000005_view_06.png",
+      "bytes": 539092,
+      "sha256": "63b8b206216ab5125021bccf08b7edc73496e9cbeed12ff70733bf1d8bfcf01a"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/cameras.bin",
+      "bytes": 344,
+      "sha256": "438ed6c285270c8d1360c92de38ed72934573e36add05e7e8d5b2025dc9b64d2"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/frames.bin",
+      "bytes": 1484,
+      "sha256": "bc0e4288156c0b037ce04d6f7d4f3eb11cee99efbfee48707a839165bfbb3a6f"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/images.bin",
+      "bytes": 3815648,
+      "sha256": "8df33b0cbee4353c61b002378ab7c829f7716b51564af2af41e62ab2c14b4a83"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/points3D.bin",
+      "bytes": 289376,
+      "sha256": "b9fa64c979bc63b7814f4e3eb5e7b0cc8482fedb1bdee6799992136c52eea98e"
+    },
+    {
+      "path": "data/jobs/mapillary-beijing-rig-poses-v2/dataset/sparse/rigs.bin",
+      "bytes": 349,
+      "sha256": "8450104e07cb4c624cf7b4b629f8e8dcca0e7e1f862e72d1107e210e127b1b23"
+    },
+    {
+      "path": "data/jobs/panoramic-baseline-20261106/selected-panorama.json",
+      "bytes": 1851655,
+      "sha256": "a3e563a5abe4d4443beb84d056963aae834ff67fd946aea1c4645ef0ba27f9fd"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/geometry/calibration-samples.json",
+      "bytes": 140775,
+      "sha256": "56c3d55efae12a6920f6db6f28579f9bbfe238aa70403ef282ecc669319b94c0"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/geometry/filtered.npy",
+      "bytes": 596360,
+      "sha256": "1af8d76c5919e9a994d094b5093b3744e84d4a7be6a07ef0740a929903b46577"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/geometry/geometry.json",
+      "bytes": 10486,
+      "sha256": "809a8270621e28682f2ff3b06d6e9a93b36d8111769e3ffb810d305629622b77"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/inference.json",
+      "bytes": 2760,
+      "sha256": "ca4473a100221f328a319f52fdf3e18c1aa41bc65e9441973a3ce32dceff8ffe"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/raw.npy",
+      "bytes": 2385056,
+      "sha256": "78e15106c2f2f93aa604909dd1e2737513c16a3f35f006243bf5bc92cd2a4794"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-da2-20261106/source.png",
+      "bytes": 945606,
+      "sha256": "cb90d65e077b43540d8e0bccf51f14c041c5e2e7969a50a37efc3867b3098c6a"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/geometry/calibration-samples.json",
+      "bytes": 138797,
+      "sha256": "ae5a713a00bbb543671eae47aaa910db48fe109b7c511fbce046412db547331d"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/geometry/filtered.npy",
+      "bytes": 596360,
+      "sha256": "513983e4397bb884de7a7a6ab35df69f9501176d3ea932e673bb639e5dc84ca6"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/geometry/geometry.json",
+      "bytes": 10517,
+      "sha256": "d69c8ccf50be9d54d3481d7a5203f5701d79e7cbec6a17701c2922b35cdc479a"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/inference.json",
+      "bytes": 1605,
+      "sha256": "0708aa9dad2217d59e9be96a838fc947874211120921a3aeb012f8a0080ea0fb"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/raw.npy",
+      "bytes": 2385056,
+      "sha256": "f56d3beece7bfe2b269429324ec65efd8dff3bced5a5f5d3a66b36ae096d4c05"
+    },
+    {
+      "path": "data/jobs/panoramic-depth-dav2-20261106/source.png",
+      "bytes": 945606,
+      "sha256": "cb90d65e077b43540d8e0bccf51f14c041c5e2e7969a50a37efc3867b3098c6a"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/anchors-4/pair-sparse.json",
+      "bytes": 876810,
+      "sha256": "c69dd173068abbf82bcf44311318ea8ddd950f0428e52a2b61c01287a0c1104b"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/anchors-4/selected-panorama.json",
+      "bytes": 1851624,
+      "sha256": "ec505de9b13683774fb848359f230a174dfe374bface11ec0624415c9cb2583c"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/geometry/calibration-samples.json",
+      "bytes": 140974,
+      "sha256": "d2da015a9ab4e3dafc23a87239b3636b44bbe49c571692b54264d866025793ef"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/geometry/filtered.npy",
+      "bytes": 596360,
+      "sha256": "20aefe4c8ba347364b4ee7cb4740b2ac1abf87c090ebbd594835e14ccbfd831c"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/geometry/geometry.json",
+      "bytes": 10489,
+      "sha256": "22b3b066fc64a477836112dc7acfce8034795a8374d1ab386bbc5d4ba9a3b7b6"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/inference.json",
+      "bytes": 2760,
+      "sha256": "94442e0223f054f28a88ca82d7994254eff696be4014bcf3d55060683133f3f0"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/raw.npy",
+      "bytes": 2385056,
+      "sha256": "05a96da455af937ead99ece498c09f13ac7ce04ba9f51933e58ec268c4e82eee"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/da2-4/source.png",
+      "bytes": 955209,
+      "sha256": "30c5e1890e0090e77ef7a0d60bc5b32f58a443348195fb1b2a5363ef58231fae"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/geometry/calibration-samples.json",
+      "bytes": 138652,
+      "sha256": "c108ee475e905140014aaf10f858b88ec50bf37f9b7002d01bd7b827efd28f3c"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/geometry/filtered.npy",
+      "bytes": 596360,
+      "sha256": "513983e4397bb884de7a7a6ab35df69f9501176d3ea932e673bb639e5dc84ca6"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/geometry/geometry.json",
+      "bytes": 10523,
+      "sha256": "aacd0fbd5f7d47489c72c756eb734175e5333b1179dd1032def70ea8c56c81f7"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/inference.json",
+      "bytes": 1616,
+      "sha256": "04928cb61ebeb195ca5c12fbe5e6232af0e95774a00c7a1cb4485c894cf8e433"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/raw.npy",
+      "bytes": 2385056,
+      "sha256": "e2816ea83f41d047e7bd72e7221a6d4b5e4724daac0fbccf03531d922416beff"
+    },
+    {
+      "path": "data/jobs/panoramic-pair-20261106/dav2-4/source.png",
+      "bytes": 955209,
+      "sha256": "30c5e1890e0090e77ef7a0d60bc5b32f58a443348195fb1b2a5363ef58231fae"
+    },
+    {
+      "path": "docs/evidence/panoramic-pair-protocol.json",
+      "bytes": 1840,
+      "sha256": "ffbd08dbf57671f8b517a7e4ed4127431369d4d74f32790351ec28d9fdd57a2a"
+    },
+    {
+      "path": "public/experiments/panoramic-pair/da2/cloud.json",
+      "bytes": 3655312,
+      "sha256": "9095f380b7e1f9841e2117debf1430778776bfa0bc5785813b304a95e7b8830d"
+    },
+    {
+      "path": "public/experiments/panoramic-pair/dav2/cloud.json",
+      "bytes": 3703035,
+      "sha256": "a752d9b18f95a0215b635074326a92f09309e814aec14181ea8a6f274da9cf7b"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Adjacent panorama pair — P1 to P2 diagnostic
 
+Follow-up: [shared calibration and perspective-depth controls](PANORAMIC_CALIBRATION.md) have executed. The measurements below remain the preceding pair baseline.
+
 Executed 2026-11-06 KST under the [street roadmap](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md).
 [Observation report](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/).
 
