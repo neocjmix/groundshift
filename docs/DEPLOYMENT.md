@@ -69,7 +69,28 @@ origin URLs in the first proposed summary correctly fail the publication guard;
 no archive is created for that attempt. The publisher now redacts those origins
 and rejects loopback URLs reproducibly, then the fresh package passes. Actual
 appearance findings are recorded in the report, separate from publication checks.
-Public measured-increment deployment/hash/browser checks are initially NOT RUN.
+The measured pointer `fb7bc0b` deploys as
+`9b424e49-7ecb-4517-b0d9-e743be0d9fe1`: created
+2026-11-06T16:12:00.382Z, **SUCCESS** at 16:12:52.371Z. Anonymous release
+readback passes in 3.262482 s, and all nine changed public file size/hash checks
+pass in 8.645668 s. Fresh empty-directory extraction of all twelve archives
+reproduces all 1,142 composed files in 4.595505 s. Actual public measured-report
+verification continues separately; these checks do not assert geometry or
+another full browser suite.
+
+Completed public export checks and measured-report observations ship in a final
+metadata-only overlay: release `viewer-spz-verified-2026-11-07`, archive
+`groundshift-spz-verified-20261107.tar.gz`, **26,070 bytes**, SHA-256
+`7ec943885054826b1dc5e62722868ba85c4c73e8f915e7274eb886837b3c5600`.
+Apply it after the twelve preceding archives. Exactly three JSON files change:
+summary, timeline and the reproducible evaluation-camera configuration. Native
+world assets/poses/transforms, compiled viewer, preview, comparisons and movie
+remain byte-identical. The explicit target has 1,110 public files; the actual
+composition has 1,143 including inert superseded bundles. Every local target,
+base/archive and composed size/hash passes in 3.576246 s. Current full rebuild
+passes; no additional reconstruction, model evaluation sweep or geometry claim
+is introduced. Final deployment/hash/fresh-restore checks run after dispatch;
+a final targeted public-report case follows separately.
 
 ## Current GS-only display — 2026-11-07
 

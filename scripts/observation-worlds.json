@@ -1172,6 +1172,7 @@
     "experiments/compression/comparison-1.jpg",
     "experiments/compression/comparison-2.jpg",
     "experiments/compression/comparison-3.jpg",
-    "experiments/compression/motion.mp4"
+    "experiments/compression/motion.mp4",
+    "experiments/compression/evaluation-cameras.json"
   ]
 }
