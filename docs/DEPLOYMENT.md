@@ -161,6 +161,45 @@ failed observations and rollback packages remain retained. Public deployment/has
 and actual GPU/render checks follow dispatch. Evidence stays local under
 `data/jobs/paris-streaming-20261107/publications/lod/`.
 
+Initial LoD pointer`725a6db` deploys as`8eed0514-a768-431a-89f8-8caa2278bdd9`:
+created2026-11-06T17:35:42.937Z, **SUCCESS** at17:37:04.770Z. Anonymous full
+archive readback passes in13.033310s. All33 changed public file sizes/SHA-256
+values pass in35.938344s, including all17 RAD/RADC files, controlSPZ, actual
+preview and paging viewer code. Actual public GPU/browser results are separate
+from this integrity checkpoint.
+
+Subsequent actual public browser execution passes5/5 cases (approximately1.2min),
+covering native LoD, naive eviction/retry and report/lab behavior. In the native
+first view,349,915Gaussians and8pages are selected; sampled completed-file payload
+is13.2265MB and first-view RGB MAE is3.166/255. This is not a complete cold-wire
+transfer benchmark. A separate16-direction768px comparison fails the declared
+quality screen (per-view MAE<=5 and changed-fraction<=0.10): naive subset average/
+maximum35.199/76.165, native gsplat3.632/7.990, compact native csplat3.549/6.036.
+Page counts remain bounded at8 with no recorded errors. Public execution PASS
+and improved coverage do not override that directional appearance FAIL or prove
+independent geometric accuracy. The compact alternative is published separately
+when ready; no success is inferred from a local export alone.
+
+The compact csplat/RAD alternative and measured report publish as soon as the
+actual assets, four comparison JPEGs and report UI are ready, while final public
+cases continue. It is a separate39th scene, preserving the whole-SPZ control,
+naiveFAIL trial and initial nativeLoD world. Its17 pinned RAD/RADC files total
+25,950,408bytes, only approximately1.2% less than the initial encoding; this is
+not a major transfer breakthrough. The report explicitly keeps16-direction
+appearanceFAIL distinct from actual execution/public first-viewPASS.
+
+Release `viewer-paris-compact-2026-11-07`, archive
+`groundshift-paris-compact-20261107.tar.gz`: **44,427,027 bytes**, SHA-256
+`a06dca766715897016322999eb71891fb47e8798d881bc74f7c5f35c790bc226`.
+Apply it after the twenty-one preceding pinned layers. A fresh production rebuild
+passes in3.65s. Metadata/privacy, all declared paging-file pins and complete
+base/target/archive/composed size/hash checks pass in11.321011s (1,185selected
+public files,37changed members,1,235composed files). All earlier worlds/reports
+and rejected observations remain available. New compact public-browser checks
+and final integrity readback run after dispatch. RawHD/nativePLY/logs/weights
+remain local. Publication evidence is under
+`data/jobs/paris-streaming-20261107/publications/compact/`.
+
 ## Paris tourist-route source scouting — 2026-11-07
 
 [New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
@@ -483,12 +522,13 @@ depth diagnostics; every image/movie/compiled-code/scene/background byte is
 unchanged. Three distinct targeted public cases have passing evidence; later
 metadata-only inspection does not imply another full GPU run.
 
-### Current 36-world restoration
+### Current 39-world restoration
 
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
-layers, the three SPZ layers and the two tourist-source layers, in order.
-The command below includes all fifteen layers for the current surface. The complete native overlay supersedes
+layers, the three SPZ layers, the two tourist-source layers and the seven Paris
+reconstruction/paging layers, in order. The command below includes all twenty-two
+layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
 
@@ -554,6 +594,27 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-tourist-acquired-2026-11-07 \
     groundshift-tourist-acquired-20261107.tar.gz \
     05e46898feacbaa0f3070f356d74d94e314a89c09262df8b943ea43de32e89d1
+  gs_restore_layer viewer-paris-sfm-2026-11-07 \
+    groundshift-paris-sfm-20261107.tar.gz \
+    97cb6eb2b9efaf7c41323a67ccf7752db31d70ca811ba8f4effdf27268e079cc
+  gs_restore_layer viewer-paris-depth-2026-11-07 \
+    groundshift-paris-depth-20261107.tar.gz \
+    b6e9ff323696944af80eb46c5ae8ee697e56c047a291445eb9cc28a606d4af5a
+  gs_restore_layer viewer-paris-native-2026-11-07 \
+    groundshift-paris-native-20261107.tar.gz \
+    c686769695fa40399332eaef5f2171fac7e7615296b70668da505ab6f63d793d
+  gs_restore_layer viewer-paris-stream-2026-11-07 \
+    groundshift-paris-stream-20261107.tar.gz \
+    6b861e6007e5987e0e3ac9388d29ea46010848680f2da7dbab6b7207955d62a3
+  gs_restore_layer viewer-paris-subset-fail-2026-11-07 \
+    groundshift-paris-subset-fail-20261107.tar.gz \
+    5524ff5c9456257e4077717c9b392b0a1ea04b16fcf748328295bc494db736ba
+  gs_restore_layer viewer-paris-lod-2026-11-07 \
+    groundshift-paris-lod-20261107.tar.gz \
+    58b04a6f4f6d2e6716d7049315e42090f949d87115c90c206e5318e737e8d5d6
+  gs_restore_layer viewer-paris-compact-2026-11-07 \
+    groundshift-paris-compact-20261107.tar.gz \
+    a06dca766715897016322999eb71891fb47e8798d881bc74f7c5f35c790bc226
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

@@ -143,6 +143,13 @@ RUN wget -q -O /tmp/paris-lod.tar.gz https://github.com/neocjmix/groundshift/rel
     && mkdir /out \
     && tar -xzf /tmp/paris-lod.tar.gz -C /out
 
+# Compact csplat/RAD alternative and measured report; quality threshold FAIL stays explicit.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_compact
+RUN wget -q -O /tmp/paris-compact.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-compact-2026-11-07/groundshift-paris-compact-20261107.tar.gz \
+    && echo 'a06dca766715897016322999eb71891fb47e8798d881bc74f7c5f35c790bc226  /tmp/paris-compact.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/paris-compact.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -163,5 +170,6 @@ COPY --from=paris_native /out/www /srv
 COPY --from=paris_stream /out/www /srv
 COPY --from=paris_subset_fail /out/www /srv
 COPY --from=paris_lod /out/www /srv
+COPY --from=paris_compact /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
