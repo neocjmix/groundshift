@@ -43,7 +43,33 @@ Publication evidence remains local under
 `data/jobs/street-spz-20261107/publications/export/`. This archive contains only
 selected public `www/` files; source footage, private inputs, absolute paths,
 raw logs, weights and credentials are excluded. Public deployment/hash/browser
-checks are initially NOT RUN and will be updated after dispatch.
+checks are initially NOT RUN and run after dispatch.
+
+The initial pointer `d012732` deploys as
+`e07261b0-9a5c-4c80-bdbe-33ed19562a84`: created
+2026-11-06T16:04:41.919Z, **SUCCESS** at 16:06:04.332Z. Anonymous full
+release readback passes in 5.211508 s. All 19 changed public file sizes/SHA-256
+values pass in 15.152270 s, including the 15,936,671-byte SPZ. The server build
+confirms `/tmp/spz-export.tar.gz: OK`. Fresh empty-directory ordered extraction
+of all eleven pinned archives reproduces all 1,137 composed files in
+5.127376 s. Actual public-browser rendering is still NOT RUN at this integrity
+checkpoint; later evidence is recorded separately from export/HTTP checks.
+
+The measured-evidence increment follows without waiting for public browser
+verification to finish. It adds four actual PLY/SPZ comparison figures, an actual
+49-frame side-by-side motion video, the actual SPZ preview and sanitized
+measurement/catalog/timeline JSON. PLY/SPZ, poses, transforms and compiled viewer
+bytes are unchanged. Release `viewer-spz-measured-2026-11-07`, archive
+`groundshift-spz-measured-20261107.tar.gz`: **9,590,436 bytes**, SHA-256
+`5750e201747c383f8237e791ff7b25be37e61c65fc41584eee13061f26edfcc5`.
+Apply it after the eleven preceding layers. Explicit packaging verifies all
+1,109 selected public files, nine changed archive members and all 1,142 physically
+composed files in 3.524377 s. Production rebuild passes in 2.71 s. Localhost
+origin URLs in the first proposed summary correctly fail the publication guard;
+no archive is created for that attempt. The publisher now redacts those origins
+and rejects loopback URLs reproducibly, then the fresh package passes. Actual
+appearance findings are recorded in the report, separate from publication checks.
+Public measured-increment deployment/hash/browser checks are initially NOT RUN.
 
 ## Current GS-only display — 2026-11-07
 
