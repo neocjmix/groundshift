@@ -242,64 +242,6 @@
     "fetchers": 2,
     "memoryMeaning": "Slot/page counts and process RSS are not total GPU memory"
   },
-  "publicBrowser": {
-    "status": "PASS execution",
-    "quality": "PASS",
-    "qualityThreshold": {
-      "mae": 5,
-      "changedFraction": 0.1
-    },
-    "mae": 3.1657887011277763,
-    "changedFraction": 0.038542797109145904,
-    "first": {
-      "selected": 349915,
-      "pages": 8,
-      "bytes": 13226520,
-      "requested": 9,
-      "errors": [],
-      "capacity": 524288,
-      "sourceSplats": 800000
-    },
-    "end": {
-      "selected": 277712,
-      "pages": 8,
-      "bytes": 13226520,
-      "requested": 11,
-      "errors": [],
-      "capacity": 524288,
-      "sourceSplats": 800000
-    },
-    "reverse": {
-      "selected": 349915,
-      "pages": 8,
-      "bytes": 13226520,
-      "requested": 11,
-      "errors": [],
-      "capacity": 524288,
-      "sourceSplats": 800000
-    },
-    "readySignalMs": 7397.967667,
-    "firstSettledBytes": 13226520,
-    "scope": "One-off actual short-Paris LoD paging, not kilometer-scale or independent geometry acceptance",
-    "browser": "156.0.8078.81",
-    "headed": true,
-    "cacheDisabled": true,
-    "requests": [
-      "/worlds/paris-58m-lod/rad/scene-lod.rad",
-      "/worlds/paris-58m-lod/rad/scene-lod-0.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-2.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-5.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-9.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-3.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-8.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-14.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-15.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-1.radc",
-      "/worlds/paris-58m-lod/rad/scene-lod-4.radc",
-      "/worlds/paris-58m-lod/scene.spz"
-    ],
-    "errors": []
-  },
   "fixedCameraServingComparison": {
     "status": "PASS execution",
     "resolution": 768,
@@ -807,5 +749,225 @@
       "skip": 32
     },
     "notDistinctAcrossEnvironments": true
+  },
+  "initialPublicBrowser": {
+    "status": "PASS execution",
+    "quality": "PASS",
+    "qualityThreshold": {
+      "mae": 5,
+      "changedFraction": 0.1
+    },
+    "mae": 3.1657887011277763,
+    "changedFraction": 0.038542797109145904,
+    "first": {
+      "selected": 349915,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 9,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "end": {
+      "selected": 277712,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 11,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "reverse": {
+      "selected": 349915,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 11,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "readySignalMs": 7397.967667,
+    "firstSettledBytes": 13226520,
+    "scope": "One-off actual short-Paris LoD paging, not kilometer-scale or independent geometry acceptance",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "cacheDisabled": true,
+    "requests": [
+      "/worlds/paris-58m-lod/rad/scene-lod.rad",
+      "/worlds/paris-58m-lod/rad/scene-lod-0.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-2.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-3.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-14.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-1.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-4.radc",
+      "/worlds/paris-58m-lod/scene.spz"
+    ],
+    "errors": []
+  },
+  "publicBrowser": {
+    "status": "PASS execution",
+    "quality": "PASS",
+    "qualityThreshold": {
+      "mae": 5,
+      "changedFraction": 0.1
+    },
+    "mae": 3.663845302142192,
+    "changedFraction": 0.0390408789990863,
+    "first": {
+      "selected": 349921,
+      "pages": 8,
+      "bytes": 13226520,
+      "pending": 0,
+      "requested": 9,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "end": {
+      "selected": 349943,
+      "pages": 8,
+      "bytes": 21404424,
+      "pending": 0,
+      "requested": 14,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "reverse": {
+      "selected": 349920,
+      "pages": 8,
+      "bytes": 29571248,
+      "pending": 0,
+      "requested": 19,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "readySignalMs": 9639.677,
+    "firstSettledBytes": 13226520,
+    "scope": "One-off actual short-Paris LoD paging, not kilometer-scale or independent geometry acceptance",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "cacheDisabled": true,
+    "requests": [
+      "/worlds/paris-58m-lod/rad/scene-lod.rad",
+      "/worlds/paris-58m-lod/rad/scene-lod-0.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-2.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-3.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-14.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-1.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-4.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-6.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-7.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-11.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-14.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod/scene.spz"
+    ],
+    "errors": [],
+    "interpretation": "Cold-cache root/page returned bodies13.23MB at first settled view,29.57MB after end and reverse; more cumulative bytes than wholeSPZ15.92MB. Bounded precision pool is demonstrated, universal bandwidth savings are not."
+  },
+  "compactPublicBrowser": {
+    "status": "PASS execution",
+    "quality": "PASS",
+    "qualityThreshold": {
+      "mae": 5,
+      "changedFraction": 0.1
+    },
+    "mae": 2.6583699747880405,
+    "changedFraction": 0.024744114552237576,
+    "first": {
+      "selected": 349907,
+      "pages": 8,
+      "bytes": 13113856,
+      "pending": 0,
+      "requested": 9,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "end": {
+      "selected": 349918,
+      "pages": 8,
+      "bytes": 19548696,
+      "pending": 0,
+      "requested": 13,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "reverse": {
+      "selected": 349907,
+      "pages": 8,
+      "bytes": 26014008,
+      "pending": 0,
+      "requested": 17,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "readySignalMs": 5055.742292,
+    "firstSettledBytes": 13113856,
+    "scope": "One-off actual short-Paris LoD paging, not kilometer-scale or independent geometry acceptance",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "cacheDisabled": true,
+    "requests": [
+      "/worlds/paris-58m-lod-compact/rad/scene-lod.rad",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-0.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-2.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-3.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-1.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-4.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-7.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-6.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-11.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod-compact/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod-compact/scene.spz"
+    ],
+    "errors": []
+  },
+  "finalPublicChecks": {
+    "nativeDefaultAndReport": {
+      "status": "PASS",
+      "cases": 3,
+      "seconds": 40.8
+    },
+    "nativeCompact": {
+      "status": "PASS",
+      "cases": 1,
+      "seconds": 26.9
+    },
+    "publicChangedHashes": {
+      "status": "PASS",
+      "files": 37,
+      "seconds": 34.856272
+    },
+    "restore": {
+      "status": "PASS",
+      "archiveLayers": 22,
+      "files": 1235,
+      "seconds": 7.617566
+    },
+    "deploymentId": "39c3c14f-9e66-41f1-8888-013ee93364d2",
+    "pointer": "5073c1fc6d5df95d7e9a028f78b18beb482d3d42"
   }
 }

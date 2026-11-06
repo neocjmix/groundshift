@@ -67,7 +67,7 @@ framework is introduced. Archived panorama/shell backgrounds remain disabled.
 | Native RAD conversion | PASS official Spark2.4.0 CPU builder,7.81s,17files/26,264,088B gsplat |
 | Native compact RAD | PASS conversion/16views,17files/25,950,408B: only1.19% smaller; no retraining |
 | Native LoD public browser | PASS actual headed Chrome156,cacheOFF,start/end/reverse/whole toggle; <=8pages |
-| Public first snapshot |349,915selected,8pages,13,226,520B received body; ready signal7397.97ms |
+| Public first snapshots |349,915/349,921selected,8pages,13,226,520B received body; ready signals7397.97/9639.68ms |
 | Full2.185km GS/streaming | **NOT RUN**;24HD images reconstructed,852selected sources not acquired |
 
 Native wall time is a one-off process observation on the user's M2/16GB Mac;
@@ -143,6 +143,13 @@ remaining detail changes are visible. Selection varies by view, so350k is a
 budget target, not a mandatory count. The8-page count is not a total browser or
 GPU memory measurement. First-ready timing is an app signal, not a measured
 first-visible pixel; actual FPS/frame-time/long-network benchmarks are NOT RUN.
+The final instrumented cache-disabled public run returned13.23MB initially,
+21.40MB after jumping to the end,and29.57MB after returning. Evicted pages are
+re-fetched; no retained decoded JS cache is used. On this small scene the round
+trip transfers more than the15.92MB completeSPZ. Thus bounded precision residency
+is demonstrated; bandwidth reduction or faster loading is **not established**.
+The earlier7.40s and final9.64s first-ready observations are single network-bound
+runs,not comparative performance guarantees.
 
 Two suites rendered128actual fixed-camera images (64codec/union/reload,
 64whole/three-region/two-native-encodings) on this Mac. Selected start/middle,
@@ -162,8 +169,12 @@ collision acceptance or unrestricted safe walking.
   progress wait are retained. No inference or training was re-run to repair it.
 - PASS completed public suite5/5 (~1.2min):nativeLoD1,spatial2,source/lab2.
   Public sizes/SHA for33changed LoD-release files match the explicit package.
-  Subsequent compact release/measurement-page checks are recorded in
-  [DEPLOYMENT.md](DEPLOYMENT.md), separately from these completed checks.
+- PASS final public snapshot4/4:default LoD+report/lab3cases in40.8s;
+  compact LoD1case in26.9s. Both actually render,move,reverse and switch control.
+  All37changed public sizes/SHA match; fresh22-layer restore verifies1,235files.
+  The default run has actual pending==0 before sampling and re-fetches evicted
+  pages on reverse. Individual first-view screens pass,broader16views fail.
+  [DEPLOYMENT.md](DEPLOYMENT.md) records immutable pointers/rollback archives.
 - NOT RUN full legacy browser suite on the final public deployment,independent
   Paris geometry,km-scale training/serving,long-network/FPS benchmark.
 
