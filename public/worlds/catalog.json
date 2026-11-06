@@ -359,6 +359,16 @@
       "thumbnailPath": "/worlds/street-tangent20-spz/preview.jpg",
       "createdAt": "2026-11-06T16:00:08.757Z",
       "detail": "이 장면에서는 외관을 거의 유지하면서 파일을78.3% 줄일 수 있었습니다. SPZ를 경량 전달 후보로 채택합니다. 무손실은 아니며, 기존의 번짐·겹침·미검증 형상은 그대로입니다."
+    },
+    {
+      "id": "paris-58m-spz",
+      "title": "Paris · 첫58m와 구간 로딩",
+      "description": "노트르담 남쪽 실제24파노라마 · M2 Metal GS · 전체/공간 SPZ 비교",
+      "category": "experiment",
+      "manifestPath": "/worlds/paris-58m-spz/world.json",
+      "thumbnailPath": "/worlds/paris-58m-spz/preview.jpg",
+      "createdAt": "2026-11-06T17:19:26.762517+00:00",
+      "detail": "최초 실제 렌더 확인.상세 화질/구간 로딩 검증은 진행 중."
     }
   ]
 }

@@ -288,6 +288,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "paris-58m-spz",
+      "source": "data/jobs/paris-streaming-20261107/publications/native/world",
+      "asset": "scene.spz",
+      "format": "spz",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
