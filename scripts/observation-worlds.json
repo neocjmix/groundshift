@@ -279,6 +279,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "street-tangent20-spz",
+      "source": "data/jobs/street-spz-20261107/attempt-03/world",
+      "asset": "scene.spz",
+      "format": "spz",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
@@ -1155,6 +1164,9 @@
     "experiments/tangent-background/comparison/measured-comparison-10.jpg",
     "experiments/tangent-background/comparison/measured-comparison-04.png",
     "experiments/tangent-background/comparison/measured-comparison-12.jpg",
-    "experiments/tangent-background/comparison/measured-comparison-13.jpg"
+    "experiments/tangent-background/comparison/measured-comparison-13.jpg",
+    "experiments/compression/index.html",
+    "experiments/compression/ATTRIBUTION.txt",
+    "experiments/compression/summary.json"
   ]
 }
