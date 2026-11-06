@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [Paris source scouting](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/) · [PLY/SPZ storage comparison](https://groundshift-viewer-production.up.railway.app/experiments/compression/) · [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Paris GS and paging](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/) · [PLY/SPZ storage comparison](https://groundshift-viewer-production.up.railway.app/experiments/compression/) · [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -199,6 +199,38 @@ and rejected observations remain available. New compact public-browser checks
 and final integrity readback run after dispatch. RawHD/nativePLY/logs/weights
 remain local. Publication evidence is under
 `data/jobs/paris-streaming-20261107/publications/compact/`.
+
+Compact pointer`5073c1f` deploys as`39c3c14f-9e66-41f1-8888-013ee93364d2`:
+created2026-11-06T17:50:29.561Z, **SUCCESS** at17:51:52.444Z. The server verifies
+`/tmp/paris-compact.tar.gz: OK` and passes healthcheck. Anonymous full archive
+readback passes in69.985200s; this is an attachment readback observation, not a
+controlled transfer benchmark. All37 changed public sizes/SHA-256 values pass
+in34.856272s. Fresh empty-directory ordered extraction verifies all22 archive
+checksums and every1,235 composed file size/hash in7.617566s. Final actual public
+execution cases are run separately after rollout; directional qualityFAIL stays
+explicit regardless of deployment success.
+
+Completed actual public checks are published in a final one-JSON evidence layer:
+nativeLoD/report/lab3cases pass in40.8s; compactLoD1case passes in26.9s, totaling
+4/4. All four report comparison images decode and public screenshots are visually
+inspected. Both first views pass their local screen, while strict16-direction
+qualityFAIL remains. Actual first-ready is7.4–9.6s; sampled payload progresses
+13.23MB first view→21.40MB at end→29.57MB after reversing. Re-fetch demonstrates
+eviction, but the roundtrip exceeds the15.92MB fullSPZ. There is **no demonstrated
+58m bandwidth saving or speed advantage**, and no completed2.19km reconstruction.
+
+Release `viewer-paris-verified-2026-11-07`, archive
+`groundshift-paris-verified-20261107.tar.gz`: **5,537 bytes**, SHA-256
+`91f51c0c82ec318aefb38433aaff245b2d76742d1c94f3eb4a166513ec7f2569`.
+Apply it after the twenty-two preceding pinned layers. Only dynamic report JSON
+changes; all accepted app/native/paging/photo/camera bytes are identical.
+Privacy and complete base/target/archive/composed size/hash checks pass for
+all1,235 files in4.985727s. The first local helper attempt incorrectly requires
+an exactFAIL status and stops without creating an archive; it is corrected to
+accept the truthful compound execution/quality labels, with no report alteration.
+Final deployment, public hash and23-layer fresh-restore checks run after dispatch;
+no extra app/scene tests or quality claim is inferred from this metadata layer.
+Evidence remains local under`data/jobs/paris-streaming-20261107/publications/verified/`.
 
 ## Paris tourist-route source scouting — 2026-11-07
 
@@ -526,8 +558,8 @@ metadata-only inspection does not imply another full GPU run.
 
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
-layers, the three SPZ layers, the two tourist-source layers and the seven Paris
-reconstruction/paging layers, in order. The command below includes all twenty-two
+layers, the three SPZ layers, the two tourist-source layers and the eight Paris
+reconstruction/paging layers, in order. The command below includes all twenty-three
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -615,6 +647,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-paris-compact-2026-11-07 \
     groundshift-paris-compact-20261107.tar.gz \
     a06dca766715897016322999eb71891fb47e8798d881bc74f7c5f35c790bc226
+  gs_restore_layer viewer-paris-verified-2026-11-07 \
+    groundshift-paris-verified-20261107.tar.gz \
+    91f51c0c82ec318aefb38433aaff245b2d76742d1c94f3eb4a166513ec7f2569
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
