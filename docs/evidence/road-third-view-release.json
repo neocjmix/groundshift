@@ -1,0 +1,112 @@
+{
+  "recordedAt": "2026-11-06T04:33:25.466796+00:00",
+  "implementation": "4d125f280f79dd9f1a62fdb452d9b46b8bae5757",
+  "pointer": "3d8654d91782e92a7d0beaaf8c5922c772aef217",
+  "release": "viewer-road-third-view-2026-11-06",
+  "archive": {
+    "status": "PASS",
+    "archive": "data/deploy/groundshift-road-third-view-20261106.tar.gz",
+    "archiveBytes": 337976806,
+    "sha256": "d512f227c301bfc1da6a52fcc2248c2587d5ca30e0e8677b4679fa5c91f1e11a",
+    "inventory": "data/deploy/viewer-1793938915332.inventory.json",
+    "files": 561,
+    "wwwBytes": 416556684,
+    "stagedFiles": 564,
+    "stagedBytes": 416557371,
+    "elapsedSeconds": 1.1725392499938607
+  },
+  "publicArchive": {
+    "status": "PASS",
+    "url": "https://github.com/neocjmix/groundshift/releases/download/viewer-road-third-view-2026-11-06/groundshift-road-third-view-20261106.tar.gz",
+    "bytes": 337976806,
+    "sha256": "d512f227c301bfc1da6a52fcc2248c2587d5ca30e0e8677b4679fa5c91f1e11a",
+    "elapsedSeconds": 85.07482379092835
+  },
+  "deployment": {
+    "id": "1e6d8e96-9e61-4ce8-8c25-dd3987a320d9",
+    "status": "SUCCESS",
+    "updatedAt": "2026-11-06T04:29:28.377Z",
+    "checksumLogAt": "2026-11-06T04:28:52.633667940Z",
+    "checksumLog": "/tmp/viewer.tar.gz: OK",
+    "trigger": "Explicit existing repo/branch connector; no commit pin. Automatic push behavior unverified."
+  },
+  "health": {
+    "status": "PASS",
+    "httpStatus": 200,
+    "body": "ok"
+  },
+  "publicFiles": {
+    "status": "PASS",
+    "files": 250,
+    "newReportFiles": 12,
+    "elapsedSeconds": 43.727611584123224,
+    "full561PublicRecrawl": "NOT RUN"
+  },
+  "validation": {
+    "nativeStereo": "PASS",
+    "nativeSeconds": 16.266311042010784,
+    "nativeRssBytes": 795639808,
+    "depthMapEvaluation": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "javascript": {
+      "status": "PASS",
+      "tests": 166
+    },
+    "python": {
+      "status": "PASS",
+      "discovered": 202,
+      "opencvPassed": 197,
+      "opencvSkipped": 5,
+      "colmapPassed": 170,
+      "colmapSkipped": 32,
+      "distinctPassed": 199,
+      "notRunHdrTests": 3
+    },
+    "localBrowser": {
+      "status": "PASS",
+      "checks": 9,
+      "seconds": 30.8,
+      "headed": true,
+      "browser": "156.0.8078.81"
+    },
+    "baselinePinned103": "PASS",
+    "protocolInputs21": "PASS",
+    "priorPackagedData514": "PASS",
+    "noOverwriteStages3": "PASS",
+    "fullStreetGeometry": "NOT ACCEPTED",
+    "newDepthInference": "NOT RUN",
+    "fusion": "NOT RUN",
+    "newGaussianTraining": "NOT RUN",
+    "publicBrowser": {
+      "status": "PASS",
+      "checks": 9,
+      "duration": "CLI rounded1.4m",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "origin": "https://groundshift-viewer-production.up.railway.app",
+      "pageErrors": [],
+      "manualInspection": [
+        "common-triangulations.png",
+        "report.png",
+        "third observed RGB overlay"
+      ]
+    }
+  },
+  "lab": {
+    "entries": 35,
+    "gaussianScenes": 22,
+    "reports": 13
+  },
+  "rollback": {
+    "release": "viewer-stereo-anchors-2026-11-06",
+    "sha256": "30844c802fff4546dd14a9672e4e62b7e3534d8390ca335e14b810a65db7c0b0",
+    "deployment": "b02ac482-b711-41db-90a0-f6d5451019dc"
+  },
+  "screenshot": {
+    "path": "docs/evidence/road-third-view-browser.png",
+    "bytes": 13309,
+    "sha256": "ef0d5d464e6e936f2acf61f082f701d91f8eec3f9f4f3ca4d818d665e67acafb",
+    "meaning": "Actual public headed Chrome rendering of common44+44 sparse stereo points; not independent geometric accuracy."
+  }
+}

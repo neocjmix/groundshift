@@ -179,3 +179,31 @@ bounded third-RGB check. Next useful work is a direction/range support map and
 localized diagnostics of unsupported road, facade and far regions. Preserve
 visibility/coverage denominators. Do not expand to a full street Gaussian merely
 because this small supported subset agrees.
+
+## Implementation files
+
+Implementation commit`4d125f280f79dd9f1a62fdb452d9b46b8bae5757`:
+
+- Native execution:`scripts/check-road-third-view.py`,
+  `scripts/evaluate-road-third-view.py`, `scripts/third_view_geometry.py`.
+- Publication:`scripts/publish-road-third-view.py`,
+  `scripts/observation-worlds.json`.
+- Browser:`experiments/road-third-view/index.html`, `src/road-third-view.ts`,
+  `src/road-third-view.css`, `vite.config.ts`.
+- Tests:`scripts/tests/test_third_view_geometry.py`,
+  `tests/browser/road-third-view.pw.mjs`.
+- Documentation:`README.md`, `docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md`,
+  this report; evidence:`docs/evidence/road-third-view.json`,
+  `road-third-view-protocol.json`, `road-third-view-calibration.json`,
+  `road-third-view-calibration-protocol.json`, `road-third-view-coverage.json`.
+
+Deployment-pointer and final verification commits update only deployment/docs;
+their evidence is recorded in[DEPLOYMENT.md](DEPLOYMENT.md). No original footage,
+large generated assets or model weights are committed to Git.
+
+Final publication **PASS**: immutable337,976,806-byte archive read back, server
+checksum verified,250 selected public hashes correct including all12 new report
+files, public headed Chrome9 checks pass(CLI rounded1.4m). See
+[release evidence](evidence/road-third-view-release.json) and
+[actual public sparse-cloud screenshot](evidence/road-third-view-browser.png).
+The lab preserves22 Gaussian scenes and13 reports in chronological order.

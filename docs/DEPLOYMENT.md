@@ -4,6 +4,54 @@
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
+## Third observed panorama road diagnostics — 2026-11-06 KST
+
+[New public report](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/)
+adds actual third-RGB overlays,24 deterministic real-image examples, interactive
+291-old/44-new sparse triangulations and frozen-calibration comparisons.35 lab
+entries:22 prior Gaussian scenes and13 reports. All earlier outputs remain.
+[Native experiment and limitations](ROAD_THIRD_VIEW.md). Execution/publication
+are separate from full-street geometry, which remains **NOT ACCEPTED**.
+
+| Item | Verified value |
+|---|---|
+| Implementation | `4d125f280f79dd9f1a62fdb452d9b46b8bae5757` |
+| Release | [viewer-road-third-view-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-road-third-view-2026-11-06) |
+| Archive | `groundshift-road-third-view-20261106.tar.gz`,337,976,806 bytes |
+| SHA-256 | `d512f227c301bfc1da6a52fcc2248c2587d5ca30e0e8677b4679fa5c91f1e11a` |
+| Static archive | 561 `www/` files,416,556,684 bytes |
+| Staged inventory | 564 files,416,557,371 bytes including three support files |
+| Pointer commit | `3d8654d91782e92a7d0beaaf8c5922c772aef217` |
+| Railway deployment | `1e6d8e96-9e61-4ce8-8c25-dd3987a320d9`, SUCCESS at04:29:28 UTC |
+| Trigger | Explicit connector request for existing branch-backed service, no commit pin |
+
+**PASS:** every archive member matches the curated inventory; public GitHub
+re-download matches size/hash(85.075s); Railway checksum log reports
+`/tmp/viewer.tar.gz: OK` at04:28:52 UTC. Health returns200/`ok`.514 prior packaged
+world/experiment data hashes are unchanged; compiled HTML/bundle references and
+appended lab timeline are separately updated. All103 pinned scooter/input hashes
+and21 pre-execution protocol hashes remain unchanged.
+
+**PASS:** TypeScript/lint/build, JS166 tests, Python199 distinct passes across two
+environments. Three HDR checks **NOT RUN**. Nine local headed Chrome156 checks
+pass(30.8s), with manual sparse-cloud/overlay/screenshot inspection. All250
+selected public file sizes/hashes match(43.728s), including all12 new report
+assets/entry, earlier panorama reports, compiled bundles, lab/catalog and preserved
+scooter assets. Full561-file public recrawl **NOT RUN**. All nine public headed
+Chrome156 checks pass(CLI rounded1.4m); real cloud/source/color/orbit/reset,
+measured subsets, diagnostic images, downloads and lab ordering are exercised.
+Simulated failure/race checks are labeled separately in the suite. Manual review
+of public sparse-cloud/overlay/report screenshots confirms actual rendering;
+this is not an accuracy acceptance gate.
+[Sanitized release evidence](evidence/road-third-view-release.json) and
+[public rendered cloud screenshot](evidence/road-third-view-browser.png).
+
+Rollback remains the prior immutable `viewer-stereo-anchors-2026-11-06` release,
+archiveSHA `30844c802fff4546dd14a9672e4e62b7e3534d8390ca335e14b810a65db7c0b0`,
+previous deployment `b02ac482-b711-41db-90a0-f6d5451019dc`.
+Automatic push deployment remains unverified; the explicit trigger above was used.
+No raw source photographs, private footage, weights or raw job logs were uploaded.
+
 ## Observed road anchors and calibration — 2026-11-06 KST
 
 [New public report](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/)

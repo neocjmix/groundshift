@@ -4,11 +4,15 @@ Railway displays every distinct exported Groundshift scene, including low-qualit
 and superseded trials. A successful deployment means that the files and viewer
 work; it does not change a reconstruction's quality result.
 
-The current observation release contains 15 distinct scenes: the previous four
-worlds, six Beijing panorama/Gaussian trials, and five earlier dozer/desk trials. The
-camera-path re-export of the original supplied-pose dozer shares its unchanged
-PLY with the existing scene; its lineage is retained in the report rather than
-adding a duplicate binary.
+The current observation release preserves22 distinct Gaussian scenes and35
+chronological lab entries(22 scenes,13 reports). The latest
+[third-view road diagnostic](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/)
+shows actual photos4/5/6,44/291 supported road tracks,247 unconfirmed tracks,
+sparse stereo PLYs and frozen-calibration comparisons. No new Gaussian was trained.
+The [run report](ROAD_THIRD_VIEW.md) records local gains and remaining coverage/
+geometry limits; [deployment evidence](DEPLOYMENT.md) separates publication from
+quality. The supplied-pose dozer's camera-path re-export shares its unchanged PLY
+with the existing scene; lineage remains visible instead of duplicating the binary.
 
 The home catalog offers **Experiments**, category filters and text search. The
 [comparison report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html)
