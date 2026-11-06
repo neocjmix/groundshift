@@ -44,6 +44,33 @@ is changed. Public deployment/hash/browser checks are initially NOT RUN and
 execute after dispatch. Evidence remains local under
 `data/jobs/tourist-streaming-20261107/publications/source/`.
 
+The source pointer `4b88c82` deploys as
+`88dbde1f-c2c2-4c9e-8ad0-f80577facc1b`: created
+2026-11-06T16:41:12.616Z, **SUCCESS** at16:42:34.011Z. Anonymous full release
+readback passes in1.181313s. All13 changed public file sizes/SHA-256 values pass
+in7.626873s. Fresh empty-directory ordered extraction of all14 pinned archives
+reproduces all1,155 composed files in4.957429s. The server verifies
+`/tmp/tourist-source.tar.gz: OK`. Actual public report/browser interaction checks
+remain separate from these publication integrity checks and new GS/streaming
+remain NOT RUN.
+
+The bounded HD-acquisition increment is published as soon as the actual source
+window and sanitized evidence are ready. Local acquisition obtains24 consecutive
+ranks988–1011 (approximately58.02m of source GPS path),202,545,787 bytes,
+12,288×6,144JPEGs, in249.668572s. Those HD images remain local. The public
+increment contains only sanitized acquisition IDs/dimensions/size/SHA evidence,
+updated route/summary/timeline and a compact report metric/link. New Gaussian
+reconstruction and GS lazy serving remain **NOT RUN**.
+
+Release `viewer-tourist-acquired-2026-11-07`, archive
+`groundshift-tourist-acquired-20261107.tar.gz`: **99,199 bytes**, SHA-256
+`05e46898feacbaa0f3070f356d74d94e314a89c09262df8b943ea43de32e89d1`.
+Apply it after the fourteen preceding pinned archives. Explicit packaging
+verifies all1,123 selected public files, six changed overlay members and all1,157
+composed files in3.936477s. Existing worlds, source preview JPEGs and prior
+observations remain byte-identical. Public deployment/hash/browser checks run
+after dispatch; raw source downloads and logs remain outside the archive.
+
 ## Conservative SPZ storage observation — 2026-11-07
 
 [PLY/SPZ observation](https://groundshift-viewer-production.up.railway.app/experiments/compression/)

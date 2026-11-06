@@ -94,6 +94,13 @@ RUN wget -q -O /tmp/tourist-source.tar.gz https://github.com/neocjmix/groundshif
     && mkdir /out \
     && tar -xzf /tmp/tourist-source.tar.gz -C /out
 
+# Bounded HD acquisition metadata only; original HD JPEGs and raw logs remain local.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS tourist_acquired
+RUN wget -q -O /tmp/tourist-acquired.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tourist-acquired-2026-11-07/groundshift-tourist-acquired-20261107.tar.gz \
+    && echo '05e46898feacbaa0f3070f356d74d94e314a89c09262df8b943ea43de32e89d1  /tmp/tourist-acquired.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tourist-acquired.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -107,5 +114,6 @@ COPY --from=spz_export /out/www /srv
 COPY --from=spz_measured /out/www /srv
 COPY --from=spz_verified /out/www /srv
 COPY --from=tourist_source /out/www /srv
+COPY --from=tourist_acquired /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
