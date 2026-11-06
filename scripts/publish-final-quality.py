@@ -39,6 +39,9 @@ def main(a):
     phase = source['phase']
     if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', phase):
         raise ValueError('Phase must be a unique lowercase slug')
+    evidence_phase = source.get('evidencePhase', phase)
+    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', evidence_phase):
+        raise ValueError('Reused evidence phase must be an explicit safe slug')
     snapshot = job / 'publications' / phase
     if snapshot.exists():
         raise ValueError('Publication phase already recorded; use a fresh phase identifier')
@@ -63,10 +66,10 @@ def main(a):
             summary[key] = deepcopy(source[key])
     for i, comparison in enumerate(summary.get('comparisons', [])):
         src = Path(comparison['image']).resolve()
-        name = f'comparison/{phase}-{i:02d}{src.suffix.lower()}'
+        name = f'comparison/{evidence_phase}-{i:02d}{src.suffix.lower()}'
         copies.append((src, out / name)); comparison['image'] = './' + name
     if source.get('video'):
-        src = Path(source['video']).resolve(); name = f'comparison/{phase}-motion.mp4'
+        src = Path(source['video']).resolve(); name = f'comparison/{evidence_phase}-motion.mp4'
         copies.append((src, out / name)); summary['video'] = './' + name
     catalog = read(PUBLIC / 'worlds/catalog.json')
     timeline = read(PUBLIC / 'experiments/lab/timeline.json')
