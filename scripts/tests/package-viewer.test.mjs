@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { mkdtemp, mkdir, readFile, writeFile, rm, symlink, rename, access } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import { packageViewer, selectedWorlds, parseObservationSpec } from '../package-viewer.mjs';
 
 const temporary = [];
@@ -69,6 +70,24 @@ async function observationFixture() {
 }
 
 describe('curated viewer packaging', () => {
+  it('packages only declared checksum-pinned stream files and excludes ownership/source evidence',async()=>{
+    const {root,output,put,spec,manifest,world}=await observationFixture();
+    const data='synthetic chunk, not actual rendering evidence';
+    manifest.assets[0]={kind:'gaussian-splat',format:'spz',path:'scene.spz'};manifest.streaming={path:'chunks/index.json'};
+    spec.worlds[0].asset='scene.spz';spec.worlds[0].format='spz';
+    await put(`dist/worlds/${world}/world.json`,manifest);await put(`dist/worlds/${world}/scene.spz`,'synthetic full control');
+    await put(`dist/worlds/${world}/chunks/index.json`,{schemaVersion:1,coordinateSpace:'viewer-world',totalSplats:1,maxResidentChunks:1,chunks:[{id:'0',path:'chunk-00.spz',bytes:Buffer.byteLength(data),splats:1,sha256:createHash('sha256').update(data).digest('hex'),anchors:[[0,0,0]]}]});
+    await put(`dist/worlds/${world}/chunks/chunk-00.spz`,data);await put(`dist/worlds/${world}/ownership.bin`,'local only');await put(`dist/worlds/${world}/chunks/unlisted.spz`,'unlisted');
+    await packageViewer({root,output,includeExperiments:true,observationSpec:spec});
+    expect(await readFile(path.join(output,`www/worlds/${world}/chunks/chunk-00.spz`),'utf8')).toBe(data);
+    await expect(access(path.join(output,`www/worlds/${world}/ownership.bin`))).rejects.toThrow();await expect(access(path.join(output,`www/worlds/${world}/chunks/unlisted.spz`))).rejects.toThrow();
+  });
+  it('rejects a corrupt declared stream chunk before creating any package',async()=>{
+    const {root,output,put,spec,manifest,world}=await observationFixture();manifest.assets[0]={kind:'gaussian-splat',format:'spz',path:'scene.spz'};manifest.streaming={path:'chunks/index.json'};spec.worlds[0].asset='scene.spz';spec.worlds[0].format='spz';
+    await put(`dist/worlds/${world}/world.json`,manifest);await put(`dist/worlds/${world}/scene.spz`,'synthetic');await put(`dist/worlds/${world}/chunks/chunk-00.spz`,'bad');
+    await put(`dist/worlds/${world}/chunks/index.json`,{schemaVersion:1,coordinateSpace:'viewer-world',totalSplats:1,maxResidentChunks:1,chunks:[{id:'0',path:'chunk-00.spz',bytes:3,splats:1,sha256:'0'.repeat(64),anchors:[[0,0,0]]}]});
+    await expect(packageViewer({root,output,includeExperiments:true,observationSpec:spec})).rejects.toThrow('integrity mismatch');await expect(access(output)).rejects.toThrow();
+  });
   it('defaults to only the sample, filters discovery and excludes arbitrary files', async () => {
     const { root, output } = await fixture();
     const result = await packageViewer({ root, output });

@@ -52,6 +52,32 @@ function pathManifest(): WorldManifest {
   return input;
 }
 
+const syntheticIndex={schemaVersion:1,coordinateSpace:'viewer-world',totalSplats:10,maxResidentChunks:1,chunks:[{id:'one',path:'one.spz',bytes:100,splats:10,sha256:'a'.repeat(64),anchors:[[0,0,0]]}]};
+
+describe('spatial stream metadata boundary',()=>{
+  it('resolves redirected index/chunk URLs without eagerly fetching any binary',async()=>{
+    const input={...manifest(),streaming:{path:'chunks/index.json'}};
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    const fetch=vi.fn().mockResolvedValueOnce(jsonResponse(input,'https://example.com/world/world.json')).mockResolvedValueOnce(jsonResponse(syntheticIndex,'https://cdn.example.com/new/index.json'));
+    vi.stubGlobal('fetch',fetch);
+    const result=await loadWorld('/world.json',new AbortController().signal);
+    expect(fetch).toHaveBeenCalledTimes(2);expect(result.streaming?.urls.get('one')).toBe('https://cdn.example.com/new/one.spz');
+  });
+  it('rejects an aborted index decode instead of returning stale metadata',async()=>{
+    const controller=new AbortController(),response=jsonResponse(syntheticIndex,'https://example.com/index.json');
+    vi.spyOn(response,'json').mockImplementation(async()=>{controller.abort();return syntheticIndex;});
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(jsonResponse({...manifest(),streaming:{path:'index.json'}},'https://example.com/world.json')).mockResolvedValueOnce(response));
+    await expect(loadWorld('/world.json',controller.signal)).rejects.toMatchObject({name:'AbortError'});
+  });
+  it('releases all local URLs when a later declared chunk is missing',async()=>{
+    let n=0;vi.spyOn(URL,'createObjectURL').mockImplementation(()=>`blob:synthetic-${++n}`);const revoke=vi.spyOn(URL,'revokeObjectURL').mockImplementation(()=>{});
+    const index={...syntheticIndex,totalSplats:20,chunks:[...syntheticIndex.chunks,{...syntheticIndex.chunks[0],id:'two',path:'missing.spz'}]};
+    await expect(loadLocalWorld([localFile('x/world.json',JSON.stringify({...manifest(),streaming:{path:'chunks/index.json'}})),localFile('x/assets/scene.ply','synthetic'),localFile('x/chunks/index.json',JSON.stringify(index)),localFile('x/chunks/one.spz','synthetic')])).rejects.toThrow('Missing stream chunk');
+    expect(revoke).toHaveBeenCalledTimes(2);
+  });
+});
+
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();

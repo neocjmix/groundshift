@@ -47,3 +47,6 @@
   .path-note { font-size: 10px; line-height: 1.4; }
   .path-provenance { margin-top: 6px; }
 }
+.stream-panel{position:absolute;z-index:4;right:1rem;bottom:5rem;max-width:min(25rem,calc(100% - 2rem));display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem;background:#122029ed;border:1px solid #405259;border-radius:.5rem;font-size:.8rem;color:#dbe8e5}
+.stream-panel span,.stream-panel small,.stream-panel p{flex-basis:100%;margin:0;overflow-wrap:anywhere}
+.stream-panel button{padding:.3rem .6rem;border:1px solid #5b8077;border-radius:.3rem;background:#263d35;color:white;cursor:pointer}

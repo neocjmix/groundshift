@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, readdir, lstat, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseWorldManifest } from '../src/world.ts';
+import { parseWorldManifest,parseStreamIndex } from '../src/world.ts';
 import { parseBackground, parseBackgroundMesh } from '../src/background.ts';
 import { parseSceneCatalog } from '../src/catalog.ts';
 
@@ -191,6 +191,20 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
       }
     }
     for (const name of [definition.asset, 'preview.jpg']) await add(`${prefix}/${name}`);
+    if(manifest.streaming){
+      const name=relativePath(manifest.streaming.path),bytes=await read(`${prefix}/${name}`);
+      assertPublicMetadata(bytes.toString('utf8'),worldName);
+      const index=parseStreamIndex(JSON.parse(bytes.toString('utf8'))),base=path.posix.dirname(name);
+      if(manifest.assets[0].format!=='spz')throw new Error('Spatial chunks require an SPZ control');
+      plan(`www/worlds/${worldName}/${name}`,bytes);
+      for(const chunk of index.chunks){
+        const file=path.posix.join(base,relativePath(chunk.path));
+        if(!file.endsWith('.spz'))throw new Error('Only declared SPZ chunks can be packaged');
+        const data=await read(`${prefix}/${file}`);
+        if(data.length!==chunk.bytes||createHash('sha256').update(data).digest('hex')!==chunk.sha256)throw new Error('Spatial chunk integrity mismatch');
+        plan(`www/worlds/${worldName}/${file}`,data);
+      }
+    }
   }
   for (const file of observations.files) {
     const bytes = await read(`dist/${file}`);

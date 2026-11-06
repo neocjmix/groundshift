@@ -5,6 +5,7 @@ import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
 import type { LoadedWorld } from "./load-world";
 import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-path";
 import "./Viewer.css";
+import { ChunkStream,type StreamStats } from './streaming';
 
 type NavigationState = {
   mode: 'orbit' | 'camera-path';
@@ -55,6 +56,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   });
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const [streamEnabled,setStreamEnabled]=useState(()=>new URLSearchParams(window.location.search).get('stream')!=='off');
+  const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
+  const retryChunks=useRef<()=>void>(()=>{});
 
   useEffect(() => {
     const container = mount.current!;
@@ -66,6 +70,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let spark: SparkRenderer | undefined;
     let mesh: SplatMesh | undefined;
     let meshPending = false;
+    let stream:ChunkStream<SplatMesh>|undefined;
     let resize: ResizeObserver | undefined;
     let failCleanup: (() => void) | undefined;
     let navigationCleanup: (() => void) | undefined;
@@ -74,6 +79,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       if (!disposed && !failed) {
         failed = true;
         abort.abort();
+        stream?.dispose();
         renderer?.setAnimationLoop(null);
         setStatus({
           phase: "error",
@@ -275,6 +281,36 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         camera.updateProjectionMatrix();
       });
       resize.observe(container);
+      let count=0,received=0;
+      if(world.streaming&&streamEnabled){
+        setStreamStats(null);
+        const source=world.streaming;
+        stream=new ChunkStream(source,{
+          load:async(chunk,url,signal,onBytes)=>{
+            const response=await fetch(url,{signal});
+            if(!response.ok)throw new Error(`Chunk HTTP ${response.status}`);
+            if(response.headers.get('content-type')?.includes('text/html'))throw new Error('Chunk URL returned HTML');
+            const parts:Uint8Array[]=[];let length=0;const reader=response.body?.getReader();
+            if(!reader)throw new Error('Chunk response has no readable body');
+            for(;;){const {done,value}=await reader.read();if(done)break;length+=value.length;onBytes(value.length);if(length>chunk.bytes){await reader.cancel();throw new Error('Chunk exceeds declared bytes');}parts.push(value);}
+            if(length!==chunk.bytes)throw new Error('Chunk byte length mismatch');
+            const bytes=new Uint8Array(length);let at=0;for(const part of parts){bytes.set(part,at);at+=part.length;}parts.length=0;
+            const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');
+            if(hash!==chunk.sha256)throw new Error('Chunk checksum mismatch');
+            signal.throwIfAborted();
+            const resource=new SplatMesh({fileBytes:bytes,fileType:SplatFileType.SPZ});
+            try{await resource.initialized;if(resource.numSplats!==chunk.splats)throw new Error('Chunk Gaussian count mismatch');}
+            catch(error){resource.dispose();throw error;}
+            const transform=world.manifest.coordinates.assetToWorld;resource.position.fromArray(transform.position);resource.quaternion.fromArray(transform.quaternion);resource.scale.setScalar(transform.scale);
+            return resource;
+          },
+          show:resource=>scene.add(resource),hide:resource=>scene.remove(resource),
+          changed:stats=>{if(disposed||failed)return;count=stats.splats;received=stats.transferredBytes;setStreamStats(stats);},
+        });
+        retryChunks.current=()=>stream?.retry();
+        stream.update(camera.position.toArray());
+      }else{
+      setStreamStats(null);
       const response = await fetch(world.assetUrl, { signal: abort.signal });
       if (!response.ok)
         throw new Error(
@@ -284,7 +320,6 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         throw new Error("The scene URL returned a web page instead of a Gaussian asset. Check the asset path and download the sample if needed.");
       const total = Number(response.headers.get("content-length"));
       const chunks: Uint8Array[] = [];
-      let received = 0;
       const reader = response.body?.getReader();
       if (!reader)
         throw new Error("This browser could not stream the scene file.");
@@ -334,7 +369,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         if (disposed || failed) mesh.dispose();
       }
       if (disposed || failed) return;
-      const count = mesh.splats?.getNumSplats() ?? 0;
+      count = mesh.splats?.getNumSplats() ?? 0;
       if (count === 0)
         throw new Error("The asset contains no renderable Gaussians.");
       const transform = world.manifest.coordinates.assetToWorld;
@@ -342,12 +377,14 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       mesh.quaternion.fromArray(transform.quaternion);
       mesh.scale.setScalar(transform.scale);
       scene.add(mesh);
+      }
       const gl = renderer.getContext();
       const debug = gl.getExtension("WEBGL_debug_renderer_info");
       const gpu = debug
         ? String(gl.getParameter(debug.UNMASKED_RENDERER_WEBGL))
         : String(gl.getParameter(gl.RENDERER));
-      const loadMs = performance.now() - started;
+      let loadMs = performance.now() - started;
+      let readyPublished=false;
       let last = performance.now();
       let lastFrame = last;
       let lastNavigationUpdate = last;
@@ -371,11 +408,17 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             }
             applyPath();
           } else controls?.update();
+          if(stream){
+            stream.update(camera.position.toArray());
+            renderer.domElement.dataset.stream=JSON.stringify(stream.stats());
+          }
           renderer.render(scene, camera);
           totalFrames++;
           // A render submission is not visual acceptance; acceptance uses screenshots.
-          if (totalFrames === 3)
+          if (!readyPublished&&totalFrames >= 3&&count>0){
+            readyPublished=true;loadMs=performance.now()-started;
             setStatus({ phase: "ready", message: "Scene loaded" });
+          }
           frames++;
           if (now - last >= 1000) {
             setMetrics({
@@ -406,6 +449,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     return () => {
       disposed = true;
       abort.abort();
+      stream?.dispose();
       renderer?.setAnimationLoop(null);
       resize?.disconnect();
       controls?.dispose();
@@ -419,8 +463,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       reset.current = () => {};
       zoom.current = () => {};
       navigate.current = () => {};
+      retryChunks.current=()=>{};
     };
-  }, [world, attempt]);
+  }, [world, attempt,streamEnabled]);
 
   const pathGap = world.cameraPath ? cameraPathGap(world.cameraPath,
     navigation.direction > 0 ? Math.floor(navigation.cursor) + 1 : Math.ceil(navigation.cursor)) : null;
@@ -428,6 +473,13 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   return (
     <div className="scene-shell" data-phase={status.phase}>
       <div ref={mount} className="canvas-mount" />
+      {world.streaming&&<div className="stream-panel" aria-label="Spatial streaming status">
+        <strong>{streamEnabled?'구간 로딩':'전체 로딩 비교'}</strong>
+        <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 로딩으로 비교':'구간 로딩으로 전환'}</button>
+        {streamEnabled&&streamStats&&<><span>상주 {streamStats.resident}/{world.streaming.index.chunks.length}구간 · {streamStats.splats.toLocaleString()}점 · 누적 전송 {(streamStats.transferredBytes/1e6).toFixed(2)}MB</span><span>해제 {streamStats.evicted}회 · 대기 {streamStats.pending} · 파일 합 {(streamStats.residentBytes/1e6).toFixed(2)}MB (GPU 메모리 아님)</span>
+        {streamStats.errors.length>0&&<><p role="alert">구간 오류: {streamStats.errors.join('; ')}</p><button onClick={()=>retryChunks.current()}>구간 다시 시도</button></>}</>}
+        <small>가까운 구간과 인접 구간만 표시합니다. 멀리 보이는 장면은 빠질 수 있습니다.</small>
+      </div>}
       <div className="scene-topline">
         <span className="live-dot" /> WORLD VIEW{" "}
         <span className="topline-separator">/</span> {world.manifest.id}

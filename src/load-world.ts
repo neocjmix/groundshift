@@ -4,6 +4,7 @@ import {
   type WorldManifest,
 } from "./world";
 import { parseCameraPath, type CameraPath } from "./camera-path";
+import { parseStreamIndex,type LoadedStream } from './streaming';
 
 export interface LoadedWorld {
   instanceId: string;
@@ -12,6 +13,7 @@ export interface LoadedWorld {
   location: string;
   cameraPath?: CameraPath;
   cameraPathError?: string;
+  streaming?: LoadedStream;
   release?: () => void;
 }
 
@@ -51,12 +53,21 @@ export async function loadWorld(
   // Retired panorama/shell references remain parseable in archived manifests,
   // but the viewer never fetches them: translated backgrounds degraded UX.
   signal.throwIfAborted();
+  let streaming:LoadedStream|undefined;
+  if(manifest.streaming){
+    const indexResponse=await fetch(resolveAssetUrl(response.url,manifest.streaming.path),{signal});
+    if(!indexResponse.ok)throw new Error(`Stream index: HTTP ${indexResponse.status}`);
+    const index=parseStreamIndex(await indexResponse.json());
+    streaming={index,urls:new Map(index.chunks.map(c=>[c.id,resolveAssetUrl(indexResponse.url,c.path)]))};
+  }
+  signal.throwIfAborted();
   return {
     instanceId: crypto.randomUUID(),
     manifest,
     assetUrl: resolveAssetUrl(response.url, manifest.assets[0].path),
     location: url.pathname,
     ...cameras,
+    streaming,
   };
 }
 
@@ -87,13 +98,25 @@ export async function loadLocalWorld(files: File[], signal?: AbortSignal): Promi
   });
   signal?.throwIfAborted();
   const assetUrl = URL.createObjectURL(asset);
+  const urls:string[]=[assetUrl];
+  let streaming:LoadedStream|undefined;
+  try{
+    if(manifest.streaming){
+      const indexFile=files.find(c=>(c.webkitRelativePath||c.name)===base+manifest.streaming!.path);
+      if(!indexFile)throw new Error('The selected folder is missing its stream index');
+      const index=parseStreamIndex(JSON.parse(await indexFile.text())),indexBase=manifest.streaming.path.slice(0,manifest.streaming.path.lastIndexOf('/')+1);
+      streaming={index,urls:new Map(index.chunks.map(c=>{const file=files.find(f=>(f.webkitRelativePath||f.name)===base+indexBase+c.path);if(!file)throw new Error(`Missing stream chunk ${c.path}`);const url=URL.createObjectURL(file);urls.push(url);return[c.id,url];}))};
+    }
+    signal?.throwIfAborted();
+  }catch(error){urls.forEach(u=>URL.revokeObjectURL(u));throw error;}
   return {
     instanceId: crypto.randomUUID(),
     manifest,
     assetUrl,
     location: file.webkitRelativePath,
     ...cameras,
-    release: () => URL.revokeObjectURL(assetUrl),
+    streaming,
+    release: () => urls.forEach(u=>URL.revokeObjectURL(u)),
   };
 }
 

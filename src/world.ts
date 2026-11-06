@@ -93,6 +93,7 @@ const worldManifestSchema = z.object({
   }),
   // Archived field accepted for compatibility; no longer loaded or rendered.
   background: z.object({ path: relativePathSchema }).strict().optional(),
+  streaming: z.object({ path: relativePathSchema }).strict().optional(),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
     sourceUrl: provenanceUrl,
@@ -103,6 +104,16 @@ const worldManifestSchema = z.object({
     notes: nonBlank.optional(),
   }).strict(),
 }).strict();
+
+const point=z.tuple([z.number().finite(),z.number().finite(),z.number().finite()]);
+const positive=z.number().int().positive();
+const chunk=z.object({id:z.string().min(1),path:relativePathSchema,bytes:positive,splats:positive,sha256:z.string().regex(/^[a-f0-9]{64}$/),anchors:z.array(point).min(1)}).strict();
+const schema=z.object({schemaVersion:z.literal(1),coordinateSpace:z.literal('viewer-world'),totalSplats:positive,maxResidentChunks:positive.max(8),chunks:z.array(chunk).min(1).max(256)}).strict().superRefine((v,c)=>{
+  if(new Set(v.chunks.map(x=>x.id)).size!==v.chunks.length||new Set(v.chunks.map(x=>x.path)).size!==v.chunks.length||v.chunks.reduce((n,x)=>n+x.splats,0)!==v.totalSplats)
+    c.addIssue({code:'custom',message:'Chunk identities must be unique and counts must partition the source'});
+});
+export type StreamIndex=z.infer<typeof schema>;
+export const parseStreamIndex=(input:unknown):StreamIndex=>schema.parse(input);
 
 export type WorldManifest = z.infer<typeof worldManifestSchema>;
 
