@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { PNG } from 'pngjs';
+import { createHash } from 'node:crypto';
 
 const summary = JSON.parse(await readFile('public/experiments/street/summary.json', 'utf8'));
 const modelUrl = model => `/?world=${encodeURIComponent(model.world)}`;
@@ -47,10 +48,26 @@ test('street conclusion exposes every actual outcome, matching images, metrics, 
   await video.evaluate(v => v.load());
   await expect.poll(() => video.evaluate(v => v.readyState)).toBeGreaterThanOrEqual(2);
   expect(await video.evaluate(v => v.duration)).toBeGreaterThan(8);
-  const decoded = [];
+  const decoded = [], decodedTimes = [];
   for (const seconds of [1, 5]) {
-    await video.evaluate((v, t) => new Promise(resolve => { v.addEventListener('seeked', resolve, { once: true }); v.currentTime = t; }), seconds);
-    decoded.push(await video.evaluate(v => { const c = document.createElement('canvas'); c.width = 96; c.height = 96; c.getContext('2d').drawImage(v, 0, 0, 96, 96); return Array.from(c.getContext('2d').getImageData(0, 0, 96, 96).data).reduce((s, x) => s + x, 0); }));
+    // seeked can precede presentation of the decoded frame to drawImage.
+    // Capture inside the frame callback and require its actual media timestamp.
+    const frame = await video.evaluate((v, t) => new Promise((resolve, reject) => {
+      let handle;
+      const timeout = setTimeout(() => { v.pause(); v.cancelVideoFrameCallback(handle); reject(new Error('No decoded frame at ' + t)); }, 10000);
+      const capture = (_, metadata) => {
+        if (Math.abs(metadata.mediaTime - t) > .2) { handle = v.requestVideoFrameCallback(capture); return; }
+        const c = document.createElement('canvas'); c.width = 96; c.height = 96;
+        c.getContext('2d').drawImage(v, 0, 0, 96, 96); v.pause(); clearTimeout(timeout);
+        resolve({mediaTime:metadata.mediaTime,pixels:Array.from(c.getContext('2d').getImageData(0, 0, 96, 96).data)});
+      };
+      handle = v.requestVideoFrameCallback(capture); v.currentTime = t;
+      // Paused seeks did not reliably schedule a presentation callback here.
+      // Require actual playback, then pause only after the matching frame.
+      v.play().catch(error => { clearTimeout(timeout); v.cancelVideoFrameCallback(handle); reject(error); });
+    }), seconds);
+    decodedTimes.push(frame.mediaTime);
+    decoded.push(createHash('sha256').update(Buffer.from(frame.pixels)).digest('hex'));
   }
   expect(decoded[0]).not.toBe(decoded[1]);
   await page.locator('#verdict-title').scrollIntoViewIfNeeded();
@@ -61,7 +78,7 @@ test('street conclusion exposes every actual outcome, matching images, metrics, 
   await expect(page.locator('canvas,iframe')).toHaveCount(0);
   expect(gaussianRequests).toEqual([]);
   expect(errors).toEqual([]);
-  await writeFile(info.outputPath('report-checks.json'), JSON.stringify({ time: new Date().toISOString(), browser: browser.version(), actualModels: summary.models.map(m => m.id), actualVideoDecodedFrameSums: decoded, checks: ['all model previews decoded', 'held level/down, train and offpath references; all region denominators', 'actual video seek and different decoded frames', 'all success/failure stages retained', '390px overflow', 'no automatic Gaussian download'], errors }, null, 2));
+  await writeFile(info.outputPath('report-checks.json'), JSON.stringify({ time: new Date().toISOString(), browser: browser.version(), actualModels: summary.models.map(m => m.id), actualVideoDecodedFrameSha256: decoded, actualVideoDecodedMediaTimes:decodedTimes, checks: ['all model previews decoded', 'held level/down, train and offpath references; all region denominators', 'actual video seek and different decoded frames at matching timestamps', 'all success/failure stages retained', '390px overflow', 'no automatic Gaussian download'], errors }, null, 2));
 });
 
 test('street report opens the recommended actual scene on demand with one renderer', async ({ page }) => {
