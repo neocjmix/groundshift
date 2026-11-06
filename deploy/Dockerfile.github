@@ -44,11 +44,19 @@ RUN wget -q -O /tmp/tangent-limits.tar.gz https://github.com/neocjmix/groundshif
     && mkdir /out \
     && tar -xzf /tmp/tangent-limits.tar.gz -C /out
 
+# Final verified status and results-first order: exactly two JSON files.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS verified
+RUN wget -q -O /tmp/tangent-verified.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-verified-2026-11-06/groundshift-tangent-verified-20261106.tar.gz \
+    && echo 'd8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842  /tmp/tangent-verified.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tangent-verified.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
 COPY --from=tangent /out/www /srv
 COPY --from=evidence /out/www /srv
 COPY --from=limits /out/www /srv
+COPY --from=verified /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

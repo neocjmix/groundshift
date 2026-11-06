@@ -68,6 +68,12 @@ def main(a):
         src = Path(comparison['image']).resolve()
         name = f'comparison/{evidence_phase}-{i:02d}{src.suffix.lower()}'
         copies.append((src, out / name)); comparison['image'] = './' + name
+    if 'comparisonOrder' in source:
+        order = source['comparisonOrder']
+        count = len(summary.get('comparisons', []))
+        if not isinstance(order, list) or any(type(i) is not int for i in order) or sorted(order) != list(range(count)):
+            raise ValueError('Comparison order must be an exact index permutation')
+        summary['comparisons'] = [summary['comparisons'][i] for i in order]
     if source.get('video'):
         src = Path(source['video']).resolve(); name = f'comparison/{evidence_phase}-motion.mp4'
         copies.append((src, out / name)); summary['video'] = './' + name
