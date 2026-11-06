@@ -87,6 +87,13 @@ RUN wget -q -O /tmp/spz-verified.tar.gz https://github.com/neocjmix/groundshift/
     && mkdir /out \
     && tar -xzf /tmp/spz-verified.tar.gz -C /out
 
+# Licensed tourist-route source previews publish before HD acquisition/reconstruction.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS tourist_source
+RUN wget -q -O /tmp/tourist-source.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tourist-source-2026-11-07/groundshift-tourist-source-20261107.tar.gz \
+    && echo '09c91393bd069225e82b03bec77d8528b191952272d73d571fef2a009231522c  /tmp/tourist-source.tar.gz' | sha256sum -c - \
+    && mkdir /out \
+    && tar -xzf /tmp/tourist-source.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -99,5 +106,6 @@ COPY --from=gs_only_verified /out/www /srv
 COPY --from=spz_export /out/www /srv
 COPY --from=spz_measured /out/www /srv
 COPY --from=spz_verified /out/www /srv
+COPY --from=tourist_source /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

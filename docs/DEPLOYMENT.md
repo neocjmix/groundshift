@@ -1,6 +1,6 @@
 # Railway viewer deployment
 
-**Live:** [PLY/SPZ storage comparison](https://groundshift-viewer-production.up.railway.app/experiments/compression/) · [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Paris source scouting](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/) · [PLY/SPZ storage comparison](https://groundshift-viewer-production.up.railway.app/experiments/compression/) · [Tangent GS only · current observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/) · [Final quality · actual1024px result](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four local pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
 
@@ -14,6 +14,35 @@ parallel. Show provisional results and pending checks as NOT RUN; publish later
 validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
+
+## Paris tourist-route source scouting — 2026-11-07
+
+[New source report](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
+provides a new licensed source route, five actual public SD panoramas and a
+Strasbourg candidate preview. It is **not a Gaussian render or GS-streaming
+implementation**. The first increment explicitly marks HD acquisition, new GS
+reconstruction and lazy GS serving **NOT RUN**. A separate bounded local HD
+acquisition continues while this report deploys.
+
+The selected single capture sequence contains 876 consecutive rank808–1683
+Panoramax images, with all875 provider previous-image links confirmed. Its GPS
+polyline is approximately2.185km (median spacing2.53m, maximum3.23m); these are
+source-position priors, not surveyed geometry or full camera extrinsics.
+Published source previews retain Open Licence2.0 attribution to Immergis pour la
+Ville de Paris / Panoramax IGN, and Eurométropole de Strasbourg for the candidate.
+Source HD images and raw acquisition logs stay local.
+
+Release `viewer-tourist-source-2026-11-07`, archive
+`groundshift-tourist-source-20261107.tar.gz`: **1,499,174 bytes**, SHA-256
+`09c91393bd069225e82b03bec77d8528b191952272d73d571fef2a009231522c`.
+Apply it after all thirteen SPZ/historical layers below. Production rebuild
+passes in2.92s. Explicit packaging verifies all1,122 selected public files,
+13changed archive members and all1,155 physically composed files in3.913488s.
+All36 existing worlds, the previous18reports and17inert backgroundfiles remain
+preserved; the new source report is the nineteenth. No scene/model/viewer runtime
+is changed. Public deployment/hash/browser checks are initially NOT RUN and
+execute after dispatch. Evidence remains local under
+`data/jobs/tourist-streaming-20261107/publications/source/`.
 
 ## Conservative SPZ storage observation — 2026-11-07
 
