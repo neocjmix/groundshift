@@ -20,6 +20,7 @@ export default defineConfig({
     finalQuality: "experiments/final-quality/index.html",
     tangentBackground: "experiments/tangent-background/index.html",
     compression: "experiments/compression/index.html",
+    touristStreaming: "experiments/tourist-streaming/index.html",
   } } },
   server: { host: "127.0.0.1", port: 4317, strictPort: true },
   preview: { host: "127.0.0.1", port: 4317, strictPort: true },

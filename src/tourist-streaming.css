@@ -1,0 +1,5 @@
+.tourist-observation #route{width:100%;height:auto;border:1px solid #34414f;border-radius:12px;background:#121e28;margin-bottom:18px}
+.tourist-observation #preview-index{display:block;width:100%;margin:18px 0;accent-color:#91d7c7}
+.tourist-observation p,.tourist-observation li{overflow-wrap:anywhere;line-height:1.7}
+.tourist-observation li{color:#bac9d3;margin:14px 0;max-width:900px}
+.tourist-observation .metric strong{font-size:25px}

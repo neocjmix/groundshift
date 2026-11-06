@@ -1173,6 +1173,16 @@
     "experiments/compression/comparison-2.jpg",
     "experiments/compression/comparison-3.jpg",
     "experiments/compression/motion.mp4",
-    "experiments/compression/evaluation-cameras.json"
+    "experiments/compression/evaluation-cameras.json",
+    "experiments/tourist-streaming/index.html",
+    "experiments/tourist-streaming/paris-1246.jpg",
+    "experiments/tourist-streaming/paris-1440.jpg",
+    "experiments/tourist-streaming/summary.json",
+    "experiments/tourist-streaming/paris-1683.jpg",
+    "experiments/tourist-streaming/ATTRIBUTION.txt",
+    "experiments/tourist-streaming/paris-1008.jpg",
+    "experiments/tourist-streaming/route.json",
+    "experiments/tourist-streaming/paris-808.jpg",
+    "experiments/tourist-streaming/strasbourg.jpg"
   ]
 }
