@@ -297,6 +297,15 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "paris-58m-lod",
+      "source": "data/jobs/paris-streaming-20261107/publication-paris-58m-lod/world",
+      "asset": "scene.spz",
+      "format": "spz",
+      "credits": [
+        "SOURCE_LICENSE"
+      ]
     }
   ],
   "files": [
