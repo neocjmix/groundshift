@@ -1,8 +1,70 @@
 # Railway viewer deployment
 
-**Live:** [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
+**Live:** [Short street · seven GS results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth control](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [One-panorama depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Real-only scooter comparison](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter experiment](https://groundshift-viewer-production.up.railway.app/experiments/object-focus/) · [Observation room](https://groundshift-viewer-production.up.railway.app/) · [Depth-guided scene report](https://groundshift-viewer-production.up.railway.app/experiments/depth-warp/) · [Photo depth maps](https://groundshift-viewer-production.up.railway.app/experiments/depth-v2/) · [65-frame panorama report](https://groundshift-viewer-production.up.railway.app/experiments/video-4to6/) · [My desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json) · [Estimated-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/independent/world.json) · [Supplied-camera dozer](https://groundshift-viewer-production.up.railway.app/?world=/worlds/reconstructed/world.json) · [Houseplant](https://groundshift-viewer-production.up.railway.app/?world=/worlds/sample/world.json)
 
 The user explicitly designates Railway as an **observation surface**, not a production quality gate. Viewer changes, every distinct exported trial, and sanitized experiment evidence ship in the same workflow regardless of quality. Reconstruction, camera estimation and training remain local. Private original inputs, raw job logs and model weights stay on the Mac; explicitly licensed public comparison crops are included with attribution. The hosted viewer can open a private world folder directly in the browser, without uploading it.
+
+## Short-street reconstruction conclusion — 2026-11-06 KST
+
+[Recommended street3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-dense/world.json) ·
+[All seven controls, source comparisons and motion](https://groundshift-viewer-production.up.railway.app/experiments/street/) ·
+[Chronological lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/).
+29 Gaussian scenes,14 reports,43 chronological entries. All previous outputs
+remain. [Actual native evidence and limits](STREET_CONCLUSION.md): a recognizable
+short route works on M2, with thin-structure ghosting and unverified unrestricted
+walking/accurate geometry. Dense8k is the recommended observed result; longer
+training and more filtering did not beat its mean held RGB error.
+
+| Item | Verified value |
+|---|---|
+| Implementation | `0801d91e98f7aec9b84b8b65905456225a849351` (native core `3474a2f`) |
+| Release | [viewer-street-conclusion-2026-11-06](https://github.com/neocjmix/groundshift/releases/tag/viewer-street-conclusion-2026-11-06) |
+| Archive | `groundshift-street-conclusion-20261106-v2.tar.gz`,685,081,601 bytes |
+| SHA-256 | `d84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f` |
+| Static archive | 827 `www/` files,777,890,271 bytes |
+| Staged inventory | 830 files,777,890,958 bytes including three support files |
+| Pointer | `da2956e74be211502e5f8115a3fd60f22ee48f97` |
+| Railway deployment | `f70d833a-d15d-41c8-b23e-b4f963ea4819`, SUCCESS at08:29:24.860 UTC |
+| Trigger | Explicit existing repo/feature-branch connector, no commit pin |
+
+**PASS:** all archive members read back against the inventory;524 prior
+world/report data hashes remain unchanged. GitHub's uploaded size/digest match;
+a complete anonymous public download also matches in160.165s. Server-side
+SHA-256 remains mandatory before image assembly. Railway logs report `/tmp/viewer.tar.gz: OK` at08:27:38.398 UTC; health is200/`ok`, and the actual seven-model public report serves the expected recommendation.
+
+**PASS:** actual7 Metal exports and525 matched Chrome/Spark renders,166 JS
+tests,217 distinct Python tests across their required environments, TypeScript,
+lint and production build. All three HDR tests actually ran with the existing
+HDR FFmpeg. All61 local headed Chrome checks pass in240.066s, covering all29
+scenes and old reports. After moving the recommended3D action above the long
+explanation,11 street checks pass again in57.6s on the final build. Actual decoded
+video, matching source images/metrics, on-demand3D, path playback/free look,
+mobile and labeled failure fixtures are included. Three displayed one-second
+FPS samples per new scene were60 at the initial route view/1440×1000; this is
+single-session UI sampling, not a controlled benchmark or the movie's6fps rate.
+
+**PASS:** all827 public file sizes/SHA-256 hashes match (274.268s), including
+all29 scene binaries/manifests,14 reports, compiled bundles and source comparison
+images. Three unshipped input/log/weight-path probes return404. All20 targeted
+public **headed Chrome156** cases pass in227.532s with no retries/flaky cases:
+all7 new real GS worlds, decoded/seekable motion, source/metric controls,
+chronological lab, mobile and9 previous report regressions. Public screenshots
+of all7 new worlds and the report were inspected. Thin branches/rails visibly
+streak and walls can double; a browser PASS does not approve geometry. The full
+61-case suite was run locally; a full61-case public rerun is NOT RUN.
+[Sanitized release evidence](evidence/street-release.json) ·
+[Actual public viewer screenshot](evidence/street-public.jpg).
+
+A tracked-source0801d91 restore plus the exact archive, isolated offline `npm ci`
+(201 packages), production build and full package reproduces **all830 staged
+file hashes identically**. This is display reconstruction, not another native
+training run. Original photos, private footage, checkpoints and raw job logs
+remain local. All103 pinned baseline hashes remain unchanged.
+
+Rollback remains the immutable `viewer-road-third-view-2026-11-06` release,
+archiveSHA `d512f227c301bfc1da6a52fcc2248c2587d5ca30e0e8677b4679fa5c91f1e11a`,
+previous deployment `1e6d8e96-9e61-4ce8-8c25-dd3987a320d9`.
+Automatic push-only deployment remains unverified; this explicit trigger was used.
 
 ## Third observed panorama road diagnostics — 2026-11-06 KST
 
@@ -822,42 +884,38 @@ The working release procedure must observe a new deployment and use an explicit 
 
 ## Restore scene assets in a fresh checkout
 
-The catalog and preparation recipe are tracked; generated scenes and comparison
-images are ignored. `npm run sample` supplies only Houseplant's Gaussian asset.
-For the current 22-world observation surface, restore the immutable panoramic-depth
-release in a **fresh checkout**. The commands verify the archive before copying
-the named world folders and public experiment assets. Existing files in these paths
-would be replaced; keep any personal variants elsewhere.
+The catalog/recipe are tracked; generated scenes and comparison images are
+ignored. `npm run sample` supplies only Houseplant. For the current29-world
+surface, restore this immutable archive in a **fresh checkout**. These commands
+replace the named generated paths; keep personal variants elsewhere.
 
 ```sh
 (
   set -e
   gs_release_dir=$(mktemp -d)
-  gs_archive=groundshift-panoramic-calibration-20261106.tar.gz
+  gs_archive=groundshift-street-conclusion-20261106-v2.tar.gz
   curl --fail --location --output "$gs_release_dir/$gs_archive" \
-    "https://github.com/neocjmix/groundshift/releases/download/viewer-panoramic-calibration-2026-11-06/$gs_archive"
+    "https://github.com/neocjmix/groundshift/releases/download/viewer-street-conclusion-2026-11-06/$gs_archive"
   printf '%s  %s\n' \
-    '1e486d418be4c0391e033a2f6fd2fb43e580d34baa1f588817094d5b00dee15f' \
+    'd84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f' \
     "$gs_release_dir/$gs_archive" | shasum -a 256 -c -
   tar -xzf "$gs_release_dir/$gs_archive" -C "$gs_release_dir"
-  for gs_world in sample reconstructed independent desk beijing-10k beijing-generated beijing-depth beijing-20k beijing-2k beijing-video-baseline beijing-video-rife dozer-smoke dozer-proof dozer-partial dozer-24 desk-15s scooter-object scooter-context scooter-real-object scooter-real-context scooter-nodepth-object scooter-nodepth-context; do
-    mkdir -p "public/worlds/$gs_world"
-    cp -R "$gs_release_dir/www/worlds/$gs_world/." "public/worlds/$gs_world/"
-  done
-  mkdir -p public/experiments
+  mkdir -p public/worlds public/experiments
+  cp -R "$gs_release_dir/www/worlds/." public/worlds/
   cp -R "$gs_release_dir/www/experiments/." public/experiments/
-  # Vite serves these tracked HTML entries from experiments/.
-  rm -f public/experiments/lab/index.html public/experiments/object-focus/index.html public/experiments/object-real/index.html public/experiments/object-nodepth/index.html public/experiments/panoramic-depth/index.html
-  cp "$gs_release_dir/www/worlds/catalog.json" public/worlds/catalog.json
+  # Tracked Vite entries must use source HTML during development.
+  for gs_entry in experiments/*/index.html; do
+    rm -f "public/$gs_entry"
+  done
 )
 npm ci
 npm run dev
 ```
 
-The earlier 13-world extraction/copy procedure was executed in an isolated fresh
-directory and matched its inventory. The updated 22-world command above has not
-yet been rerun in a fresh checkout; package preparation read all 382 staged files.
-Do not substitute the historical restore evidence for a current restore test.
+**PASS:** tracked-source/archive restoration and isolated offline dependency
+installation/build/package reproduced all830 staged hashes. The development
+entry/module/summary smoke check is PASS (tracked source HTML, transformed module and exact summary hash; HTTP smoke only). This restores the29
+worlds and14 reports; it does not reproduce native camera estimation/training.
 
 This restores display assets only. It neither downloads the private original
 video nor repeats reconstruction. Desk creator-authorized display terms remain

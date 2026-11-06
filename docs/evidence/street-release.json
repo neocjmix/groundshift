@@ -1,0 +1,562 @@
+{
+  "recordedAt": "2026-11-06T08:42:01.775048+00:00",
+  "implementation": "0801d91e98f7aec9b84b8b65905456225a849351",
+  "pointer": "da2956e74be211502e5f8115a3fd60f22ee48f97",
+  "release": "viewer-street-conclusion-2026-11-06",
+  "archive": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T08:18:17.629877+00:00",
+    "files": 827,
+    "wwwBytes": 777890271,
+    "stagedFiles": 830,
+    "stagedBytes": 777890958,
+    "archiveBytes": 685081601,
+    "sha256": "d84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f",
+    "priorDataUnchanged": 524,
+    "elapsedSeconds": 3.106207582866773
+  },
+  "publicArchive": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T08:23:50.207505+00:00",
+    "url": "https://github.com/neocjmix/groundshift/releases/download/viewer-street-conclusion-2026-11-06/groundshift-street-conclusion-20261106-v2.tar.gz",
+    "bytes": 685081601,
+    "sha256": "d84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f",
+    "elapsedSeconds": 160.16454500006512
+  },
+  "githubAsset": {
+    "size": 685081601,
+    "digest": "sha256:d84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f",
+    "state": "uploaded"
+  },
+  "deployment": {
+    "id": "f70d833a-d15d-41c8-b23e-b4f963ea4819",
+    "status": "SUCCESS",
+    "updatedAt": "2026-11-06T08:29:24.860Z",
+    "source": {
+      "reason": "deploy",
+      "commitMessage": "deploy: publish seven street scenes and end-to-end conclusion",
+      "commitHash": "da2956e74be211502e5f8115a3fd60f22ee48f97",
+      "branch": "feat/local-viewer-reconstruction"
+    },
+    "build": [
+      {
+        "message": "/tmp/viewer.tar.gz: OK",
+        "timestamp": "2026-11-06T08:27:38.397917307Z"
+      }
+    ],
+    "trigger": "Explicit existing feature-branch connector; no commit pin. Push-only behavior unverified."
+  },
+  "health": {
+    "status": "PASS",
+    "httpStatus": 200,
+    "body": "ok",
+    "publicModels": 7,
+    "recommended": "dense",
+    "recordedAt": "2026-11-06T08:30:45.795984+00:00"
+  },
+  "publicIntegrity": {
+    "status": "PASS",
+    "fileCount": 827,
+    "totalBytes": 777890271,
+    "elapsedSeconds": 274.267678250093,
+    "privateProbes": [
+      {
+        "path": "data/jobs/street-conclusion-20261106/depth/report.json",
+        "httpStatus": 404
+      },
+      {
+        "path": "experiments/street/training.log",
+        "httpStatus": 404
+      },
+      {
+        "path": "data/tools/depth-hf-cache/config.json",
+        "httpStatus": 404
+      }
+    ],
+    "scope": "Every packaged www/ file, including all29 scene assets/manifests and all14 reports"
+  },
+  "localBrowser": {
+    "full": {
+      "startTime": "2026-11-06T08:12:54.332Z",
+      "duration": 240065.87699999998,
+      "expected": 61,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "finalCtaAndAllStreetModels": {
+      "startTime": "2026-11-06T08:17:40.378Z",
+      "duration": 57593.081,
+      "expected": 11,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "samples": [
+      {
+        "time": "2026-11-06T08:18:09.201Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "filtered",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-filtered%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 280570,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:16.164Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "stereo",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-stereo%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 266952,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:30.676Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense-long",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-dense-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270946,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:23.218Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sphere",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sphere%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 277366,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:02.086Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-dense%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270849,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:17:55.137Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sparse%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 287867,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:18:37.647Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse-long",
+        "url": "http://127.0.0.1:4318/?world=%2Fworlds%2Fstreet-sparse-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 256402,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      }
+    ]
+  },
+  "publicBrowser": {
+    "stats": {
+      "startTime": "2026-11-06T08:36:02.389Z",
+      "duration": 227531.724,
+      "expected": 20,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "modelChecks": [
+      {
+        "time": "2026-11-06T08:38:42.591Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "filtered",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-filtered%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 280570,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:38:59.112Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "stereo",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-stereo%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 266952,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:39:32.703Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense-long",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-dense-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270946,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:39:16.459Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sphere",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-sphere%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 277366,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:38:26.276Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "dense",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-dense%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 270849,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:38:09.042Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-sparse%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 287867,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      },
+      {
+        "time": "2026-11-06T08:39:49.200Z",
+        "browser": "156.0.8078.81",
+        "mode": "headed",
+        "model": "sparse-long",
+        "url": "https://groundshift-viewer-production.up.railway.app/?world=%2Fworlds%2Fstreet-sparse-long%2Fworld.json",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "adapter": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "centralBrightPixels": 256402,
+        "fpsSamples": [
+          "60 fps",
+          "60 fps",
+          "60 fps"
+        ],
+        "fpsMeaning": "Three displayed one-second samples at the initial route camera; single session, not a controlled performance benchmark.",
+        "checks": [
+          "actual local trained asset",
+          "substantial rendered central pixels",
+          "play/pause recovered path",
+          "free look keeps position",
+          "reset pose",
+          "one canvas"
+        ],
+        "geometricAccuracy": "NOT RUN: independently measured ground truth unavailable",
+        "errors": []
+      }
+    ],
+    "full61CasePublicSuite": "NOT RUN: all61 ran locally;20 targeted public cases cover new7 models and9 prior report checks"
+  },
+  "restore": {
+    "status": "PASS",
+    "restoredDataFiles": 804,
+    "sourceCommit": "0801d91",
+    "source": "Tracked git archive only",
+    "assets": "Exact hash-verified immutable archive",
+    "dependencyInstallation": "PASS: npm ci --offline,201 packages, isolated local node_modules",
+    "productionBuildAndPackage": "PASS",
+    "stagedFiles": 830,
+    "worlds": 29,
+    "reconstruction": "NOT RUN: display restoration/build/package only",
+    "allRebuiltPackageFilesIdentical": 830
+  },
+  "restoreDev": {
+    "status": "PASS",
+    "removedCompiledEntryCopies": [
+      "experiments/perspective-overlap/index.html",
+      "experiments/panoramic-pair/index.html",
+      "experiments/object-real/index.html",
+      "experiments/panoramic-depth/index.html",
+      "experiments/lab/index.html",
+      "experiments/street/index.html",
+      "experiments/panoramic-calibration/index.html",
+      "experiments/stereo-anchors/index.html",
+      "experiments/object-nodepth/index.html",
+      "experiments/road-third-view/index.html",
+      "experiments/object-focus/index.html"
+    ],
+    "trackedDevHtml": true,
+    "transformedSourceBytes": 39112,
+    "summaryHashMatches": true,
+    "browserGpuRendering": "NOT RUN: HTTP development smoke only, separate production/public hardware checks apply"
+  },
+  "baseline": {
+    "status": "PASS",
+    "pinnedFiles": 103
+  },
+  "screenshot": {
+    "path": "docs/evidence/street-public.jpg",
+    "bytes": 326208,
+    "sha256": "28d948a11d70f22d8eb68efd45f84169f90a78454f49bf4ff9d0cec34dc7dab4",
+    "sourcePngSha256": "a486be4c4d33375ceaa99206116668f49509e05499932efebeb909e9295cb2bd",
+    "meaning": "Actual public Chrome viewport of recommended dense8k; JPEG compression only. Source photographs Cicero101/Mapillary,CC BY-SA4.0; detailed credits in STREET_CONCLUSION.md."
+  },
+  "quality": "Recognizable short route, thin structures ghost and walls double. Independently measured geometry/full free walking NOT RUN; P2 geometry NOT ACCEPTED."
+}

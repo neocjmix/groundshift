@@ -2,7 +2,7 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Live demo:** [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 22 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 29 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -12,7 +12,21 @@ Anyone can record a memorable walk, reconstruct an explorable place, and revisit
 ## First goal
 On a 2022 M2 MacBook Air (16 GB), transform a short original walking video into a locally reconstructed 3D scene and revisit it in a browser. Start with path-constrained movement and free look; unrestricted movement comes later.
 
-## Current experiment: a third real photo checks road consistency
+## Current result: a recognizable short street on M2
+
+[Seven actual local reconstructions and the conclusion](docs/STREET_CONCLUSION.md)
+extend the scooter method to a continuous short street. Eight physical centers
+supply96 real512px crops; panorama5 RGB is withheld from GS optimization, while
+all-nine estimated camera/SfM geometry is reused. No diffusion or generated
+intermediate training images. All7 Metal exports and525 matched actual browser
+renders complete. Recommend calibrated depth initialization +8,000 steps:
+409.759s,400,000 Gaussians,36.8MB; held-level mean RGB error27.751 versus sparse8k
+35.541. At the same16k/400k budget, dense28.911 versus sparse32.212; doubling
+steps did not beat dense8k. This is a pipeline comparison, not proof of learned
+depth accuracy. Thin structures ghost, walls double and independent geometry /
+unrestricted walking remain unverified. [Open the comparison and recommended3D](https://groundshift-viewer-production.up.railway.app/experiments/street/).
+
+## Previous experiment: a third real photo checks road consistency
 
 The [executed third-view check](docs/ROAD_THIRD_VIEW.md) independently matches
 real photos5/6 against frozen4/5 road tracks:44/291 (15.1%) are supported,247
@@ -149,7 +163,7 @@ npm run test:browser
 
 Browser tests launch installed **Google Chrome with a visible window**, serve the production build on `127.0.0.1:4318`, and save screenshots/measurements in ignored `test-results/`. Restore the observation assets and previews above for the complete gallery suite. Optional native-scene checks are explicitly skipped when their artifacts are absent; `npm run sample` alone supplies only the original sample splat. `HEADLESS=1 npm run test:browser` is available for automation but is not equivalent to the recorded headed hardware result. Automated pixel checks are supplemented by actual screenshot inspection.
 
-The observation release preparation passed TypeScript, lint, **165 viewer/packager tests**, **102 distinct Python tests** across their required local environments, the production build, and **22 headed Chrome tests**. All 13 exported scene variants render; comparison controls and 72 history rows were checked. These checks reuse measured scene artifacts and do not rerun Metal training or diffusion. Exact release and public-origin verification results are in [DEPLOYMENT.md](docs/DEPLOYMENT.md).
+Current street release checks: TypeScript/lint/build, **166 JS tests**, **217 distinct Python passes** across required environments, **61 full headed Chrome cases**, then **11 street checks on the final layout**, and **20 public headed Chrome cases**. All29 scenes render locally; all7 new scenes also render on the public origin, whose827 packaged file hashes match. Hardware training is recorded separately in the [street result](docs/STREET_CONCLUSION.md); exact public-origin checks and release hashes are in [DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Native reconstruction (M1)
 
@@ -189,6 +203,8 @@ the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
 unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
+- [Short-street result, controls, measurements and reproduction](docs/STREET_CONCLUSION.md)
+- [Panoramic street roadmap and current limits](docs/PANORAMIC_STREET_RECONSTRUCTION_PLAN.md)
 - [Vision](docs/VISION.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Milestones](docs/IMPLEMENTATION.md)

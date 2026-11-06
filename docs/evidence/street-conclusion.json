@@ -204,7 +204,13 @@
   "initialProtocolSha256": "7aec6590c745af19eb4e807332f9dbc6317c73580bf5a226593281a0059359fd",
   "initialPlanSnapshotSha256": "25682a518332a434eea9642c83376b1273858632ff18ff2f36711e420991f576",
   "executedStereoSourceSnapshotSha256": "3a082e331fe35584f08b472cec287b5aade3b3820002419999ab64ae0a97b4c2",
-  "release": "PENDING",
+  "release": {
+    "status": "PASS",
+    "evidence": "street-release.json",
+    "publicFileCount": 827,
+    "publicBrowserCases": 20,
+    "release": "viewer-street-conclusion-2026-11-06"
+  },
   "limitations": [
     "One dataset, jointly estimated all-nine camera/SfM geometry, not independent measured truth.",
     "Initial point density and kind differ; this is a practical pipeline comparison.",

@@ -4,12 +4,22 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
-The [observed-correspondence follow-up](STEREO_ANCHORS.md) runs local CPU SIFT and fixed-pose stereo. A256→512px search-range correction yields291 road candidates; combined calibration improves matched road4→5 disagreement2.43%→0.45%. Reverse-road/facade and invalid far predictions remain limitations. Five cloud controls are inspectable. P2 geometry is NOT ACCEPTED; new inference, fusion and GS are NOT RUN. The preceding [dense perspective](PERSPECTIVE_OVERLAP.md), [calibration control](PANORAMIC_CALIBRATION.md) and baseline artifacts remain.
+The [completed short-street run](STREET_CONCLUSION.md) trains7 real-image worlds
+locally on M2 Metal and renders525 matched camera views. Recommend dense8k:
+409.759s,400k Gaussians, held mean MAE27.751. Same16k/400k control: dense28.911,
+sparse32.212; more steps did not beat the8k dense result. A recognizable short
+route is feasible; P2 accurate geometry and unrestricted walking remain
+unaccepted. The user's end-to-end instruction explicitly permits diagnostic
+training past the earlier stop-before-training gate. Existing best scooter,
+originals, poses and all prior worlds remain preserved. Public release details
+are in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+The earlier [observed-correspondence follow-up](STEREO_ANCHORS.md) runs local CPU SIFT and fixed-pose stereo. A256→512px search-range correction yields291 road candidates; combined calibration improves matched road4→5 disagreement2.43%→0.45%. Reverse-road/facade and invalid far predictions remain limitations. Five cloud controls are inspectable. In that bounded run P2 geometry was NOT ACCEPTED; new inference, fusion and GS were NOT RUN. The preceding [dense perspective](PERSPECTIVE_OVERLAP.md), [calibration control](PANORAMIC_CALIBRATION.md) and baseline artifacts remain.
 
 The latest direction is the [panoramic street plan](PANORAMIC_STREET_RECONSTRUCTION_PLAN.md).
 The bounded [P0/P1 run](PANORAMIC_DEPTH_P1.md) preserves the best scooter result,
 executes two depth models on one ERP and exports calibrated spherical clouds.
-The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) now measures both directions and exposes regional bias. No fusion or Gaussian training is included; P2 geometry acceptance remains NOT RUN.
+The [adjacent-pair follow-up](PANORAMIC_PAIR_P1.md) now measures both directions and exposes regional bias. That bounded run included no fusion or Gaussian training; the later diagnostic street run above preserves its geometry limitations.
 
 The preceding user direction prioritized a visible one-object result and immediate
 Railway publication. Build/package integrity and a brief actual browser check
@@ -22,6 +32,7 @@ completion time, newest first, with an oldest-first option.
 
 | Milestone / acceptance boundary | Result | Evidence |
 | --- | --- | --- |
+| Short street, real images and calibrated dense initialization | PASS for7 actual Metal exports/525 renders; recognizable route, geometric quality partial | [Seven controls and conclusion](STREET_CONCLUSION.md); same16k/400k budget comparison,61 full local browser cases plus11 final-layout checks. |
 | Observed correspondences and road calibration | PASS for actual CPU execution and seven local/seven public headed Chrome checks; P2 NOT ACCEPTED | [Matched evidence](STEREO_ANCHORS.md): SIFT-only failures, inadequate256px stereo search, successful512px retry, five cloud controls and invalid-depth counts. No new GPU operation. |
 | Dense perspective coverage and overlap | PASS for actual MPS/CPU execution and six local/six public headed Chrome checks; P2 geometry NOT ACCEPTED | [Measured controls](PERSPECTIVE_OVERLAP.md): two physical panoramas, augmented/filtered/level/ERP point clouds. Road calibration lacks sparse anchors; filtering is not uniformly beneficial. No fusion or new GS. |
 | Common-track calibration and perspective input control | PASS for actual CPU/MPS execution and targeted local browser; independent geometry NOT RUN | [Measured results](PANORAMIC_CALIBRATION.md): common calibration alone brings no consistent improvement; local perspective depth reduces withheld-feature reprojection errors. No new GS. |
@@ -30,7 +41,7 @@ completion time, newest first, with an oldest-first option.
 | M0 licensed sample, controls, errors, replaceable artifact and actual M2 rendering | PASS | 165 viewer/packager tests, 25 local headed Chrome tests, inspected desktop/mobile views; original M0 hardware evidence in [VALIDATION.md](VALIDATION.md) and current release checks in [DEPLOYMENT.md](DEPLOYMENT.md) |
 | M1 local image input, obtained real camera poses, native Metal training, PLY export and viewer rendering | PASS | 40-image dozer dataset, 1,500 steps, 80.35-second job, 194,789 splats; [M1.md](M1.md) |
 | New CPU pose estimation and training on raw images | PASS with supplied lens calibration | 120/120 newly estimated poses, 30,468 new sparse points, 3,000 Metal steps and actual browser inspection; [evidence](INDEPENDENT_RECONSTRUCTION.md). Earlier 16/40 failure remains recorded |
-| User-requested static Railway observation surface | PASS for observed stereo-anchor release; 22 prior GS scenes preserved | Five cloud controls and20 evidence images are public; seven targeted Chrome checks, chronological lab ordering and236 selected file hashes pass. Full historical browser suite NOT RUN. [DEPLOYMENT.md](DEPLOYMENT.md) records release/evidence. Explicit connector trigger; push-only autodeploy unverified |
+| User-requested static Railway observation surface | PASS for street conclusion release;29 GS scenes and14 reports | All827 public file hashes match;20 public headed Chrome checks pass, including all7 new real GS worlds and9 prior report regressions. Full61-case suite passes locally; full public61 rerun NOT RUN. [DEPLOYMENT.md](DEPLOYMENT.md) records exact release/evidence. Explicit connector trigger; push-only autodeploy unverified |
 | Scooter without learned depth | PASS for local Metal execution and public Chrome rendering; recognizable object quality FAIL | Identical nine RGB files and cameras; depth inference/calibration/fusion removed. 115 triangulated object points → 5,000 Metal steps in 116.339 s → 569 full / 237 selected Gaussians. [OBJECT_NO_DEPTH.md](OBJECT_NO_DEPTH.md). Public deployment and file checks passed. |
 | Real-only scooter ablation | PASS for local Metal training and public Chrome rendering; quality comparison NOT RUN | All intermediate image generation removed. Nine real crops → nine calibrated depth maps → 41,533 initial points → 5,000 Metal steps in 160.298 s. [OBJECT_REAL_ONLY.md](OBJECT_REAL_ONLY.md) |
 | One-object crops → whole-frame diffusion → calibrated depth → point fusion → GS | PASS for executed pipeline/export/rendering; partial camera/depth rejection; quality gain NOT RUN | Nine real crops + 56 MPS img2img candidates → 47 registered cameras → 34 accepted depth maps → 93,595 initial points → 5,000 M2 Metal steps. Focused export has 93,101 Gaussians; recognizable but blurred/streaked. [OBJECT_FOCUS_EXPERIMENT.md](OBJECT_FOCUS_EXPERIMENT.md) |
@@ -43,7 +54,7 @@ completion time, newest first, with an oldest-first option.
 
 Implementation decisions: use the official Brush arm64 release, optional PyCOLMAP CPU wheels instead of requiring the Homebrew executable, and supplied measured poses for the first M1 acceptance run. Undistort the sample's actual fisheye images before Brush because its released importer does not handle their distortion. Preserve reconstruction internals in the native process and use the explicit v1 world format at the viewer boundary. These decisions keep the initial local-only design intact.
 
-The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains 22 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
+The earlier four-world 2026-11-05 catalog update added the accepted desk artifact alongside both dozer reconstructions and Houseplant. It passed 143 viewer/packager tests, 47 Python tests including actual HDR conversion, and 11 headed Chrome checks. In that earlier release, source footage and superseded trials remained local; the creator authorized public display of the derived desk scene. That historical Railway release passed all 31 public file hashes, all four scene renders and public gallery controls. The following observation release expanded it to 13 scenes and 72 stage records; the current catalog contains29 scenes under the policy below. Regression checks do not imply another native reconstruction execution.
 
 ## Observation publication policy — 2026-11-05
 

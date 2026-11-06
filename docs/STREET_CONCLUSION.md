@@ -5,7 +5,7 @@ on this M2.** Seven local Gaussian worlds and525 actual matched camera renders
 complete. Recommend calibrated dense initialization +8,000 Metal steps: the
 lowest observed mean withheld-view RGB error. Thin structures and off-route
 stability remain limited; globally accurate full-sphere geometry is unproven.
-Public release verification is pending. Existing scooter/panorama experiments
+[Railway release and public verification](DEPLOYMENT.md) PASS. Existing scooter/panorama experiments
 and their immutable release remain preserved.
 
 ## Question and scope
@@ -162,9 +162,11 @@ an execution or output-quality comparison of alternative engines.
 | [UniTriSplat](https://github.com/yipengzhu0809/UniTriSplat) | NVIDIA/CUDA extensions; no documented Metal backend. Original material MIT, derived3DGS files retain separate license, other dependencies separate. | NOT RUN |
 | [GGPS](https://github.com/Insta360-Research-Team/GGPS) | CUDA toolkit/native CUDA submodules; no documented MPS training. Repository CC BY-NC4.0; checkpoint terms need separate clearance before adoption. | NOT RUN |
 
-[Earlier full-sphere model findings](PANORAMIC_DEPTH_MODELS.md) preserve actual
-PanDA/DA² investigations and executions; they were not silently substituted in
-this run. Current upstream source snapshots and compatibility notes remain in
+[Earlier model findings](PANORAMIC_DEPTH_MODELS.md) preserve PanDA/DA² license and
+interface investigations. [Earlier ERP execution](PANORAMIC_DEPTH_P1.md) ran DA²
+and the DAV2 ERP control; PanDA inference remains NOT RUN. This run actually uses
+DAV2 Small perspective predictions, without silently substituting models.
+Current upstream source snapshots and compatibility notes remain in
 `data/jobs/street-conclusion-20261106/research/`. No CUDA port, hosted inference,
 paid API, new account/service, engine registration or new framework was introduced.
 
@@ -253,15 +255,29 @@ actual gallery scenes and previous reports. After moving the recommended3D
 button above the long explanation, all11 street cases PASS again in57.6s on
 the final build, including the initial viewport CTA, actual video decode/seek,
 reference/metric selectors, mobile, on-demand3D and all7 actual route renders.
-The explicit503 scenario is a labeled fixture. Public release readback remains
-pending; see [DEPLOYMENT.md](DEPLOYMENT.md).
+The explicit503 scenario is a labeled fixture. All827 public file hashes match
+in274.268s and all20 targeted public headed Chrome checks PASS in227.532s,
+including actual rendering of all7 new models. All seven public screenshots,
+the report and sampled rendered motion frames were inspected; thin branches /
+rails visibly streak and walls can double. The full61-case public suite is
+NOT RUN (the full suite passed locally). [Release evidence](evidence/street-release.json)
+and [actual public viewport](evidence/street-public.jpg) supplement the
+[native measurements](evidence/street-conclusion.json). The public report is
+[/experiments/street/](https://groundshift-viewer-production.up.railway.app/experiments/street/).
+
+A fresh tracked-source0801d91 checkout and the immutable archive, isolated
+`npm ci --offline` (201 packages), build and package reproduce all830 staged
+file hashes exactly. Development HTTP smoke also serves the tracked HTML,
+transformed source module and matching summary after removing compiled copies
+of all tracked Vite entries. That smoke is not a new GPU operation. Original
+camera estimation and depth/training are not repeated by display restoration.
 Independent surveyed geometry, collision/free-walk quality, different datasets,
 longer street blocks and alternative CUDA engines are **NOT RUN**.
 
 The first packaging attempt FAILed a privacy preflight: ASCII-escaped Korean
-after `Quality:` matched the Windows-drive-path heuristic. Add whitespace in
-curated notes, retain the failure log and original candidate, and rebuild; the
-privacy guard and all native outputs stay unchanged. The final827-file archive
+after `Quality:` matched the Windows-drive-path heuristic. Whitespace was added
+in curated notes, the failure log/original candidate retained, and the package
+rebuilt. The privacy guard and all native outputs stayed unchanged. The final827-file archive
 passes full readback and retains524 prior world/report data hashes.
 The historical Mapillary report test now compares its frozen16-scene release
 set to its own stored summary, then verifies those links remain in the current
