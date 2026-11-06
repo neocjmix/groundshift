@@ -28,6 +28,8 @@ describe('presentation-only background contract (synthetic fixtures)', () => {
   it('requires matching UV counts and bounded triangle indices', () => {
     const m = { schemaVersion: 1, positions: [0,0,0, 1,0,0, 0,1,0], uvs: [0,0, 1,0, 0,1], indices: [0,1,2] };
     expect(parseBackgroundMesh(m)).toEqual(m);
+    expect(parseBackgroundMesh({ ...m, uvs: [0,0, 1.01,0, 1.01,1] }).uvs[2]).toBe(1.01);
+    expect(() => parseBackgroundMesh({ ...m, uvs: [0,0, 1,1.01, 0,1] })).toThrow();
     expect(() => parseBackgroundMesh({ ...m, indices: [0,1,3] })).toThrow('triangle');
     expect(() => parseBackgroundMesh({ ...m, uvs: [0,0,1,0] })).toThrow();
     expect(() => parseBackgroundMesh({ ...m, positions: [NaN,...m.positions.slice(1)] })).toThrow();

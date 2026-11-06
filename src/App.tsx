@@ -203,8 +203,8 @@ export default function App() {
       </div>
       {experimentCount > 0 && <section className="experiment-overview" aria-labelledby="experiment-heading">
         <div><span className="eyebrow">CURRENT EXPERIMENT · MAPILLARY 360°</span>
-          <h2 id="experiment-heading">{modelReportAvailable ? "Same data. One final quality attempt." : "Real photos, generated gaps, actual results."}</h2>
-          <p>{modelReportAvailable ? "Follow the final 1024px training attempt as input images, exported scenes and measurements become available. Earlier model comparisons, failures and limitations remain visible." : "Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately."}</p>
+          <h2 id="experiment-heading">{modelReportAvailable ? "Tangent directions. Explicit backgrounds." : "Real photos, generated gaps, actual results."}</h2>
+          <p>{modelReportAvailable ? "Follow the newly authorized 20-direction experiment as real inputs, calibrated depths, exported scenes and explicit background modes become available. All earlier outcomes remain visible." : "Compare source photos, generated frames and Gaussian trials. Failed, cancelled and unrun stages stay visible with their evidence and limits. Generated scenery is assessed for plausibility, with real-place fidelity reported separately."}</p>
         </div>
         {modelReportAvailable && <a href={tangentBackgroundReport}>최신 · 이십면체 방향과 배경 보완 <span aria-hidden="true">↗</span></a>}
         {modelReportAvailable && <a href={finalQualityReport}>같은 데이터의 마지막 품질 실험 <span aria-hidden="true">↗</span></a>}

@@ -289,4 +289,6 @@ it('packages only explicitly referenced background files and validates mesh indi
   await packageViewer({root,output});
   await expect(access(path.join(output,'www/worlds/sample/background/photo.jpg'))).resolves.toBeUndefined();
   await expect(access(path.join(output,'www/worlds/sample/background/private-original.jpg'))).rejects.toThrow();
+  await put('dist/worlds/sample/background/shell.json',{schemaVersion:1,positions:[0,0,0,1,0,0,0,1,0],uvs:[0,0,1,0,0,1],indices:[0,1,3]});
+  await expect(packageViewer({root,output:output+'-invalid'})).rejects.toThrow('triangle');
 });

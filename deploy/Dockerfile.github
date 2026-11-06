@@ -31,6 +31,11 @@ RUN wget -q -O /tmp/tangent-inputs.tar.gz https://github.com/neocjmix/groundshif
     && echo '7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26  /tmp/tangent-inputs.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/tangent-inputs.tar.gz -C /out
 
+# Actual calibrated spherical-depth diagnostics, while the single native training runs.
+RUN wget -q -O /tmp/tangent-depth.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-depth-2026-11-06/groundshift-tangent-depth-20261106.tar.gz \
+    && echo '1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823  /tmp/tangent-depth.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/tangent-depth.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=artifact /out/www /srv

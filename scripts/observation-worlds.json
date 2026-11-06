@@ -1123,6 +1123,14 @@
     "experiments/tangent-background/samples/01-highres.png",
     "experiments/tangent-background/samples/00-highres.png",
     "experiments/tangent-background/comparison/real-inputs-depth-running-01.png",
-    "experiments/tangent-background/comparison/real-inputs-depth-running-00.jpg"
+    "experiments/tangent-background/comparison/real-inputs-depth-running-00.jpg",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-00.jpg",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-01.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-03.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-02.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-06.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-07.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-05.png",
+    "experiments/tangent-background/comparison/depth-fusion-training-running-04.png"
   ]
 }
