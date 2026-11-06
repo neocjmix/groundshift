@@ -54,6 +54,29 @@ function pathManifest(): WorldManifest {
 
 const syntheticIndex={schemaVersion:1,coordinateSpace:'viewer-world',totalSplats:10,maxResidentChunks:1,chunks:[{id:'one',path:'one.spz',bytes:100,splats:10,sha256:'a'.repeat(64),anchors:[[0,0,0]]}]};
 
+describe('native paging metadata boundary',()=>{
+  const input={...manifest(),paging:{path:'rad/index.json',maxPagedSplats:524288,lodSplatCount:350000}};
+  const index={schemaVersion:1,kind:'spark-rad',sourceSplats:10,root:'scene.rad',files:[{path:'scene.rad',bytes:100,sha256:'a'.repeat(64)}]};
+  it('resolves the final redirected index without downloading root, pages or control',async()=>{
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    const fetch=vi.fn().mockResolvedValueOnce(jsonResponse(input,'https://example.com/world.json')).mockResolvedValueOnce(jsonResponse(index,'https://cdn.example.com/rad/index.json'));
+    vi.stubGlobal('fetch',fetch);
+    const result=await loadWorld('/world.json',new AbortController().signal);
+    expect(fetch).toHaveBeenCalledTimes(2);expect(result.paging?.baseUrl).toBe('https://cdn.example.com/rad/index.json');expect(result.paging?.index.root).toBe('scene.rad');
+  });
+  it('does not return a late index after cancellation',async()=>{
+    const controller=new AbortController(),response=jsonResponse(index,'https://example.com/index.json');
+    vi.spyOn(response,'json').mockImplementation(async()=>{controller.abort();return index;});
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(jsonResponse(input,'https://example.com/world.json')).mockResolvedValueOnce(response));
+    await expect(loadWorld('/world.json',controller.signal)).rejects.toMatchObject({name:'AbortError'});
+  });
+  it('fails unsupported local paging before allocating any object URL',async()=>{
+    const create=vi.spyOn(URL,'createObjectURL').mockImplementation(()=>{throw new Error('Must not allocate');});
+    await expect(loadLocalWorld([localFile('x/world.json',JSON.stringify(input))])).rejects.toThrow('require HTTP(S)');expect(create).not.toHaveBeenCalled();
+  });
+});
+
 describe('spatial stream metadata boundary',()=>{
   it('resolves redirected index/chunk URLs without eagerly fetching any binary',async()=>{
     const input={...manifest(),streaming:{path:'chunks/index.json'}};

@@ -1,0 +1,811 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-06T17:49:40.493736+00:00",
+  "scope": "Actual24-source/GPS58m Paris reconstruction and bounded native paging; full2.185km NOT RUN",
+  "hardware": "Mac14,2 AppleM2 Metal16GiB",
+  "source": {
+    "provider": "Panoramax IGN",
+    "attribution": "Immergis pour la Ville de Paris",
+    "license": "etalab-2.0 / OpenLicence2.0",
+    "physicalPanoramas": 24,
+    "sourceRanks": [
+      988,
+      1011
+    ],
+    "gpsPolylineMeters": 58.0227,
+    "raster": [
+      12288,
+      6144
+    ],
+    "selectedRouteRecords": 876,
+    "selectedRouteGpsMeters": 2185.306585764598,
+    "posesMeaning": "Image-estimated SfM arbitrary units; GPS is descriptive only"
+  },
+  "sfm": {
+    "status": "PASS",
+    "registeredImages": [
+      "pano_000001_view_01.png",
+      "pano_000001_view_02.png",
+      "pano_000001_view_03.png",
+      "pano_000001_view_04.png",
+      "pano_000001_view_05.png",
+      "pano_000001_view_06.png",
+      "pano_000002_view_01.png",
+      "pano_000002_view_02.png",
+      "pano_000002_view_03.png",
+      "pano_000002_view_04.png",
+      "pano_000002_view_05.png",
+      "pano_000002_view_06.png",
+      "pano_000003_view_01.png",
+      "pano_000003_view_02.png",
+      "pano_000003_view_03.png",
+      "pano_000003_view_04.png",
+      "pano_000003_view_05.png",
+      "pano_000003_view_06.png",
+      "pano_000004_view_01.png",
+      "pano_000004_view_02.png",
+      "pano_000004_view_03.png",
+      "pano_000004_view_04.png",
+      "pano_000004_view_05.png",
+      "pano_000004_view_06.png",
+      "pano_000005_view_01.png",
+      "pano_000005_view_02.png",
+      "pano_000005_view_03.png",
+      "pano_000005_view_04.png",
+      "pano_000005_view_05.png",
+      "pano_000005_view_06.png",
+      "pano_000006_view_01.png",
+      "pano_000006_view_02.png",
+      "pano_000006_view_03.png",
+      "pano_000006_view_04.png",
+      "pano_000006_view_05.png",
+      "pano_000006_view_06.png",
+      "pano_000007_view_01.png",
+      "pano_000007_view_02.png",
+      "pano_000007_view_03.png",
+      "pano_000007_view_04.png",
+      "pano_000007_view_05.png",
+      "pano_000007_view_06.png",
+      "pano_000008_view_01.png",
+      "pano_000008_view_02.png",
+      "pano_000008_view_03.png",
+      "pano_000008_view_04.png",
+      "pano_000008_view_05.png",
+      "pano_000008_view_06.png",
+      "pano_000009_view_01.png",
+      "pano_000009_view_02.png",
+      "pano_000009_view_03.png",
+      "pano_000009_view_04.png",
+      "pano_000009_view_05.png",
+      "pano_000009_view_06.png",
+      "pano_000010_view_01.png",
+      "pano_000010_view_02.png",
+      "pano_000010_view_03.png",
+      "pano_000010_view_04.png",
+      "pano_000010_view_05.png",
+      "pano_000010_view_06.png",
+      "pano_000011_view_01.png",
+      "pano_000011_view_02.png",
+      "pano_000011_view_03.png",
+      "pano_000011_view_04.png",
+      "pano_000011_view_05.png",
+      "pano_000011_view_06.png",
+      "pano_000012_view_01.png",
+      "pano_000012_view_02.png",
+      "pano_000012_view_03.png",
+      "pano_000012_view_04.png",
+      "pano_000012_view_05.png",
+      "pano_000012_view_06.png",
+      "pano_000013_view_01.png",
+      "pano_000013_view_02.png",
+      "pano_000013_view_03.png",
+      "pano_000013_view_04.png",
+      "pano_000013_view_05.png",
+      "pano_000013_view_06.png",
+      "pano_000014_view_01.png",
+      "pano_000014_view_02.png",
+      "pano_000014_view_03.png",
+      "pano_000014_view_04.png",
+      "pano_000014_view_05.png",
+      "pano_000014_view_06.png",
+      "pano_000015_view_01.png",
+      "pano_000015_view_02.png",
+      "pano_000015_view_03.png",
+      "pano_000015_view_04.png",
+      "pano_000015_view_05.png",
+      "pano_000015_view_06.png",
+      "pano_000016_view_01.png",
+      "pano_000016_view_02.png",
+      "pano_000016_view_03.png",
+      "pano_000016_view_04.png",
+      "pano_000016_view_05.png",
+      "pano_000016_view_06.png",
+      "pano_000017_view_01.png",
+      "pano_000017_view_02.png",
+      "pano_000017_view_03.png",
+      "pano_000017_view_04.png",
+      "pano_000017_view_05.png",
+      "pano_000017_view_06.png",
+      "pano_000018_view_01.png",
+      "pano_000018_view_02.png",
+      "pano_000018_view_03.png",
+      "pano_000018_view_04.png",
+      "pano_000018_view_05.png",
+      "pano_000018_view_06.png",
+      "pano_000019_view_01.png",
+      "pano_000019_view_02.png",
+      "pano_000019_view_03.png",
+      "pano_000019_view_04.png",
+      "pano_000019_view_05.png",
+      "pano_000019_view_06.png",
+      "pano_000020_view_01.png",
+      "pano_000020_view_02.png",
+      "pano_000020_view_03.png",
+      "pano_000020_view_04.png",
+      "pano_000020_view_05.png",
+      "pano_000020_view_06.png",
+      "pano_000021_view_01.png",
+      "pano_000021_view_02.png",
+      "pano_000021_view_03.png",
+      "pano_000021_view_04.png",
+      "pano_000021_view_05.png",
+      "pano_000021_view_06.png",
+      "pano_000022_view_01.png",
+      "pano_000022_view_02.png",
+      "pano_000022_view_03.png",
+      "pano_000022_view_04.png",
+      "pano_000022_view_05.png",
+      "pano_000022_view_06.png",
+      "pano_000023_view_01.png",
+      "pano_000023_view_02.png",
+      "pano_000023_view_03.png",
+      "pano_000023_view_04.png",
+      "pano_000023_view_05.png",
+      "pano_000023_view_06.png",
+      "pano_000024_view_01.png",
+      "pano_000024_view_02.png",
+      "pano_000024_view_03.png",
+      "pano_000024_view_04.png",
+      "pano_000024_view_05.png",
+      "pano_000024_view_06.png"
+    ],
+    "points3D": 8686,
+    "meanReprojectionErrorPixels": 0.596420987093765,
+    "elapsedSeconds": 57.8334460419137,
+    "providedWorldCameraPosesUsed": false,
+    "providedSparseGeometryUsed": false,
+    "pycolmapVersion": "4.2.1"
+  },
+  "depth": {
+    "model": "Depth Anything V2 Small",
+    "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+    "device": "MPS",
+    "actualPredictions": 480,
+    "seconds": 71.915505,
+    "semantics": "Relative inverse-depth-like outputs affine-calibrated to observed SfM inverse camera-Z,not metric; modulo5point-ID split is internal calibration only"
+  },
+  "fusion": {
+    "status": "PASS",
+    "trainingImages": 480,
+    "calibratedImages": 309,
+    "initialPoints": 186899,
+    "densePoints": 6125498,
+    "voxelSpacingSfm": 0.005272428799373955,
+    "initialSha256": "f6240f3452d5382f32a61e67c634e7ec7e40955485859a201f24b1c6a585f5c3",
+    "geometryStatus": "NOT ACCEPTED",
+    "depthSemantics": "Per-crop robust affine inverse-camera-Z calibrated to observed SfM points; no arbitrary meters; point seeds converted with actual pinhole rays",
+    "seconds": 18.245633916929364,
+    "acceptedFits": 309,
+    "rejectedFits": 171
+  },
+  "training": {
+    "status": "PASS",
+    "elapsedSeconds": 1018.2855102911126,
+    "maximumResidentSetBytes": 757301248,
+    "peakMemoryFootprintBytes": 2914159016,
+    "options": {
+      "steps": 8000,
+      "resolution": 768,
+      "maxSplats": 800000
+    }
+  },
+  "native": {
+    "splats": 800000,
+    "bytes": 73600652,
+    "sha256": "dcf1800bb91b40c35d145e281bbea933c23c9cd23a23191a51fa78e719e0d86c"
+  },
+  "spz": {
+    "bytes": 15921380,
+    "sha256": "03c6315fffbde232fdfc478fd49cdf1990b51bd5e1f42e5f349aed16d68224f8",
+    "reductionPercent": 78.3679,
+    "originalPreserved": true
+  },
+  "paging": {
+    "tool": "Spark2.4.0 build-lod",
+    "commit": "ffe210dc0a45d0515a06c9235878108112827d61",
+    "license": "MIT",
+    "build": "CPU --no-default-features --locked",
+    "flags": [
+      "--quality",
+      "--gsplat",
+      "--max-sh=1",
+      "--rad-chunked"
+    ],
+    "conversionSeconds": 7.81,
+    "maxRssBytes": 244072448,
+    "rootAndChunkFiles": 17,
+    "gsplatTotalBytes": 26264088,
+    "csplatTotalBytes": 25950408,
+    "poolSlots": 524288,
+    "poolPages": 8,
+    "targetSelectedSplats": 350000,
+    "fetchers": 2,
+    "memoryMeaning": "Slot/page counts and process RSS are not total GPU memory"
+  },
+  "publicBrowser": {
+    "status": "PASS execution",
+    "quality": "PASS",
+    "qualityThreshold": {
+      "mae": 5,
+      "changedFraction": 0.1
+    },
+    "mae": 3.1657887011277763,
+    "changedFraction": 0.038542797109145904,
+    "first": {
+      "selected": 349915,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 9,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "end": {
+      "selected": 277712,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 11,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "reverse": {
+      "selected": 349915,
+      "pages": 8,
+      "bytes": 13226520,
+      "requested": 11,
+      "errors": [],
+      "capacity": 524288,
+      "sourceSplats": 800000
+    },
+    "readySignalMs": 7397.967667,
+    "firstSettledBytes": 13226520,
+    "scope": "One-off actual short-Paris LoD paging, not kilometer-scale or independent geometry acceptance",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "cacheDisabled": true,
+    "requests": [
+      "/worlds/paris-58m-lod/rad/scene-lod.rad",
+      "/worlds/paris-58m-lod/rad/scene-lod-0.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-2.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-5.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-9.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-3.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-8.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-14.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-15.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-1.radc",
+      "/worlds/paris-58m-lod/rad/scene-lod-4.radc",
+      "/worlds/paris-58m-lod/scene.spz"
+    ],
+    "errors": []
+  },
+  "fixedCameraServingComparison": {
+    "status": "PASS execution",
+    "resolution": 768,
+    "results": [
+      {
+        "mode": "spatial",
+        "id": "p0-0",
+        "mae": 35.84408004195602,
+        "changedFraction": 0.3996988932291667,
+        "selected": 391088,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p0-1",
+        "mae": 0,
+        "changedFraction": 0,
+        "selected": 391088,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p4-0",
+        "mae": 55.01844731083623,
+        "changedFraction": 0.4829644097222222,
+        "selected": 391088,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p4-1",
+        "mae": 0,
+        "changedFraction": 0,
+        "selected": 391088,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p8-0",
+        "mae": 50.13143864384404,
+        "changedFraction": 0.4497765435112847,
+        "selected": 325695,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p8-1",
+        "mae": 65.19526107222946,
+        "changedFraction": 0.6847924126519097,
+        "selected": 325695,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p12-0",
+        "mae": 47.24670918782552,
+        "changedFraction": 0.4235059950086806,
+        "selected": 347109,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p12-1",
+        "mae": 75.10617461027923,
+        "changedFraction": 0.6995781792534722,
+        "selected": 347109,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p16-0",
+        "mae": 0,
+        "changedFraction": 0,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p16-1",
+        "mae": 76.16484352394387,
+        "changedFraction": 0.6824917263454862,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p20-0",
+        "mae": 0,
+        "changedFraction": 0,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p20-1",
+        "mae": 54.75086975097656,
+        "changedFraction": 0.5040062798394097,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p23-0",
+        "mae": 0,
+        "changedFraction": 0,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "p23-1",
+        "mae": 36.03176766854745,
+        "changedFraction": 0.4017859564887153,
+        "selected": 408912,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "vertical--1.05",
+        "mae": 22.90740740740741,
+        "changedFraction": 0.3927137586805556,
+        "selected": 347109,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "spatial",
+        "id": "vertical-1.05",
+        "mae": 44.78050627531829,
+        "changedFraction": 0.4789869520399306,
+        "selected": 347109,
+        "pages": 0,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p0-0",
+        "mae": 3.3222181532118054,
+        "changedFraction": 0.037312825520833336,
+        "selected": 349915,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p0-1",
+        "mae": 1.2440530282479745,
+        "changedFraction": 0,
+        "selected": 285222,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p4-0",
+        "mae": 5.090443363896123,
+        "changedFraction": 0.08027140299479167,
+        "selected": 349921,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p4-1",
+        "mae": 2.1193050808376737,
+        "changedFraction": 0.011498345269097222,
+        "selected": 349968,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p8-0",
+        "mae": 7.989886813693577,
+        "changedFraction": 0.1478118896484375,
+        "selected": 324286,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p8-1",
+        "mae": 2.224244859483507,
+        "changedFraction": 0.021455552842881944,
+        "selected": 349979,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p12-0",
+        "mae": 5.42706298828125,
+        "changedFraction": 0.08161417643229167,
+        "selected": 349924,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p12-1",
+        "mae": 5.272989908854167,
+        "changedFraction": 0.07763163248697917,
+        "selected": 295677,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p16-0",
+        "mae": 2.69204259801794,
+        "changedFraction": 0.014375474717881944,
+        "selected": 349915,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p16-1",
+        "mae": 2.876294171368634,
+        "changedFraction": 0.022199842664930556,
+        "selected": 349911,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p20-0",
+        "mae": 1.1766786928530093,
+        "changedFraction": 2.0345052083333332e-05,
+        "selected": 349949,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p20-1",
+        "mae": 5.884597213179977,
+        "changedFraction": 0.08205498589409722,
+        "selected": 349933,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p23-0",
+        "mae": 1.0762832076461226,
+        "changedFraction": 4.4080946180555555e-05,
+        "selected": 349925,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "p23-1",
+        "mae": 3.2155863444010415,
+        "changedFraction": 0.034001668294270836,
+        "selected": 349932,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "vertical--1.05",
+        "mae": 3.0365414089626737,
+        "changedFraction": 0.016179402669270832,
+        "selected": 349910,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "gsplat",
+        "id": "vertical-1.05",
+        "mae": 5.4587554931640625,
+        "changedFraction": 0.0876651340060764,
+        "selected": 349927,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p0-0",
+        "mae": 2.8110114203559027,
+        "changedFraction": 0.023373074001736112,
+        "selected": 349907,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p0-1",
+        "mae": 1.2711989791304976,
+        "changedFraction": 0.0004085964626736111,
+        "selected": 282254,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p4-0",
+        "mae": 5.423265245225695,
+        "changedFraction": 0.09192064073350695,
+        "selected": 349913,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p4-1",
+        "mae": 1.956846449110243,
+        "changedFraction": 0.008516099717881944,
+        "selected": 338163,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p8-0",
+        "mae": 6.035520200376157,
+        "changedFraction": 0.09918212890625,
+        "selected": 349918,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p8-1",
+        "mae": 3.5182868109809027,
+        "changedFraction": 0.040398491753472224,
+        "selected": 342820,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p12-0",
+        "mae": 5.75761244032118,
+        "changedFraction": 0.08231099446614583,
+        "selected": 349916,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p12-1",
+        "mae": 3.0199494538483798,
+        "changedFraction": 0.023557874891493056,
+        "selected": 349919,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p16-0",
+        "mae": 2.20835198296441,
+        "changedFraction": 0.011944240993923612,
+        "selected": 349941,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p16-1",
+        "mae": 5.337433991608797,
+        "changedFraction": 0.08243645562065972,
+        "selected": 349919,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p20-0",
+        "mae": 1.1715121799045138,
+        "changedFraction": 6.781684027777777e-06,
+        "selected": 349932,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p20-1",
+        "mae": 5.817381682219328,
+        "changedFraction": 0.0777435302734375,
+        "selected": 349932,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p23-0",
+        "mae": 1.0556957103587963,
+        "changedFraction": 0,
+        "selected": 349918,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "p23-1",
+        "mae": 3.173452306676794,
+        "changedFraction": 0.0330657958984375,
+        "selected": 349932,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "vertical--1.05",
+        "mae": 3.8155449761284723,
+        "changedFraction": 0.019048055013020832,
+        "selected": 349907,
+        "pages": 8,
+        "frames": 45
+      },
+      {
+        "mode": "compact",
+        "id": "vertical-1.05",
+        "mae": 4.409255416304977,
+        "changedFraction": 0.0594635009765625,
+        "selected": 349921,
+        "pages": 8,
+        "frames": 45
+      }
+    ],
+    "scope": "Fixed 768px actual same-camera whole SPZ, naive neighborhood, native quality LoD gsplat/csplat. No new training or held-out-source claim.",
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "errors": [],
+    "summary": {
+      "spatial": {
+        "views": 16,
+        "meanMae": 35.19859409332276,
+        "maxMae": 76.16484352394387,
+        "maxChangedFraction": 0.6995781792534722,
+        "maxPages": 0,
+        "quality": "FAIL"
+      },
+      "gsplat": {
+        "views": 16,
+        "meanMae": 3.631686457881221,
+        "maxMae": 7.989886813693577,
+        "maxChangedFraction": 0.1478118896484375,
+        "maxPages": 8,
+        "quality": "FAIL"
+      },
+      "compact": {
+        "views": 16,
+        "meanMae": 3.5488949528446905,
+        "maxMae": 6.035520200376157,
+        "maxChangedFraction": 0.09918212890625,
+        "maxPages": 8,
+        "quality": "FAIL"
+      }
+    },
+    "seconds": 62.908235209
+  },
+  "codecComparison": {
+    "views": 16,
+    "nativeToSpzMeanMae": 1.0358322991265192,
+    "nativeToSpzMaxMae": 1.0908547860604745,
+    "nativeReloadMaxMae": 0,
+    "allSpatialUnionVsWholeMaxMae": 0,
+    "status": "PASS declared codec/reload/union criteria",
+    "maxP99": 4
+  },
+  "notRun": [
+    "Full2.185km reconstruction",
+    "Independent geometry/collision acceptance",
+    "Full legacy suite on latest public version",
+    "Constrained-network FPS/frame-time benchmark"
+  ],
+  "retainedFailures": [
+    "InitialRustSDKlinkerSystemlibraryfailure",
+    "Firstcanonicalpublicationpathfailure",
+    "InitialHomeassertionsampledpreviousGPUframe",
+    "Nearest3regionqualityfailure",
+    "NativeLoDstrict16viewqualityfailure"
+  ],
+  "automatedChecks": {
+    "typescript": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "javascript": "207 PASS",
+    "pythonMain": {
+      "run": 252,
+      "pass": 247,
+      "skip": 5
+    },
+    "pythonColmap": {
+      "run": 252,
+      "pass": 220,
+      "skip": 32
+    },
+    "notDistinctAcrossEnvironments": true
+  }
+}

@@ -2,12 +2,16 @@
 
 Revisit real places as explorable 3D worlds.
 
-**Next input selected:** [Paris · longer tourist route](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/).
-876 consecutive licensed360° source records near Notre-Dame's south bank and
-connected streets:2.185km GPS polyline,2.53m median spacing,12,288×6,144.
-24 real HD JPEGs(202.5MB) are acquired locally. This is source acquisition,
-**not a new Paris GS or successful long-distance streaming result**.
-[Source evidence, acquisition and next serving experiment](docs/TOURIST_STREAMING.md).
+**Latest actual result:** [Paris · first58m and native LoD streaming](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
+· [Explore3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/paris-58m-lod/world.json).
+24real12K panoramas → image-estimated poses → calibrated DAV2 → M2 Metal GS:
+800k Gaussians in16min58s,15.92MB whole SPZ. Native LoD loads visible precision
+with an eight-page pool and keeps coarse distant coverage. Public movement,
+reverse and whole-scene comparison pass; strict16-view appearance preservation
+fails,so this is useful bounded serving with detail loss. Simple nearest-region
+streaming failed because visible distant geometry disappeared. All trials remain
+observable. The selected876-source/2.185km GPS route is an expansion source;
+**the full2.185km is NOT reconstructed**. [Measurements,failures and reproduction](docs/PARIS_STREAMING.md).
 
 **Latest delivery experiment:** [Same scene · SPZ compression](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
 · [Lightweight 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20-spz/world.json).
@@ -32,7 +36,7 @@ The live viewer now renders GS only, with no backdrop controls or loading;
 historical comparisons remain available. [Execution, commands and evidence](docs/TANGENT_BACKGROUND.md).
 This was one explicitly reopened experiment; the same-data sweep remains closed.
 
-**Live demo:** [Final quality · 1024px result and comparison](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four new pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all 36 scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
+**Live demo:** [Final quality · 1024px result and comparison](https://groundshift-viewer-production.up.railway.app/experiments/final-quality/) · [Model comparison · four new pipelines](https://groundshift-viewer-production.up.railway.app/experiments/model-selection/) · [Street reconstruction · all seven results and conclusion](https://groundshift-viewer-production.up.railway.app/experiments/street/) · [Third real photo road check](https://groundshift-viewer-production.up.railway.app/experiments/road-third-view/) · [Observed road anchors](https://groundshift-viewer-production.up.railway.app/experiments/stereo-anchors/) · [Perspective coverage and overlap](https://groundshift-viewer-production.up.railway.app/experiments/perspective-overlap/) · [Calibration and perspective-depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-calibration/) · [Adjacent panorama comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-pair/) · [Full-sphere depth comparison](https://groundshift-viewer-production.up.railway.app/experiments/panoramic-depth/) · [Chronological experiment lab](https://groundshift-viewer-production.up.railway.app/experiments/lab/) · [Scooter comparison: real images only](https://groundshift-viewer-production.up.railway.app/experiments/object-real/) · [Without monocular depth](https://groundshift-viewer-production.up.railway.app/experiments/object-nodepth/) · [Browse all scenes](https://groundshift-viewer-production.up.railway.app/) · [Open my desk](https://groundshift-viewer-production.up.railway.app/?world=/worlds/desk/world.json). Choose **Camera path → Play path** to revisit reconstructed views. [Deployment and public-browser verification](docs/DEPLOYMENT.md).
 
 Railway is the user's **observation surface**. The catalog includes every distinct exported trial regardless of visual quality, alongside My desk, both main dozer reconstructions and the Houseplant sample. The [Mapillary observation report](https://groundshift-viewer-production.up.railway.app/experiments/mapillary/index.html) shows real photos, geometric warps, diffusion outputs and failed/cancelled stages. The [two-endpoint panorama experiment](docs/PANORAMA_VIDEO_EXPERIMENT.md) generates 65 local M2/MLX frames and compares matched Gaussian worlds; its public report is released with the new artifacts. Publication is separate from quality acceptance; generated content and limitations stay visible. See [release verification](docs/DEPLOYMENT.md).
 
@@ -271,6 +275,7 @@ the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
 unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
+- [Actual Paris GS,native LoD,failed proximity streaming and measurements](docs/PARIS_STREAMING.md)
 - [Paris tourist source selection and bounded lazy-serving experiment](docs/TOURIST_STREAMING.md)
 - [SPZ compression, actual size/appearance evidence and reproduction](docs/COMPRESSION.md)
 - [Alternative-model execution, licensing, measurements and reproduction](docs/MODEL_SELECTION.md)

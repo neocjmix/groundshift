@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, readdir, lstat, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseWorldManifest,parseStreamIndex } from '../src/world.ts';
+import { parseWorldManifest,parseStreamIndex,parsePagedIndex } from '../src/world.ts';
 import { parseBackground, parseBackgroundMesh } from '../src/background.ts';
 import { parseSceneCatalog } from '../src/catalog.ts';
 
@@ -204,6 +204,11 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
         if(data.length!==chunk.bytes||createHash('sha256').update(data).digest('hex')!==chunk.sha256)throw new Error('Spatial chunk integrity mismatch');
         plan(`www/worlds/${worldName}/${file}`,data);
       }
+    }
+    if(manifest.paging){
+      const name=relativePath(manifest.paging.path),bytes=await read(`${prefix}/${name}`);assertPublicMetadata(bytes.toString('utf8'),worldName);
+      const index=parsePagedIndex(JSON.parse(bytes.toString('utf8'))),base=path.posix.dirname(name);plan(`www/worlds/${worldName}/${name}`,bytes);
+      for(const f of index.files){const file=path.posix.join(base,relativePath(f.path));if(!/\.(rad|radc)$/.test(file))throw new Error('Unexpected native LoD asset');const data=await read(`${prefix}/${file}`);if(data.length!==f.bytes||createHash('sha256').update(data).digest('hex')!==f.sha256)throw new Error('Native LoD integrity mismatch');plan(`www/worlds/${worldName}/${file}`,data);}
     }
   }
   for (const file of observations.files) {

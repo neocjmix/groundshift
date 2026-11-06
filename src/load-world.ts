@@ -2,6 +2,7 @@ import {
   parseWorldManifest,
   resolveAssetUrl,
   type WorldManifest,
+  parsePagedIndex,type PagedIndex,
 } from "./world";
 import { parseCameraPath, type CameraPath } from "./camera-path";
 import { parseStreamIndex,type LoadedStream } from './streaming';
@@ -14,6 +15,7 @@ export interface LoadedWorld {
   cameraPath?: CameraPath;
   cameraPathError?: string;
   streaming?: LoadedStream;
+  paging?: {index:PagedIndex;baseUrl:string};
   release?: () => void;
 }
 
@@ -61,6 +63,14 @@ export async function loadWorld(
     streaming={index,urls:new Map(index.chunks.map(c=>[c.id,resolveAssetUrl(indexResponse.url,c.path)]))};
   }
   signal.throwIfAborted();
+  let paging:LoadedWorld['paging'];
+  if(manifest.paging){
+    if(manifest.streaming)throw new Error('Choose one spatial delivery representation');
+    const r=await fetch(resolveAssetUrl(response.url,manifest.paging.path),{signal});
+    if(!r.ok)throw new Error(`RAD index: HTTP ${r.status}`);
+    paging={index:parsePagedIndex(await r.json()),baseUrl:r.url};
+  }
+  signal.throwIfAborted();
   return {
     instanceId: crypto.randomUUID(),
     manifest,
@@ -68,6 +78,7 @@ export async function loadWorld(
     location: url.pathname,
     ...cameras,
     streaming,
+    paging,
   };
 }
 
@@ -80,6 +91,7 @@ export async function loadLocalWorld(files: File[], signal?: AbortSignal): Promi
     );
   const file = manifests[0];
   const manifest = parseWorldManifest(JSON.parse(await file.text()));
+  if(manifest.paging)throw new Error('Paged RAD worlds currently require HTTP(S). Serve this folder with the local viewer or use the whole SPZ control world.');
   signal?.throwIfAborted();
   const base = file.webkitRelativePath.slice(0, -file.name.length);
   const asset = files.find(

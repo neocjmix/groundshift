@@ -52,7 +52,7 @@ This is a small extension of the existing local process/world/static viewer
 boundaries. No service, database, account, cloud training or generic streaming
 framework is introduced. Archived panorama/shell backgrounds remain disabled.
 
-## Executed evidence so far
+## Executed evidence
 
 | Operation | Actual observation |
 | --- | --- |
@@ -60,11 +60,20 @@ framework is introduced. Archived panorama/shell backgrounds remain disabled.
 | Filtered observed SfM anchors |6,899sparse points;24physical groups |
 | DAV2 MPS | PASS480predictions,71.915505s; output/input checksums retained |
 | Depth calibration/seeding | PASS309fits,171unsupported depth maps excluded;6,125,498dense candidates after reduction;186,899initial points,18.245634s |
-| Native GS training/export | RUNNING; final measured job status will be recorded after completion |
-| Lazy rendering / public interaction | NOT RUN before export |
+| Native GS training/export | PASS M2 Metal,8,000steps,768px,800,000Gaussians;1018.285510s;73,600,652B PLY |
+| Whole SPZ conversion | PASS15,921,380B,78.3679% smaller;800k/SH1/coordinates retained |
+| SPZ spatial partition | PASS6unique-ownership chunks,15,863,971B; nearest3=391,088initial/408,912end points |
+| Spatial interaction | PASS local4/4 then public transition/reverse/503retry; quality **FAIL**: distant coverage disappears |
+| Native RAD conversion | PASS official Spark2.4.0 CPU builder,7.81s,17files/26,264,088B gsplat |
+| Native compact RAD | PASS conversion/16views,17files/25,950,408B: only1.19% smaller; no retraining |
+| Native LoD public browser | PASS actual headed Chrome156,cacheOFF,start/end/reverse/whole toggle; <=8pages |
+| Public first snapshot |349,915selected,8pages,13,226,520B received body; ready signal7397.97ms |
+| Full2.185km GS/streaming | **NOT RUN**;24HD images reconstructed,852selected sources not acquired |
 
 Native wall time is a one-off process observation on the user's M2/16GB Mac;
 CPU source/test/build work runs concurrently. It is not an isolated benchmark.
+Native `/usr/bin/time -l` reports maximumRSS757,301,248B and peak footprint2,914,159,016B.
+These refer to the process, not isolated GPU allocations.
 Compressed bytes, resident Gaussian counts and process RSS do not establish
 GPU-memory usage. Raw logs, checkpoints, original HD images, inference outputs
 and weights remain local under`data/jobs/paris-streaming-20261107/`.
@@ -85,14 +94,95 @@ The live status exposes resident counts, encoded file sums, pending work,
 evictions and cumulative transferred bytes. It does not label estimated
 depth, source GPS or route interpolation as accurate geometry or free walking.
 
-Official [Spark SplatMesh/disposal](https://sparkjs.dev/docs/splat-mesh/)
-and [native RAD/LoD paging](https://sparkjs.dev/docs/lod-getting-started/)
-were inspected against the pinned installed2.4.0 interfaces. Native RAD is a
-valid future alternative with multiresolution coverage. It changes the
-delivery representation and requires an offline LoD build; Rust/cargo is not
-installed in this environment. This first control deliberately retains SPZ
-and unchanged Gaussian ownership to isolate region loading. No claim is made
-that SPZ region streaming is the best final city-scale format.
+### What worked and what failed
+
+The first nearest-three-chunk policy fails appearance preservation. In16fixed
+768px views (seven route positions, both headings, plus up/down), mean RGB MAE
+is35.1986/255,maximum76.1648. Distant buildings and sky become black. Enabling
+all six chunks yields **pixel-exact** results against the whole SPZ in the
+separate16-view control. Partitioning retained the data; selection removed
+visible remote geometry. This failed trial remains published in the catalog.
+
+[Official native RAD/LoD documentation](https://sparkjs.dev/docs/lod-getting-started/)
+and pinned Spark2.4.0 source/CLI were then inspected. Native multiresolution
+paging preserves coarse distant coverage while loading finer visible GS. A
+small optional `paging` index feeds native `PagedSplats`; Spark owns selection,
+eviction and its524,288-slot/eight-page pool. Target selection is350k and two
+fetchers. The adapter verifies exact bytes/SHA of every declared root/chunk and
+records actual requests/body bytes/pending/errors. Whole SPZ is fetched only
+when explicitly selected. No photo/depth-shell backdrop is rendered.
+
+The official MIT source is pinned to tagv2.4.0,commit
+`ffe210dc0a45d0515a06c9235878108112827d61`. Rust was installed locally under
+ignored `data/tools`, without modifying shell profiles. Initial compilation
+**FAIL** (`library System not found`) is retained; explicit CommandLineTools
+SDK/linker settings repair it. The executable's actual CLI was used with
+`--quality --gsplat --max-sh=1 --rad-chunked`; website/default guesses were not
+used. CPU conversion took7.81s,maxRSS244,072,448B.17files include derived coarse
+parent nodes, so26.26MB is greater than the complete15.92MB SPZ; lazy transfer
+and bounded residency, rather than smaller total storage, are the purpose.
+
+A second **encoding-only** derivative with`--csplat` totals25.95MB,1.19% less.
+It is published for comparison, but this small gain does not justify another
+format sweep. This is the same newly trained Paris GS, not another training run.
+
+| Same-camera768px comparison,16views | Mean MAE /255 | Worst MAE | Worst fraction with max RGB difference>20 | Strict all-view screen |
+| --- | ---: | ---: | ---: | --- |
+| Whole SPZ vs native PLY |1.03583 |1.09085 | Not this test's criterion | PASS declared codec MAE<=3,p99<=24 |
+| Reloaded native PLY |0 |0 |0 | PASS |
+| Union of all six SPZ chunks vs whole SPZ |0 |0 |0 | PASS |
+| Nearest3regions vs whole SPZ |35.1986 |76.1648 |69.96% | FAIL |
+| Native gsplat LoD vs whole SPZ |3.63169 |7.98989 |14.781% | FAIL |
+| Native csplat LoD vs whole SPZ |3.54889 |6.03552 |9.918% | FAIL |
+
+For LoD the strict screen requires **each view** MAE<=5 and changed fraction<=10%.
+The first public gsplat view passes (MAE3.16579,3.854% changed), but the broader
+screen fails. Do not relabel the first-view pass as general quality acceptance.
+Native LoD removes the large black omissions observed in nearest-region mode;
+remaining detail changes are visible. Selection varies by view, so350k is a
+budget target, not a mandatory count. The8-page count is not a total browser or
+GPU memory measurement. First-ready timing is an app signal, not a measured
+first-visible pixel; actual FPS/frame-time/long-network benchmarks are NOT RUN.
+
+Two suites rendered128actual fixed-camera images (64codec/union/reload,
+64whole/three-region/two-native-encodings) on this Mac. Selected start/middle,
+forward/backward and vertical screenshots were directly inspected. The public
+report includes actual render comparison sheets and poor nadir/road regions.
+Vehicles, trees, hood/nadir contamination, softness and ghosting remain.
+Neither calibrated depth nor plausible GS constitutes independent geometry,
+collision acceptance or unrestricted safe walking.
+
+### Automated and public checks
+
+- PASS TypeScript,lint,production build and207JS tests after paging metadata/package checks.
+- PASS main Python environment:252run,247pass,5skip; PyCOLMAP environment:
+  252run,220pass,32skip. These are two environment results, not504distinct tests.
+- PASS local spatial/source suite4/4,then native LoD1/1. The initial Home-key
+  assertion read a previous GPU frame; its failure/trace and corrected explicit
+  progress wait are retained. No inference or training was re-run to repair it.
+- PASS completed public suite5/5 (~1.2min):nativeLoD1,spatial2,source/lab2.
+  Public sizes/SHA for33changed LoD-release files match the explicit package.
+  Subsequent compact release/measurement-page checks are recorded in
+  [DEPLOYMENT.md](DEPLOYMENT.md), separately from these completed checks.
+- NOT RUN full legacy browser suite on the final public deployment,independent
+  Paris geometry,km-scale training/serving,long-network/FPS benchmark.
+
+Sanitized machine-readable evidence is in[evidence/paris-streaming.json](evidence/paris-streaming.json).
+Raw model outputs,logs,PNG frames and failures stay locally reproducible.
+
+## Conclusion and next boundary
+
+A real58m Paris world now runs with bounded native LoD paging and an explicit
+whole-scene control. Simple proximity chunk selection is insufficient; native
+hierarchical coverage is the more useful serving path. It trades small detail
+changes and larger offline storage for bounded precision residency. This is
+**short-route feasibility**, not a completed2km world or lossless serving.
+
+The next meaningful expansion is two overlapping reconstruction segments in one
+image-derived coordinate frame, with actual overlap/boundary/return checks.
+Then measure hundreds of meters under cold cache, constrained bandwidth and
+frame-time recording. Do not paste separately scaled worlds using source GPS
+alone. No further old-nine-panorama quality sweep is reopened.
 
 ## Reproduce
 
@@ -113,10 +203,19 @@ data/tools/venv/bin/python scripts/paris-pipeline.py prepare JOB
 data/tools/colmap-venv/bin/python scripts/paris-pipeline.py anchors JOB
 ```
 
-Pass the paths from`JOB/tangent-inputs/inference-inputs.json` to the existing
-`infer-relative-depth.py JOB/depth` CLI using the diffusion-venv interpreter
-and`HF_HOME=data/tools/depth-hf-cache`; this uses the existing pinned local
-weights, not an alternative model. Then:
+Run the existing pinned model with the prepared list (no alternative model):
+
+```sh
+HF_HOME="$PWD/data/tools/depth-hf-cache" data/tools/diffusion-venv/bin/python - JOB <<'PY'
+import json, subprocess, sys
+from pathlib import Path
+job = Path(sys.argv[1])
+images = json.loads((job/'tangent-inputs/inference-inputs.json').read_text())
+subprocess.run([sys.executable, 'scripts/infer-relative-depth.py', str(job/'depth'), *images], check=True)
+PY
+```
+
+Then:
 
 ```sh
 data/tools/venv/bin/python scripts/paris-pipeline.py fusion JOB
@@ -135,3 +234,48 @@ and necessary explicitly licensed source comparisons. Source attribution is
 accessed2026-11-07, **etalab-2.0/Open Licence2.0**. This is publicly
 privacy-processed vehicle imagery, not the user's private footage. Previous
 worlds, observation reports and immutable rollback packages are retained.
+
+### Native LoD derivative and reproduction
+
+Install Rust locally (the tested toolchain is under`data/tools/cargo` and
+`data/tools/rustup`),clone the pinned official source into`data/tools/spark-2.4.0`,
+then build using the installed CommandLineTools SDK:
+
+```sh
+RUSTUP_HOME="$PWD/data/tools/rustup" CARGO_HOME="$PWD/data/tools/cargo" \
+ SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk \
+ CC=/Library/Developer/CommandLineTools/usr/bin/clang \
+ CXX=/Library/Developer/CommandLineTools/usr/bin/clang++ \
+ CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=/Library/Developer/CommandLineTools/usr/bin/clang \
+ RUSTFLAGS='-C link-arg=-isysroot -C link-arg=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk' \
+ data/tools/cargo/bin/cargo build --release --locked --no-default-features -j2 \
+ --manifest-path data/tools/spark-2.4.0/rust/build-lod/Cargo.toml
+```
+
+Run `build-lod --help` from the actual built executable before conversion. Its
+quality build defaults differ from older website examples. The tested command
+uses the native PLY with explicit flags:
+
+```sh
+mkdir JOB/rad-build
+cp JOB/view-world/scene.ply JOB/rad-build/scene.ply
+# Run inside JOB/rad-build; executable path depends on your checkout location:
+/path/to/spark-2.4.0/rust/target/release/build-lod \
+ --quality --gsplat --max-sh=1 --rad-chunked scene.ply
+```
+
+The resulting root`scene-lod.rad` and16`scene-lod-N.radc` files become the
+HTTP-served derivative:
+
+```sh
+data/tools/venv/bin/python scripts/prepare-paged-world.py \
+ JOB JOB/rad-build JOB/lod-world --id paris-58m-lod --encoding gsplat
+node scripts/compare-paged.mjs JOB JOB/paged-comparison
+```
+
+For the published compact control run the same build-lod command with
+`--csplat` replacing`--gsplat` in a separate directory; prepare with
+`--id paris-58m-lod-compact --encoding csplat`. Do not overwrite native outputs.
+The comparison requires both derivatives. Local RAD folder selection is
+explicitly unsupported; serve via HTTP (Vite preview) or open whole SPZ.
+Publication commands and frozen archives are recorded in[DEPLOYMENT.md](DEPLOYMENT.md).

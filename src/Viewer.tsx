@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
+import { SparkRenderer, SplatMesh, SplatFileType,PagedSplats } from "@sparkjsdev/spark";
 import type { LoadedWorld } from "./load-world";
 import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-path";
 import "./Viewer.css";
 import { ChunkStream,type StreamStats } from './streaming';
+import {radFetcher,type RadTransfer} from './rad-fetcher';
 
 type NavigationState = {
   mode: 'orbit' | 'camera-path';
@@ -59,6 +60,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const [streamEnabled,setStreamEnabled]=useState(()=>new URLSearchParams(window.location.search).get('stream')!=='off');
   const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
   const retryChunks=useRef<()=>void>(()=>{});
+  const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;errors:string[]}|null>(null);
 
   useEffect(() => {
     const container = mount.current!;
@@ -71,6 +73,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let mesh: SplatMesh | undefined;
     let meshPending = false;
     let stream:ChunkStream<SplatMesh>|undefined;
+    const radStats:RadTransfer={requested:0,bytes:0,pending:0,errors:[]};
     let resize: ResizeObserver | undefined;
     let failCleanup: (() => void) | undefined;
     let navigationCleanup: (() => void) | undefined;
@@ -80,6 +83,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         failed = true;
         abort.abort();
         stream?.dispose();
+        mesh?.paged?.dispose();
         renderer?.setAnimationLoop(null);
         setStatus({
           phase: "error",
@@ -271,7 +275,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         camera.position.copy(controls.target).add(offset);
         controls.update();
       };
-      spark = new SparkRenderer({ renderer });
+      spark = new SparkRenderer({ renderer,...(world.paging&&streamEnabled?{maxPagedSplats:world.manifest.paging!.maxPagedSplats,lodSplatCount:world.manifest.paging!.lodSplatCount,numLodFetchers:2}:{} )});
       scene.add(spark);
       resize = new ResizeObserver(() => {
         if (!renderer) return;
@@ -282,7 +286,13 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       });
       resize.observe(container);
       let count=0,received=0;
-      if(world.streaming&&streamEnabled){
+      if(world.paging&&streamEnabled){
+        setPagingStats(null);setStreamStats(null);
+        mesh=new SplatMesh({paged:new PagedSplats({fileType:SplatFileType.RAD,fetchSource:radFetcher(world.paging.index,world.paging.baseUrl,radStats)})});
+        meshPending=true;try{await mesh.initialized;}finally{meshPending=false;if(disposed||failed)mesh.dispose();}
+        if(disposed||failed)return;
+        const transform=world.manifest.coordinates.assetToWorld;mesh.position.fromArray(transform.position);mesh.quaternion.fromArray(transform.quaternion);mesh.scale.setScalar(transform.scale);scene.add(mesh);
+      }else if(world.streaming&&streamEnabled){
         setStreamStats(null);
         const source=world.streaming;
         stream=new ChunkStream(source,{
@@ -413,6 +423,12 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             renderer.domElement.dataset.stream=JSON.stringify(stream.stats());
           }
           renderer.render(scene, camera);
+          if(world.paging&&streamEnabled){
+            count=spark?.activeSplats??0;received=radStats.bytes;
+            const stats={selected:count,pages:spark?.pager?.pageToSplatsChunk.filter(Boolean).length??0,bytes:radStats.bytes,pending:radStats.pending,requested:radStats.requested,errors:[...radStats.errors],capacity:world.manifest.paging!.maxPagedSplats,sourceSplats:world.paging.index.sourceSplats};
+            renderer.domElement.dataset.paging=JSON.stringify(stats);
+            if(totalFrames%30===0)setPagingStats(stats);
+          }
           totalFrames++;
           // A render submission is not visual acceptance; acceptance uses screenshots.
           if (!readyPublished&&totalFrames >= 3&&count>0){
@@ -473,6 +489,13 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   return (
     <div className="scene-shell" data-phase={status.phase}>
       <div ref={mount} className="canvas-mount" />
+      {world.paging&&<div className="stream-panel" aria-label="Native LoD paging status">
+        <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
+        <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 SPZ로 비교':'LoD 스트리밍으로 전환'}</button>
+        {streamEnabled&&pagingStats&&<><span>표시 {pagingStats.selected.toLocaleString()}점 · 상주 {pagingStats.pages}페이지 / {world.manifest.paging!.maxPagedSplats/65536}페이지 한도</span><span>파일 수신합 {(pagingStats.bytes/1e6).toFixed(2)}MB · 요청 {pagingStats.requested}회 · 원본 {world.paging.index.sourceSplats.toLocaleString()}점</span>
+        {pagingStats.errors.length>0&&<><p role="alert">최근 페이지 오류: {pagingStats.errors.join('; ')}</p><button onClick={()=>{setStatus({phase:'loading',message:'Reconnecting LoD pages…'});setAttempt(v=>v+1);}}>페이지 다시 연결</button></>}</>}
+        <small>먼 영역은 거친 GS로 유지하고 가까운 영역을 정밀하게 읽습니다. 사진 배경이 아닙니다.</small>
+      </div>}
       {world.streaming&&<div className="stream-panel" aria-label="Spatial streaming status">
         <strong>{streamEnabled?'구간 로딩':'전체 로딩 비교'}</strong>
         <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 로딩으로 비교':'구간 로딩으로 전환'}</button>

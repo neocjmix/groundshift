@@ -3,7 +3,7 @@ import {writeFile} from 'node:fs/promises';
 import {PNG} from 'pngjs';
 
 const world='/worlds/paris-58m-spz/world.json';
-const state=async page=>JSON.parse(await page.locator('canvas').getAttribute('data-stream'));
+const state=async page=>{const value=await page.locator('canvas').getAttribute('data-stream');return value?JSON.parse(value):{pending:1,resident:0};};
 const settled=async page=>expect.poll(async()=>{const s=await state(page);return s.pending===0&&s.resident===3;},{timeout:120000}).toBe(true);
 async function capture(page,info,name){
  const style=await page.addStyleTag({content:'.scene-shell > :not(.canvas-mount){visibility:hidden!important}'});
@@ -23,7 +23,7 @@ test('actual Paris SPZ lazy rendering, forward/reverse/jumps, eviction and whole
  const slider=page.getByRole('slider',{name:'Recorded camera view'}),before=await page.locator('canvas').getAttribute('data-camera-position');
  await slider.focus();await slider.press('End');await expect.poll(()=>page.locator('canvas').getAttribute('data-path-progress').then(Number)).toBe(23);await settled(page);
  const end=await state(page);expect(end.resident).toBeLessThanOrEqual(3);expect(end.evicted).toBeGreaterThanOrEqual(3);expect(await page.locator('canvas').getAttribute('data-camera-position')).not.toBe(before);await capture(page,info,'end-lazy');
- await slider.press('Home');await settled(page);const reverse=await state(page);expect(reverse.evicted).toBeGreaterThanOrEqual(6);expect(reverse.requested).toBeGreaterThanOrEqual(9);
+ await slider.press('Home');await expect.poll(()=>page.locator('canvas').getAttribute('data-path-progress').then(Number)).toBe(0);await settled(page);const reverse=await state(page);expect(reverse.evicted).toBeGreaterThanOrEqual(6);expect(reverse.requested).toBeGreaterThanOrEqual(9);
  await page.getByRole('button',{name:'Play path',exact:true}).click();await expect.poll(()=>page.locator('canvas').getAttribute('data-path-progress').then(Number)).toBeGreaterThan(.15);await page.getByRole('button',{name:'Pause path',exact:true}).click();
  await page.getByRole('button',{name:'전체 로딩으로 비교',exact:true}).click();await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:120000});expect(requests.filter(r=>r.endsWith('/scene.spz'))).toHaveLength(1);await capture(page,info,'whole-control');
  await page.getByRole('button',{name:'구간 로딩으로 전환',exact:true}).click();await settled(page);

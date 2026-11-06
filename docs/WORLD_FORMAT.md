@@ -111,6 +111,68 @@ Tests of interpolation and camera loading use explicitly synthetic fixtures. The
 
 The parser uses [Zod's strict object validation and refinements](https://zod.dev/api). Parser tests use synthetic metadata only and do not count as browser, GPU, reconstruction, or dataset-license validation.
 
+## Optional spatial SPZ delivery v1
+
+The Paris serving prototype adds an optional`streaming: { "path": "chunks/index.json" }`
+reference. The original single Gaussian asset remains the complete whole-scene
+control. Without this field every older world loads as before. With it the
+viewer loads the index and nearby chunks, and offers an explicit whole-scene
+comparison mode. A missing/invalid index fails visibly rather than silently
+downloading the entire scene. Local folders resolve all declared chunk files
+and release their object URLs together on world disposal.
+
+`parseStreamIndex` in`src/world.ts` validates schemaVersion1,
+coordinateSpace`viewer-world`,totalSplats,maxResidentChunks(1..8),and1..256
+unique ordered chunk records. Each requires a plain relative SPZ path, byte
+length, Gaussian count, SHA256 and nonempty finite3Dcamera anchors. Counts must
+sum to totalSplats. Chunk paths resolve beside the final redirected index URL.
+Their Gaussian coordinates remain in **raw asset space** and receive the same
+assetToWorld transform as the complete asset; only the index anchors are already
+in viewer-world coordinates. Applying the transform to anchors again is wrong.
+
+The bounded implementation chooses the nearest recorded anchor's region and
+adjacent regions, at most maxResidentChunks, with one fetch/decode owner.
+It verifies actual byte length/hash/decoded count, aborts obsolete fetches,
+disposes obsolete late decode results and evicts distant meshes. Encoded file
+sums are not GPU-memory measurements. Unique ownership prevents deliberate
+double opacity; it does not guarantee visibility of distant objects whose
+owner is unloaded. [Experiment, actual checks and limits](PARIS_STREAMING.md).
+
+## Optional native RAD/LoD delivery v1
+
+A world may instead declare:
+
+```json
+"paging": {"path":"rad/index.json","maxPagedSplats":524288,"lodSplatCount":350000}
+```
+
+The complete Gaussian SPZ asset remains mandatory as the whole-scene control.
+`streaming` and `paging` together are rejected. `maxPagedSplats` must be a
+multiple of65536 in65536..2097152;the actual Paris configuration is8pages.
+The native target selected count can be lower for a particular view.
+
+`parsePagedIndex` strictly validates schemaVersion1,kind`spark-rad`,root,
+sourceSplats and declared files with unique relativepaths,positive bytes and
+SHA256. The declared root must exist in that list. No arbitrary filename,
+absolute path or traversal is accepted. Final redirected index URL determines
+the file base. Root/radc files retain the raw asset-space convention and one
+assetToWorld transform; these are not new camera/world solutions.
+
+The HTTP loader fetches metadata only. The pinned-byte adapter feeds Spark's
+native `PagedSplats` ranges and declared chunk filenames,verifying whole-file
+length/SHA before use. Native paging owns hierarchical selection and eviction;
+the adapter tracks actual requests/body bytes/pending/errors. It does not create
+a complete decoded JS cache. On disposal,owned native resources and in-flight
+requests are released/cancelled. Incomplete/erroring requests stay visible.
+WholeSPZ comparison explicitly changes modes and uses the ordinary loader.
+
+Local-folder RAD loading is **not implemented** and fails with an explicit
+message; use local HTTP serving or wholeSPZ. Missing/invalid paging does not
+silently download the entire scene. The explicit static packager includes only
+pinned declared files and verifies byte/hash integrity. Conversion adds coarse
+parent GS,so offline RAD can be larger than SPZ; it is not a lossless
+compression claim. [Actual fidelity and residency evidence](PARIS_STREAMING.md).
+
 ## Retired source-photo background v1 (archival compatibility)
 
 **Withdrawn by the user on 2026-11-07.** Translation misalignment worsens the

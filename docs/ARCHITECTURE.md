@@ -115,6 +115,30 @@ interface ReconstructionBackend {
 ```
 
 ## Portable world artifact
+
+The[Paris spatial-delivery prototype](PARIS_STREAMING.md) extends the same v1
+artifact with an optional small chunk index while preserving its complete SPZ
+control. Offline partitioning assigns each existing Gaussian once in a shared
+frame; no per-chunk camera solution, retraining or fake new backend is created.
+The browser owns a bounded neighborhood of SplatMesh objects, one download/decode
+at a time, explicit cancellation and disposal. Chunk-index camera anchors use
+viewer-world coordinates, while all Gaussian assets retain their original
+asset-space transform. Reconstruction remains a local process; Railway serves
+static files. Sparse region selection fails distant-object coverage in the actual
+Paris experiment,although the all-region union is pixel-exact.
+
+A separately labeled native RAD/LoD derivative is now executed from the same
+new Paris GS using official Spark2.4.0 CPU conversion. Optional`paging` metadata
+selects the native PagedSplats path; a small explicit index pins root/chunk byte
+sizes and hashes. Spark owns hierarchical selection,fetch scheduling and page
+eviction with524,288slots/eight pages and two fetchers. A small fetch adapter
+verifies bytes and exposes actual transfer/pending/errors. Coarse distant GS
+remains present while visible precision loads. The original wholeSPZ is an
+explicit control and is not eagerly downloaded. Both use unchanged asset-space
+coordinates/one transform and the same actual camera path. No reconstruction
+backend interface,service or GPU abstraction is added. HTTP paging is supported;
+local folder RAD selection fails explicitly. Actual bounded loading passes,
+strict16-view appearance preservation fails,and km-scale acceptance is NOT RUN.
 The local storage-only derivative step converts an existing PLY to SPZ v3
 with the pinned Spark CPU/WASM writer. It preserves the native backend output
 and camera/coordinate metadata, performs no new reconstruction, and publishes

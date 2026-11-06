@@ -94,6 +94,7 @@ const worldManifestSchema = z.object({
   // Archived field accepted for compatibility; no longer loaded or rendered.
   background: z.object({ path: relativePathSchema }).strict().optional(),
   streaming: z.object({ path: relativePathSchema }).strict().optional(),
+  paging: z.object({path:relativePathSchema,maxPagedSplats:z.number().int().min(65536).max(2097152).refine(n=>n%65536===0),lodSplatCount:z.number().int().positive()}).strict().optional(),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
     sourceUrl: provenanceUrl,
@@ -114,6 +115,9 @@ const schema=z.object({schemaVersion:z.literal(1),coordinateSpace:z.literal('vie
 });
 export type StreamIndex=z.infer<typeof schema>;
 export const parseStreamIndex=(input:unknown):StreamIndex=>schema.parse(input);
+const pagedIndex=z.object({schemaVersion:z.literal(1),kind:z.literal('spark-rad'),root:relativePathSchema,sourceSplats:positive,files:z.array(z.object({path:relativePathSchema,bytes:positive,sha256:z.string().regex(/^[a-f0-9]{64}$/)}).strict()).min(1).max(2048)}).strict().superRefine((v,c)=>{if(new Set(v.files.map(f=>f.path)).size!==v.files.length||!v.files.some(f=>f.path===v.root))c.addIssue({code:'custom',message:'RAD files must be unique and include the root'});});
+export type PagedIndex=z.infer<typeof pagedIndex>;
+export const parsePagedIndex=(input:unknown):PagedIndex=>pagedIndex.parse(input);
 
 export type WorldManifest = z.infer<typeof worldManifestSchema>;
 

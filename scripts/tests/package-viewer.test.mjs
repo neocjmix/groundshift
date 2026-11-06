@@ -70,6 +70,18 @@ async function observationFixture() {
 }
 
 describe('curated viewer packaging', () => {
+  it.each([false,true])('pins only declared RAD files before packaging (corrupt=%s)',async corrupt=>{
+    const {root,output,put,spec,manifest,world}=await observationFixture();
+    const data='synthetic native page; not rendering evidence';
+    manifest.assets[0]={kind:'gaussian-splat',format:'spz',path:'scene.spz'};
+    manifest.paging={path:'rad/index.json',maxPagedSplats:524288,lodSplatCount:350000};
+    spec.worlds[0].asset='scene.spz';spec.worlds[0].format='spz';
+    await put(`dist/worlds/${world}/world.json`,manifest);await put(`dist/worlds/${world}/scene.spz`,'synthetic control');
+    await put(`dist/worlds/${world}/rad/index.json`,{schemaVersion:1,kind:'spark-rad',sourceSplats:1,root:'scene.rad',files:[{path:'scene.rad',bytes:Buffer.byteLength(data),sha256:corrupt?'0'.repeat(64):createHash('sha256').update(data).digest('hex')}]});
+    await put(`dist/worlds/${world}/rad/scene.rad`,data);await put(`dist/worlds/${world}/rad/unlisted.radc`,'must not publish');
+    if(corrupt){await expect(packageViewer({root,output,includeExperiments:true,observationSpec:spec})).rejects.toThrow('Native LoD integrity mismatch');await expect(access(output)).rejects.toThrow();}
+    else{await packageViewer({root,output,includeExperiments:true,observationSpec:spec});expect(await readFile(path.join(output,`www/worlds/${world}/rad/scene.rad`),'utf8')).toBe(data);await expect(access(path.join(output,`www/worlds/${world}/rad/unlisted.radc`))).rejects.toThrow();}
+  });
   it('packages only declared checksum-pinned stream files and excludes ownership/source evidence',async()=>{
     const {root,output,put,spec,manifest,world}=await observationFixture();
     const data='synthetic chunk, not actual rendering evidence';

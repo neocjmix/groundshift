@@ -2,15 +2,18 @@
 
 Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove GPU training or visual rendering.
 
-## Current status — 2026-11-06
+## Current status — 2026-11-07
 
-New-data/serving direction,2026-11-07: the user accepts the visual SPZ result
-and moves toward longer-distance lazy loading. [The source-scouting run](TOURIST_STREAMING.md)
-selects a single Paris capture sequence:876consecutive360° records/2.185km
-approximate GPS route,12k raster and2.53m median spacing.24actual HD sources
-are downloaded/verified locally. New-source SfM/depth/GS and long-route
-streaming are NOT RUN. The bounded next serving plan uses a common frame,
-preserved whole-scene control and spatial SPZ partition before scaling distance.
+New-data/serving result,2026-11-07: [Paris first58m](PARIS_STREAMING.md)
+executes144/144SfM views,480DAV2 predictions and one8k/768px/800k Metal run
+(1018.286s). WholeSPZ15.92MB is preserved. Nearest3spatial regions pass bounded
+loading/reverse/retry but **FAIL** visual coverage; the complete union is exact.
+Official native RAD/LoD is actually built/executed with a524,288-slot/eight-page
+pool and public start/end/reverse/whole-control checks **PASS**. Strict16-view
+appearance screen **FAILS**,with native mean3.63/255,worst7.99; no independent
+geometry acceptance. Compact encoding saves only1.19% over nativeRAD. The
+selected876sources/2.185km are the expansion route,**not** the reconstructed
+extent; only24HD images/GPS58m are processed. Full2km serving remains NOT RUN.
 
 Storage/serving follow-up,2026-11-07: [SPZ compression](COMPRESSION.md)
 retains the same tangent20 reconstruction,800k Gaussians,SH1 and genuine poses,

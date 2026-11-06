@@ -8,9 +8,10 @@
 One real capture sequence supplies876 consecutive360° photographs over
 approximately2.185km of GPS polyline, with median2.530m/max3.227m spacing.
 Source sensor raster is12,288×6,144. A first contiguous24-image window is
-actually downloaded and verified locally; new Gaussian reconstruction and
-Gaussian streaming are **NOT RUN**. The public page is source evidence,
-not a substitute for an actual long GS world.
+actually downloaded and verified locally. The follow-up [actual58m reconstruction
+and native LoD](PARIS_STREAMING.md) now executes on M2 and is publicly inspectable.
+**The full2.185km GS is NOT RUN.** This document preserves source-selection
+and acquisition evidence; see the follow-up for executed serving and failures.
 
 The user accepts the preceding [SPZ result](COMPRESSION.md): visual degradation
 is hard to distinguish in their observation. Keep that verified codec as the

@@ -4,7 +4,8 @@ import { writeFile } from 'node:fs/promises';
 test('real tourist source route, photograph switching and honest stage boundaries',async({page,browser},info)=>{
   const errors=[],sceneRequests=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(/\.(ply|spz|splat|ksplat|sog)$/.test(new URL(r.url()).pathname))sceneRequests.push(r.url());});
   await page.goto('/experiments/tourist-streaming/');
-  await expect(page.locator('#summary')).toContainText('876장');
+  await expect(page.locator('#summary')).toContainText('2.19km');
+  await expect(page.locator('#metrics')).toContainText('876장');
   await expect.poll(()=>page.locator('#route polyline').getAttribute('points').then(v=>v?.trim().split(' ').length)).toBe(876);
   const photo=page.locator('#photo');await expect(photo).toHaveAttribute('data-rank','1008');
   await expect.poll(()=>photo.evaluate(img=>img.complete&&img.naturalWidth===2048&&img.naturalHeight===1024)).toBe(true);
@@ -17,6 +18,8 @@ test('real tourist source route, photograph switching and honest stage boundarie
   const summary=await (await page.request.get('/experiments/tourist-streaming/summary.json')).json();
   for(const title of ['새 관광지 GS 재구성','SPZ 구간 스트리밍·레이지로딩'])await expect(page.locator('.street-stage').filter({has:page.getByText(title,{exact:true})})).toContainText(summary.stages.find(s=>s.title===title).status);
   if(summary.result){await expect(page.locator('#result-links a').first()).toHaveAttribute('href','/?world='+summary.result.worldPath);await expect.poll(()=>page.locator('#result-poster').evaluate(i=>i.complete&&i.naturalWidth>=256)).toBe(true);}
+  if(summary.measurements){await expect(page.locator('#result-metrics .metric')).toHaveCount(summary.measurements.length);await expect(page.locator('#result-metrics')).toContainText('8페이지');}
+  if(summary.comparisons){const images=page.locator('#result-comparisons img');await expect(images).toHaveCount(summary.comparisons.length);for(const image of await images.all()){await image.scrollIntoViewIfNeeded();await expect.poll(()=>image.evaluate(i=>i.complete&&i.naturalWidth>256)).toBe(true);}}
   const route=await page.request.get('/experiments/tourist-streaming/route.json');expect(route.ok()).toBe(true);const data=await route.json();
   expect(data.images).toHaveLength(876);expect(data.images.every(i=>i.license==='etalab-2.0'&&i.dimensions[0]===12288&&i.dimensions[1]===6144)).toBe(true);
   await expect(page.locator('#metrics')).toContainText('24장 · 202.5MB');
