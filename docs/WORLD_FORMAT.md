@@ -167,3 +167,9 @@ extrapolation blended toward a global mean. `background.notes` records this
 modified region. This is generated display color only; source originals,
 training RGB, depth inference and point clouds remain unchanged. It is not a
 reconstructed floor, a new photograph, or diffusion training augmentation.
+
+This fixed display fill does not remove artwork above its lower 15% boundary;
+the executed experiment retains orange artwork in some views. Because backdrop
+depth is cleared before GS, it also cannot erase an opaque artifact already
+drawn by the Gaussians. Actual route and up/down comparisons show limited,
+view-dependent completion rather than uniform dark-pixel or quality improvement.

@@ -15,72 +15,158 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
-## Tangent directions and explicit backgrounds — 2026-11-06
+## Tangent directions and explicit backgrounds — completed bounded run
 
-[New observation](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
-· [Bounded protocol and actual evidence](TANGENT_BACKGROUND.md).
-The user explicitly reopens **one**20-direction/cropped-depth/background
-combination after the preceding final-quality campaign. That earlier export and
-all earlier evidence remain preserved. Reconstruction remains local; Railway
-serves the selected static display only. The first increments retain34scenes,
-17reports and51chronological entries, including the provisional new report.
+[Results and limits](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
+· [New observed 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20/world.json)
+· [Retained best 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-final-hires/world.json)
+· [Protocol, actual execution and evidence](TANGENT_BACKGROUND.md).
 
-| Increment | Pointer | Railway | Created UTC → status UTC |
+35 Gaussian scenes, 17 reports, 52 chronological entries. The user explicitly
+reopened **one** 20-direction/cropped-depth/background combination after the
+previous campaign. It is now complete: **overall GS appearance improvement
+FAIL; retain street-final-hires**. 300 matched actual GS-only renders show
+held-view RGB MAE 24.414430→26.202616 at 512 output and 24.344902→25.980609
+at 1024 output, with 0/6 directions improving at either size. Background controls
+work, but visual completion is limited and nadir/opaque artifacts remain.
+Independent geometry and unrestricted walking remain NOT RUN. No further
+same-data configuration search or training followed the negative result.
+
+Publication starts with a plan, then actual inputs during MPS inference, actual
+calibrated depth during Metal training, the native world during matched renders,
+and measured comparisons during the full local browser run. Full validation is
+never a prerequisite for these observation releases. Every earlier scene/report
+and immutable phase release remains retained.
+
+| Increment | Pointer | Railway deployment | Created UTC → SUCCESS UTC, 2026-11-06 |
 |---|---|---|---|
-|Plan, explicit NOT RUN stages|`b33e697`|`f6879798-f8da-4fbf-911d-9f655710aa7c`|14:13:33.558 →SUCCESS14:19:03.691|
-|Actual20-direction crops while MPS depth runs|`e80df0f`|`99e39d04-45ed-4579-87eb-34c13829f53f`|14:20:49.173 →SUCCESS14:22:06.107|
-|Actual calibrated depth while Metal training runs|`4531243`|`290d191b-3a0a-4f58-9af1-77a10e68d57e`|14:25:08.882 →SUCCESS14:30:26.879|
+|Plan, explicit NOT RUN stages|`b33e697`|`f6879798-f8da-4fbf-911d-9f655710aa7c`|14:13:33.558→14:19:03.691|
+|Actual 20-direction crops during MPS inference|`e80df0f`|`99e39d04-45ed-4579-87eb-34c13829f53f`|14:20:49.173→14:22:06.107|
+|Actual calibrated depth during Metal training|`4531243`|`290d191b-3a0a-4f58-9af1-77a10e68d57e`|14:25:08.882→14:30:26.879|
+|Optional-background resource cleanup|`8c2cf12`|`ed7ee100-286f-45d1-b42a-68588fe0cc6a`|14:34:04.400→14:35:57.592|
+|Actual native scene and background assets|`71aacbe`|`aed1ec83-b2cc-4934-838b-453dbe48e625`|14:45:48.791→14:47:02.589|
+|Measured regression while local suite runs|`98645e2`|`4a97c19c-7213-4740-af61-ae703e04eab6`|14:49:49.558→14:51:32.172|
+|Actual background limits and mobile repair|`46aa349`|`8260dfd4-ebad-40ad-8708-a9d0f31ec69d`|14:58:35.908→14:59:23.562|
+|Verified status; actual results first|`50dd8c5`|`41cf2731-9060-487f-9d67-d80442906a14`|15:04:10.076→15:04:50.959|
 
-The input preparation takes31.212168s. Actual DAV2/MPS inference runs
-14:17:51.717–14:19:42.636UTC,110.918779s including setup and output;
-all160actual tensors are[1,3,1036,1036]. Calibration/fusion runs16.866375s.
-136/160directions are supported;24are rejected, and dense-depth validity is
-about306–311k of524,288directions per training panorama. Angular crop coverage
-and valid reconstructed depth are different facts. New GS export, visual
-comparison and actual optional-background rendering are still **NOT RUN** at
-this provisional stage. Published relative-depth images and spherical radial
-visualizations are explicitly distinguished from source photos and GS renders.
+The actual native run finishes at 14:42:37.359 UTC, after 1188.250442 s. Native packaging
+begins as soon as export, background assets and the first actual preview are
+ready, while 300 GS-only renders/measurements continue. The full local browser
+suite runs for 243.164141 s; the measured-evidence deployment is dispatched during
+that run. The native and later packages retain the exact 73,600,652-byte
+800,000-Gaussian PLY with SHA-256
+`b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e`.
+The old best world remains byte-identical.
 
-The portable optional background is documented in[WORLD_FORMAT.md](WORLD_FORMAT.md#optional-source-photo-background-v1).
-**GS only** is the default; image/mesh backgrounds load only after selection.
-The panorama is a far-field source-photo fallback. The estimated depth shell
-is drawn as a backdrop, with depth cleared before Gaussians. Neither is a
-measured surface, a physical occluder, collision geometry or a source of GS
-render-acceptance pixels. Incorrect parallax and duplicate near objects remain
-possible and visibly labeled. Source selection excludes panorama5RGB, matching
-the training RGB exclusion; all-nine estimated SfM geometry is still reused.
+**PASS:** production builds, TypeScript and lint; 243 distinct Python tests across
+two local environments; 182 JS tests including 33 packaging cases. 79/79 headed
+local browser cases pass on the immutable native package, 0 skipped/flaky/failed.
+That local scope includes 35 scene deep links/reloads and actual new GS/three
+background modes. The fixture uses `GS_EXPECTATION_ROOT` to pin its expected
+summary to the immutable served package while publication continues.
 
-**PASS after dispatch:** plan13/13and input32/32changed public file hashes and
-sizes match their selected packages. Both release attachments are read back
-anonymously with identical full-byte SHA-256. Two headed public Chrome cases
-pass on the actual-input phase in14.345395s, checking visible stages, decoded
-licensed input/diagnostic images, errors, chronology and mobile layout. They
-contain no canvas; they do not establish GPU rendering. The depth phase
-subsequently passes17/17changed public hashes, full anonymous archive readback,
-and the same two static Chrome cases in16.221794s. TypeScript,lint and
-production builds pass;182JS tests pass, including33packaging cases. An initial
-two-test fixture-scoping failure and a rejected VitestCLI argument are retained
-locally with corrected successful runs. A new cancellation test also reproduces
-a local-background blob-URL cleanup gap; the rejection path now revokes those
-URLs and the182-case retry passes. Full browser, new GS and independent
-geometry acceptance stay separate from these checks.
+**PASS:** one targeted headed public Chrome 156 actual scene case in 31.040908 s
+checks GS-only default, no background image/mesh requests before selection,
+989,694 colored pixels in an actual GS-only canvas with UI hidden, both optional
+background modes, route movement and return to GS-only. Background pixels do
+not count toward the GS render gate. The same-pose public captures record
+clear-color-like fractions 0.3359%/0.2246%/0.2260% for GS/panorama/shell; these
+are display-color statistics, not geometric completeness. Root-owned actual
+four-position and up/down comparisons show remaining orange source artwork and
+nonuniform dark-pixel improvement. See the report's explicitly labeled sheets.
 
-These early immutable overlays are applied after the preceding four-layer
-final-quality display, in this order when restoring this provisional phase:
+**FAIL then PASS:** the measured report's first static public run passes 1/2;
+a compact numeric paragraph expands 354 px to 501 px on a 390 px display. A scoped
+report-only wrapping fix is deployed immediately; a fresh 2/2 headed public run
+passes in 18.089818 s, covering mobile width, all actual images, decoded movie
+frame, four metric rows, error handling and retained chronology. The initial
+failure/trace is retained. Full 79-case public rerun is NOT RUN. Initial synthetic
+fixture/CLI mistakes and the reproduced local-background cancellation cleanup
+gap remain recorded separately from actual model execution and quality.
 
-| Release / archive | Bytes | SHA-256 |
-|---|---:|---|
-|`viewer-tangent-plan-2026-11-06` / `groundshift-tangent-plan-20261106.tar.gz`|1,066,556|`841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe`|
-|`viewer-tangent-inputs-2026-11-06` / `groundshift-tangent-inputs-20261106.tar.gz`|7,384,830|`7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26`|
-|`viewer-tangent-depth-2026-11-06` / `groundshift-tangent-depth-20261106.tar.gz`|5,729,424|`1c59ec176ccc5b40e76af4192385753ed6e6587c8d060b4b825eaf624a143823`|
+**PASS:** public changed-file size/SHA checks cover 13/32/17/7/67/17/9/2 files
+across the eight phases. This is incremental readback, **not** a fresh network
+readback of all 1,117 files. Every composed file is verified on disk. All release
+attachments are read back anonymously with the same full-byte checksums.
+Final server logs confirm `/tmp/tangent-verified.tar.gz: OK`; service SUCCESS
+and a fresh public report case (1/1 PASS in 12.685574 s) are checked after dispatch. The final 12,479-
+byte overlay changes exactly two JSON files. It reorders existing references so
+actual GS 512/detail/route/offpath and two background sheets appear before input/
+depth diagnostics; every image/movie/compiled-code/scene/background byte is
+unchanged. Three distinct targeted public cases have passing evidence; later
+metadata-only inspection does not imply another full GPU run.
 
-Every overlay is built from an explicit public package and physically assembled
-with its pinned base; all composed file hashes are verified. The successive
-actual compositions contain1,056/1,075/1,088files. Superseded compiled assets may
-remain inert; these are not claims of target-only absence. Immutable phase
-archives stay available for rollback even if a later complete export overlay
-supersedes their restoration layers. No source originals, private footage,
-raw execution logs, model weights or credentials enter the archives or Git.
+### Current 35-world restoration
+
+Apply the four immutable final-quality layers in the preceding campaign's
+restoration table, followed by these **four** layers, in order. The complete
+native overlay supersedes the earlier tangent plan/input/depth/viewer overlays;
+those early archives remain available for rollback but are **not** required to
+restore the final surface.
+
+| Layer | Release / archive | Bytes | SHA-256 |
+|---|---|---:|---|
+|5·native and selected background assets|`viewer-tangent-native-2026-11-06` / `groundshift-tangent-native-20261106.tar.gz`|88,819,810|`8c09b353a96551ea5fa7eab357ebe67bc61961b0237858fbee5aa94e8ed306da`|
+|6·actual measured comparisons/movie|`viewer-tangent-evidence-2026-11-06` / `groundshift-tangent-evidence-20261106.tar.gz`|8,979,570|`55b2e885924bb007338a56b0e5c660df242bb2ee49e478006bc3163fccc0a15b`|
+|7·background limits and mobile repair|`viewer-tangent-limits-2026-11-06` / `groundshift-tangent-limits-20261106.tar.gz`|1,228,928|`d08bfc7ffd29de440870a2c8fd4b001d4c09204ed8688559fb999c4e29f71463`|
+|8·verified status and results-first order|`viewer-tangent-verified-2026-11-06` / `groundshift-tangent-verified-20261106.tar.gz`|12,479|`d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842`|
+
+```sh
+(
+  set -e
+  gs_restore_dir=$(mktemp -d)
+  gs_restore_layer() {
+    curl --fail --location --output "$gs_restore_dir/$2" \
+      "https://github.com/neocjmix/groundshift/releases/download/$1/$2"
+    printf '%s  %s\n' "$3" "$gs_restore_dir/$2" | shasum -a 256 -c -
+    tar -xzf "$gs_restore_dir/$2" -C "$gs_restore_dir"
+  }
+  gs_restore_layer viewer-model-selection-2026-11-06 \
+    groundshift-model-selection-20261106-v2.tar.gz \
+    cf8f223f78d4438de3f3d8cb1223269dbec983ac83066dd97263128e3a56b13d
+  gs_restore_layer viewer-final-quality-export-2026-11-06 \
+    groundshift-final-quality-export-20261106.tar.gz \
+    a278ecd09b7c1bddf74195161e2a75d1afa1757bb6626e0e59b9b981a9440c9c
+  gs_restore_layer viewer-final-quality-evidence-2026-11-06 \
+    groundshift-final-quality-evidence-20261106.tar.gz \
+    070d3b51b9224bd0dd9fa0815ef4be82d6c2e5f5a8e2d03e6f56083142e52abd
+  gs_restore_layer viewer-final-quality-verified-2026-11-06 \
+    groundshift-final-quality-verified-20261106.tar.gz \
+    e3a848b1d39e3fcff330358b102de40e1d1e1ecd64ad5d9b8927cdf64a047f48
+  gs_restore_layer viewer-tangent-native-2026-11-06 \
+    groundshift-tangent-native-20261106.tar.gz \
+    8c09b353a96551ea5fa7eab357ebe67bc61961b0237858fbee5aa94e8ed306da
+  gs_restore_layer viewer-tangent-evidence-2026-11-06 \
+    groundshift-tangent-evidence-20261106.tar.gz \
+    55b2e885924bb007338a56b0e5c660df242bb2ee49e478006bc3163fccc0a15b
+  gs_restore_layer viewer-tangent-limits-2026-11-06 \
+    groundshift-tangent-limits-20261106.tar.gz \
+    d08bfc7ffd29de440870a2c8fd4b001d4c09204ed8688559fb999c4e29f71463
+  gs_restore_layer viewer-tangent-verified-2026-11-06 \
+    groundshift-tangent-verified-20261106.tar.gz \
+    d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842
+  mkdir -p public/worlds public/experiments
+  cp -R "$gs_restore_dir/www/worlds/." public/worlds/
+  cp -R "$gs_restore_dir/www/experiments/." public/experiments/
+  for gs_entry in experiments/*/index.html; do
+    rm -f "public/$gs_entry"
+  done
+)
+npm ci
+npm run dev
+```
+
+**PASS:** ordinary ordered extraction of all eight local immutable release
+archives into an empty directory reproduces all 1,117 final file sizes/hashes in
+4.440193 s. The fresh target inventory has 1,095 public files; 22 superseded compiled
+files remain inert in the actual layer composition. This is not a target-only
+absence proof. The separate historical/native/evidence/limits/status COPY layers
+in `deploy/Dockerfile.github` merge the same `www/` paths and keep later tiny
+observations from invalidating the historical 1.1 GB copy. The preceding Docker
+pointer is preserved by commit `8c2cf12` and the early phase releases; no new
+hosting or reconstruction service was introduced. Display restoration does not
+repeat model inference or training. A fresh-source/full reconstruction rerun
+of this final artifact is NOT RUN.
 
 ## Final same-data quality release — 2026-11-06
 
