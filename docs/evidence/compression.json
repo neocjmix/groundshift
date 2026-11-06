@@ -1,0 +1,1830 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-06T16:15:54.196Z",
+  "phase": "measured",
+  "title": "같은 장면, 더 작은 파일",
+  "summary": "점 800,000개와 SH1를 유지한 저장 형식 비교. PLY 73.60MB → SPZ 15.94MB (78.3% 절약). 재학습·점 제거·배경 보완 없음.",
+  "measurement": {
+    "status": "PASS",
+    "startedAt": "2026-11-06T16:00:05.292Z",
+    "codec": "Spark 2.4.0 transcodeSpz CPU/WASM",
+    "visualQuality": "NOT RUN",
+    "browserRendering": "NOT RUN",
+    "retraining": false,
+    "source": {
+      "sha256": "b9213464d654d8fbda1721a1a86415fa4670cb50c4b9ce5107791b7906f94a3e",
+      "bytes": 73600652,
+      "count": 800000,
+      "shDegree": 1,
+      "bounds": {
+        "min": [
+          -73.56050109863281,
+          -117.5474624633789,
+          -94.540771484375
+        ],
+        "max": [
+          129.06224060058594,
+          11.615673065185547,
+          127.50861358642578
+        ]
+      }
+    },
+    "output": {
+      "sha256": "9cb152e31fe4ae0eec76d53f8ce8b430118aa1e48db25282562eae558c6ca004",
+      "bytes": 15936671,
+      "count": 800000,
+      "shDegree": 1,
+      "version": 3,
+      "fractionalBits": 15,
+      "flags": 1
+    },
+    "conversionSeconds": 1.067132333,
+    "positions": {
+      "maxAbsoluteError": 0.0000152587890625,
+      "meanAbsoluteError": 0.000007636236941064751,
+      "step": 0.000030517578125,
+      "units": "arbitrary SfM units, not meters"
+    },
+    "reductionPercent": 78.3471062185699,
+    "gzipControl": {
+      "bytes": 69788964,
+      "seconds": 1.846441625,
+      "roundtripSha256Matches": true
+    },
+    "maxRssBytes": 525287424,
+    "memoryMeaning": "Node process high-water RSS, includes runtime/validation/gzip; not GPU memory",
+    "coordinateMetadataUnchanged": true,
+    "navigationUnchanged": true,
+    "elapsedSeconds": 3.463214792,
+    "finishedAt": "2026-11-06T16:00:08.757Z"
+  },
+  "conclusion": "이 장면에서는 외관을 거의 유지하면서 파일을78.3% 줄일 수 있었습니다. SPZ를 경량 전달 후보로 채택합니다. 무손실은 아니며, 기존의 번짐·겹침·미검증 형상은 그대로입니다.",
+  "checks": [
+    {
+      "title": "로컬 CPU/WASM 변환·구조·위치 보존",
+      "status": "PASS",
+      "detail": "80만 Gaussian·SH1·카메라·좌표 메타데이터 유지.15비트 소수 정밀도, 전체240만 위치 성분을 직접 검사."
+    },
+    {
+      "title": "동일 카메라201개 실제 Chrome/M2 렌더",
+      "status": "PASS",
+      "detail": "67시야 × PLY/SPZ/PLY재로딩. 수평·아래쪽 실제 포즈, 위아래 표시 회전과49프레임 이동. 미리 정한 화면 차이 기준 통과."
+    },
+    {
+      "title": "직접 화면 관찰",
+      "status": "PASS",
+      "detail": "건물·원거리 창문·도로·난간·가지·위쪽 시야에서 큰 외관 저하를 관찰하지 못함. 미세한 색/윤곽 변화는 있으며 번짐·벽 중첩을 개선한 것은 아님."
+    },
+    {
+      "title": "타입·린트·생산 빌드·자동 테스트",
+      "status": "PASS",
+      "detail": "TypeScript/ESLint/build 및188 JS 테스트 PASS. 새8개 무결성 테스트 포함."
+    },
+    {
+      "title": "로컬 실제 뷰어·이동·자유시야",
+      "status": "PASS",
+      "detail": "PLY/SPZ2개 실제 장면 통과. 보고서 검사 최초 중복 링크 선택기 실패를 수정하고1개 재실행 통과. 총3개 구별된 검사, 최초실패 증거 보존."
+    },
+    {
+      "title": "공개 배포·실제 브라우저",
+      "status": "PASS",
+      "detail": "첫 배포 SUCCESS/19개 변경 해시 PASS, 측정 배포 SUCCESS/9개 변경 해시 PASS.공개 Chrome 양쪽 실제 장면과 보고서3/3 PASS54.8초.측정 배포 후 영상 포함 보고서 재검사1/1 PASS9.7초.원본·장면·카메라 유지."
+    },
+    {
+      "title": "독립 형상 정확도·GPU 메모리·통계적 속도 검증",
+      "status": "NOT RUN",
+      "detail": "압축 표현 비교이며 새로운 측량/형상 검증이 아님. GPU 메모리 감소나 FPS 증가를 주장하지 않음."
+    },
+    {
+      "title": "공개 비교 영상 실제 디코딩",
+      "status": "PASS",
+      "detail": "실측 이미지·49프레임 이동 영상이 포함된 공개 보고서에서 실제 디코딩 프레임0.6초→2.3초 변화 확인.모바일·이미지·실험실 링크 포함1/1검사9.7초 PASS."
+    }
+  ],
+  "comparisons": [
+    {
+      "title": "Same camera: street overview",
+      "image": "./comparison-0.jpg",
+      "caption": "Left PLY, center SPZ, right absolute per-channel difference multiplied by8. Same actual1024px Chrome render; crop is not upscaled. This does not compare against independent geometry."
+    },
+    {
+      "title": "Same camera: facade and thin structures",
+      "image": "./comparison-1.jpg",
+      "caption": "Left PLY, center SPZ, right absolute per-channel difference multiplied by8. Same actual1024px Chrome render; crop is not upscaled. This does not compare against independent geometry."
+    },
+    {
+      "title": "Native pixel crop: railing and branches",
+      "image": "./comparison-2.jpg",
+      "caption": "Left PLY, center SPZ, right absolute per-channel difference multiplied by8. Same actual1024px Chrome render; crop is not upscaled. This does not compare against independent geometry."
+    },
+    {
+      "title": "Near-pole display view",
+      "image": "./comparison-3.jpg",
+      "caption": "Left PLY, center SPZ, right absolute per-channel difference multiplied by8. Same actual1024px Chrome render; crop is not upscaled. This does not compare against independent geometry."
+    }
+  ],
+  "video": "./motion.mp4",
+  "comparison": {
+    "status": "PASS",
+    "renderedFrames": 201,
+    "comparedViews": 67,
+    "sourceConfigSha256": "f030bada81484a9fdad2e03e944b95b792d2a9a8e1b317f1d441d9398a53fb9a",
+    "appearanceScreen": "PASS",
+    "activeRgbMae": 1.347516189469805,
+    "worstViewMae": 1.4404095581807492,
+    "minViewPsnr": 42.19343269758887,
+    "repeatMeanMae": 0.013525058534508753,
+    "repeatWorstMae": 0.08478007575865955,
+    "rows": [
+      {
+        "id": "held-5-level-000",
+        "kind": "held",
+        "activePixels": 1048116,
+        "mae": 1.4377966433740794,
+        "psnr": 42.307893549315764,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 58,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-060",
+        "kind": "held",
+        "activePixels": 1048122,
+        "mae": 1.3531242864221278,
+        "psnr": 42.71026205280914,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 24,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-120",
+        "kind": "held",
+        "activePixels": 1048425,
+        "mae": 1.2397322968579854,
+        "psnr": 43.5426401318201,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 27,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-180",
+        "kind": "held",
+        "activePixels": 1048522,
+        "mae": 1.3159542670540056,
+        "psnr": 42.99284886009207,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 25,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-240",
+        "kind": "held",
+        "activePixels": 1048494,
+        "mae": 1.2819202271702714,
+        "psnr": 43.12355683599176,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 33,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-300",
+        "kind": "held",
+        "activePixels": 1048529,
+        "mae": 1.354063009543211,
+        "psnr": 42.77680648668603,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 52,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-000",
+        "kind": "held",
+        "activePixels": 1048291,
+        "mae": 1.3287360093714435,
+        "psnr": 43.05529911429713,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 48,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-060",
+        "kind": "held",
+        "activePixels": 1048182,
+        "mae": 1.3409032655270428,
+        "psnr": 43.024230456277365,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 20,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-120",
+        "kind": "held",
+        "activePixels": 1048389,
+        "mae": 1.2419801555847432,
+        "psnr": 43.702143098582226,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-180",
+        "kind": "held",
+        "activePixels": 1048525,
+        "mae": 1.2189901687290876,
+        "psnr": 43.92233052034697,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 18,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-240",
+        "kind": "held",
+        "activePixels": 1048497,
+        "mae": 1.1964307003262766,
+        "psnr": 44.049430403388506,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 15,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-300",
+        "kind": "held",
+        "activePixels": 1048243,
+        "mae": 1.2646097644661909,
+        "psnr": 43.51683047417609,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 52,
+        "screenPass": true
+      },
+      {
+        "id": "display-0-pitch-80",
+        "kind": "display",
+        "activePixels": 1048576,
+        "mae": 1.2216339111328125,
+        "psnr": 44.0314428083862,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 13,
+        "screenPass": true
+      },
+      {
+        "id": "display-120-pitch-80",
+        "kind": "display",
+        "activePixels": 1048574,
+        "mae": 1.238658724451811,
+        "psnr": 43.95666166741357,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 17,
+        "screenPass": true
+      },
+      {
+        "id": "display-240-pitch-80",
+        "kind": "display",
+        "activePixels": 1048564,
+        "mae": 1.224322978854891,
+        "psnr": 44.04380754285236,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 4,
+        "maxChannelDifference": 12,
+        "screenPass": true
+      },
+      {
+        "id": "display-0-pitch80",
+        "kind": "display",
+        "activePixels": 1048576,
+        "mae": 1.3928956985473633,
+        "psnr": 42.43615211241138,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 26,
+        "screenPass": true
+      },
+      {
+        "id": "display-120-pitch80",
+        "kind": "display",
+        "activePixels": 1048566,
+        "mae": 1.2981239775719093,
+        "psnr": 43.015681145080585,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 27,
+        "screenPass": true
+      },
+      {
+        "id": "display-240-pitch80",
+        "kind": "display",
+        "activePixels": 1048559,
+        "mae": 1.3643012299101274,
+        "psnr": 42.562236775477714,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 32,
+        "screenPass": true
+      },
+      {
+        "id": "path-000",
+        "kind": "path",
+        "activePixels": 1048538,
+        "mae": 1.3371217829015258,
+        "psnr": 42.88820706978428,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 25,
+        "screenPass": true
+      },
+      {
+        "id": "path-001",
+        "kind": "path",
+        "activePixels": 1048539,
+        "mae": 1.339246322740499,
+        "psnr": 42.873565226209166,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 29,
+        "screenPass": true
+      },
+      {
+        "id": "path-002",
+        "kind": "path",
+        "activePixels": 1048539,
+        "mae": 1.3422778424709683,
+        "psnr": 42.85183317451448,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-003",
+        "kind": "path",
+        "activePixels": 1048521,
+        "mae": 1.339837415432468,
+        "psnr": 42.85416469705539,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-004",
+        "kind": "path",
+        "activePixels": 1048520,
+        "mae": 1.3327061000267042,
+        "psnr": 42.92064233065127,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 32,
+        "screenPass": true
+      },
+      {
+        "id": "path-005",
+        "kind": "path",
+        "activePixels": 1048518,
+        "mae": 1.3370503256342126,
+        "psnr": 42.89388808165875,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-006",
+        "kind": "path",
+        "activePixels": 1048518,
+        "mae": 1.3309369351154041,
+        "psnr": 42.92427579534605,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 26,
+        "screenPass": true
+      },
+      {
+        "id": "path-007",
+        "kind": "path",
+        "activePixels": 1048512,
+        "mae": 1.3329194134163462,
+        "psnr": 42.90185876243372,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 31,
+        "screenPass": true
+      },
+      {
+        "id": "path-008",
+        "kind": "path",
+        "activePixels": 1048519,
+        "mae": 1.3315654429406303,
+        "psnr": 42.92123224567615,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 25,
+        "screenPass": true
+      },
+      {
+        "id": "path-009",
+        "kind": "path",
+        "activePixels": 1048498,
+        "mae": 1.3384593962029494,
+        "psnr": 42.87821328068888,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 27,
+        "screenPass": true
+      },
+      {
+        "id": "path-010",
+        "kind": "path",
+        "activePixels": 1048494,
+        "mae": 1.3362858220139235,
+        "psnr": 42.881882276032954,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 29,
+        "screenPass": true
+      },
+      {
+        "id": "path-011",
+        "kind": "path",
+        "activePixels": 1048526,
+        "mae": 1.3435206502588712,
+        "psnr": 42.83172547227252,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 31,
+        "screenPass": true
+      },
+      {
+        "id": "path-012",
+        "kind": "path",
+        "activePixels": 1048528,
+        "mae": 1.3473361385358014,
+        "psnr": 42.80321546009081,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-013",
+        "kind": "path",
+        "activePixels": 1048554,
+        "mae": 1.3506209503754694,
+        "psnr": 42.76249744925003,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 26,
+        "screenPass": true
+      },
+      {
+        "id": "path-014",
+        "kind": "path",
+        "activePixels": 1048528,
+        "mae": 1.35352862934196,
+        "psnr": 42.73479320237952,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-015",
+        "kind": "path",
+        "activePixels": 1048508,
+        "mae": 1.3529230741841423,
+        "psnr": 42.745338316754264,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 29,
+        "screenPass": true
+      },
+      {
+        "id": "path-016",
+        "kind": "path",
+        "activePixels": 1048528,
+        "mae": 1.3588796229889266,
+        "psnr": 42.69034407450319,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 27,
+        "screenPass": true
+      },
+      {
+        "id": "path-017",
+        "kind": "path",
+        "activePixels": 1048549,
+        "mae": 1.3609092183579403,
+        "psnr": 42.68985908022205,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-018",
+        "kind": "path",
+        "activePixels": 1048539,
+        "mae": 1.357839813302128,
+        "psnr": 42.72137116641149,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-019",
+        "kind": "path",
+        "activePixels": 1048434,
+        "mae": 1.362007209482587,
+        "psnr": 42.70257306943935,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 30,
+        "screenPass": true
+      },
+      {
+        "id": "path-020",
+        "kind": "path",
+        "activePixels": 1048362,
+        "mae": 1.3460461812490978,
+        "psnr": 42.78722534206956,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 30,
+        "screenPass": true
+      },
+      {
+        "id": "path-021",
+        "kind": "path",
+        "activePixels": 1048461,
+        "mae": 1.3485206729991228,
+        "psnr": 42.7830340657055,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 32,
+        "screenPass": true
+      },
+      {
+        "id": "path-022",
+        "kind": "path",
+        "activePixels": 1048455,
+        "mae": 1.3579260276629261,
+        "psnr": 42.73566471604444,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 29,
+        "screenPass": true
+      },
+      {
+        "id": "path-023",
+        "kind": "path",
+        "activePixels": 1048536,
+        "mae": 1.3520998166332232,
+        "psnr": 42.783670378071434,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 31,
+        "screenPass": true
+      },
+      {
+        "id": "path-024",
+        "kind": "path",
+        "activePixels": 1048529,
+        "mae": 1.3542591573528249,
+        "psnr": 42.7813687382627,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 39,
+        "screenPass": true
+      },
+      {
+        "id": "path-025",
+        "kind": "path",
+        "activePixels": 1048535,
+        "mae": 1.3596538662673794,
+        "psnr": 42.735869709612416,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 49,
+        "screenPass": true
+      },
+      {
+        "id": "path-026",
+        "kind": "path",
+        "activePixels": 1048521,
+        "mae": 1.3622597926031048,
+        "psnr": 42.72741958050276,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 31,
+        "screenPass": true
+      },
+      {
+        "id": "path-027",
+        "kind": "path",
+        "activePixels": 1048513,
+        "mae": 1.3601109380618075,
+        "psnr": 42.71767958208287,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 33,
+        "screenPass": true
+      },
+      {
+        "id": "path-028",
+        "kind": "path",
+        "activePixels": 1048517,
+        "mae": 1.3609056092239484,
+        "psnr": 42.71046588380453,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 5,
+        "maxChannelDifference": 32,
+        "screenPass": true
+      },
+      {
+        "id": "path-029",
+        "kind": "path",
+        "activePixels": 1048533,
+        "mae": 1.366040299478732,
+        "psnr": 42.68424935338187,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 31,
+        "screenPass": true
+      },
+      {
+        "id": "path-030",
+        "kind": "path",
+        "activePixels": 1048511,
+        "mae": 1.3673876573540955,
+        "psnr": 42.659380360654175,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 34,
+        "screenPass": true
+      },
+      {
+        "id": "path-031",
+        "kind": "path",
+        "activePixels": 1048481,
+        "mae": 1.3634540508284525,
+        "psnr": 42.688888394192034,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 35,
+        "screenPass": true
+      },
+      {
+        "id": "path-032",
+        "kind": "path",
+        "activePixels": 1048445,
+        "mae": 1.367591369440775,
+        "psnr": 42.677591164538825,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 36,
+        "screenPass": true
+      },
+      {
+        "id": "path-033",
+        "kind": "path",
+        "activePixels": 1048472,
+        "mae": 1.369162616328015,
+        "psnr": 42.65333758969682,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 35,
+        "screenPass": true
+      },
+      {
+        "id": "path-034",
+        "kind": "path",
+        "activePixels": 1048453,
+        "mae": 1.3764317523055396,
+        "psnr": 42.573387440224685,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 35,
+        "screenPass": true
+      },
+      {
+        "id": "path-035",
+        "kind": "path",
+        "activePixels": 1048494,
+        "mae": 1.3758651297321047,
+        "psnr": 42.570605415731954,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 35,
+        "screenPass": true
+      },
+      {
+        "id": "path-036",
+        "kind": "path",
+        "activePixels": 1048486,
+        "mae": 1.3653973443612981,
+        "psnr": 42.655754943327494,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 36,
+        "screenPass": true
+      },
+      {
+        "id": "path-037",
+        "kind": "path",
+        "activePixels": 1048488,
+        "mae": 1.3631143131824113,
+        "psnr": 42.680624476302725,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 36,
+        "screenPass": true
+      },
+      {
+        "id": "path-038",
+        "kind": "path",
+        "activePixels": 1048491,
+        "mae": 1.3727852694968292,
+        "psnr": 42.604026157311516,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 37,
+        "screenPass": true
+      },
+      {
+        "id": "path-039",
+        "kind": "path",
+        "activePixels": 1048489,
+        "mae": 1.3848150370040442,
+        "psnr": 42.51554122331634,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 38,
+        "screenPass": true
+      },
+      {
+        "id": "path-040",
+        "kind": "path",
+        "activePixels": 1048510,
+        "mae": 1.4013368176428138,
+        "psnr": 42.40630370888964,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 41,
+        "screenPass": true
+      },
+      {
+        "id": "path-041",
+        "kind": "path",
+        "activePixels": 1048515,
+        "mae": 1.4121333505004696,
+        "psnr": 42.34532180525665,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 41,
+        "screenPass": true
+      },
+      {
+        "id": "path-042",
+        "kind": "path",
+        "activePixels": 1048507,
+        "mae": 1.4083333094899064,
+        "psnr": 42.35908330016314,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 40,
+        "screenPass": true
+      },
+      {
+        "id": "path-043",
+        "kind": "path",
+        "activePixels": 1048497,
+        "mae": 1.41678739503626,
+        "psnr": 42.2916193714859,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 39,
+        "screenPass": true
+      },
+      {
+        "id": "path-044",
+        "kind": "path",
+        "activePixels": 1048444,
+        "mae": 1.4254784550565727,
+        "psnr": 42.26832888692398,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 40,
+        "screenPass": true
+      },
+      {
+        "id": "path-045",
+        "kind": "path",
+        "activePixels": 1048465,
+        "mae": 1.428910200467668,
+        "psnr": 42.24884436052641,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 39,
+        "screenPass": true
+      },
+      {
+        "id": "path-046",
+        "kind": "path",
+        "activePixels": 1048373,
+        "mae": 1.4374705694760674,
+        "psnr": 42.214685058615196,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 37,
+        "screenPass": true
+      },
+      {
+        "id": "path-047",
+        "kind": "path",
+        "activePixels": 1048219,
+        "mae": 1.4404095581807492,
+        "psnr": 42.19343269758887,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 38,
+        "screenPass": true
+      },
+      {
+        "id": "path-048",
+        "kind": "path",
+        "activePixels": 1048193,
+        "mae": 1.438748716441851,
+        "psnr": 42.241988591070985,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 6,
+        "maxChannelDifference": 38,
+        "screenPass": true
+      }
+    ],
+    "repeat": [
+      {
+        "id": "held-5-level-000",
+        "kind": "held",
+        "activePixels": 1048077,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-060",
+        "kind": "held",
+        "activePixels": 1048081,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-120",
+        "kind": "held",
+        "activePixels": 1048406,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-180",
+        "kind": "held",
+        "activePixels": 1048516,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-240",
+        "kind": "held",
+        "activePixels": 1048485,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-level-300",
+        "kind": "held",
+        "activePixels": 1048529,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-000",
+        "kind": "held",
+        "activePixels": 1048266,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-060",
+        "kind": "held",
+        "activePixels": 1048134,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-120",
+        "kind": "held",
+        "activePixels": 1048359,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-180",
+        "kind": "held",
+        "activePixels": 1048523,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-240",
+        "kind": "held",
+        "activePixels": 1048488,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "held-5-down-300",
+        "kind": "held",
+        "activePixels": 1048234,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-0-pitch-80",
+        "kind": "display",
+        "activePixels": 1048576,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-120-pitch-80",
+        "kind": "display",
+        "activePixels": 1048574,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-240-pitch-80",
+        "kind": "display",
+        "activePixels": 1048564,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-0-pitch80",
+        "kind": "display",
+        "activePixels": 1048576,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-120-pitch80",
+        "kind": "display",
+        "activePixels": 1048565,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "display-240-pitch80",
+        "kind": "display",
+        "activePixels": 1048559,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-000",
+        "kind": "path",
+        "activePixels": 1048532,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-001",
+        "kind": "path",
+        "activePixels": 1048530,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-002",
+        "kind": "path",
+        "activePixels": 1048537,
+        "mae": 0.05434174791479302,
+        "psnr": 59.55368339985278,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 28,
+        "screenPass": true
+      },
+      {
+        "id": "path-003",
+        "kind": "path",
+        "activePixels": 1048516,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-004",
+        "kind": "path",
+        "activePixels": 1048518,
+        "mae": 0.05186367806752006,
+        "psnr": 59.85237214182726,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 15,
+        "screenPass": true
+      },
+      {
+        "id": "path-005",
+        "kind": "path",
+        "activePixels": 1048516,
+        "mae": 0.04995918040354177,
+        "psnr": 60.014893975421224,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 13,
+        "screenPass": true
+      },
+      {
+        "id": "path-006",
+        "kind": "path",
+        "activePixels": 1048515,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-007",
+        "kind": "path",
+        "activePixels": 1048504,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-008",
+        "kind": "path",
+        "activePixels": 1048512,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-009",
+        "kind": "path",
+        "activePixels": 1048493,
+        "mae": 0.05242858082981956,
+        "psnr": 59.81452680402534,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 17,
+        "screenPass": true
+      },
+      {
+        "id": "path-010",
+        "kind": "path",
+        "activePixels": 1048488,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-011",
+        "kind": "path",
+        "activePixels": 1048522,
+        "mae": 0.05243476054865802,
+        "psnr": 59.805907128019946,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 13,
+        "screenPass": true
+      },
+      {
+        "id": "path-012",
+        "kind": "path",
+        "activePixels": 1048525,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-013",
+        "kind": "path",
+        "activePixels": 1048552,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-014",
+        "kind": "path",
+        "activePixels": 1048523,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-015",
+        "kind": "path",
+        "activePixels": 1048501,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-016",
+        "kind": "path",
+        "activePixels": 1048520,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-017",
+        "kind": "path",
+        "activePixels": 1048544,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-018",
+        "kind": "path",
+        "activePixels": 1048536,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-019",
+        "kind": "path",
+        "activePixels": 1048424,
+        "mae": 0.07848732955369202,
+        "psnr": 57.39798875215147,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 24,
+        "screenPass": true
+      },
+      {
+        "id": "path-020",
+        "kind": "path",
+        "activePixels": 1048346,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-021",
+        "kind": "path",
+        "activePixels": 1048456,
+        "mae": 0.07506720994173019,
+        "psnr": 57.86610251938367,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 26,
+        "screenPass": true
+      },
+      {
+        "id": "path-022",
+        "kind": "path",
+        "activePixels": 1048450,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-023",
+        "kind": "path",
+        "activePixels": 1048533,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-024",
+        "kind": "path",
+        "activePixels": 1048529,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-025",
+        "kind": "path",
+        "activePixels": 1048534,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-026",
+        "kind": "path",
+        "activePixels": 1048518,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-027",
+        "kind": "path",
+        "activePixels": 1048509,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-028",
+        "kind": "path",
+        "activePixels": 1048514,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-029",
+        "kind": "path",
+        "activePixels": 1048524,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-030",
+        "kind": "path",
+        "activePixels": 1048502,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-031",
+        "kind": "path",
+        "activePixels": 1048471,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-032",
+        "kind": "path",
+        "activePixels": 1048439,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-033",
+        "kind": "path",
+        "activePixels": 1048461,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-034",
+        "kind": "path",
+        "activePixels": 1048444,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-035",
+        "kind": "path",
+        "activePixels": 1048486,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-036",
+        "kind": "path",
+        "activePixels": 1048480,
+        "mae": 0.08270416857418994,
+        "psnr": 57.956048349662765,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 12,
+        "screenPass": true
+      },
+      {
+        "id": "path-037",
+        "kind": "path",
+        "activePixels": 1048486,
+        "mae": 0.07842196589495075,
+        "psnr": 57.97494699037769,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 18,
+        "screenPass": true
+      },
+      {
+        "id": "path-038",
+        "kind": "path",
+        "activePixels": 1048482,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-039",
+        "kind": "path",
+        "activePixels": 1048484,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-040",
+        "kind": "path",
+        "activePixels": 1048505,
+        "mae": 0.08478007575865955,
+        "psnr": 57.4519700253545,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 24,
+        "screenPass": true
+      },
+      {
+        "id": "path-041",
+        "kind": "path",
+        "activePixels": 1048508,
+        "mae": 0.08305674984517683,
+        "psnr": 57.2824753053782,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 27,
+        "screenPass": true
+      },
+      {
+        "id": "path-042",
+        "kind": "path",
+        "activePixels": 1048503,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-043",
+        "kind": "path",
+        "activePixels": 1048489,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-044",
+        "kind": "path",
+        "activePixels": 1048431,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-045",
+        "kind": "path",
+        "activePixels": 1048446,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      },
+      {
+        "id": "path-046",
+        "kind": "path",
+        "activePixels": 1048353,
+        "mae": 0.08222453060499024,
+        "psnr": 57.69538192870078,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 12,
+        "screenPass": true
+      },
+      {
+        "id": "path-047",
+        "kind": "path",
+        "activePixels": 1048196,
+        "mae": 0.08040894387436447,
+        "psnr": 57.13233066796988,
+        "infinitePsnr": false,
+        "p99ChannelDifference": 1,
+        "maxChannelDifference": 48,
+        "screenPass": true
+      },
+      {
+        "id": "path-048",
+        "kind": "path",
+        "activePixels": 1048150,
+        "mae": 0,
+        "psnr": null,
+        "infinitePsnr": true,
+        "p99ChannelDifference": 0,
+        "maxChannelDifference": 0,
+        "screenPass": true
+      }
+    ],
+    "visualInspection": "PASS: selected overview/facade/branch-railing/upward still comparisons directly inspected; not a universal perceptual guarantee.",
+    "independentGeometry": "NOT RUN",
+    "temporalVisualInspection": "PASS for actual decoded frame change and inspected early/later side-by-side frames; not a controlled flicker or exhaustive perceptual study."
+  },
+  "renderRuntime": {
+    "status": "PASS",
+    "seconds": 113.783564833,
+    "browser": "156.0.8078.81",
+    "headed": true,
+    "models": [
+      {
+        "id": "ply",
+        "splats": 800000,
+        "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "downloadMilliseconds": 223.40000009536743,
+        "decodeMilliseconds": 235.09999990463257,
+        "elapsedSeconds": 36.274588417000004
+      },
+      {
+        "id": "spz",
+        "splats": 800000,
+        "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "downloadMilliseconds": 37.40000009536743,
+        "decodeMilliseconds": 212.09999990463257,
+        "elapsedSeconds": 34.885238375
+      },
+      {
+        "id": "ply-repeat",
+        "splats": 800000,
+        "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)",
+        "downloadMilliseconds": 134.29999995231628,
+        "decodeMilliseconds": 207.79999995231628,
+        "elapsedSeconds": 39.123544374999994
+      }
+    ]
+  },
+  "localBrowser": [
+    {
+      "status": "PASS",
+      "world": "street-tangent20-spz",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "origin": "local production preview; loopback address redacted",
+      "cacheDisabled": true,
+      "readyMilliseconds": 2513.592125,
+      "asset": {
+        "encodedBodySize": 15941549,
+        "decodedBodySize": 15936671,
+        "transferSize": 15941849,
+        "downloadMilliseconds": 628.3000001907349,
+        "responseMilliseconds": 624.3000001907349
+      },
+      "contentEncoding": "gzip",
+      "coloredPixels": 934332,
+      "translation": true,
+      "freeLook": true,
+      "backgroundRequests": [],
+      "errors": [],
+      "measurementLimits": "One cold browser context per format; order SPZ then PLY, uncontrolled network/server cache, not a statistical speed claim. Ready means 3 submitted frames; screenshot separately confirms visible pixels. Not a GPU-memory benchmark."
+    },
+    {
+      "status": "PASS",
+      "world": "street-tangent20",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "origin": "local production preview; loopback address redacted",
+      "cacheDisabled": true,
+      "readyMilliseconds": 3669.220333000001,
+      "asset": {
+        "encodedBodySize": 69788964,
+        "decodedBodySize": 73600652,
+        "transferSize": 69789264,
+        "downloadMilliseconds": 2600.5999999046326,
+        "responseMilliseconds": 2598.4000000953674
+      },
+      "contentEncoding": "gzip",
+      "coloredPixels": 993176,
+      "translation": true,
+      "freeLook": true,
+      "backgroundRequests": [],
+      "errors": [],
+      "measurementLimits": "One cold browser context per format; order SPZ then PLY, uncontrolled network/server cache, not a statistical speed claim. Ready means 3 submitted frames; screenshot separately confirms visible pixels. Not a GPU-memory benchmark."
+    }
+  ],
+  "metrics": [
+    {
+      "label": "실제 비교 렌더",
+      "value": "201프레임 · 67개 시야"
+    },
+    {
+      "label": "활성 픽셀 평균 RGB 차이",
+      "value": "1.348 / 255"
+    },
+    {
+      "label": "시야별 최소 PSNR",
+      "value": "42.19 dB"
+    },
+    {
+      "label": "원본 재로딩 대조군 RGB 차이",
+      "value": "0.0135 / 255"
+    },
+    {
+      "label": "Node 프로세스 최대 RSS",
+      "value": "525.3 MB (변환·검증·gzip 포함, GPU 아님)"
+    },
+    {
+      "label": "공개 SPZ 첫 표시 · 1회 관측",
+      "value": "12.226초 (콜드 브라우저, 통계적 보장 아님)"
+    },
+    {
+      "label": "공개 PLY 첫 표시 · 1회 관측",
+      "value": "34.225초 (콜드 브라우저, 통계적 보장 아님)"
+    }
+  ],
+  "failures": [
+    {
+      "stage": "SPZ validation attempts01/02",
+      "status": "FAIL",
+      "cause": "초기 검증기가 알려진 flags=1 메타데이터까지 거부. 처음은 포괄적 오류,두번째는 헤더진단과SPZ바이트를 보존. 정확한 길이/알려진 플래그를 허용한 세번째 변환 PASS. 모델·설정 변경 없음."
+    },
+    {
+      "stage": "Local report test initial",
+      "status": "FAIL",
+      "cause": "실험실 카드와 제목에 같은 URL이 두 번 나타나 엄격 선택기가 실패. 첫 링크를 명시해 재실행 PASS."
+    },
+    {
+      "stage": "Measured publication first package",
+      "status": "FAIL",
+      "cause": "로컬 타이밍 기록의 루프백URL을 명시적 공개 패키징 검사가 차단. 퍼블리셔에서 해당필드를 비식별화하고 선제차단을 추가, 재실행 PASS. 실패패키지는 업로드되지 않음."
+    }
+  ],
+  "limits": [
+    "이번 화면 오차는 원본PLY 대비 양자화 차이이며 실제 거리 정답과의 오차가 아님.",
+    "SH 차수를 유지해도 계수·색상·크기·회전·알파 값은 SPZ 정밀도로 양자화됨.",
+    "위아래 표시용 회전과 이동용 보간 포즈는 새 촬영 관측이나 독립 형상 검증이 아님.",
+    "렌더 비교는 로컬 비압축HTTP,앱 로딩은 gzipHTTP.동시 로컬 작업과 캐시 영향을 통제한 반복 벤치마크가 아님.",
+    "최초 비교 중 다른 Playwright 산출물에 Vite 재로드 알림이 있었지만201렌더·errors[]·원본재로딩 대조군이 완료됨.후속 재현을 위해 data/dist/test-results 감시를 비활성화.",
+    "SPZ v3 헤더 flags=1을 기록. 현재 Spark 로더를 사용한 실제 렌더 비교이며 다른 뷰어의 동일 출력은 보장하지 않음."
+  ],
+  "conversionSnapshotNotes": "measurement.visualQuality/browserRendering are immutable conversion-time NOT RUN states; completed follow-up checks are listed separately.",
+  "reproductionCameras": "./evaluation-cameras.json",
+  "publicBrowser": [
+    {
+      "status": "PASS",
+      "world": "street-tangent20-spz",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "origin": "https://groundshift-viewer-production.up.railway.app",
+      "cacheDisabled": true,
+      "readyMilliseconds": 12226.457708999998,
+      "asset": {
+        "encodedBodySize": 15936671,
+        "decodedBodySize": 15936671,
+        "transferSize": 15936971,
+        "downloadMilliseconds": 7959.700000047684,
+        "responseMilliseconds": 7668.900000095367
+      },
+      "contentEncoding": null,
+      "coloredPixels": 934332,
+      "translation": true,
+      "freeLook": true,
+      "backgroundRequests": [],
+      "errors": [],
+      "measurementLimits": "One cold browser context per format; order SPZ then PLY, uncontrolled network/server cache, not a statistical speed claim. Ready means 3 submitted frames; screenshot separately confirms visible pixels. Not a GPU-memory benchmark."
+    },
+    {
+      "status": "PASS",
+      "world": "street-tangent20",
+      "browser": "156.0.8078.81",
+      "headed": true,
+      "origin": "https://groundshift-viewer-production.up.railway.app",
+      "cacheDisabled": true,
+      "readyMilliseconds": 34225.009584,
+      "asset": {
+        "encodedBodySize": 73602016,
+        "decodedBodySize": 73600652,
+        "transferSize": 73602316,
+        "downloadMilliseconds": 25052.299999952316,
+        "responseMilliseconds": 24734.099999904633
+      },
+      "contentEncoding": "zstd",
+      "coloredPixels": 993176,
+      "translation": true,
+      "freeLook": true,
+      "backgroundRequests": [],
+      "errors": [],
+      "measurementLimits": "One cold browser context per format; order SPZ then PLY, uncontrolled network/server cache, not a statistical speed claim. Ready means 3 submitted frames; screenshot separately confirms visible pixels. Not a GPU-memory benchmark."
+    }
+  ],
+  "publicVideo": {
+    "status": "PASS",
+    "decodedMediaTimes": [
+      0.6,
+      2.3
+    ],
+    "actualDecodedFrameChange": true
+  },
+  "reproductionCamerasSha256": "ce42ce253dae5c1af05fe5750cb477b5f1ad56c690f4b6ad2e5053fc7be77f9f",
+  "publicationSnapshots": [
+    {
+      "phase": "export",
+      "deployment": "e07261b0-9a5c-4c80-bdbe-33ed19562a84",
+      "status": "SUCCESS",
+      "publicChangedHashes": 19,
+      "archiveSha256": "744e31f5f78825b54ea69456d8f2561e4f023a4b348111f25274e677bf8e7b7d"
+    },
+    {
+      "phase": "measured",
+      "deployment": "9b424e49-7ecb-4517-b0d9-e743be0d9fe1",
+      "status": "SUCCESS",
+      "publicChangedHashes": 9,
+      "archiveSha256": "5750e201747c383f8237e791ff7b25be37e61c65fc41584eee13061f26edfcc5"
+    }
+  ]
+}

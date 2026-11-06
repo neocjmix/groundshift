@@ -147,8 +147,16 @@ Geometric accuracy and continuous point-cloud consistency are still unaccepted.
 | Local report/mobile/discovery | Initial FAIL, repaired targeted retry PASS |
 | Initial Railway export status and19changed public file hashes | PASS |
 | Initial public report and both real formats, movement/free look | PASS3cases in54.8s |
-| Measured-evidence release / video decoded-frame checks | NOT RUN at this document snapshot; see deployment record for follow-up |
+| Measured-evidence release | PASS Railway SUCCESS;9changed file hashes; fresh12-layer1142file restore |
+| Updated public report/video/mobile/discovery | PASS1case in9.7s; actual decoded frames0.6→2.3s change and are inspected |
 | Full growing browser suite, native retraining, GPU-memory benchmarking | NOT RUN; not required to establish this bounded codec result |
+
+[Sanitized evidence snapshot](evidence/compression.json) retains per-view metrics,
+failure history, actual public timing fields and completed stage checks. The
+conversion-time `measurement.visualQuality`/`browserRendering` NOT RUN values
+remain immutable timestamps; the later top-level checks contain completed
+follow-up evidence. Final verification-metadata release status is tracked in
+[deployment](DEPLOYMENT.md), separately from the completed render/video checks.
 
 Attempts01/02 fail in the new **validator**, because it initially rejects the
 valid known flags=1 header; attempt02 retains the actual SPZ and expanded header
@@ -188,7 +196,7 @@ no upload is needed. `preview.jpg` is not required for local folder opening.
 For an existing1024px frozen street render configuration:
 
 ```sh
-node scripts/compare-compression.mjs data/jobs/street-tangent-background-20261106/render-config-detail.json \
+node scripts/compare-compression.mjs public/experiments/compression/evaluation-cameras.json \
   public/worlds/street-tangent20/scene.ply data/jobs/my-spz/world/scene.spz data/jobs/my-spz/compare
 data/tools/venv/bin/python scripts/review-compression.py data/jobs/my-spz/compare data/jobs/my-spz/inspection
 npx playwright test tests/browser/compression.pw.mjs
@@ -196,8 +204,11 @@ GS_BASE_URL=https://groundshift-viewer-production.up.railway.app \
   npx playwright test tests/browser/compression.pw.mjs
 ```
 
-The render configuration refers to the preserved local experiment; it is not
-silently reconstructed from guessed poses in a fresh checkout. The render
+The published sanitized camera configuration preserves the original estimated
+matrices/intrinsics and display path, without local file references. It allows
+the same comparison after restoring the public artifacts; no poses are guessed
+in a fresh checkout. Its file hash differs from the original local configuration
+because model paths and unused image references are removed. The render
 comparison and converter do not need Brush, COLMAP or an inference GPU.
 Figure/video assembly needs existing Pillow and free local FFmpeg/libx264.
 
