@@ -13,7 +13,7 @@ streaming failed because visible distant geometry disappeared. All trials remain
 observable. The selected876-source/2.185km GPS route is an expansion source;
 **the full2.185km is NOT reconstructed**. [Measurements,failures and reproduction](docs/PARIS_STREAMING.md).
 
-**Latest delivery experiment:** [Same scene · SPZ compression](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
+**Previous storage experiment:** [Same scene · SPZ compression](https://groundshift-viewer-production.up.railway.app/experiments/compression/)
 · [Lightweight 3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20-spz/world.json).
 The existing tangent20 scene becomes15.94MB from73.60MB (**78.35% less**),
 retaining800k Gaussians,SH1,cameras and coordinates.201actual1024px M2 Chrome
@@ -22,7 +22,7 @@ detail/directional inspection shows no large appearance regression. This is
 lossy storage quantization, with the native PLY preserved; no retraining or
 geometry improvement. [Reproduction, actual measurements and limitations](docs/COMPRESSION.md).
 
-**Latest reconstruction experiment:** [20-direction GS · background completion withdrawn](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
+**Previous nine-panorama reconstruction:** [20-direction GS · background completion withdrawn](https://groundshift-viewer-production.up.railway.app/experiments/tangent-background/)
 · [New 3D trial](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-tangent20/world.json)
 · [Preserved best result](https://groundshift-viewer-production.up.railway.app/?world=/worlds/street-final-hires/world.json).
 Actual M2 reconstruction completed, but GS-only held-view error worsens by
