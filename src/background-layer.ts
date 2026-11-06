@@ -20,7 +20,7 @@ export class BackgroundLayer {
   setMode(mode: BackgroundMode) {
     this.mode = mode;
     this.failed = -1;
-    if (mode !== 'gs' && this.current >= 0) this.status(`Source photo ${this.source} · ${mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
+    if (mode !== 'gs' && this.current >= 0) this.status(`Photo-derived backdrop ${this.source} · ${mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
     if (mode === 'gs') {
       this.generation++;
       this.request?.abort(); this.pending = -1;
@@ -55,7 +55,7 @@ export class BackgroundLayer {
     const generation = ++this.generation;
     this.request?.abort(); const request = this.request = new AbortController(); this.pending = index;
     const view = this.background.views[index]; let texture: THREE.Texture | undefined;
-    this.status(`Loading source-photo background · ${view.id}`);
+    this.status(`Loading photo-derived backdrop · ${view.id}`);
     try {
       const image = await fetch(view.imageUrl, { signal: request.signal });
       if (!image.ok) throw new Error(`Background image HTTP ${image.status}`);
@@ -104,7 +104,7 @@ export class BackgroundLayer {
         this.shell.visible = this.mode === 'depth-shell'; this.scene.add(this.shell);
       }
       this.current = index; this.source = view.id;
-      this.status(`Source photo ${view.id} · ${this.mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
+      this.status(`Photo-derived backdrop ${view.id} · ${this.mode === 'depth-shell' ? (this.shell ? 'estimated depth shell + panorama fallback' : 'no shell at this source; panorama fallback') : 'infinite panorama'} · presentation only`);
     } catch (error) {
       texture?.dispose();
       if (!request.signal.aborted && !this.disposed && generation === this.generation) {

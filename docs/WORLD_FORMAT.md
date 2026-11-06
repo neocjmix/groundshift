@@ -144,7 +144,7 @@ The exporter, rather than the viewer, excludes invalid depths and triangles
 crossing declared depth discontinuities. Do not fill omitted geometry by
 inventing a surface.
 
-**Source panorama** displays an infinite-distance sphere that follows camera
+**Panorama backdrop** displays an infinite-distance sphere that follows camera
 translation. **Estimated depth shell** draws the declared world-space coarse
 mesh over that sphere, retaining the panorama as a hole fallback. Both are
 rendered in a separate backdrop pass, then depth is cleared before GS. Thus
@@ -160,3 +160,10 @@ The static packager validates the background contract, includes only explicitly
 referenced image/mesh files, rejects symlinks/private metadata and validates
 mesh indices. It never walks the source dataset. Synthetic contract tests prove
 these boundaries; actual public browser screenshots are required separately.
+
+In the tangent-background experiment, the lower15% of its derived display ERP
+textures replaces existing orange camera artwork with per-column boundary-tone
+extrapolation blended toward a global mean. `background.notes` records this
+modified region. This is generated display color only; source originals,
+training RGB, depth inference and point clouds remain unchanged. It is not a
+reconstructed floor, a new photograph, or diffusion training augmentation.

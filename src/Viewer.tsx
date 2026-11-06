@@ -501,11 +501,11 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       {world.background && <div className="background-panel" aria-label="Presentation background controls">
         <label>Background completion <select aria-label="Background completion" value={backgroundMode}
           disabled={status.phase !== 'ready'} onChange={e => backgroundControl.current(e.target.value as BackgroundMode)}>
-          <option value="gs">GS only</option><option value="panorama">Source panorama</option>
+          <option value="gs">GS only</option><option value="panorama">Panorama backdrop</option>
           {world.background.views.some(v => v.meshUrl) && <option value="depth-shell">Estimated depth shell</option>}
         </select></label>
         <p role="status">{backgroundStatus}</p>
-        <p>Source-photo display completion. Near objects can double; no measured geometry or collision.</p>
+        <p>Photo-derived display completion. Near objects can double; no measured geometry or collision.</p>
         {world.background.notes && <details><summary>Background evidence</summary><p>{world.background.notes}</p></details>}
       </div>}
       {world.backgroundError && <p className="background-warning" role="status">{world.backgroundError}</p>}

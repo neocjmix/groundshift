@@ -14,7 +14,7 @@ document.querySelector('#app')!.innerHTML=`
 <header><a href="/">GROUND SHIFT</a><a href="/experiments/lab/">← 시간순 실험실</a></header>
 <main><span class="eyebrow">Tangent views + explicit background · local M2</span>
 <h1>더 고르게 보고,<br>빈 배경을 구분해서 채우기.</h1>
-<p>사용자가 새로 승인한 조합 한 번입니다. 원본 파노라마를 이십면체 20방향의 겹치는 정사각형 사진으로 투영하고, 각 사진의 DAV2 깊이를 보정해 합칩니다. GS만 보기와 실제 파노라마·깊이 표면으로 배경을 보완한 보기를 분리합니다.</p>
+<p>사용자가 새로 승인한 조합 한 번입니다. 원본 파노라마를 이십면체 20방향의 겹치는 정사각형 사진으로 투영하고, 각 사진의 DAV2 깊이를 보정해 합칩니다. GS만 보기와 사진 기반 배경·예측 깊이 표면으로 보완한 보기를 분리합니다.</p>
 <span id="status" class="status" role="status">실행 기록을 불러오는 중…</span>
 <section class="section verdict"><span id="phase" class="eyebrow"></span><h2 id="title"></h2><p id="summary"></p>
 <div class="actions"><a id="new-world" class="action" href="/" hidden>새 결과 3D 열기 ↗</a><a href="/?world=/worlds/street-final-hires/world.json">이전 최선 1024 결과 3D ↗</a><a href="/experiments/final-quality/">앞선 최선과 비교 ↗</a></div>
@@ -22,7 +22,7 @@ document.querySelector('#app')!.innerHTML=`
 <section class="section"><h2>작은 결과부터 먼저 공개합니다</h2><p>입력 사진, 학습 산출물, 실제 렌더와 측정을 준비되는 순서대로 배포합니다. 배포 성공과 장면 품질은 별개입니다. PASS는 표시된 단계만 통과했다는 뜻이고, 아직 실행하지 않은 검사는 NOT RUN입니다.</p><div id="stages"></div></section>
 <section class="section"><h2>실제 파노라마의 이십면체 방향 크롭</h2><p>면의 중심 20방향으로 80° 시야각의 1024px 정사각형을 뽑습니다. 촬영 위치는 8개, 학습 입력은 160장입니다. 파노라마5 RGB는 학습·배경에서 제외합니다. 새 촬영 위치나 가려진 뒷면 정보가 생기는 것은 아닙니다.</p><div id="samples" class="street-comparisons"></div></section>
 <section id="evidence-section" class="section" hidden><h2>입력·깊이 진단과 실제 결과</h2><p>각 그림의 설명에 실제 사진·방향 포함 진단·예측 깊이·실제 GS 렌더를 구분해 표시합니다. GS가 완성되면 이전 최선과 동일한 카메라로 GS만 렌더하여 비교합니다. 색 오차는 입체 형상 정확도와 다르며, 배경으로 채운 픽셀은 GS 렌더 성공이나 형상 정확도의 근거에 포함하지 않습니다.</p><div id="comparisons" class="street-comparisons"></div><video id="motion" controls playsinline preload="metadata" hidden aria-label="기존 기준과 마지막 품질 실험의 실제 이동 렌더"></video><div class="street-table-wrap"><table id="metrics"><thead><tr><th>측정</th><th>이전 12방향</th><th>새 20방향</th></tr></thead><tbody></tbody></table></div></section>
-<section class="section"><h2>해석 범위와 다음 경계</h2><div id="notes" class="note"></div><ul id="sources"></ul><p>미터 단위의 실측 깊이, 독립 카메라 정답, 충돌 표면 또는 자유 보행 가능성을 확보한 실험이 아닙니다. 파노라마 배경은 먼 풍경을 위한 근사이며 이동할 때 가까운 물체가 이중으로 보일 수 있습니다. 깊이 표면도 예측값에 따른 표시 보완이며 실측 표면이나 충돌 지형이 아닙니다. 이번에 승인한 조합 외에 추가 탐색은 하지 않습니다.</p></section>
+<section class="section"><h2>해석 범위와 다음 경계</h2><div id="notes" class="note"></div><ul id="sources"></ul><p>미터 단위의 실측 깊이, 독립 카메라 정답, 충돌 표면 또는 자유 보행 가능성을 확보한 실험이 아닙니다. 파노라마 배경은 먼 풍경을 위한 근사이며 이동할 때 가까운 물체가 이중으로 보일 수 있습니다. 새 배경의 하단15%는 원본 촬영 장치 그림을 가리기 위해 경계의 색으로 채운 표시용 추정입니다. 학습 사진·깊이·점군은 바꾸지 않았으며 채워진 색은 실제 관측이나 복원된 바닥을 뜻하지 않습니다. 깊이 표면도 예측값에 따른 표시 보완이며 실측 표면이나 충돌 지형이 아닙니다. 이번에 승인한 조합 외에 추가 탐색은 하지 않습니다.</p></section>
 <footer><a href="./summary.json">공개 실행 기록 JSON</a> · <a href="./ATTRIBUTION.txt">출처와 변형 내역</a> · <a href="https://github.com/neocjmix/groundshift/blob/feat/local-viewer-reconstruction/docs/TANGENT_BACKGROUND.md">실행 방법 · 한계 · 종료 기준 ↗</a><p id="updated"></p></footer></main>`;
 
 const put=(selector:string,value:string)=>{document.querySelector(selector)!.textContent=value;};

@@ -87,7 +87,7 @@ def main(a):
         metadata['provenance']['notes'] = ('Actual local M2 Metal training,160 real1024px tangent perspective crops from8 of9 existing licensed panoramas. '
             '20 icosahedron face-normal directions,FOV80. DAV2 crop inference, SfM and overlap calibration, arbitrary units. '
             'Panorama5 RGB excluded from optimization and background; all-nine SfM geometry reused.8000steps,SH1,seed42,max800000splats. '
-            'No generated training images. Optional source-photo backgrounds are explicitly presentation completion, not recovered geometry. '
+            'No generated training images. Optional photo-derived backgrounds are presentation completion only; their lower15% uses boundary-tone nadir fill, not new observations or recovered floor geometry. '
             'Observation /experiments/tangent-background/. Quality: ' + selected['quality'])
         background_dir = Path(selected['backgroundDir']).resolve() if selected.get('backgroundDir') else None
         background_files = []
@@ -181,7 +181,7 @@ def main(a):
         if not dest.exists():
             shutil.copyfile(src, dest)
     write(out / 'summary.json', summary)
-    (out / 'ATTRIBUTION.txt').write_text('Photographs: Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0. https://creativecommons.org/licenses/by-sa/4.0/\nChanges: actual 20-direction tangent reprojection from retained original panoramas, DAV2 crop depth inference and calibrated initialization, local Brush/Metal Gaussian training; explicitly labeled source-photo/estimated-depth background modes. No diffusion/generated training RGB. Original full panoramas, private footage, raw logs and weights excluded.\n')
+    (out / 'ATTRIBUTION.txt').write_text('Photographs: Cicero101 / Mapillary via Wikimedia Commons, CC BY-SA4.0. https://creativecommons.org/licenses/by-sa/4.0/\nChanges: actual 20-direction tangent reprojection from retained original panoramas, DAV2 crop depth inference and calibrated initialization, local Brush/Metal Gaussian training; explicitly labeled source-photo/estimated-depth background modes. No diffusion/generated training RGB. Original full panoramas, private footage, raw logs and weights excluded. Background processing/modified regions are recorded in background manifest notes; those textures are display completion rather than measured geometry.\n')
     report = dict(id='report-tangent-background', title='이십면체 방향과 배경 보완', description=summary['summary'],
         image=summary.get('run', {}).get('preview', '/worlds/street-final-hires/preview.jpg'), href='/experiments/tangent-background/', kind='report',
         createdAt=summary['updatedAt'], detail=summary['phase']+' · '+summary['title'])
