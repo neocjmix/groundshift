@@ -68,3 +68,37 @@ data/tools/venv/bin/python scripts/reconstruct.py data/jobs/NEW/datasets/hires \
 The source CLI's `--help` is retained with the actual job. Actual outcomes,
 measurements, release verification and
 the stopping decision are appended after execution, never assumed here.
+
+
+### Actual upstream feasibility finding
+
+[Depth-supervision PR497](https://github.com/ArthurBrussee/brush/pull/497) is open,
+not merged, at pinned head `e658b9ccaeacf3aa303e1d0c334673eab51c2fb0`.
+Its repository is Apache-2.0; no weights are involved. Current source adds
+inverse-camera-depth L1 supervision and a fifth render channel with corresponding
+native backward changes. The pinned source detaches the alpha normalization and
+removes the depth contribution to opacity gradients. Those are **source
+observations**, not gradient tests executed here.
+
+The loader requires matching single-channelfloat32 TIFF,0 for invalid depth.
+Our calibrated NaN holes would require explicit0 conversion. Nerfstudio's loader
+still assigns `depth: None`; placing depth files beside the current
+`transforms.json` would silently provide no supervision. A COLMAP export adapter
+or actual loader change is necessary. Optional `--estimate-metric-scale` defaults
+false. Existing fitted camera-Z remains in arbitrary SfM units and must not be
+passed off as measured metres; radial range would need conversion first.
+
+No fork releases/Actions artifacts were listed at inspection, and no Cargo
+executable is installed in this environment. That is **not** evidence that the
+branch cannot run on Metal. A source build, changed-dependency audit, input
+adapter and actual native gradient/inference checks remain NOT RUN. The PR spans
+37 files and contains unreleased backend changes, so it is not a clean
+one-option ablation against our released0.3.0 baseline.
+
+Decision: retain the executed official0.3.0 path for the one declared quality
+run. Do not silently switch engines or extend this final campaign with a new
+same-data regularization search. The useful implementation path is identified
+for **new capture evidence**, with actual native validation still required.
+Pinned API/source snapshots and byte hashes are retained locally in
+`research/geometry-feasibility.json`. No structural-loss training or geometry
+improvement is claimed.

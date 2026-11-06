@@ -1,5 +1,11 @@
 # Panoramic street reconstruction: staged experiment plan
 
+User stop rule2026-11-06: [the final same-data quality run](FINAL_QUALITY.md)
+uses fresh1024 crops and an800k ceiling with the retained DAV2/poses. After this
+campaign, close quality tuning on the existing nine panoramas. Historical P2–P5
+research below is not authorization for more same-data sweeps. Move to new
+capture evidence or product work unless the user explicitly reopens it.
+
 Follow-up2026-11-06: the user prioritizes economical **model selection** before
 more data/parameter tuning. [The model-family comparison](MODEL_SELECTION.md)
 tests panoramic, monocular-geometry and pose-conditioned multi-view approaches

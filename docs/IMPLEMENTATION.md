@@ -4,6 +4,11 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-06
 
+[Final same-data quality campaign](FINAL_QUALITY.md): one1024/800k/8k native
+trial using unchanged DAV2 seed and real cameras, with immediate asynchronous
+partial publication. The user ends quality tuning on these nine sources after
+this run. No automatic follow-up parameter/model/filter sweep is authorized.
+
 The [completed model-family comparison](MODEL_SELECTION.md) adds four real
 8k Metal GS exports (PanDA-Small,DA3-Small,MoGe-2 Small,DA²) and375 actual matched
 renders including the reused DAV2 control. MoGe's mean withheld color error is
