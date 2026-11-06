@@ -1,8 +1,8 @@
-# Viewer and third observed panorama road diagnostics: 4d125f2.
+# Seven local street Gaussian results and measured conclusion: 0801d91.
 # The release archive is separate from Git history and contains only www/.
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS artifact
-RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-road-third-view-2026-11-06/groundshift-road-third-view-20261106.tar.gz \
-    && echo 'd512f227c301bfc1da6a52fcc2248c2587d5ca30e0e8677b4679fa5c91f1e11a  /tmp/viewer.tar.gz' | sha256sum -c - \
+RUN wget -q -O /tmp/viewer.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-street-conclusion-2026-11-06/groundshift-street-conclusion-20261106-v2.tar.gz \
+    && echo 'd84cae2eabef73c1898963a3a42a44e4f3865b7a3eda52a799d374d4c3b4ef4f  /tmp/viewer.tar.gz' | sha256sum -c - \
     && mkdir /out \
     && tar -xzf /tmp/viewer.tar.gz -C /out
 
