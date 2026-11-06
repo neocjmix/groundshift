@@ -157,6 +157,13 @@ RUN wget -q -O /tmp/paris-verified.tar.gz https://github.com/neocjmix/groundshif
     && mkdir /out \
     && tar -xzf /tmp/paris-verified.tar.gz -C /out
 
+# Viewer-only Fly controls; runtime/browser validation follows dispatch.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS fly_controls
+RUN wget -q -O /tmp/fly-controls.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-fly-controls-2026-11-07/groundshift-fly-controls-20261107.tar.gz \
+ && echo 'd6c36d42cd00575ffb22a5516052e26a50d920d3d9cefe9195c5467e63bf87d7  /tmp/fly-controls.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/fly-controls.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -179,5 +186,6 @@ COPY --from=paris_subset_fail /out/www /srv
 COPY --from=paris_lod /out/www /srv
 COPY --from=paris_compact /out/www /srv
 COPY --from=paris_verified /out/www /srv
+COPY --from=fly_controls /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

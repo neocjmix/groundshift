@@ -15,6 +15,27 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Fullscreen Fly viewer controls — 2026-11-07
+
+The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
+virtual joysticks, WASD/mouse navigation, vertical movement, speed, reset and exit.
+This is presentation-only free movement: no collision/floor geometry is inferred,
+and no reconstruction or new scene artifact is produced. All39 existing scenes,
+source/pose/provenance bytes, reports and17 inert historical background files are
+retained unchanged. Initial browser interaction/rendering checks are **NOT RUN**
+when this increment is dispatched; the main agent continues those checks in parallel.
+
+Release `viewer-fly-controls-2026-11-07`, archive
+`groundshift-fly-controls-20261107.tar.gz`: **1,060,275 bytes**, SHA-256
+`d6c36d42cd00575ffb22a5516052e26a50d920d3d9cefe9195c5467e63bf87d7`.
+Apply it after the23 preceding immutable layers. A fresh production build passes
+in5.77s. Explicit authorized curation and complete base/target/archive/composed
+integrity checks pass in5.127121s:1,185 selected public files,6 changed compiled
+assets/HTML files and1,240 composed files. No public scene/report/source-image
+bytes change. Anonymous complete archive readback verifies its size/SHA in0.963741s.
+Public rollout/hash/browser checks follow dispatch. Private packaging evidence
+stays under `data/validation/fly-20261107/publications/initial/`.
+
 ## Paris reconstruction and spatial serving progress — 2026-11-07
 
 The first real pipeline result is published immediately while crop/depth and
@@ -577,7 +598,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers, in order. The command below includes all twenty-three
+reconstruction/paging layers and the Fly controls layer, in order. The command below includes all twenty-four
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -668,6 +689,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-paris-verified-2026-11-07 \
     groundshift-paris-verified-20261107.tar.gz \
     91f51c0c82ec318aefb38433aaff245b2d76742d1c94f3eb4a166513ec7f2569
+  gs_restore_layer viewer-fly-controls-2026-11-07 \
+    groundshift-fly-controls-20261107.tar.gz \
+    d6c36d42cd00575ffb22a5516052e26a50d920d3d9cefe9195c5467e63bf87d7
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
