@@ -104,3 +104,59 @@ Tests of interpolation and camera loading use explicitly synthetic fixtures. The
 - `license`, `attribution`, and `backend` are required nonblank strings. Record the source license, required credit, and actual producing tool/version. The scene license is independent of the renderer and trainer software licenses. `notes` is optional.
 
 The parser uses [Zod's strict object validation and refinements](https://zod.dev/api). Parser tests use synthetic metadata only and do not count as browser, GPU, reconstruction, or dataset-license validation.
+
+## Optional source-photo background v1
+
+A world may declare `"background": { "path": "background/background.json" }`.
+Existing worlds and their bytes remain valid without it. Background completion
+is **off by default**: the viewer starts in **GS only**, and background imagery
+must never be included when accepting actual Gaussian rendering or geometry.
+The optional metadata has strict fields `schemaVersion: 1`, nonempty `views`,
+and optional nonblank `notes`. Each view has:
+
+- `id`: unique nonblank source identifier.
+- `center`: three finite numbers in viewer-world coordinates.
+- `panoramaToWorld`: row-major4×4 right-handed rigid matrix, with translation
+  equal to `center`. The rotation maps **CVERP** local rays to viewer-world:
+  `lon=(u-.5)*2*pi`, `lat=(.5-v)*pi`,
+  `ray=[cos(lat)*sin(lon), -sin(lat), cos(lat)*cos(lon)]`.
+  Local+Y points down and local+Z faces the ERP center. This is **not** the
+  OpenGL perspective-camera convention; do not apply an extra axis flip.
+- `imagePath`: plain relative path to an explicitly licensed ERP background.
+- optional `meshPath`: plain relative path to its estimated coarse-depth mesh.
+
+All referenced paths resolve beside the background metadata file. HTTP
+redirects determine the final base. Local-folder selection resolves exact
+nested filenames and releases all temporary blob URLs on scene disposal.
+Invalid optional metadata shows a warning while GS remains usable. Cancellation
+continues to cancel the whole load. Textures/meshes are fetched lazily only after
+choosing a background mode; interrupted/stale loads cannot replace a later one.
+Only the active source texture and mesh are retained.
+
+Mesh JSON has strict fields `schemaVersion: 1`, flat `positions` (XYZ), flat
+`uvs` (UV), and triangle `indices`. Positions are **already transformed into
+viewer-world units**, including any asset transform; the viewer does not
+transform them again. Finite coordinates, matching vertex/UV counts and valid
+triangle indices are required. UV uses `[u,1-v]` with the normal Three.js image
+texture flipY setting. V must lie in[0,1]. U may lie in[0,2] for duplicated
+longitude-seam vertices just past1; RepeatWrapping joins the source ERP seam.
+The exporter, rather than the viewer, excludes invalid depths and triangles
+crossing declared depth discontinuities. Do not fill omitted geometry by
+inventing a surface.
+
+**Source panorama** displays an infinite-distance sphere that follows camera
+translation. **Estimated depth shell** draws the declared world-space coarse
+mesh over that sphere, retaining the panorama as a hole fallback. Both are
+rendered in a separate backdrop pass, then depth is cleared before GS. Thus
+they fill display gaps without being treated as physical occluders, measured
+surfaces, collision geometry, or Gaussian evidence. Near objects may double and
+parallax may disagree. Background source selection uses the nearest declared
+center with15% distance hysteresis and deterministic ties. It swaps only after
+the replacement loads; this is not view synthesis or continuous appearance
+blending. Original source positions, training exclusions, licensing and all
+remaining geometric uncertainty belong in the experiment provenance.
+
+The static packager validates the background contract, includes only explicitly
+referenced image/mesh files, rejects symlinks/private metadata and validates
+mesh indices. It never walks the source dataset. Synthetic contract tests prove
+these boundaries; actual public browser screenshots are required separately.

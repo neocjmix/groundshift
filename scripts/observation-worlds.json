@@ -1118,6 +1118,11 @@
     "experiments/final-quality/comparison/measured-conclusion-03.jpg",
     "experiments/tangent-background/index.html",
     "experiments/tangent-background/summary.json",
-    "experiments/tangent-background/ATTRIBUTION.txt"
+    "experiments/tangent-background/ATTRIBUTION.txt",
+    "experiments/tangent-background/samples/02-highres.png",
+    "experiments/tangent-background/samples/01-highres.png",
+    "experiments/tangent-background/samples/00-highres.png",
+    "experiments/tangent-background/comparison/real-inputs-depth-running-01.png",
+    "experiments/tangent-background/comparison/real-inputs-depth-running-00.jpg"
   ]
 }

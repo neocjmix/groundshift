@@ -47,3 +47,10 @@
   .path-note { font-size: 10px; line-height: 1.4; }
   .path-provenance { margin-top: 6px; }
 }
+
+.background-panel,.background-warning { position:absolute;z-index:2;right:22px;top:58px;width:min(300px,calc(100% - 44px));background:#152019ee;border:1px solid #4a554b;border-radius:12px;padding:12px;color:#eff3eb;font-size:12px; }
+.background-panel label { display:grid;gap:6px; }
+.background-panel select { color:#eff3eb;background:#253a29;padding:7px;border:1px solid #60745e;border-radius:5px; }
+.background-panel p { line-height:1.5; margin:8px 0 0; }
+.background-panel details { margin-top:8px; }
+@media(max-width:760px) { .background-panel,.background-warning { top:auto;bottom:105px;right:12px;width:min(270px,calc(100% - 24px));max-height:180px;overflow:auto; } }

@@ -40,7 +40,7 @@ test('final quality report failure is explicit and current plus earlier observat
   await page.goto('/experiments/final-quality/');await expect(page.locator('#status')).toContainText('불러오기 FAIL');await expect(page.locator('#new-world')).toBeHidden();
   await page.goto('/experiments/lab/');
   for(const id of ['report-final-quality','report-model-selection','report-street-conclusion'])await expect(page.locator(`.entry[data-id="${id}"]`)).toHaveCount(1);
-  await page.goto('/');await expect(page.getByRole('link',{name:'최신 · 같은 데이터의 마지막 품질 실험',exact:true})).toHaveAttribute('href','/experiments/final-quality/');
+  await page.goto('/');await expect(page.getByRole('link',{name:'같은 데이터의 마지막 품질 실험',exact:true})).toHaveAttribute('href','/experiments/final-quality/');
 });
 
 test('actual final quality scene renders and moves along the recovered camera route',async({page,browser},info)=>{

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SparkRenderer, SplatMesh, SplatFileType } from "@sparkjsdev/spark";
+import { BackgroundLayer } from "./background-layer";
+import type { BackgroundMode } from "./background";
 import type { LoadedWorld } from "./load-world";
 import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-path";
 import "./Viewer.css";
@@ -54,6 +56,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     message: "Loading scene…",
   });
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const backgroundControl = useRef<(mode: BackgroundMode) => void>(() => {});
+  const [backgroundMode, setBackgroundMode] = useState<BackgroundMode>('gs');
+  const [backgroundStatus, setBackgroundStatus] = useState('GS only · background disabled');
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
@@ -64,6 +69,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let renderer: THREE.WebGLRenderer | undefined;
     let controls: OrbitControls | undefined;
     let spark: SparkRenderer | undefined;
+    let background: BackgroundLayer | undefined;
+    let requestedBackground: BackgroundMode = 'gs';
     let mesh: SplatMesh | undefined;
     let meshPending = false;
     let resize: ResizeObserver | undefined;
@@ -85,6 +92,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setClearColor("#111614", 1);
+      renderer.autoClear = false;
       renderer.domElement.setAttribute(
         "aria-label",
         "Interactive Gaussian Splatting scene",
@@ -107,6 +115,10 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           onContextLost,
         );
       const scene = new THREE.Scene();
+      if (world.background) background = new BackgroundLayer(world.background, message => { if (!disposed) setBackgroundStatus(message); });
+      backgroundControl.current = mode => {
+        requestedBackground = mode; background?.setMode(mode); setBackgroundMode(mode);
+      };
       const pose = world.manifest.navigation.camera;
       const camera = new THREE.PerspectiveCamera(
         pose.fov,
@@ -371,7 +383,13 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             }
             applyPath();
           } else controls?.update();
+          renderer.clear();
+          background?.update(camera);
+          background?.render(renderer, camera);
+          renderer.clearDepth();
           renderer.render(scene, camera);
+          renderer.domElement.dataset.backgroundMode = requestedBackground;
+          renderer.domElement.dataset.backgroundSource = requestedBackground === 'gs' ? '' : background?.source ?? '';
           totalFrames++;
           // A render submission is not visual acceptance; acceptance uses screenshots.
           if (totalFrames === 3)
@@ -412,6 +430,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       navigationCleanup?.();
       if (!meshPending) mesh?.dispose();
       spark?.dispose();
+      background?.dispose();
       failCleanup?.();
       renderer?.dispose();
       renderer?.forceContextLoss();
@@ -419,6 +438,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       reset.current = () => {};
       zoom.current = () => {};
       navigate.current = () => {};
+      backgroundControl.current = () => {};
     };
   }, [world, attempt]);
 
@@ -478,6 +498,17 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           )}
         </div>
       )}
+      {world.background && <div className="background-panel" aria-label="Presentation background controls">
+        <label>Background completion <select aria-label="Background completion" value={backgroundMode}
+          disabled={status.phase !== 'ready'} onChange={e => backgroundControl.current(e.target.value as BackgroundMode)}>
+          <option value="gs">GS only</option><option value="panorama">Source panorama</option>
+          {world.background.views.some(v => v.meshUrl) && <option value="depth-shell">Estimated depth shell</option>}
+        </select></label>
+        <p role="status">{backgroundStatus}</p>
+        <p>Source-photo display completion. Near objects can double; no measured geometry or collision.</p>
+        {world.background.notes && <details><summary>Background evidence</summary><p>{world.background.notes}</p></details>}
+      </div>}
+      {world.backgroundError && <p className="background-warning" role="status">{world.backgroundError}</p>}
       {world.cameraPathError && <p className="path-warning" role="status">{world.cameraPathError}</p>}
       {status.phase !== "ready" && (
         <div
@@ -509,6 +540,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
                     message: "Downloading scene…",
                   });
                   setMetrics(null);
+                  setBackgroundMode('gs'); setBackgroundStatus('GS only · background disabled');
                   setNavigation(initialNavigation(world));
                   setAttempt((value) => value + 1);
                 }}

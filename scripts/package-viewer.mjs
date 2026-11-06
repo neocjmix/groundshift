@@ -5,6 +5,7 @@ import { mkdir, readFile, writeFile, readdir, lstat, realpath } from 'node:fs/pr
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseWorldManifest } from '../src/world.ts';
+import { parseBackground, parseBackgroundMesh } from '../src/background.ts';
 import { parseSceneCatalog } from '../src/catalog.ts';
 
 const worldFiles = {
@@ -164,6 +165,30 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
       const bytes = await read(`${prefix}/${name}`);
       assertPublicMetadata(bytes.toString('utf8'), worldName);
       plan(`www/worlds/${worldName}/${name}`, bytes);
+    }
+    if (manifest.background) {
+      const name = manifest.background.path;
+      relativePath(name);
+      const backgroundBytes = await read(`${prefix}/${name}`);
+      assertPublicMetadata(backgroundBytes.toString('utf8'), worldName);
+      const background = parseBackground(JSON.parse(backgroundBytes.toString('utf8')));
+      plan(`www/worlds/${worldName}/${name}`, backgroundBytes);
+      const base = path.posix.dirname(name);
+      const selectedBackgrounds = new Set();
+      for (const view of background.views) for (const key of ['imagePath', 'meshPath']) {
+        if (!view[key]) continue;
+        const file = path.posix.join(base, relativePath(view[key]));
+        if (selectedBackgrounds.has(file)) continue;
+        selectedBackgrounds.add(file);
+        if (key === 'imagePath' && !/\.(?:png|jpg|jpeg|webp)$/u.test(file)) throw new Error('Unexpected public background image');
+        if (key === 'meshPath' && !file.endsWith('.json')) throw new Error('Unexpected public background mesh');
+        const bytes = await read(`${prefix}/${file}`);
+        if (key === 'meshPath') {
+          assertPublicMetadata(bytes.toString('utf8'), worldName);
+          parseBackgroundMesh(JSON.parse(bytes.toString('utf8')));
+        }
+        plan(`www/worlds/${worldName}/${file}`, bytes);
+      }
     }
     for (const name of [definition.asset, 'preview.jpg']) await add(`${prefix}/${name}`);
   }

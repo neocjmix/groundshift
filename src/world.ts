@@ -6,7 +6,7 @@ const nonBlank = z.string().refine((value) => value.trim().length > 0, 'Must not
 
 // Plain filesystem-relative paths only. URL encoding is performed by URL(),
 // rather than accepted here where it could conceal dot segments or separators.
-const relativePath = nonBlank.refine((path) => (
+export const relativePathSchema = nonBlank.refine((path) => (
   path === path.trim()
   && !/[\\?#%:]/u.test(path)
   && !Array.from(path).some((character) => {
@@ -70,7 +70,7 @@ const worldManifestSchema = z.object({
   assets: z.array(z.object({
     kind: z.literal('gaussian-splat'),
     format: z.enum(['ply', 'spz', 'splat', 'ksplat', 'sog']),
-    path: relativePath,
+    path: relativePathSchema,
   }).strict()).length(1),
   coordinates: z.object({
     handedness: z.literal('right'),
@@ -85,12 +85,13 @@ const worldManifestSchema = z.object({
   navigation: z.object({
     mode: z.enum(['orbit', 'camera-path']),
     camera: cameraSchema,
-    camerasPath: relativePath.optional(),
+    camerasPath: relativePathSchema.optional(),
   }).strict().superRefine((navigation, context) => {
     if (navigation.mode === 'camera-path' && !navigation.camerasPath) {
       context.addIssue({ code: 'custom', path: ['camerasPath'], message: 'Camera-path mode requires camerasPath' });
     }
   }),
+  background: z.object({ path: relativePathSchema }).strict().optional(),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
     sourceUrl: provenanceUrl,
@@ -111,7 +112,7 @@ export function parseWorldManifest(input: unknown): WorldManifest {
 
 /** Resolve files beside their manifest, independent of the viewer's own URL. */
 export function resolveAssetUrl(manifestUrl: string, path: string): string {
-  const safePath = relativePath.parse(path);
+  const safePath = relativePathSchema.parse(path);
   const base = new URL(manifestUrl);
   if (!['http:', 'https:'].includes(base.protocol) || base.username || base.password) {
     throw new Error('Manifest URL must use HTTP(S) without credentials');

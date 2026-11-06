@@ -89,6 +89,25 @@ def main(a):
             'Panorama5 RGB excluded from optimization and background; all-nine SfM geometry reused.8000steps,SH1,seed42,max800000splats. '
             'No generated training images. Optional source-photo backgrounds are explicitly presentation completion, not recovered geometry. '
             'Observation /experiments/tangent-background/. Quality: ' + selected['quality'])
+        background_dir = Path(selected['backgroundDir']).resolve() if selected.get('backgroundDir') else None
+        background_files = []
+        if background_dir:
+            background_metadata = read(background_dir / 'background.json')
+            public_text(background_metadata)
+            if background_metadata.get('schemaVersion') != 1 or not background_metadata.get('views'):
+                raise ValueError('Invalid background metadata')
+            names = {'background.json'}
+            for view in background_metadata['views']:
+                for key in ['imagePath', 'meshPath']:
+                    if key in view:
+                        name = view[key]
+                        if not isinstance(name, str) or not re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._/-]*', name) or any(p in ['', '.', '..'] for p in name.split('/')):
+                            raise ValueError('Unsafe selected background path')
+                        names.add(name)
+            background_files = [(background_dir / name, name) for name in sorted(names)]
+            if any(not path.is_file() or path.is_symlink() or not path.resolve().is_relative_to(background_dir) for path, _ in background_files):
+                raise ValueError('Missing or unsafe selected background asset')
+            metadata['background'] = {'path': 'background/background.json'}
         public_text(metadata)
         summary['run'] = dict(status='PASS', splats=native['artifact']['splats'], bytes=native['artifact']['bytes'],
             sha256=native['artifact']['sha256'], seconds=native['elapsedSeconds'], quality=selected['quality'],
@@ -96,7 +115,7 @@ def main(a):
         preview = Path(selected['preview']).resolve() if selected.get('preview') else None
         if preview:
             summary['run']['preview'] = f'/worlds/{SLUG}/preview.jpg'
-        world_plan = (native_dir, presentation, metadata, preview, selected, native)
+        world_plan = (native_dir, presentation, metadata, preview, selected, native, background_files)
     elif source.get('run'):
         summary['run'] = deepcopy(source['run'])
     public_text(summary)
@@ -106,16 +125,23 @@ def main(a):
         if dest.exists() and sha(src) != sha(dest):
             raise ValueError('Existing public evidence would be replaced: ' + dest.name)
     if world_plan:
-        native_dir, presentation, metadata, preview, selected, native = world_plan
+        native_dir, presentation, metadata, preview, selected, native, background_files = world_plan
         dest = PUBLIC / 'worlds' / SLUG
         if dest.exists() and sha(dest / 'scene.ply') != native['artifact']['sha256']:
             raise ValueError('Previous exported scene would be overwritten')
         dest.mkdir(exist_ok=True)
         if not (dest / 'scene.ply').exists():
             shutil.copyfile(native_dir / 'world/scene.ply', dest / 'scene.ply')
+        for src, name in background_files:
+            background_dest = dest / 'background' / name
+            if background_dest.exists() and sha(src) != sha(background_dest):
+                raise ValueError('Background asset would be overwritten')
+            background_dest.parent.mkdir(parents=True, exist_ok=True)
+            if not background_dest.exists():
+                shutil.copyfile(src, background_dest)
         write(dest / 'world.json', metadata)
         shutil.copyfile(presentation / 'cameras.json', dest / 'cameras.json')
-        shutil.copyfile(job / 'inputs/LICENSE', dest / 'SOURCE_LICENSE')
+        shutil.copyfile(job / 'inputs-tangent/LICENSE', dest / 'SOURCE_LICENSE')
         if preview:
             from PIL import Image
             Image.open(preview).convert('RGB').save(dest / 'preview.jpg', quality=91)
@@ -135,6 +161,8 @@ def main(a):
             if name == 'scene.ply' and (curated / name).exists():
                 continue
             shutil.copyfile(dest / name, curated / name)
+        if background_files:
+            shutil.copytree(dest / 'background', curated / 'background', dirs_exist_ok=True)
         entry = dict(id=SLUG, title=metadata['title'], description='이십면체20방향·160실제 크롭·DAV2 깊이 보정. GS와 파노라마/깊이 배경을 구분해서 보기.',
             category='experiment', manifestPath=f'/worlds/{SLUG}/world.json', thumbnailPath=f'/worlds/{SLUG}/preview.jpg',
             createdAt=native['finishedAt'], detail=summary['run']['quality'])

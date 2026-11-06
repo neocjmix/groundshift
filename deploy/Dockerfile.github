@@ -26,6 +26,11 @@ RUN wget -q -O /tmp/tangent-plan.tar.gz https://github.com/neocjmix/groundshift/
     && echo '841a2249f5dc698176ccbc1ad69c2e892752e6b0536ea59da06024b5aaa4f7fe  /tmp/tangent-plan.tar.gz' | sha256sum -c - \
     && tar -xzf /tmp/tangent-plan.tar.gz -C /out
 
+# Real 20-direction input evidence while DAV2/MPS inference runs locally.
+RUN wget -q -O /tmp/tangent-inputs.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-tangent-inputs-2026-11-06/groundshift-tangent-inputs-20261106.tar.gz \
+    && echo '7ba8ea8a9d09dda407501941ba92d7e8cc3f3e0f95b16451b08a465031a71a26  /tmp/tangent-inputs.tar.gz' | sha256sum -c - \
+    && tar -xzf /tmp/tangent-inputs.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=artifact /out/www /srv

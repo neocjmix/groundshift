@@ -276,3 +276,17 @@ describe('explicit observation packaging', () => {
     await expect(access(output)).rejects.toThrow();
   });
 });
+
+it('packages only explicitly referenced background files and validates mesh indices', async () => {
+  const setup = await fixture(); const { manifests, put, root, output } = setup;
+  manifests.sample.background = { path: 'background/background.json' };
+  const background = { schemaVersion:1, views:[{ id:'synthetic', center:[0,0,0], panoramaToWorld:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], imagePath:'photo.jpg',meshPath:'shell.json' }] };
+  await put('dist/worlds/sample/world.json',manifests.sample);
+  await put('dist/worlds/sample/background/background.json',background);
+  await put('dist/worlds/sample/background/photo.jpg','synthetic image');
+  await put('dist/worlds/sample/background/private-original.jpg','must not publish');
+  await put('dist/worlds/sample/background/shell.json',{schemaVersion:1,positions:[0,0,0,1,0,0,0,1,0],uvs:[0,0,1,0,0,1],indices:[0,1,2]});
+  await packageViewer({root,output});
+  await expect(access(path.join(output,'www/worlds/sample/background/photo.jpg'))).resolves.toBeUndefined();
+  await expect(access(path.join(output,'www/worlds/sample/background/private-original.jpg'))).rejects.toThrow();
+});

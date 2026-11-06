@@ -280,3 +280,35 @@ describe('local world folder loading', () => {
     expect(create).not.toHaveBeenCalled();
   });
 });
+
+const backgroundFile = () => ({ schemaVersion: 1, views: [{ id: 'synthetic-background', center: [0,0,0], panoramaToWorld: [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]], imagePath: 'photo.jpg', meshPath: 'mesh.json' }] });
+describe('optional background metadata and local lifecycle (synthetic fixtures)', () => {
+  it('resolves background files beside redirected metadata and does not fetch texture/mesh during GS load', async () => {
+    const input = manifest(); input.background = { path: 'background/background.json' };
+    vi.stubGlobal('window', { location: { href: 'http://127.0.0.1:5173/' } });
+    const fetchMock = vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json'))
+      .mockResolvedValueOnce(jsonResponse(backgroundFile(), 'https://example.com/redirected/background.json'));
+    vi.stubGlobal('fetch', fetchMock);
+    const result = await loadWorld('/world.json', new AbortController().signal);
+    expect(result.background?.views[0].imageUrl).toBe('https://example.com/redirected/photo.jpg');
+    expect(result.background?.views[0].meshUrl).toBe('https://example.com/redirected/mesh.json');
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+  it('preserves GS if optional background fails and propagates cancellation', async () => {
+    const input = manifest(); input.background = { path: 'background.json' };
+    vi.stubGlobal('window', { location: { href: 'http://127.0.0.1:5173/' } });
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json')).mockResolvedValueOnce(new Response('', { status: 404 })));
+    expect((await loadWorld('/world.json', new AbortController().signal)).backgroundError).toContain('HTTP 404');
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(jsonResponse(input, 'https://example.com/world.json')).mockRejectedValueOnce(new DOMException('cancelled', 'AbortError')));
+    await expect(loadWorld('/world.json', new AbortController().signal)).rejects.toMatchObject({ name: 'AbortError' });
+  });
+  it('resolves exact nested local background files and releases every object URL', async () => {
+    const input = manifest(); input.background = { path: 'background/background.json' };
+    const create = vi.spyOn(URL, 'createObjectURL').mockImplementation(f => 'blob:'+((f as File).webkitRelativePath));
+    const revoke = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    const result = await loadLocalWorld([localFile('capture/world.json', JSON.stringify(input)), localFile('capture/assets/scene.ply','fixture'),
+      localFile('capture/background/background.json',JSON.stringify(backgroundFile())), localFile('capture/background/photo.jpg','fixture'), localFile('capture/background/mesh.json','fixture')]);
+    expect(result.background?.views[0].imageUrl).toBe('blob:capture/background/photo.jpg');
+    expect(create).toHaveBeenCalledTimes(3); result.release?.(); expect(revoke).toHaveBeenCalledTimes(3);
+  });
+});
