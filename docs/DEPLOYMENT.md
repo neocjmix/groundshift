@@ -168,6 +168,68 @@ files. No native export is overwritten. Privacy/curation checks PASS; actual new
 route GPU checks are NOT RUN at dispatch. Private evidence:
 `data/validation/paris-full-route-20261107/publications/route-ownership-fix/`.
 
+### Incoming-route failure recovery and mobile route status
+
+Source`879e3d5` retains the primary when incoming metadata succeeds but its RAD
+transfer fails,including mid-fade; source`7bbe9aa` keeps route status compact on
+narrow screens while preserving full diagnostics. Full238unit,TypeScript and
+ESLint checks PASS. Actual independently trained two-segment GPU boundary/error
+recovery remains NOT RUN until export. This ready increment publishes while
+native work continues; no reconstruction ETA is inferred from the old baseline.
+
+Release `viewer-seine-route-recovery-2026-11-07`, archive
+`groundshift-seine-route-recovery-20261107.tar.gz`: **1,090,616bytes**, SHA-256
+`e4e829714a3406aa8c4e8573156d6543646f345fd947dfb77f2dfc65f0877dea`.
+Apply after41preceding layers. Fresh production build PASS in4.95s; explicit
+full39-scene curation retains all257world files and17inert historical files
+byte-identically. Complete base/target/archive/composed integrity PASS in6.330432s:
+7compiled/CSS/HTML/report changes,1,187target public and1,290composed files.
+Public readback/render checks follow dispatch. Private evidence:
+`data/validation/paris-full-route-20261107/publications/route-recovery/`.
+
+### Reusable completed-snapshot publication
+
+`scripts/publish-seine-route.py` prepares the oldest unreceipted completed
+`route-world-NNN` from `route-run.json`,or an explicitly selected snapshot. It
+rejects partial/unexecuted exports,camera gaps,unsafe paths,private metadata,
+changed RAD size/SHA declarations,coverage regression and modification of any
+already published immutable segment. It follows declared files rather than
+walking raw job folders. The source snapshot remains untouched. Selected assets
+are hardlinked into a new immutable publication world; canonical public files
+use atomic replacement. Catalog,timeline,report and explicit observation allowlist
+are updated without removing previous worlds or observations. Native export PASS
+and new route/boundary GPU NOT RUN remain separate. The initial thumbnail is
+explicitly the retained baseline GS preview,not new-route rendering evidence.
+
+```sh
+# Safe before the first export: prints WAITING/NO NEW status without publication.
+python3 scripts/publish-seine-route.py data/jobs/seine-full-20261107
+# Or select the atomically complete snapshot explicitly.
+python3 scripts/publish-seine-route.py data/jobs/seine-full-20261107 \
+  --snapshot data/jobs/seine-full-20261107/route-world-002
+python3 -m unittest discover -s scripts/tests -p 'test_publish_seine_route.py' -v
+```
+
+A PREPARED receipt includes selected source size/SHA records and the immutable
+world source path. Repeating preparation returns the same pending lineage.
+The deployment owner then runs the existing fresh-build/explicit-curation/
+`package-viewer-overlay.py` workflow against the latest physically composed
+inventory,uploads a fresh checksum-pinned archive,updates the Git pointer,and
+triggers the existing Railway service without waiting for remaining native jobs.
+Only new/changed files enter each archive; repeated full-route payload archives
+are avoided. After dispatch,write
+`data/jobs/seine-full-20261107/publication-receipts/NNN.json` with snapshot,archive
+SHA,commit/deployment IDs and actual status,then append public-hash/browser results.
+This is local publication bookkeeping,not a service/queue/framework.
+
+The helper counts final Docker COPY layers and warns at90 so a verified static
+checkpoint can consolidate active deployment layers before further growth.
+This is a conservative workflow threshold,not an asserted Railway hard limit.
+All previous release archives remain rollback evidence after consolidation.
+Five focused publication-boundary tests PASS. An initial macOS temporary-path
+normalization fixture fails and is corrected by resolving both compared roots;
+no native/GPU success is inferred from these synthetic checks.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
@@ -1210,7 +1272,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the eighteen viewer/observation updates, in order. The command below includes all forty-one
+reconstruction/paging layers and the nineteen viewer/observation updates, in order. The command below includes all forty-two
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1355,6 +1417,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-seine-route-ownership-fix-2026-11-07 \
     groundshift-seine-route-ownership-fix-20261107.tar.gz \
     a8a5af893f7d24a5eafb5aaa08ceaf003f3eea6fa3b17e61c7b9baa481c3daac
+  gs_restore_layer viewer-seine-route-recovery-2026-11-07 \
+    groundshift-seine-route-recovery-20261107.tar.gz \
+    e4e829714a3406aa8c4e8573156d6543646f345fd947dfb77f2dfc65f0877dea
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

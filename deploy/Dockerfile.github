@@ -283,6 +283,13 @@ RUN wget -q -O /tmp/seine-route-ownership-fix.tar.gz https://github.com/neocjmix
  && mkdir /out \
  && tar -xzf /tmp/seine-route-ownership-fix.tar.gz -C /out
 
+# Incoming-route failure recovery and narrow-screen route status.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_route_recovery
+RUN wget -q -O /tmp/seine-route-recovery.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-recovery-2026-11-07/groundshift-seine-route-recovery-20261107.tar.gz \
+ && echo 'e4e829714a3406aa8c4e8573156d6543646f345fd947dfb77f2dfc65f0877dea  /tmp/seine-route-recovery.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine-route-recovery.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -323,5 +330,6 @@ COPY --from=paris_route_started /out/www /srv
 COPY --from=seine_alignment /out/www /srv
 COPY --from=seine_route_viewer /out/www /srv
 COPY --from=seine_route_ownership_fix /out/www /srv
+COPY --from=seine_route_recovery /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
