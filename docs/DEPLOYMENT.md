@@ -15,6 +15,33 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Full-route expansion begins; user confirms Safari recovery — 2026-11-07
+
+The user now reports persistent blur is resolved on their physical iPhone16Pro
+Safari and the scene looks plausible. This is **USER REPORTED**, not an
+instrumented physical-device PASS. Earlier NOT RUN/unresolved observations and
+actual desktop WebKit tests remain retained. The private device attachment is
+not published. Safari investigation status documentation is updated separately.
+
+The new authorized expansion uses the **same existing Paris south-bank and
+connected-street route**:876ordered source records,ranks808–1683,approximately
+2.185km of source GPS polyline. The campaign is RUNNING; no new full-route native
+export,geometry accuracy or browsing acceptance is claimed. Actual reconstructed
+coverage remains24sources/first58m until new outputs are published. All39existing
+scenes,current runtime,source/camera/binary bytes and prior evidence remain.
+A distinct chronological lab observation links the campaign's rolling report.
+
+Release `viewer-paris-route-started-2026-11-07`, archive
+`groundshift-paris-route-started-20261107.tar.gz`: **23,791 bytes**, SHA-256
+`ec17cc241396b8b9ba66a946df8763e5189d3948396a9f13c56f4bffb5cd4f54`.
+Apply after37preceding layers. Exactly3sanitized report/timeline/catalog JSONs
+change. The already verified production/runtime package is reused without
+rebuilding shared dist. Privacy/JSON/39scene checks and complete base/target/
+archive/composed integrity pass in4.884745s for1,280files. No new source image,
+private attachment,raw log or weight is included. New metadata public-browser
+checks are NOT RUN at dispatch; existing runtime acceptance is retained. Private
+evidence:`data/validation/paris-full-route-20261107/publications/started/`.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
@@ -1057,7 +1084,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the fourteen viewer/observation updates, in order. The command below includes all thirty-seven
+reconstruction/paging layers and the fifteen viewer/observation updates, in order. The command below includes all thirty-eight
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1190,6 +1217,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-safari-worker-verified-2026-11-07 \
     groundshift-safari-worker-verified-20261107.tar.gz \
     6c61e70512b742cc1481e7504b2f9dab0b8f4c9871e701c4b00483979fb999f0
+  gs_restore_layer viewer-paris-route-started-2026-11-07 \
+    groundshift-paris-route-started-20261107.tar.gz \
+    ec17cc241396b8b9ba66a946df8763e5189d3948396a9f13c56f4bffb5cd4f54
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

@@ -255,6 +255,13 @@ RUN wget -q -O /tmp/safari-worker-verified.tar.gz https://github.com/neocjmix/gr
  && mkdir /out \
  && tar -xzf /tmp/safari-worker-verified.tar.gz -C /out
 
+# User-reported Safari recovery and the bounded full-route campaign start.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS paris_route_started
+RUN wget -q -O /tmp/paris-route-started.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-paris-route-started-2026-11-07/groundshift-paris-route-started-20261107.tar.gz \
+ && echo 'ec17cc241396b8b9ba66a946df8763e5189d3948396a9f13c56f4bffb5cd4f54  /tmp/paris-route-started.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/paris-route-started.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -291,5 +298,6 @@ COPY --from=safari_diagnostics /out/www /srv
 COPY --from=safari_worker_evidence /out/www /srv
 COPY --from=safari_worker_fix /out/www /srv
 COPY --from=safari_worker_verified /out/www /srv
+COPY --from=paris_route_started /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
