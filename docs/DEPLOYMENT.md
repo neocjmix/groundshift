@@ -3295,3 +3295,25 @@ actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
 Complete base/target/archive/composed integrity PASS in10.227262s for1,469files;
 anonymous release/hash PASS. Provider/public hashes follow actual dispatch.
 Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-007-1794060143031146000/`.
+
+Evidence pointer`200f2edbdd187150418b0b41daf31f15dde54a05` dispatches through
+the same connector as`8cf134ef-508b-4b9e-bf4f-49211af8602a`: created
+14:04:05.373Z, **SUCCESS** at14:04:57.234Z. Anonymous full archive/hash PASS
+in2.408950s. All6changed public file sizes/SHA-256 PASS after4readiness attempts/
+19.817314s including rollout wait. Final report119,692bytes, SHA-256
+`f5f57278f3849b9f116b98fa95d473a02913e49c2a794947c000cf784af2d4f8`.
+Public PNG/JPEG match their inspected/derived provenance hashes above. Ordinary
+restoration56→57archives: prior files/new pin/all1,469final files PASS in6.038309s,
+atomic hardlink-safe replacement/no extra full copy or download. These delivery
+checks are not speed benchmarks or an extra GPU/browser campaign.
+
+Receipt:`data/jobs/seine-full-20261107/publication-status/snapshot-007-evidence.json`.
+Original failed native-pointer attempt, skipped no-build retry, successful69a1a4a
+diagnostic build/29public hashes and this later six-file evidence delivery remain
+in one explicit lineage. The public observation retains the failure with its
+unproven cause. Scope remains partial7GS/120sources/296.56m sourceGPS, distinct
+from876original-source acquisition and full-route accuracy acceptance. The idle
+owned publisher is stopped briefly for final documentation push then restarted
+at verified57archive inventory; current PID/freshness in process/heartbeat files.
+CONNECTOR QUEUE remains actual behavior; no coordinator/GPU/service configuration
+changes and no self-referential artifact deployment.
