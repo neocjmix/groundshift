@@ -3204,3 +3204,23 @@ actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
 Complete base/target/archive/composed integrity PASS in7.805944s for1,445files;
 anonymous archive/hash PASS. Provider/public hashes follow actual dispatch.
 Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-006-1794058371134529000/`.
+
+Evidence pointer`55a32276f88fdcbedbdfbcc35856658af7480e5a` dispatches through
+the existing connector as`12c123e1-fd75-4ef6-ad31-e97c9a7b2f35`: created
+13:34:09.629Z, **SUCCESS** at13:34:50.192Z. Anonymous full archive/hash PASS
+in1.589569s. All6changed public file sizes/SHA-256 PASS after2readiness attempts/
+8.844977s including rollout wait. Final report106,949bytes, SHA-256
+`2b77990b656e6661f499fa4a85a761b6f92d2570573211279877e27ae0922c67`.
+Both public PNG and JPEG match their inspected/derived hashes and the public
+provenance chain above. Ordinary restoration54→55archives: prior files/new pin/
+all1,445final files PASS in5.059725s, atomic hardlink-safe replacement/no extra
+full copy or download. These are delivery measurements, not speed benchmarks.
+
+Original006native provider/30public hashes and subsequent six-file evidence
+publication remain in one receipt lineage; current6GS/104source/255.78m remains
+partial and separate from876source acquisition/full-route geometry acceptance.
+Receipt:`data/jobs/seine-full-20261107/publication-status/snapshot-006-evidence.json`.
+The idle owned publisher is briefly stopped for final documentation push then
+restarted at verified55archive inventory, with freshness/PID in process/heartbeat
+files. CONNECTOR QUEUE remains actual behavior; no coordinator/configuration
+change, extra GPU/browser campaign or self-referential artifact deployment.
