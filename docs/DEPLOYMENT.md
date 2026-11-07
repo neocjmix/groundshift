@@ -3393,3 +3393,9 @@ final documentation-only push, then restarted at the verified59archive inventory
 current process/heartbeat records identify its PID and health. CONNECTOR QUEUE
 remains the actual dispatch mechanism. No native/service configuration changes,
 extra asset rollout or owned browser process is introduced by this final step.
+
+<!-- seine-snapshot-009 -->
+
+### Automated route snapshot 009
+
+Release `viewer-seine-route-009-1794062014814657000`, archive `groundshift-seine-route-009-1794062028096153000.tar.gz`, 42,132,245bytes, SHA-256 `997101af82473d7affd9339804d58ecbd319d5ec8fa4d75c1b80a551f2e2c55b`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 29 changed files; 1515 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
