@@ -320,6 +320,7 @@ archive receipts remain in the matching `segment-FIRST-LAST/` job directory.
 | 005 | 1052–1075 | 88 / 214.834239 m | 1,062.463517 | 15,959,587 / 26,167,680 | PASS one public WebKit case |
 | 006 | 1068–1091 | 104 / 255.782957 m | 1,040.793582 | 16,019,693 / 26,124,281 | PASS one public WebKit case |
 | 007 | 1084–1107 | 120 / 296.555364 m | 993.279200 | 16,009,419 / 26,037,776 | PASS one public WebKit case |
+| 008 | 1100–1123 | 136 / 336.807284 m | 1,125.313094 | 16,001,031 / 25,967,712 | PASS one public WebKit case |
 
 For 005, SfM registered all 144 crops (6,105 points, 0.590331 px reprojection
 error); all eight shared poses and both transform-withheld checks passed.
@@ -383,6 +384,26 @@ diagnostic triggered a successful rebuild with identical scene/archive pins.
 The cause is unproven; failure, skipped retry and recovery remain separate
 delivery evidence in [DEPLOYMENT.md](DEPLOYMENT.md). Physical iPhone remains
 **NOT RUN**, global geometry **NOT ACCEPTED**.
+
+For 008, all 144 SfM crops registered (11,806 points, 0.530514 px reprojection
+error); eight shared poses and both transform-withheld checks passed. Relative
+scale was 0.98077586, maximum center residual 0.003819 reference steps and maximum
+orientation residual 0.032807 degrees. DAV2 inferred 320 maps on MPS in 43.350462 s
+and reused 160 exact maps; its wrapper took 80.285445 s. Calibration retained
+378/480 maps and 188,938 seed points. Native maximum RSS was 861,995,008 B and
+peak footprint 2,923,940,312 B. Lossless depth archival passed in 24.429668 s
+(426,821,692 encoded bytes, 283,836,729 new blob bytes). The coordinator continued
+to ranks 1116–1139 without changing the declared configuration.
+The public008 check passed one seventh-to-eighth-and-back Fly case at recorded
+view 115. Selected counts were 545,732 → 655,490 → 587,538; residency stayed
+within two segments/fourteen pages, settled queues were empty and there were no
+page errors or eager whole-SPZ requests. Handoff position/orientation/FOV were
+preserved. The browser reviewer inspected recognizable buildings, parked cars
+and a pink roadside strip; stretched distant structures, road smearing and
+moving-object ghosts remain. Evidence:
+`data/validation/seine-route-20261107/public-route-008-browser-summary.json`.
+This is desktop WebKit with an iPhone profile: physical iPhone **NOT RUN**,
+global geometry **NOT ACCEPTED**.
 
 ### Unattended continuation
 
