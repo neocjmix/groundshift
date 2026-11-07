@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "fly-navigation-20261107",
+  "scope": "Viewer-only unrestricted fullscreen navigation; existing reconstruction and streaming assets are unchanged",
+  "implementation": {
+    "mode": "Fly beside Orbit",
+    "mobile": "Independent move/look joysticks, lift hold buttons, portrait and landscape",
+    "desktop": "WASD, pointer-locked mouse or drag fallback, Q/E height, Shift boost",
+    "worldReloadOnModeSwitch": false,
+    "collisionOrFloorInference": false,
+    "speedUnits": "Viewer-world units, not calibrated meters"
+  },
+  "checks": {
+    "typescript": "PASS",
+    "lint": "PASS, no warnings",
+    "unitTests": {"status": "PASS", "passed": 212, "newNavigationTests": 5},
+    "productionBuild": "PASS",
+    "existingBrowserRegressions": {"status": "PASS", "cases": 4},
+    "immutableR4Fly": {"status": "PASS", "cases": 3, "elapsedSeconds": 27.3},
+    "immutableR4ContextRecoveryRepeat": {"status": "PASS", "cases": 3, "elapsedSeconds": 23.2},
+    "publicR4Fly": {"status": "PASS", "cases": 3, "elapsedSeconds": 35.2, "uncaughtPageErrors": []},
+    "screenshotInspection": "PASS actual public desktop, 390x844 portrait, 844x390 landscape",
+    "physicalIosSafari": "NOT RUN",
+    "physicalAndroid": "NOT RUN"
+  },
+  "browser": {"name": "Google Chrome", "version": "156.0.8078.81", "headed": true},
+  "fixtures": [
+    "Pointer-lock denial in fallback test is deliberate API rejection; actual drag is exercised",
+    "Mobile native-fullscreen denial is deliberate API rejection; actual CDP simultaneous touch exercises viewport fallback",
+    "WEBGL_lose_context deliberately forces a graphics failure; Exit and Retry are exercised"
+  ],
+  "retainedFailures": [
+    "Initial pointer-lock WrongDocumentError resolved by foregrounding the real test tab",
+    "Actual setPointerCapture InvalidStateError fixed by capturing fallback drag before requesting lock",
+    "One combined local run encountered root HTTP404 during concurrent dist rebuild; frozen package testing avoids this shared-output race",
+    "R3 public final run: 2 PASS, 1 FAIL in 34.4s; forced graphics recovery restored rendering but left an uncaught undefined error. R4 immediately disposes the failed Spark owner. Original failure retained."
+  ],
+  "release": {
+    "archive": "groundshift-fly-lifecycle-fix-20261107.tar.gz",
+    "bytes": 1058517,
+    "sha256": "607d60c095a32b64cf0c48fafa7262729cc81ec06899c2910e7b20281846a9c1",
+    "sceneCountPreserved": 39,
+    "railwayDeployment": "07e2520b-e38c-4344-aee9-a91a4bb13983",
+    "railwayStatus": "SUCCESS",
+    "publicIntegrity": "PASS, all 5 changed files match size and SHA-256",
+    "publicRootSha256": "91bdab7155d8376687980fedddd1c2828f0643e680740e35ea5eb130c4e47711",
+    "freshRestore": {"status": "PASS", "layers": 27, "files": 1254, "elapsedSeconds": 12.877001}
+  },
+  "limits": [
+    "Mobile is simulated touch in actual desktop Chrome, not physical mobile hardware",
+    "No collision, ground, gravity, geometry accuracy or long-route streaming capacity acceptance",
+    "Native fullscreen and pointer lock depend on browser permissions; viewport and drag fallbacks remain available"
+  ]
+}

@@ -46,7 +46,7 @@ still determine whether native fullscreen and pointer lock are granted.
 - PASS production build,TypeScript,lint without warnings,212JS tests
   (including5navigation checks for heading/up,movement timing,normalized input,
   reset,frame cap and world-unit speed). No collision tests were added.
-- PASS existing local camera-path and viewer regression5cases: real scene
+- PASS existing local camera-path and viewer regression4cases: real scene
   rendering,Orbit/reset/zoom,folder replacement,context-loss recovery and path
   controls with explicitly synthetic continuity markers.
 - PASS initial mobile emulation: actual CDP simultaneous two-touch input,
@@ -72,13 +72,28 @@ still determine whether native fullscreen and pointer lock are granted.
 - PASS actual public r2 Fly3/3 in27.5s on Railway: native desktop input,
   real sample fallback,CDP mobile dual touch/portrait/landscape. Public file
   integrity is separately verified for6changed files; all39world assets remain
-  unchanged. Final touch-target/layout/error-exit polish is released separately;
-  its public checks remain **NOT RUN** until executed.
-- PASS final frozen-package4/4 in37.7s: prior camera-path regression plus
+  unchanged.
+- PASS r3 frozen-package4/4 in37.7s: prior camera-path regression plus
   all3Fly cases; the sample fallback case also forces a WebGL context-loss
   event,exits Fly while the renderer is in error,and retries rendering.
   Mode buttons now have44px minimum touch targets and the desktop help text
-  sits above the lift buttons. Final public checks are pending at this snapshot.
+  sits above the lift buttons.
+- FAIL r3 final public run:2PASS/1FAIL in34.4s. Desktop input and mobile
+  dual touch passed; the forced context-loss/Exit/Retry case restored rendering
+  but emitted an uncaught `undefined` error. The final error assertion caught
+  it. Inspection of pinned Spark2.4.0 found that pending renderer jobs suppress
+  cancellation errors only after their owner is disposed. The viewer now
+  disposes Spark immediately on renderer failure, rather than leaving its jobs
+  alive until Retry. No global exception suppression was added.
+- PASS r4 immutable-package Fly3/3 in27.3s, including the final no-pageerror
+  assertion after forced WebGL context loss. A focused repeat of the recovery
+  case also passed3/3 in23.2s.
+- PASS final actual public r4 Fly3/3 in35.2s: native fullscreen, pointer lock,
+  WASD/mouse, lift/reset, position-preserving Orbit handoff, sample drag
+  fallback, forced context-loss/Exit/Retry without page errors, and CDP dual
+  touch in both orientations. Actual public desktop/portrait/landscape
+  screenshots were inspected. Railway reports SUCCESS; all5changed public
+  files match the pinned package. Fresh27-layer restore passes with1,254files.
 - Physical iOS/Safari and Android hardware: **NOT RUN**. No new reconstruction,
   Gaussian quality,collision or kilometer-scale acceptance is claimed.
 
@@ -87,6 +102,7 @@ failures,diagnostic traces,frozen-package checks and actual screenshots. All39
 worlds and prior reports/rollback assets are retained. Publication started before
 browser checks completed; see[DEPLOYMENT.md](DEPLOYMENT.md) for pinned releases
 and actual public integrity/interaction evidence.
+The compact checked-in record is [evidence/fly-navigation.json](evidence/fly-navigation.json).
 
 ## Reproduce
 
