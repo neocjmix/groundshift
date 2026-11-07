@@ -299,6 +299,14 @@ with 426,695,447 encoded bytes for 480 unique predictions (287,183,836 new blob
 bytes). Evidence remains under `data/jobs/seine-full-20261107/segment-1036-1059/`.
 The immutable snapshot's browser receipt starts at **NOT RUN**; snapshot003's
 public PASS remains historical. Global geometry is still **NOT ACCEPTED**.
+The later actual public snapshot004 check **PASS**ed the existing focused
+WebKit case from third to fourth segment and back at recorded view 51. It kept
+at most two segments/fourteen pages, preserved camera position/orientation/FOV,
+and settled with no pending work, page errors or eager SPZ requests. Actual
+frames show a recognizable street with road/vehicle blur and distorted tree and
+facade edges. Physical iPhone, perceptual seamlessness and full-route geometry
+remain unverified. Evidence:
+`data/validation/seine-route-20261107/public-route-004-browser-summary.json`.
 
 ### Unattended continuation
 
