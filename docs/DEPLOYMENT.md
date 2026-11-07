@@ -2929,3 +2929,56 @@ public hash verification. Git push alone still does not imply Railway dispatch.
 ### Automated route snapshot 003
 
 Release `viewer-seine-route-003-1794052259957780000`, archive `groundshift-seine-route-003-1794052274047471000.tar.gz`, 41,892,526bytes, SHA-256 `f311182027c3ea12599afd10b1480906f0347223166bd4e08879776d560b4be0`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 31 changed files; 1368 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+The active deployment agent checked for matching in-flight work, then invoked the
+existing connector at11:52:39Z for exact pointer
+`8a4a98bfe81ff3ff541f77ba8ef388c24bbdfdf3`. Deployment
+`3a2ef8ed-eedb-4c62-ad33-80b5ac7d7e43` reached **SUCCESS** at11:53:52.843Z.
+The background publisher independently matched all31changed public file sizes/
+SHA-256 at11:54:09.043425Z, retaining its actual provider proof separately from
+browser acceptance. The complete ordinary restoration extends47→48archives:
+all prior47files/new archive pin/all1,368final files PASS in5.077288s, with
+atomic hardlink-safe replacement and no extra full copy/archive download.
+
+This is3native GS segments/56source centers/ranks988–1043, with139.263891m of
+source GPS polyline. The separate876original-source acquisition remains PASS;
+full-route reconstruction and global geometric acceptance remain incomplete.
+Previous snapshot002browser evidence remains historical and cannot establish
+snapshot003boundary/rendering acceptance. Private records are
+`data/jobs/seine-full-20261107/publication-{dispatch,receipts}/003.json` and
+`static-publication/snapshot-003-1794052259957780000/ordinary-restore-48.json`.
+
+### Snapshot003 actual added-boundary evidence and rendered preview
+
+One focused actual public desktop WebKit27.2/iPhone16Pro-profile case passes
+the newly added second→third→second Fly boundary using KeyW/KeyS. This is one
+case, separately scoped from snapshot002's three-case campaign. Maximum two
+segment roots/14pages, idle queues and no page errors are observed. Selection
+is524,457before,664,937in the new segment,582,246after reversal. Boundary
+position/quaternion changes are0 and FOV80is retained. Physical-iPhone execution,
+frame-by-frame perceptual seamlessness and global geometric acceptance remain
+NOT RUN/NOT ACCEPTED. The raw test rounds duration to1.2min; no speed benchmark
+is inferred while native training continues.
+
+The inspected exact PNG of the third segment is published as
+`/experiments/tourist-streaming/seine-snapshot-003.png`, SHA-256
+`a8d49eccb103e86ccf6a896729173a2b3466aea4e3be8b627804e00d3da6dc28`.
+Only UI overlays were hidden for capture; no source-photo substitution,
+generation or pixel retouching is used. Its JPEG90derivative replaces the route
+poster:336,535bytes. Both show a recognizable road/buildings/trees with retained
+road/vehicle smearing and distorted facade edges. The new report exposes this
+frame, moves snapshot002acceptance into explicit historical evidence, assigns
+the actual one-case result to003and dates former58m/99m statements. All876source
+acquisition evidence remains intact; no new native parameters or geometry change.
+
+Release`viewer-seine-route-003-evidence-1794052736872823000`, archive
+`groundshift-seine-route-003-evidence-1794052736872823000-r2.tar.gz`:2,794,409bytes,
+SHA-256`8b4f66bad183077cb9b96fa4c84f48bc813452e8e0460d82f4ca4c09cd9eef14`.
+Apply after48preceding archives. Six selected files change: report/timeline/
+catalog, actual PNG/sanitized provenance and JPEG preview. Runtime, scene,
+cameras and RAD bytes remain unchanged. Complete base/target/archive/composed
+integrity PASS in5.846294s for1,370files. Top-level snapshot scope is checked
+against the next-export preparer's historical-evidence contract before pointer
+publication. Anonymous readback/provider/public hashes are recorded after actual
+execution; no extra GPU rerun is needed for this evidence/image update.
+Private proof:`data/jobs/seine-full-20261107/publication-evidence-003-1794052736872823000/`.
