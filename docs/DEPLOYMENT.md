@@ -3009,3 +3009,53 @@ Git autodeploy is not claimed.
 ### Automated route snapshot 004
 
 Release `viewer-seine-route-004-1794055296650186000`, archive `groundshift-seine-route-004-1794055307490757000.tar.gz`, 42,082,778bytes, SHA-256 `c74dc3b31195018c00da3f9ddcdfaaaadfa094ed952dd9c691e0abfe4d94ac4f`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 30 changed files; 1393 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+Exact004pointer`3a08cb05f6ff9b996a17848dbd8ef4c5df6fe274` is dispatched through
+the existing connector after checking for matching in-flight work. Deployment
+`cfc09116-d401-44f8-b100-434bc207829e` is created12:46:11.783Z and **SUCCESS**
+at12:47:31.580Z. The background publisher independently verifies all30changed
+public file sizes/SHA-256 at12:47:54.833472Z. Ordinary restoration extends49→50
+archives: prior files/new pin/all1,393final files PASS in11.006096s, with atomic
+hardlink-safe replacement and no extra full copy or archive download.
+
+Actual coverage is4native GS segments/72source centers/ranks988–1059, with
+179.310725m source GPS polyline. Full876original-source acquisition stays PASS
+and local; complete2.185km reconstruction/geometric acceptance remains incomplete.
+The current004browser scope is NOT RUN at native publication, while002/003actual
+checks remain explicitly historical. The poster retains the actual003GS render
+until a separately inspected004frame is available. Runtime/previous scenes and
+all prior source/acquisition/failed-stage evidence are preserved. Private proof:
+`data/jobs/seine-full-20261107/publication-{dispatch,receipts}/004.json` and
+`static-publication/snapshot-004-1794055296650186000/ordinary-restore-50.json`.
+
+### Snapshot004 public added-boundary evidence and actual fourth-segment frame
+
+One focused actual public desktopWebKit27.2/iPhone16Pro-profile case passes
+third→fourth→third Fly with KeyW/KeyS. Selection is532,687→697,701→587,549;
+max2resident roots/14pages, allqueues0 and no pageerrors. Position/quaternion
+change0 and FOV80retain camera continuity at handoff. This is one newly added
+boundary case; previous002/003campaigns remain separate. PhysicaliPhone, global
+metric accuracy and frame-by-frame perceptual seamlessness remain NOT RUN/NOT
+ACCEPTED. Terminal duration rounds to1.2min; concurrent native work excludes a
+rendering/network benchmark claim.
+
+Inspected actual fourth-segment frame is published unchanged as
+`/experiments/tourist-streaming/seine-snapshot-004.png`, SHA-256
+`2f8eb42afca9ead432cd2bd457845c2c74523b0697d4f27350a2f130bb228a6b`.
+UI overlays are hidden only during capture; no source-photo substitution,
+generation or retouching. JPEG90derivative replaces the route poster:381,197bytes.
+Recognizable road/buildings/trees remain with roadway blur, stretched capture
+vehicle, moving-car ghosts and distorted facade/tree edges. Report004scope and
+preview are updated, generic coverage4/72/179.31m is current, while browser metric
+labels explicitly distinguish Snapshot003and004. All876source proof and earlier
+acceptance/stages/preview PNGs remain intact.
+
+Release`viewer-seine-route-004-evidence-1794055822147564000`, archive
+`groundshift-seine-route-004-evidence-1794055822147564000.tar.gz`:3,153,319bytes,
+SHA-256`7349abacdd187d30befe237944e73cc3426843e6343b2c02963b6bbb32ed0a33`.
+Apply after50preceding archives. Six selected files: report/timeline/catalog,
+actualPNG/sanitizedprovenance/JPEGpreview. Runtime, scene, cameras and RAD remain
+byte-identical. Complete base/target/archive/composed integrity PASS in7.214179s
+for1,395files; anonymous release checksum PASS. Actual provider/public hashes
+follow dispatch. Private proof:
+`data/jobs/seine-full-20261107/publication-evidence-004-1794055822147564000/`.
