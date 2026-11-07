@@ -166,6 +166,25 @@ source data bytes are unchanged. A repeat browser suite is not required for this
 metadata-only increment; final rollout and exact public JSON checks follow
 dispatch. Private evidence:`data/validation/iphone-safari-20261107/publications/verified/`.
 
+Anonymous complete archive readback passes in1.928344s. The ordinary tree extends
+from36 to37 layers after rechecking every prior file; the last archive pin and
+all1,280final paths/sizes/SHA-256 pass in4.187134s. This reuses the same tree that
+began empty for the32-layer extraction, with each later extension independently
+checked; no extra bulk copy or download is needed. Evidence:`ordinary-restore-37.json`.
+
+Final report pointer`6079c088faadae2f91daf0e9a881a9e18483315a` deploys as
+`2b7940ae-f89f-4313-848e-4cf3a1ec4326`: created2026-11-07T07:55:53.400Z,
+**SUCCESS** at07:56:45.327Z. After11readiness polls, exact public sizes/SHA-256
+pass for both changed JSONs and the5unchanged browser-tested runtime files in
+4.384597s. The final summary is25,346bytes,SHA-256
+`59e97d17a094d5c073b874c9fa1c4f570ab503a502cca4733593c390ed1a5c8f`;
+timeline is33,707bytes,SHA-256
+`9b202b4430a981d1b95441038c423687dcbbf70c10f13c90c46fa270ed871d9e`.
+Both public JSONs parse and retain explicit NOT RUN physical-device status.
+All39scenes,the initial/failing observations,and37rollback archives remain
+retained. Final documentation commits without another artifact rollout; the
+service stays pinned to the inspected v2 runtime plus these exact report bytes.
+
 ## Mobile Fly refinement and near-detail investigation — 2026-11-07
 
 The first increment is **interim mobile UI**, while blurry near-detail LoD loading
