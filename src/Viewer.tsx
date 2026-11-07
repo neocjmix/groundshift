@@ -11,7 +11,7 @@ import {FlyNavigation,flySpeed} from './fly-navigation';
 import FlyControls from './FlyControls';
 import {snapshotPagingDiagnostics,type PagingDiagnostics} from './paging-diagnostics';
 
-const diagnosticVersion='safari-paging-20261107-v1';
+const diagnosticVersion='safari-paging-20261107-v2';
 const pagingPhaseLabel={network:'파일 수신 중',decode:'해독 또는 재시도 대기',lod:'세부 선택 중',upload:'GPU 전송 중',display:'화면 갱신 중',settled:'대기 작업 없음',initializing:'초기화 중',unknown:'상태 확인 중'};
 
 
@@ -91,8 +91,10 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   };
 
   const downloadDiagnostics=()=>{
+    const view=saveView.current();
     const report={version:diagnosticVersion,worldId:world.manifest.id,mode:streamEnabled?'lod':'whole',
       userAgent:navigator.userAgent,devicePixelRatio:window.devicePixelRatio,viewport:[window.innerWidth,window.innerHeight],
+      view:view?{position:view.position.toArray(),quaternion:view.quaternion.toArray(),fov:view.fov,mode:view.navigation.mode,cursor:view.navigation.cursor}:null,
       renderer:metrics?.gpu??null,drawingBuffer:metrics?[metrics.width,metrics.height]:null,
       samples:diagnosticHistory.current,scope:'Device-local observations only. No upload. No visual-quality or completed-loading guarantee.'};
     const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));

@@ -1,8 +1,20 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import {createHash} from 'node:crypto';
+import {patchBufferedSparkWorker,isSparkWorkerModule} from './build/spark-buffered-decode.ts';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [{
+    name:'spark-2.4-buffered-decoder',enforce:'pre',
+    transform(source,id){
+      if(!isSparkWorkerModule(id))return;
+      if(createHash('sha256').update(source).digest('hex')!=='5ae86ab35d4ceb655db486dcc336299775bb314c280d7e5b39f64e4539f8e0e9')
+        throw new Error('Unexpected Spark distribution: revalidate the buffered decoder workaround before upgrading.');
+      return {code:patchBufferedSparkWorker(source),map:null};
+    },
+  },react()],
+  // Keep dev mode on the same patched module as production builds.
+  optimizeDeps:{exclude:['@sparkjsdev/spark']},
   build: { rollupOptions: { input: {
     main: "index.html",
     lab: "experiments/lab/index.html",
