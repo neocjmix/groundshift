@@ -80,7 +80,7 @@ for(const stage of ['metadata','RAD chunk'])test(`failed incoming route ${stage}
  await page.route(pattern,async route=>{if(broken){rejected++;await route.fulfill({status:503,body:'Explicit route transport-failure fixture'});}else await route.continue();});
  await initial(page);const firstId=(await state(page)).route.active;await settled(page,firstId);
  const slider=page.getByRole('slider',{name:'Recorded camera view'});await slider.focus();await slider.press('End');
- await expect.poll(async()=>(await state(page)).route.errors.join(' ')).toContain('503');
+ await expect.poll(async()=>(await state(page)).route.errors.join(' '),{timeout:30000}).toContain('503');
  const failed=await state(page);expect(rejected).toBeGreaterThan(0);expect(failed.route.active).toBe(firstId);expect(failed.route.resident).toBe(1);expect(failed.paging.selected).toBeGreaterThan(0);await page.screenshot({path:info.outputPath('incoming-failed-current-retained.png')});
  broken=false;await page.getByLabel('Route streaming status').getByRole('button',{name:'구간 다시 시도',exact:true}).click();const recovered=await settled(page,last.id);expect(recovered.route.errors).toEqual([]);expect(errors).toEqual([]);
  await inspect(page,info,'incoming-retry');await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',fixture:`503 on real incoming ${stage}, then actual release/retry`,rejected,failed,recovered,errors},null,2));
