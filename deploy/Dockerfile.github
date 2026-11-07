@@ -402,6 +402,13 @@ RUN wget -q -O /tmp/seine_snapshot_008.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/seine_snapshot_008.tar.gz -C /out
 
+# Snapshot008 actual public proof and unretouched GS preview; previous evidence retained.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_evidence_008
+RUN wget -q -O /tmp/seine_evidence_008.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-008-evidence-1794061060319858000/groundshift-seine-route-008-evidence-1794061060319858000.tar.gz \
+ && echo '6b1a0416fb9c03923b52884007d5f628324d6e154a1f0fa4b52254288efc70a0  /tmp/seine_evidence_008.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_evidence_008.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -459,5 +466,6 @@ COPY --from=seine_evidence_006 /out/www /srv
 COPY --from=seine_snapshot_007 /out/www /srv
 COPY --from=seine_evidence_007 /out/www /srv
 COPY --from=seine_snapshot_008 /out/www /srv
+COPY --from=seine_evidence_008 /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

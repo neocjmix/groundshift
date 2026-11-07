@@ -393,12 +393,12 @@
     {
       "id": "seine-full-route",
       "title": "Seine · 337m of 2.185km",
-      "description": "8개 실제 GS · 136/876소스 · 새 경계 GPU검증 NOT RUN",
+      "description": "8개실제GS · 136/876소스 · 새경계공개Fly검사PASS",
       "category": "experiment",
       "manifestPath": "/worlds/seine-full-route/world.json",
       "thumbnailPath": "/worlds/seine-full-route/preview.jpg",
       "createdAt": "2026-11-07T10:35:03.319296+00:00",
-      "detail": "8 trained segments, 136/876 source cameras, source GPS coverage 336.81m/2185.31m. New route browser/boundary rendering NOT RUN; global geometry NOT ACCEPTED. Preview is a retained GS reference image, not proof of rendering this new snapshot."
+      "detail": "실제8개GS·136/876소스·소스GPS약336.81m. 공개desktopWebKit27.2/iPhone프로필1집중검사에서새경계Fly이동·복귀PASS; 최대2구간/14페이지, 큐0/오류0, 전환위치·방향차이0/FOV80유지. 이전검사와별도입니다. 미리보기는이번Snapshot008의실제GS공개렌더이며 도로번짐·차량잔상·늘어나거나겹친경계가남습니다. 실기기iPhone·전체2.185km·기하정확도는NOT RUN/NOT ACCEPTED."
     }
   ]
 }

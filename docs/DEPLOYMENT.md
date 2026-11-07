@@ -3323,3 +3323,47 @@ changes and no self-referential artifact deployment.
 ### Automated route snapshot 008
 
 Release `viewer-seine-route-008-1794060635829342000`, archive `groundshift-seine-route-008-1794060649438821000.tar.gz`, 42,044,784bytes, SHA-256 `e7f04bf5aa7b0bd5b4f98ad610af99b34e46a850a4171627f2b57b91162e1081`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 29 changed files; 1491 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+Exact008pointer`9bca14ae41415f6327b4bef376108447cc8c6c91` dispatches through
+the existing connector after matching-inflight check. Deployment
+`48ba41ec-1fb4-47c1-88ea-24dc2c5714db`: created14:12:45.200Z, **SUCCESS**
+at14:13:50.273Z. All29changed public file sizes/SHA-256 PASS independently
+at14:14:15.967951Z. Ordinary restoration57→58archives: prior files/new pin/
+all1,491final files PASS in4.702643s, atomic hardlink-safe replacement/no extra
+full copy or download. Actual8GS/136sources/ranks988–1123/sourceGPS336.807284m
+remains partial. Source876acquisition,002–007historical browser proof and007's
+failed/skipped/recovered delivery observation are preserved. Current008browser
+is NOT RUN until its own actual check; poster retains the actual007GS frame.
+No native/service configuration change. Private proof:
+`data/jobs/seine-full-20261107/publication-{dispatch,receipts}/008.json` and
+`static-publication/snapshot-008-1794060635829342000/ordinary-restore-58.json`.
+
+### Snapshot008 actual new-boundary proof and eighth-segment frame
+
+One focused public desktopWebKit27.2/iPhone16Pro-profile case passes seventh→
+eighth→seventh Fly. Selection545,732→655,490→587,538, max2roots/14pages,
+idlequeues/no pageerrors; handoff position/quaternion change0, FOV80retained.
+This is one new boundary case, separate from002–007. PhysicaliPhone, frame-by-
+frame perceptual seamlessness/global metric geometry remain NOT RUN/NOT ACCEPTED;
+concurrent native work excludes speed benchmark claims.
+
+Inspected unchanged eighth-segment PNG:
+`/experiments/tourist-streaming/seine-snapshot-008.png`, SHA-256
+`a2ea4df66f72c751799608b199cffb3776b3c78751e90f81cede651ae7cd15bd`.
+Only UI overlays hidden at capture; no source-photo substitution/generation/
+retouching. JPEG90derivative370402bytes, SHA-256
+`9575f67b7d8d2d5553808108154b438a8d54d9d88d06ef1164b0881969b42557`.
+Public provenance pins both. Street/building row/parked cars/pink strip render
+with stretched distant structures, softened facade/window edges, moving-object
+ghosts and roadway smear. Current8GS/136sources/GPS336.81m remains partial;
+source876acquisition, historical002–007proof/stages/PNGs and007's failed/skipped/
+recovered delivery observation remain intact.
+
+Release`viewer-seine-route-008-evidence-1794061060319858000`, archive
+`groundshift-seine-route-008-evidence-1794061060319858000.tar.gz`:3,119,238bytes,
+SHA-256`6b1a0416fb9c03923b52884007d5f628324d6e154a1f0fa4b52254288efc70a0`.
+Apply after58preceding archives. Six selected files: report/timeline/catalog,
+actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
+Complete base/target/archive/composed integrity PASS in9.312307s for1,493files;
+anonymous release/hash PASS. Provider/public hashes follow actual dispatch.
+Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-008-1794061060319858000/`.
