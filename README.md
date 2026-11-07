@@ -3,7 +3,8 @@
 Revisit real places as explorable 3D worlds.
 
 **New viewer control:** choose **Fly ↗** beside Orbit for fullscreen exploration.
-Mobile uses two joysticks (move/look) and rise/descend buttons; desktop uses
+Mobile uses a floating left movement stick, canvas swipe look and right-side
+rise/descend buttons; desktop uses
 WASD + mouse, Q/E height and Shift boost. No collisions or inferred floor.
 [Controls,actual checks and device limits](docs/FLY.md).
 
@@ -11,9 +12,11 @@ WASD + mouse, Q/E height and Shift boost. No collisions or inferred floor.
 · [Explore3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/paris-58m-lod/world.json).
 24real12K panoramas → image-estimated poses → calibrated DAV2 → M2 Metal GS:
 800k Gaussians in16min58s,15.92MB whole SPZ. Native LoD loads visible precision
-with an eight-page pool and keeps coarse distant coverage. Public movement,
-reverse and whole-scene comparison pass; strict16-view appearance preservation
-fails,so this is useful bounded serving with detail loss. Simple nearest-region
+with a fourteen-page pool and keeps coarse distant coverage. The former eight-page
+pool prevented nearby detail from refining; see [the measured repair](docs/FLY_REFINEMENT.md).
+The repaired application's near-view comparison passes; the earlier eight-page
+configuration failed strict16-view appearance preservation. The complete16-view
+screen has not been rerun for the repair. Simple nearest-region
 streaming failed because visible distant geometry disappeared. All trials remain
 observable. The selected876-source/2.185km GPS route is an expansion source;
 **the full2.185km is NOT reconstructed**. [Measurements,failures and reproduction](docs/PARIS_STREAMING.md).

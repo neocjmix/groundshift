@@ -4,7 +4,7 @@ Each milestone must report PASS / FAIL / NOT RUN. Build success does not prove G
 
 ## Current status — 2026-11-07
 
-Viewer UX follow-up:[Fly](FLY.md) adds mobile dual-joystick and desktop
+Viewer UX follow-up:[Fly](FLY.md) adds a mobile floating movement stick/swipe look and desktop
 WASD/mouse fullscreen exploration,explicit lift/speed/reset/exit,with no
 collisions or inferred ground. It shares the existing renderer and paging
 session and changes no world artifact or native reconstruction. Actual input
@@ -14,8 +14,10 @@ New-data/serving result,2026-11-07: [Paris first58m](PARIS_STREAMING.md)
 executes144/144SfM views,480DAV2 predictions and one8k/768px/800k Metal run
 (1018.286s). WholeSPZ15.92MB is preserved. Nearest3spatial regions pass bounded
 loading/reverse/retry but **FAIL** visual coverage; the complete union is exact.
-Official native RAD/LoD is actually built/executed with a524,288-slot/eight-page
-pool and public start/end/reverse/whole-control checks **PASS**. Strict16-view
+Official native RAD/LoD initially ran with a524,288-slot/eight-page
+pool and public start/end/reverse/whole-control checks **PASS**. The follow-up
+[detail repair](FLY_REFINEMENT.md) uses917,504slots/fourteen pages and800k
+selection after the former limits proved permanently coarse nearby. Initial strict16-view
 appearance screen **FAILS**,with native mean3.63/255,worst7.99; no independent
 geometry acceptance. Compact encoding saves only1.19% over nativeRAD. The
 selected876sources/2.185km are the expansion route,**not** the reconstructed

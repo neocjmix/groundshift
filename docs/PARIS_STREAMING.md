@@ -6,6 +6,11 @@ approximately58.02m of source GPS path. The selected876-record/2.185km route
 remains an expansion source, **not an already reconstructed2.185km world**.
 The previous nine-panorama quality campaign stays closed and unchanged.
 
+**Current serving follow-up:** [Fly and near-detail repair](FLY_REFINEMENT.md)
+replaces the initial8-page/350k budget with14pages/800k. The binaries and
+reconstruction remain identical. The measurements below describe the initial
+run and retain its failed appearance screen; they are not the new settings.
+
 ## Implemented path
 
 1. Preserve/checksum the24 publicly licensed12,288×6,144 originals locally.

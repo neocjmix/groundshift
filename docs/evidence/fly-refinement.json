@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "id": "fly-refinement-20261107",
+  "scope": "Viewer controls and bounded nearby-detail serving of the unchanged Paris Gaussian artifact; no reconstruction",
+  "implementation": {
+    "mobile": "Floating left movement stick, scene swipe look, right52px rise/descend hold buttons",
+    "desktop": "Existing WASD/mouse/QE/Shift/reset/exit retained",
+    "collisionOrFloorInference": false,
+    "worldReloadOnFlySwitch": false
+  },
+  "mobile": {
+    "oldCssKnobOffsetPx": {
+      "x": 0,
+      "y": 16.078125
+    },
+    "fixedFirstTouch": {
+      "origin": [
+        115.75,
+        760
+      ],
+      "padCenter": [
+        115.75,
+        760
+      ],
+      "knobCenter": [
+        115.75,
+        760
+      ]
+    },
+    "neutralDrift": false,
+    "forwardBackwardDirectionDot": -1.0,
+    "independentMovementSwipe": "PASS actual CDP touches",
+    "releaseMoveContinuesLook": "PASS",
+    "activeTouchCancel": "PASS",
+    "resizeClearsMovement": "PASS",
+    "rightLiftHold": "PASS",
+    "portrait": [
+      390,
+      844
+    ],
+    "landscape": [
+      844,
+      390
+    ]
+  },
+  "gpuRecovery": {
+    "failure": "Three GPU readback WAIT_FAILED can reject undefined before webglcontextlost dispatch",
+    "ownershipFix": "Renderer-instance readback rejection calls scene fail/dispose before rethrowing to Spark cancellation handling; no global suppression",
+    "fixture": "Real WEBGL_lose_context immediately before a pending clientWaitSync",
+    "before": {
+      "status": "FAIL",
+      "uncaughtErrorRuns": 3,
+      "runs": 3
+    },
+    "after": {
+      "status": "PASS",
+      "uncaughtErrorRuns": 0,
+      "runs": 3,
+      "exitRetryRendering": true
+    }
+  },
+  "lod": {
+    "diagnosticStatus": "PASS actual local renderer execution",
+    "sourceSplats": 800000,
+    "hierarchyEntries": 1048377,
+    "hierarchyChunks": 16,
+    "rootCause": "Both 350000 selection ceiling and 8-page (524288 slot) residency ceiling permanently retain coarse parents. The fetcher intentionally stops after maxPages priority entries, so pending=0 is not complete detail. Actual missing detail can improve by increasing bounded budgets; source reconstruction itself is still soft.",
+    "previous": {
+      "maxPagedSplats": 524288,
+      "lodSplatCount": 350000,
+      "pages": 8
+    },
+    "selected": {
+      "maxPagedSplats": 917504,
+      "lodSplatCount": 800000,
+      "numLodFetchers": 2,
+      "lodTraverseMode": "standard",
+      "pagedExtSplats": false,
+      "pages": 14
+    },
+    "startViewComparison": {
+      "baseline": {
+        "selected": 349915,
+        "pages": 8,
+        "leaves": 318306,
+        "parents": 31691,
+        "mae": 3.3222181532118054,
+        "centerMae": 5.477749294704861,
+        "centralEdgeRatio": 0.7743209294209604
+      },
+      "detail14": {
+        "selected": 670968,
+        "pages": 14,
+        "leaves": 654624,
+        "parents": 16370,
+        "mae": 1.3247759783709492,
+        "centerMae": 1.4708500614872686,
+        "centralEdgeRatio": 0.9945468785979327
+      }
+    },
+    "comparisonUnits": "Mean absolute RGB differences on0-255 against same-camera wholeSPZ; edge ratio is relative central horizontal contrast",
+    "resolution": [
+      768,
+      768
+    ],
+    "delayedFetchFixture": {
+      "status": "PASS",
+      "delayMsPerRadcRequest": 250,
+      "selectedProgression": [
+        52788,
+        156893,
+        262144,
+        670968
+      ],
+      "fetchDecodeCallsAcrossViews": [
+        14,
+        16,
+        17,
+        19,
+        21
+      ],
+      "maxResidentPages": 14,
+      "notProductionBenchmark": true
+    },
+    "residentSlotsIncreasePercent": 75,
+    "actualGpuMemory": "NOT MEASURED",
+    "appAcceptance": "PASS local and public actual viewer interaction, progressive refinement,14pagebounds,and matched whole-SPZ comparison",
+    "localApp": {
+      "quality": "PASS",
+      "difference": {
+        "mae": 1.3227848275240273,
+        "centerMae": 2.351453812825718,
+        "centralEdgeRatio": 0.9457904190767071
+      },
+      "returnDifference": {
+        "mae": 0,
+        "centerMae": 0,
+        "centralEdgeRatio": 1
+      },
+      "totalChunks": 16,
+      "errors": [],
+      "latencyFixtureMs": 250,
+      "status": "PASS",
+      "caseSeconds": 41.2,
+      "suiteSeconds": 43.9,
+      "startSelected": 681830,
+      "requestsStartEndReturn": [
+        15,
+        18,
+        20
+      ],
+      "maxResidentPages": 14,
+      "cacheDisabled": true
+    }
+  },
+  "checks": {
+    "typescript": "PASS",
+    "targetedLint": "PASS",
+    "stickUnitTests": {
+      "status": "PASS",
+      "passed": 3
+    },
+    "immutableFly": {
+      "status": "PASS",
+      "passed": 3,
+      "elapsedSeconds": 22.5
+    },
+    "screenshotInspection": "PASS portrait and landscape",
+    "promotedReadbackTimingTestPublic": "PASS actual pending-readback context loss, visible error, Exit and Retry, no uncaught errors",
+    "publicFly": {
+      "status": "PASS",
+      "cases": 3,
+      "elapsedSeconds": 42.8,
+      "caseSeconds": {
+        "desktop": 13.7,
+        "sampleFaultRecovery": 10.0,
+        "mobile": 17.2
+      },
+      "uncaughtPageErrors": []
+    },
+    "publicLod": {
+      "status": "PASS",
+      "cases": 3,
+      "refinement": {
+        "quality": "PASS",
+        "difference": {
+          "mae": 1.3227848275240273,
+          "centerMae": 2.351453812825718,
+          "centralEdgeRatio": 0.9457904190767071
+        },
+        "returnDifference": {
+          "mae": 0,
+          "centerMae": 0,
+          "centralEdgeRatio": 1
+        },
+        "selectedStartEndReturn": [
+          681830,
+          555653,
+          681830
+        ],
+        "requestsStartEndReturn": [
+          15,
+          18,
+          20
+        ],
+        "maxResidentPages": 14,
+        "errors": [],
+        "latencyFixtureMs": 250,
+        "elapsedDisplay": "1.1m terminal-rounded; combined with native case2.1m"
+      },
+      "nativeGsplat": {
+        "status": "PASS",
+        "caseSeconds": 57.6,
+        "mae": 1.3815112112405978,
+        "changedFraction": 0.006188090235285968,
+        "errors": []
+      },
+      "nativeCompact": {
+        "status": "PASS",
+        "caseSeconds": 57.0,
+        "suiteSeconds": 58.5,
+        "mae": 1.199948817412855,
+        "changedFraction": 0.00183482153165129,
+        "requestsStartEndReturn": [
+          15,
+          17,
+          19
+        ],
+        "maxResidentPages": 14,
+        "errors": []
+      },
+      "cacheDisabled": true,
+      "durationIsNetworkBenchmark": false
+    },
+    "publicIntegrity": "PASS all6changed app-release public files match size/SHA256",
+    "physicalIosSafari": "NOT RUN",
+    "physicalAndroid": "NOT RUN",
+    "completeLint": "PASS",
+    "unitTests": {
+      "status": "PASS",
+      "passed": 215,
+      "newStickTests": 3
+    },
+    "diagnosticScriptReproduction": {
+      "status": "PASS",
+      "views": 12,
+      "elapsedSeconds": 28.2131205,
+      "errors": []
+    },
+    "localAppLod": {
+      "status": "PASS",
+      "cases": 1,
+      "elapsedSeconds": 43.9
+    },
+    "publicScreenshotInspection": "PASS desktop,390x844portrait,844x390landscape; interaction captures may show ongoing detail loading"
+  },
+  "browser": {
+    "name": "Google Chrome",
+    "version": "156.0.8078.81",
+    "headed": true
+  },
+  "retainedFailures": [
+    "New mobile partial-release fixture initially ended the wrong finger due to CDP touchEnd semantics; corrected using captured DOM events. This was a test defect.",
+    "Unchanged sample GPU context-loss recovery intermittently left uncaught undefined; exact real readback-loss timing reproduced3/3 before owner guard.",
+    "First LoD window.fetch-only counter did not cover Spark native loader; its zero arrays are not network evidence.",
+    "Actual application LoD test traced290Zoom click retries intercepted by the streaming panel. Panel moved above controls with bottom8rem; final actual UI zoom/comparison passed.",
+    "Earlier return image mean difference0.943 failed strict<0.2 despite matching camera,size,residentchunkset. Waiting30additionaldisplayframes yielded twoidenticalreturns; no thresholdrelaxation or productchange for this observation. Timingcause remainsinferred."
+  ],
+  "limits": [
+    "14of16chunks means limited initial transfer savings on this small58m scene; hierarchy bytes can exceed wholeSPZ.",
+    "Original reconstruction blur, ghosting and gaps remain.",
+    "Image agreement with wholeSPZ is not geometric accuracy.",
+    "No physical-phone memory or kilometer-scale acceptance."
+  ],
+  "sources": [
+    "https://github.com/sparkjsdev/spark/blob/ffe210dc0a45d0515a06c9235878108112827d61/src/SparkRenderer.ts#L182-L218",
+    "https://github.com/sparkjsdev/spark/blob/ffe210dc0a45d0515a06c9235878108112827d61/src/SplatPager.ts#L588-L629",
+    "https://github.com/sparkjsdev/spark/blob/ffe210dc0a45d0515a06c9235878108112827d61/rust/spark-rs/src/lod_tree.rs#L480-L526",
+    "https://github.com/mrdoob/three.js/blob/r180/src/utils.js#L90-L108"
+  ],
+  "localEvidenceRoots": [
+    "data/validation/fly-mobile-20261107/",
+    "data/validation/fly-detail-20261107/"
+  ],
+  "reproduction": {
+    "preparationScript": "scripts/prepare-paged-world.py",
+    "defaults": {
+      "maxPagedSplats": 917504,
+      "lodSplatCount": 800000
+    },
+    "explicitOptions": [
+      "--max-paged-splats",
+      "--lod-splat-count"
+    ],
+    "canonicalDerivatives": [
+      "data/jobs/fly-detail-20261107/paris-58m-lod/world",
+      "data/jobs/fly-detail-20261107/paris-58m-lod-compact/world"
+    ],
+    "originalJobsPreserved": true,
+    "assetRestoration": "docs/DEPLOYMENT.md pinned archives",
+    "worldFileInventory": 257,
+    "changedWorldFiles": 2,
+    "changedWorldFileKind": "paging manifests only",
+    "sourceAndGaussianAssetHashes": "unchanged"
+  },
+  "appRelease": {
+    "railwayDeployment": "45d4c7a1-db85-424f-afa3-9401797dd83f",
+    "railwayStatus": "SUCCESS",
+    "publicRootSha256": "5fb77b6ede58a34ba633dd4382065fa357f1a8aef58ee1bbb9207fc6e72c1c13",
+    "publicChangedFilesVerified": 6,
+    "reportOnlyFollowup": "See docs/DEPLOYMENT.md for the separately pinned report-only overlay; app and world bytes are identical"
+  }
+}

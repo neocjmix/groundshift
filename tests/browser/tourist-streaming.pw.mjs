@@ -18,7 +18,7 @@ test('real tourist source route, photograph switching and honest stage boundarie
   const summary=await (await page.request.get('/experiments/tourist-streaming/summary.json')).json();
   for(const title of ['새 관광지 GS 재구성','SPZ 구간 스트리밍·레이지로딩'])await expect(page.locator('.street-stage').filter({has:page.getByText(title,{exact:true})})).toContainText(summary.stages.find(s=>s.title===title).status);
   if(summary.result){await expect(page.locator('#result-links a').first()).toHaveAttribute('href','/?world='+summary.result.worldPath);await expect.poll(()=>page.locator('#result-poster').evaluate(i=>i.complete&&i.naturalWidth>=256)).toBe(true);}
-  if(summary.measurements){await expect(page.locator('#result-metrics .metric')).toHaveCount(summary.measurements.length);await expect(page.locator('#result-metrics')).toContainText('8페이지');}
+  if(summary.measurements){await expect(page.locator('#result-metrics .metric')).toHaveCount(summary.measurements.length);await expect(page.locator('#result-metrics')).toContainText('14페이지 · 917,504슬롯');}
   if(summary.comparisons){const images=page.locator('#result-comparisons img');await expect(images).toHaveCount(summary.comparisons.length);for(const image of await images.all()){await image.scrollIntoViewIfNeeded();await expect.poll(()=>image.evaluate(i=>i.complete&&i.naturalWidth>256)).toBe(true);}}
   const route=await page.request.get('/experiments/tourist-streaming/route.json');expect(route.ok()).toBe(true);const data=await route.json();
   expect(data.images).toHaveLength(876);expect(data.images.every(i=>i.license==='etalab-2.0'&&i.dimensions[0]===12288&&i.dimensions[1]===6144)).toBe(true);

@@ -6,9 +6,10 @@ Gaussian assets and streaming session; switching modes does not reload the world
 
 | Input | Action |
 | --- | --- |
-| Left joystick | Forward/backward and strafe, relative to heading |
-| Right joystick | Turn and look up/down |
-| ↑ / ↓ hold buttons | Rise / descend |
+| Touch in the lower-left region | Create a movement joystick at that exact touch position |
+| Drag from that origin | Forward/backward and strafe, relative to heading |
+| Swipe the uncovered canvas | Turn and look up/down; works while the left stick is held |
+| Right-side ↑ / ↓ hold buttons | Rise / descend |
 | WASD (or arrow keys) | Horizontal movement |
 | Click the scene, then move mouse | Pointer-locked look where permitted |
 | Mouse drag | Look fallback if pointer lock is unavailable/denied |
@@ -25,7 +26,11 @@ Speed uses viewer-world units: median positive marked camera-edge spacing per
 second when available, otherwise one quarter of the orbit viewing distance.
 These are usability heuristics, not inferred meters/second.
 
-Two independent pointer owners allow simultaneous touch movement/look. Pointer
+The left region leaves room below each origin for a full backward drag. It is
+hidden for fine-pointer desktop input. The knob is absolutely centered: the
+former CSS grid placed it16.078px below the input center. The right joystick
+has been removed following the user's direct device feedback.
+Independent pointer owners allow simultaneous touch movement/look. Pointer
 capture/cancel/release, key-up, window blur and hidden-document events clear
 held input. Movement is time-based, diagonal speed is normalized and suspended
 frame deltas are capped. Joystick updates use refs/direct knob transforms;
@@ -41,7 +46,11 @@ with drag look retained on failure. The top toolbar and thumb controls respect
 safe-area insets and portrait/landscape viewport sizes. Browser/host permissions
 still determine whether native fullscreen and pointer lock are granted.
 
-## Actual validation and retained failures
+Current follow-up: [floating touch controls and near-detail repair](FLY_REFINEMENT.md).
+The initial results below are preserved history; they do not supersede the
+later user-reported issues or the follow-up's explicit checks.
+
+## Initial validation and retained failures
 
 - PASS production build,TypeScript,lint without warnings,212JS tests
   (including5navigation checks for heading/up,movement timing,normalized input,

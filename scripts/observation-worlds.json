@@ -300,7 +300,7 @@
     },
     {
       "id": "paris-58m-lod",
-      "source": "data/jobs/paris-streaming-20261107/publication-paris-58m-lod/world",
+      "source": "data/jobs/fly-detail-20261107/paris-58m-lod/world",
       "asset": "scene.spz",
       "format": "spz",
       "credits": [
@@ -309,7 +309,7 @@
     },
     {
       "id": "paris-58m-lod-compact",
-      "source": "data/jobs/paris-streaming-20261107/publication-paris-58m-lod-compact/world",
+      "source": "data/jobs/fly-detail-20261107/paris-58m-lod-compact/world",
       "asset": "scene.spz",
       "format": "spz",
       "credits": [
@@ -1215,6 +1215,9 @@
     "experiments/tourist-streaming/serving-p0-0.jpg",
     "experiments/tourist-streaming/serving-p8-0.jpg",
     "experiments/tourist-streaming/route-gs.jpg",
-    "experiments/tourist-streaming/vertical-gs.jpg"
+    "experiments/tourist-streaming/vertical-gs.jpg",
+    "experiments/tourist-streaming/baseline-start.png",
+    "experiments/tourist-streaming/refined-start.png",
+    "experiments/tourist-streaming/whole-start.png"
   ]
 }

@@ -131,14 +131,19 @@ A separately labeled native RAD/LoD derivative is now executed from the same
 new Paris GS using official Spark2.4.0 CPU conversion. Optional`paging` metadata
 selects the native PagedSplats path; a small explicit index pins root/chunk byte
 sizes and hashes. Spark owns hierarchical selection,fetch scheduling and page
-eviction with524,288slots/eight pages and two fetchers. A small fetch adapter
+eviction with917,504slots/fourteen pages and two fetchers. The former eight-page,
+350k-selection limit kept near detail permanently coarse. The measured
+[serving repair](FLY_REFINEMENT.md) raises selection to800k while retaining
+bounded residency and the unchanged hierarchy. A small fetch adapter
 verifies bytes and exposes actual transfer/pending/errors. Coarse distant GS
 remains present while visible precision loads. The original wholeSPZ is an
 explicit control and is not eagerly downloaded. Both use unchanged asset-space
 coordinates/one transform and the same actual camera path. No reconstruction
 backend interface,service or GPU abstraction is added. HTTP paging is supported;
-local folder RAD selection fails explicitly. Actual bounded loading passes,
-strict16-view appearance preservation fails,and km-scale acceptance is NOT RUN.
+local folder RAD selection fails explicitly. Actual bounded loading passes.
+The original eight-page strict16-view appearance screen failed; the repaired
+near-view comparison passes, with the full16-view rerun and km-scale acceptance
+NOT RUN.
 The local storage-only derivative step converts an existing PLY to SPZ v3
 with the pinned Spark CPU/WASM writer. It preserves the native backend output
 and camera/coordinate metadata, performs no new reconstruction, and publishes
