@@ -234,6 +234,13 @@ RUN wget -q -O /tmp/safari-diagnostics.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/safari-diagnostics.tar.gz -C /out
 
+# Provisional worker-path evidence; the following source patch validates separately.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS safari_worker_evidence
+RUN wget -q -O /tmp/safari-worker-evidence.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-safari-worker-evidence-2026-11-07/groundshift-safari-worker-evidence-20261107.tar.gz \
+ && echo '784aa1bdcccc215f46d30b46cc007ea9452b3527c6336dcf4beee64a19c02e6b  /tmp/safari-worker-evidence.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/safari-worker-evidence.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -267,5 +274,6 @@ COPY --from=lod_detail_evidence /out/www /srv
 COPY --from=lod_detail_verified /out/www /srv
 COPY --from=lod_report_verified /out/www /srv
 COPY --from=safari_diagnostics /out/www /srv
+COPY --from=safari_worker_evidence /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

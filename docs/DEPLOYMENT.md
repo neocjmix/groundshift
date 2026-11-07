@@ -50,6 +50,44 @@ background files remain retained. New diagnostic public-browser checks are
 **NOT RUN** at dispatch. Private evidence stays under
 `data/validation/iphone-safari-20261107/publications/diagnostics/`.
 
+Initial diagnostic pointer `bdc2ce5e58df579f21454ec578201156a3ccd9f2` deploys as
+`50c978ee-f1e4-4506-bd08-b822cc86c6f5`: created2026-11-07T07:28:04.547Z,
+**SUCCESS** at07:28:59.113Z. Anonymous archive size/SHA readback passes in0.856425s;
+all9 changed public files match exact sizes/SHA-256 in5.279947s after11 rollout
+polls. Root HTML SHA-256 is
+`cb5a691fb3fce07235d72da585156e0a1de65ccb59b69737fafb257d6ead89c8`;
+report summary SHA-256 is
+`3a7080045b5ffa5dd818521c956f7780ef38a2022e217473598c64730faebc95`.
+The user identifies the compact Paris world as the affected URL; new public
+browser checks prioritize that world. The private device screenshot is not
+published. Rollout/file integrity does not establish physical-iPhone resolution.
+The same ordinary tree that began empty for the32-layer check is extended from
+33 to34 layers: every prior file is rechecked before extraction, the new archive
+pin is verified, and all1,276 final file sizes/SHA-256 plus the exact path set
+pass in8.967627s. No additional bulk copy or archive download is used. Evidence:
+`publications/diagnostics/ordinary-restore-34.json` under the private Safari job.
+
+### Provisional WebKit worker finding
+
+The next report-only increment retains the initial normal desktop observations
+and adds an actual delayed-network gsplat failure on desktop WebKit. After an11s
+hold and35s observation, all23.02MB/15requests are received but chunk2 has no decode
+result/error:13pages/416,335selected,35.029s pending RPC. An isolated worker
+already-buffered direct push/finish fixture recovers chunk2 in25ms and reaches
+14pages/680,013selected with idle queues. Stream instrumentation can also remove
+reproduction, so the exact internal await/WASM cause is not isolated. This does
+not establish the physical-iPhone compact cause or resolution. Production patch
+and new public-browser checks are NOT RUN in this provisional metadata.
+
+Release `viewer-safari-worker-evidence-2026-11-07`, archive
+`groundshift-safari-worker-evidence-20261107.tar.gz`: **16,745 bytes**, SHA-256
+`784aa1bdcccc215f46d30b46cc007ea9452b3527c6336dcf4beee64a19c02e6b`.
+Apply after34 preceding layers. Exactly2sanitized report/timeline JSON files
+change; no app/world/image bytes change. Complete base/target/archive/composed
+integrity passes in8.262488s for1,276files; anonymous archive readback passes
+in0.586250s. All39scenes and prior observations remain. Evidence stays private
+under`data/validation/iphone-safari-20261107/publications/worker-evidence/`.
+
 ## Mobile Fly refinement and near-detail investigation — 2026-11-07
 
 The first increment is **interim mobile UI**, while blurry near-detail LoD loading
@@ -922,7 +960,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the eleven viewer/observation updates, in order. The command below includes all thirty-four
+reconstruction/paging layers and the twelve viewer/observation updates, in order. The command below includes all thirty-five
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1046,6 +1084,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-safari-diagnostics-2026-11-07 \
     groundshift-safari-diagnostics-20261107.tar.gz \
     bcb1f2c28f75f623fe488f5e23824e00dcfc6017f39e386d84d37b29eca818da
+  gs_restore_layer viewer-safari-worker-evidence-2026-11-07 \
+    groundshift-safari-worker-evidence-20261107.tar.gz \
+    784aa1bdcccc215f46d30b46cc007ea9452b3527c6336dcf4beee64a19c02e6b
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
