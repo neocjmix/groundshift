@@ -378,17 +378,17 @@
       "manifestPath": "/worlds/paris-58m-lod/world.json",
       "thumbnailPath": "/worlds/paris-58m-lod/preview.jpg",
       "createdAt": "2026-11-06T17:33:15.236531+00:00",
-      "detail": "현재 상한은 14페이지(917,504슬롯), 선택 목표는 80만 점이며 표시 수는 시점·로딩에 따라 달라집니다. 공개 Chrome의 세부 로딩·왕복 검증은 PASS. iPhone 16 Pro Safari의 지속 흐림 제보는 조사 중이며 실기기 재현·해결은 NOT RUN입니다. 예전 8페이지·35만 목표의 측정과 엄격한 16뷰 FAIL은 보고서에 과거 자료로 보존합니다."
+      "detail": "현재14페이지(917,504슬롯)·80만 점 선택 목표이며 표시 수는 시점·로딩에 따라 달라집니다. 공개 Chrome·Mac WebKit 회귀 PASS. 사용자는 관련 compact 장면의 iPhone16Pro Safari 흐림 해결을 확인했습니다(USER REPORTED); 계측 실기기 검사는 NOT RUN입니다. 기존8페이지·35만 목표/16뷰FAIL은 역사 자료로 보존합니다. 이 장면은 첫58m이며 전체2.185km 확장 결과가 아닙니다."
     },
     {
       "id": "paris-58m-lod-compact",
       "title": "Paris · LoD 스트리밍 · compact",
-      "description": "현재 14페이지 · 같은 GS의 compact 전달 비교 · 실기기 미확인",
+      "description": "첫58m · iPhone Safari 해결 사용자 확인 · 전체경로 확장은 진행 중",
       "category": "experiment",
       "manifestPath": "/worlds/paris-58m-lod-compact/world.json",
       "thumbnailPath": "/worlds/paris-58m-lod-compact/preview.jpg",
       "createdAt": "2026-11-06T17:42:09.792102+00:00",
-      "detail": "현재 compact도 14페이지(917,504슬롯)·80만 점 선택 목표입니다. 공개 Chrome 실행 PASS이며 실제 표시 수는 시점에 따라 달라집니다. 파일 합 25.95MB, gsplat 대비 1.19% 절약. 이전 8페이지 16뷰 평균 3.55/최대 6.04·엄격 기준 FAIL은 과거 관찰입니다. iPhone 실기기 재현·해결은 NOT RUN; 재학습은 없습니다."
+      "detail": "현재14페이지(917,504슬롯)·80만 점 선택 목표. 사용자가 실제 iPhone16Pro Safari에서 지속 흐림 해결과 그럴듯한 장면을 확인했습니다(USER REPORTED); 계측 실기기 PASS는 아닙니다. 공개 WebKit2/2·Chrome 회귀와 이전8페이지 실패는 별도 증거로 보존합니다.25.95MB/1.19% 저장 절약은 동일GS 비교이며 이 장면의 실제 범위는 첫58m입니다."
     }
   ]
 }

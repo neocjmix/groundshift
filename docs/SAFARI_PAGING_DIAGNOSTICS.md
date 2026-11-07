@@ -2,16 +2,20 @@
 
 ## Outcome
 
-**The reported persistent blur on a physical iPhone16Pro Safari is unresolved.**
-No physical iPhone was connected for inspection. DesktopChrome mobile emulation
-from the earlier fix was insufficient acceptance for this report.
+**The user now reports the persistent blur is resolved on their physical
+iPhone16Pro Safari and the scene looks plausible.** This is **USER REPORTED**
+resolution, not an instrumented physical-device PASS. No physical iPhone was
+connected for agent inspection; that validation remains NOT RUN. Preserve the
+initial unresolved report and all actual desktop/WebKit evidence below.
+DesktopChrome mobile emulation alone was insufficient acceptance for the report.
 
 The current14-page/800k-target viewer refines normally in the available Safari
 and WebKit environments below. These results neither disprove the user report nor
 establish physical-device acceptance. No new page budget, model, reconstruction,
 compression, asset or source-image changes were made. A subsequent reproducible
 WebKit decoder wait was repaired as described below; the physical compact
-report still needs device confirmation.
+report subsequently receives user confirmation. Whether the isolated gsplat
+worker failure was exactly the physical compact cause remains unproven.
 
 ## Reproduced decoder wait and deployed workaround
 
@@ -65,7 +69,7 @@ geometric correctness or an assertion that all800k should always be visible.
 | Same WebKit, end/mid/landscape | End501,856/13pages; mid650,286/14; landscape874×402595,016/14. Each observed15s, pending0, advancing frames, no page errors. | Not reproduced |
 | Same WebKit, compactRAD |687,069points/14pages/22.76MB/15requests; pending0, advancing frames. | Not reproduced |
 | Installed iOS26.3 Simulator, iPhone17Pro, Safari via native UI |672,170points/14pages/23.02MB/15requests, visible street. Fly enter/exit responsive; afterwards680,946points. | Not reproduced in initial view; not a physical iPhone16Pro |
-| Physical iPhone16Pro Safari | **NOT RUN** — no connected device | Unresolved |
+| Physical iPhone16Pro Safari | **NOT RUN** instrumented — no connected device | Initially unresolved; later USER REPORTED resolved |
 
 The initial WebKit snapshot and matched wholeSPZ snapshot use the same pose:
 RGB mean absolute difference1.33242/255, central difference1.63456/255,
