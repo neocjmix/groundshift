@@ -287,7 +287,10 @@ def execute(root, limit=None):
             raw_transform=compose_alignment(reference['rawToBaseline'],alignment['transform'])
             if not pilot_pass:
                 run_stage(job,'tangent-inputs',[PY,'scripts/paris-pipeline.py','prepare',job,'--source',acquired])
-                reused=[BASELINE/'depth',*[Path(r['job'])/'depth' for r in state['records'] if r['first']!=180]]
+                # The next window shares the selected physical neighbor. Keep
+                # reuse bounded to that frontier rather than scanning every
+                # historical crop cache along the already completed route.
+                reused=[Path(reference['job'])/'depth']
                 run_stage(job,'depth',[DEPTH,'scripts/infer-seine-depth.py',job/'depth',job/'tangent-inputs/inference-inputs.json',*[arg for p in reused for arg in ('--reuse',p)]],env={**os.environ,'HF_HOME':str(ROOT/'data/tools/depth-hf-cache')})
                 run_stage(job,'fusion',[PY,'scripts/paris-pipeline.py','fusion',job])
                 run_stage(job,'training',[PY,'scripts/reconstruct.py',job/'dataset',job/'training','--steps',8000,'--resolution',768,'--max-splats',800000,'--title',f'Seine · {ranks[0]}–{ranks[1]}','--id',f'seine-{ranks[0]}-{ranks[1]}'])
