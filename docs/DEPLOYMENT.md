@@ -3253,3 +3253,45 @@ No service/GPU/native configuration changes or new release archive are introduce
 Raw failure/skip evidence stays local; a sanitized failed-stage observation will
 remain in the007report even after recovery. Private logs/readback:
 `data/jobs/seine-full-20261107/static-publication/snapshot-007-1794059234849587000/`.
+
+Bounded diagnostic pointer`69a1a4a2d6aa610c49a4433bfcf2ff013b36f7e6` runs as
+`86b47780-3416-4d01-9a24-91c6f380f6cf`: created13:56:12.941Z, **SUCCESS**
+at13:58:16.266Z. Historical fetch/checksum/extract and all55final COPY steps
+complete; initial failure cause remains unproven. All29changed public file sizes/
+SHA-256 PASS at13:58:34.247799Z. The served007bytes are the original pinned
+archive; no data/runtime substitution. Native partial coverage7GS/120sources/
+ranks988–1107/sourceGPS296.555364m is now live. Histories002–006,876original
+acquisition and all rollback packages remain intact;007browser is still NOT RUN
+until its own actual boundary check. The first FAIL and SKIPPED no-build retry
+remain recorded in receipt dispatch history and will be visible in its report.
+
+### Snapshot007 actual added-boundary evidence and recovered-delivery observation
+
+One focused public desktopWebKit27.2/iPhone16Pro-profile case passes sixth→
+seventh→sixth Fly. Selection604,171→666,484→642,943, max2roots/14pages,
+idlequeues/no pageerrors; position/quaternion handoff change0, FOV80retained.
+This is one new boundary case, separate from002–006. PhysicaliPhone, perceptual
+frame-by-frame seamlessness and global metric geometry remain NOT RUN/NOT
+ACCEPTED; concurrent native work excludes speed benchmark claims.
+
+Inspected unchanged seventh-segment PNG:
+`/experiments/tourist-streaming/seine-snapshot-007.png`, SHA-256
+`633760e57ab85d371380c304628d663040b7c9a2d50ebe3618983f16cb808974`.
+UI overlays hidden only at capture; no source-photo substitution/generation/
+retouching. JPEG90derivative360390bytes, SHA-256
+`6827b73b1de2f4196e40daca36ccb15c1b5d5b79896c97f5903799922d65aed6`.
+Public provenance pins both. Recognizable street/building row/wall/pink strip
+coexist with vehicle/pedestrian ghosts, distant-facade stretching and road smear.
+Current7GS/120sources/GPS296.56m remains partial; source876acquisition/history
+002–006/stages/PNGs are retained. The public report additionally preserves first
+delivery FAIL, same-pointer SKIPPED(no build) and bounded diagnostic recovery
+PASS, explicitly without claiming corruption/OOM or an established failure cause.
+
+Release`viewer-seine-route-007-evidence-1794060143031146000`, archive
+`groundshift-seine-route-007-evidence-1794060143031146000.tar.gz`:3,056,868bytes,
+SHA-256`83d8d482b314f9bb9f8bbfc9e52de0c25aa28de5828a7caac72aa1470b8a869b`.
+Apply after56preceding archives. Six selected files: report/timeline/catalog,
+actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
+Complete base/target/archive/composed integrity PASS in10.227262s for1,469files;
+anonymous release/hash PASS. Provider/public hashes follow actual dispatch.
+Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-007-1794060143031146000/`.
