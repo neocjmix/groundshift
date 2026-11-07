@@ -740,7 +740,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       </details>}
       {world.route&&<div className="stream-panel" aria-label="Route streaming status">
         <strong>{streamEnabled?'연속 경로 · 구간 LoD':'현재 구간 전체 SPZ 비교'}</strong>
-        <span>현재 {routeStats?.active??routeSelection.current??'준비 중'} · {world.route.index.segments.length}개 실제 장면</span>
+        <span>현재 {routeStats?.active??routeSelection.current??'준비 중'}{routeStats?.incoming?` → ${routeStats.incoming}`:''} · {world.route.index.segments.length}개 실제 장면</span>
         {streamEnabled&&routeStats&&<span>{routeStats.pending||routeStats.incoming?'다음 구간 준비 중':'현재 구간 유지'} · 전환 {routeStats.transitions}회 · 상주 {routeStats.resident}/2구간</span>}
         {streamEnabled&&pagingStats&&<span>표시 {pagingStats.selected.toLocaleString()}점 · {pagingStats.pages}/{pagingBudget!.maxPagedSplats/65536}페이지 · {(pagingStats.bytes/1e6).toFixed(2)}MB 수신</span>}
         <small>독립 재구성의 접합부는 어긋날 수 있습니다. 비교는 현재 구간만 대상으로 합니다.</small>
