@@ -290,6 +290,13 @@ RUN wget -q -O /tmp/seine-route-recovery.tar.gz https://github.com/neocjmix/grou
  && mkdir /out \
  && tar -xzf /tmp/seine-route-recovery.tar.gz -C /out
 
+# Immutable completed route snapshot; new boundary GPU acceptance remains NOT RUN.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_route_watcher
+RUN wget -q -O /tmp/seine_route_watcher.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-watcher-2026-11-07/groundshift-seine-route-watcher-20261107.tar.gz \
+ && echo '964c633748733e6dd257a239472d584c5fdb78c1d07b792bcc07aeedcea9423b  /tmp/seine_route_watcher.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_route_watcher.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -331,5 +338,6 @@ COPY --from=seine_alignment /out/www /srv
 COPY --from=seine_route_viewer /out/www /srv
 COPY --from=seine_route_ownership_fix /out/www /srv
 COPY --from=seine_route_recovery /out/www /srv
+COPY --from=seine_route_watcher /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

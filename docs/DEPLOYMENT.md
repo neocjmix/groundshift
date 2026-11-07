@@ -189,6 +189,13 @@ Public readback/render checks follow dispatch. Private evidence:
 
 ### Reusable completed-snapshot publication
 
+The ownership-fix rollout `be322506-5ad5-4564-988c-7c921f15bb19` and recovery
+rollout `7afdc437-89b6-4c6a-9268-ebb387c995ae` reach SUCCESS. Recovery's seven
+changed public files match exact sizes/SHA-256 in4.759959s. The existing ordinary
+restore extends40→42archives without a full duplicate copy/download; all1,290
+paths/sizes/SHA-256 PASS in4.468784s, using hardlink-safe atomic replacement.
+Private evidence: `route-recovery/{public-delta-readback,ordinary-restore-42}.json`.
+
 `scripts/publish-seine-route.py` prepares the oldest unreceipted completed
 `route-world-NNN` from `route-run.json`,or an explicitly selected snapshot. It
 rejects partial/unexecuted exports,camera gaps,unsafe paths,private metadata,
@@ -229,6 +236,70 @@ All previous release archives remain rollback evidence after consolidation.
 Five focused publication-boundary tests PASS. An initial macOS temporary-path
 normalization fixture fails and is corrected by resolving both compared roots;
 no native/GPU success is inferred from these synthetic checks.
+
+### Background publication through the existing branch-follow service
+
+The existing service now follows `feat/local-viewer-reconstruction` without a
+commit pin. Do not call the source connector with `commitSha` during this campaign:
+that disables future Git-push deployments. The local Railway CLI remains
+unauthorized both with its inherited token and saved-login fallback; no login or
+credential extraction is attempted. GitHub release upload/Git push remain healthy.
+The Railway connector verifies the controlled push separately before the watcher
+is allowed to start. Reconnecting the branch alone is not that verification.
+
+Release `viewer-seine-route-watcher-2026-11-07`, archive
+`groundshift-seine-route-watcher-20261107.tar.gz`: **9,915bytes**, SHA-256
+`964c633748733e6dd257a239472d584c5fdb78c1d07b792bcc07aeedcea9423b`.
+Apply after42preceding archives. Fresh build/full curation PASS; all39scenes and
+prior reports remain. The report UI now distinguishes growing reconstructed
+coverage from original24-image acquisition and baseline measurements. Exactly
+3compiled/HTML files change;1,291composed paths pass complete integrity checks
+in5.257823s. Anonymous complete archive readback PASS in0.579729s. New actual
+two-segment GPU/boundary checks remain NOT RUN; existing GS stays58m.
+
+`scripts/watch-seine-publication.py` is a local process, not hosted infrastructure.
+It polls atomic completed exports every5seconds, selects oldest-first, validates
+the existing curation boundary, builds committed runtime sources, packages the
+explicit complete observation surface, uploads only changed files, verifies the
+anonymous archive, appends its checksum-pinned Docker layer and pushes the branch.
+It checks public coverage and every changed public file before writing a delivered
+receipt. Provider deployment status and browser/GPU acceptance remain NOT RUN in
+background receipts until independently audited. Later cumulative snapshots can
+supersede unobserved canonical metadata; their receipts say so explicitly and
+verify retained immutable segment bytes rather than claiming old metadata was live.
+
+The worker holds `data/jobs/seine-full-20261107/.static-publication.lock` for its
+lifetime. **Stop it before manual publication or any competing branch push**,
+then adopt the latest composed inventory and restart. Native jobs use a separate
+lock and continue. Uncommitted runtime/build/curator source blocks publication;
+unrelated native Python work does not. Runtime bytes are checked before/after
+build/curation. All attempt logs, PID/heartbeat, retry state, pending records and
+delivery receipts stay in the ignored local job. Failed packaging/upload/push or
+public readback retains the pending lineage; it never retrains or fabricates a
+successful delivery. Rollback archives remain unchanged. Ninety final COPY
+instructions trigger an explicit consolidation blocker rather than guessing a
+provider limit.
+
+`--reuse-inventory` verifies matching current content against the older on-disk
+size/SHA before hardlinking immutable files. Changed files get separate inodes.
+The controlled package shares1,184files/1,373,079,702bytes with the verified base;
+it does not create another historical1.4GB copy per new segment. The assembled
+overlay also shares old immutable files. Do not edit frozen package bytes in place.
+Forty packaging tests and three watcher boundary tests PASS, including corrupt-base
+rejection, unchanged inode reuse, changed metadata isolation, ordered completed
+exports, idempotent pointers and preservation of missing historical observations.
+These fixtures do not prove native/GPU/browser behavior.
+
+```sh
+# Supply the connector-verified Git-push proof and latest composed inventory.
+python3 scripts/watch-seine-publication.py data/jobs/seine-full-20261107 \
+  --base-inventory data/validation/paris-full-route-20261107/publications/branch-watcher/groundshift-seine-route-watcher-20261107.tar.inventory.json \
+  --autodeploy-proof data/jobs/seine-full-20261107/static-publication/branch-autodeploy-verified.json
+```
+
+At this source commit, the controlled push rollout verification and detached
+worker start are pending. They must be recorded from actual execution below;
+PREPARED metadata, a PID intention or a successful Git push alone is insufficient.
 
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 

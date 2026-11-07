@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Curate a static upload, never send the repository/datasets to a hosting service.
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, writeFile, readdir, lstat, realpath } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir, lstat, realpath, link } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseWorldManifest,parseStreamIndex,parsePagedIndex,parseRouteIndex } from '../src/world.ts';
@@ -85,11 +85,13 @@ function assertPublicMetadata(text, worldName) {
   }
 }
 
-export async function packageViewer({ root, output, worlds = ['sample'], includeExperiments = false, observationSpec }) {
+export async function packageViewer({ root, output, worlds = ['sample'], includeExperiments = false, observationSpec, reuseInventory }) {
   if (worlds.length === 0 || new Set(worlds).size !== worlds.length || worlds.some(name => !Object.hasOwn(worldFiles, name))) {
     throw new Error('Select only the explicitly curated worlds');
   }
   const sourceRoot = await realpath(root);
+  const reuse = reuseInventory ? JSON.parse(await readFile(reuseInventory, 'utf8')) : null;
+  const reusable = new Map((reuse?.files ?? []).map(item => [item.path, item]));
   const planned = [];
   const destinations = new Set();
   function plan(destination, bytes) {
@@ -259,8 +261,22 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
   for (const { destination, bytes } of planned) {
     const target = path.join(output, destination);
     await mkdir(path.dirname(target), { recursive: true });
-    await writeFile(target, bytes, { flag: 'wx' });
-    files.push({ path: destination, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
+    const record = { path: destination, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
+    const old = reusable.get(destination);
+    if (old?.bytes === record.bytes && old.sha256 === record.sha256) {
+      const previous = path.join(reuse.output, destination);
+      const actual = await realpath(previous);
+      const base = await realpath(reuse.output);
+      if (!actual.startsWith(base + path.sep) || !(await lstat(previous)).isFile()
+        || (await lstat(previous)).isSymbolicLink()
+        || createHash('sha256').update(await readFile(previous)).digest('hex') !== record.sha256) {
+        throw new Error('Reusable package integrity mismatch');
+      }
+      await link(previous, target);
+    } else {
+      await writeFile(target, bytes, { flag: 'wx' });
+    }
+    files.push(record);
   }
   const totalBytes = files.reduce((sum, file) => sum + file.bytes, 0);
   const result = { output, fileCount: files.length, totalBytes, worlds: scenes.map(scene => scene.id) };
@@ -270,12 +286,17 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const args = process.argv.slice(2);
+  const reuseIndex = args.indexOf('--reuse-inventory');
+  const reuseInventory = reuseIndex < 0 ? undefined : args.splice(reuseIndex, 2)[1];
+  if (reuseIndex >= 0 && !reuseInventory) throw new Error('Missing reuse inventory path');
   const root = fileURLToPath(new URL('../', import.meta.url));
   const result = await packageViewer({
     root,
     output: path.join(root, 'data', 'deploy', `viewer-${Date.now()}`),
-    worlds: selectedWorlds(process.argv.slice(2)),
-    includeExperiments: process.argv.includes('--include-experiments'),
+    worlds: selectedWorlds(args),
+    includeExperiments: args.includes('--include-experiments'),
+    reuseInventory,
   });
   console.log(JSON.stringify(result, null, 2));
 }

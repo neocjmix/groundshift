@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { mkdtemp, mkdir, readFile, writeFile, rm, symlink, rename, access } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm, symlink, rename, access, stat } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -126,6 +126,20 @@ describe('curated viewer packaging', () => {
     expect(inventory.files.some(file => /private|desk|independent|reconstructed/.test(file.path))).toBe(false);
     expect(inventory.files.every(file => /^[a-f0-9]{64}$/.test(file.sha256))).toBe(true);
     await expect(access(path.join(output, 'www/unrelated-private.txt'))).rejects.toThrow();
+  });
+
+  it('reuses only independently verified identical immutable package files', async () => {
+    const { root, output, put } = await fixture();
+    await packageViewer({ root, output });
+    await put('dist/index.html', 'new compiled entry');
+    const second = path.join(root, 'second');
+    await packageViewer({ root, output: second, reuseInventory: `${output}.inventory.json` });
+    const name = 'www/worlds/sample/plant.splat';
+    expect((await stat(path.join(output, name))).ino).toBe((await stat(path.join(second, name))).ino);
+    expect(await readFile(path.join(output, 'www/index.html'), 'utf8')).toBe('synthetic build');
+    expect(await readFile(path.join(second, 'www/index.html'), 'utf8')).toBe('new compiled entry');
+    await writeFile(path.join(output, name), 'corrupted old bytes');
+    await expect(packageViewer({ root, output: path.join(root, 'third'), reuseInventory: `${output}.inventory.json` })).rejects.toThrow('integrity');
   });
 
   it('includes explicitly selected worlds, previews and credits in catalog order', async () => {
