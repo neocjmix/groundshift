@@ -65,14 +65,15 @@ test('real independently reconstructed route crosses and reverses with bounded p
  expect(await canvas.getAttribute('data-navigation-mode')).toBe('fly');
 });
 
-test('failed incoming route metadata retains the current rendered world and retries',async({page},info)=>{
+for(const stage of ['metadata','RAD chunk'])test(`failed incoming route ${stage} retains the current rendered world and retries`,async({page},info)=>{
  test.setTimeout(120000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const index=await routeInfo(page),last=index.segments.at(-1);expect(index.segments.length).toBeGreaterThanOrEqual(2);
- let broken=true;await page.route('**/'+last.world,async route=>{if(broken)await route.fulfill({status:503,body:'Explicit route transport-failure fixture'});else await route.continue();});
+ let broken=true,rejected=0;const pattern='**/'+(stage==='metadata'?last.world:last.world.replace(/world\.json$/,'rad/*.radc'));
+ await page.route(pattern,async route=>{if(broken){rejected++;await route.fulfill({status:503,body:'Explicit route transport-failure fixture'});}else await route.continue();});
  await initial(page);const firstId=(await state(page)).route.active;await settled(page,firstId);
  const slider=page.getByRole('slider',{name:'Recorded camera view'});await slider.focus();await slider.press('End');
  await expect.poll(async()=>(await state(page)).route.errors.join(' ')).toContain('503');
- const failed=await state(page);expect(failed.route.active).toBe(firstId);expect(failed.route.resident).toBe(1);expect(failed.paging.selected).toBeGreaterThan(0);await page.screenshot({path:info.outputPath('incoming-failed-current-retained.png')});
+ const failed=await state(page);expect(rejected).toBeGreaterThan(0);expect(failed.route.active).toBe(firstId);expect(failed.route.resident).toBe(1);expect(failed.paging.selected).toBeGreaterThan(0);await page.screenshot({path:info.outputPath('incoming-failed-current-retained.png')});
  broken=false;await page.getByLabel('Route streaming status').getByRole('button',{name:'구간 다시 시도',exact:true}).click();const recovered=await settled(page,last.id);expect(recovered.route.errors).toEqual([]);expect(errors).toEqual([]);
- await inspect(page,info,'incoming-retry');await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',fixture:'503 on real incoming world metadata, then actual release/retry',failed,recovered,errors},null,2));
+ await inspect(page,info,'incoming-retry');await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',fixture:`503 on real incoming ${stage}, then actual release/retry`,rejected,failed,recovered,errors},null,2));
 });
