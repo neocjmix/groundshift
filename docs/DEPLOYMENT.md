@@ -58,6 +58,35 @@ New metadata browser acceptance remains NOT RUN here; unchanged v2 runtime
 retains its already executed WebKit/Chrome checks. New native exports follow
 as independent increments instead of waiting for complete route reconstruction.
 
+### Second window: actual inputs and overlap alignment
+
+The next report-only observation records acquired source ranks1004–1027:
+24images/188,213,148bytes/202.955850s,first source-index196. Eight images overlap
+previous988–1011 and16new input centers extend observed inputs; this is not an
+extension of rendered GS coverage. Actual CPU SfM registers144/144virtual crops
+from24physical panoramas,8,069sparse points,0.616063px mean reprojection error.
+Pipeline-stage wall time is126.461858s; SfM's own elapsed report is126.234535s.
+
+Actual image-derived relative alignment finds8shared/8inlier centers:
+scale1.0090953511,maxcenter0.00507274reference-step,maxangle0.0691011degrees.
+Transform-withheld ranks1005/1009 have0.00284136/0.00299061step residuals and
+0.0466164/0.0530154degrees. These images participate in their separate SfM jobs;
+they are withheld only from transform fitting, not independent unseen images.
+Units are arbitrary SfM reference steps, not meters/GPS accuracy or proof of
+street geometry. Tangent/depth/GS follow-up pipeline is RUNNING; new GS export
+and browser rendering remain NOT RUN in this snapshot. Existing GS stays58m.
+
+Release `viewer-seine-alignment-1004-1027-2026-11-07`, archive
+`groundshift-seine-alignment-1004-1027-20261107.tar.gz`: **22,598bytes**, SHA-256
+`27d9025a187b24357ea749da7763528d2e48db19ca74036257e7a3c1f999d5e4`.
+Apply after38preceding layers. Exactly2sanitized report/timeline JSONs change;
+24public source hash/dimension records are included without HDimage bytes or raw
+paths/logs. The verified existing build/runtime is reused; no shared dist build
+or scene change. Privacy/JSON and complete base/target/archive/composed integrity
+PASS in5.314833s for1,280files. All39scenes and historical evidence remain.
+Private evidence:`data/validation/paris-full-route-20261107/publications/alignment-1004-1027/`.
+Rollout,public hashes and new metadata-browser checks follow dispatch.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
@@ -1100,7 +1129,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the fifteen viewer/observation updates, in order. The command below includes all thirty-eight
+reconstruction/paging layers and the sixteen viewer/observation updates, in order. The command below includes all thirty-nine
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1236,6 +1265,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-paris-route-started-2026-11-07 \
     groundshift-paris-route-started-20261107.tar.gz \
     ec17cc241396b8b9ba66a946df8763e5189d3948396a9f13c56f4bffb5cd4f54
+  gs_restore_layer viewer-seine-alignment-1004-1027-2026-11-07 \
+    groundshift-seine-alignment-1004-1027-20261107.tar.gz \
+    27d9025a187b24357ea749da7763528d2e48db19ca74036257e7a3c1f999d5e4
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
