@@ -189,7 +189,7 @@ Public readback/render checks follow dispatch. Private evidence:
 
 ### Reusable completed-snapshot publication
 
-The ownership-fix rollout `be322506-5ad5-4564-988c-7c921f15bb19` and recovery
+The ownership-fix rollout `be322506-4a41-42f6-ac7c-9052024f5408` and recovery
 rollout `7afdc437-89b6-4c6a-9268-ebb387c995ae` reach SUCCESS. Recovery's seven
 changed public files match exact sizes/SHA-256 in4.759959s. The existing ordinary
 restore extends40→42archives without a full duplicate copy/download; all1,290
@@ -239,13 +239,21 @@ no native/GPU success is inferred from these synthetic checks.
 
 ### Background publication through the existing branch-follow service
 
-The existing service now follows `feat/local-viewer-reconstruction` without a
-commit pin. Do not call the source connector with `commitSha` during this campaign:
-that disables future Git-push deployments. The local Railway CLI remains
+Attempting branch-follow without a commit pin does **not** establish working Git
+autodeploy. The connector returns a null pin, but the authenticated dashboard
+still shows `Connect Environment to Branch`, `Could not load branches` and
+`Auto deploy unavailable`. Controlled real Docker-pointer push`e5397e8` produces
+no deployment event in the bounded observation. The temporary default`main`
+branch draft is discarded without applying it; existing production/configuration
+is retained. Repository Edit offers GitHub App configuration. No login, permission
+grant or credential extraction is attempted. The local Railway CLI remains
 unauthorized both with its inherited token and saved-login fallback; no login or
 credential extraction is attempted. GitHub release upload/Git push remain healthy.
-The Railway connector verifies the controlled push separately before the watcher
-is allowed to start. Reconnecting the branch alone is not that verification.
+The healthy existing Railway connector remains the dispatch path. The thread's
+five-minute heartbeat dispatches queued pointers; this does not prove immediate
+Git autodeploy. A later switch to automatic Git dispatch requires one actual
+push-triggered SUCCESS. Official [Railway guidance](https://docs.railway.com/deployments/github-autodeploys)
+requires a connected contributor/app and an enabled trigger branch.
 
 Release `viewer-seine-route-watcher-2026-11-07`, archive
 `groundshift-seine-route-watcher-20261107.tar.gz`: **9,915bytes**, SHA-256
@@ -262,6 +270,10 @@ It polls atomic completed exports every5seconds, selects oldest-first, validates
 the existing curation boundary, builds committed runtime sources, packages the
 explicit complete observation surface, uploads only changed files, verifies the
 anonymous archive, appends its checksum-pinned Docker layer and pushes the branch.
+In connector fallback mode, each upload/pointer push immediately writes
+`publication-dispatch/NNN.json` with **DISPATCH_PENDING**, exact commit/archive/SHA
+and existing connector target. The thread heartbeat triggers that pointer and
+checks provider status. Git push alone is never called dispatched or live.
 It checks public coverage and every changed public file before writing a delivered
 receipt. Provider deployment status and browser/GPU acceptance remain NOT RUN in
 background receipts until independently audited. Later cumulative snapshots can
@@ -291,15 +303,22 @@ exports, idempotent pointers and preservation of missing historical observations
 These fixtures do not prove native/GPU/browser behavior.
 
 ```sh
-# Supply the connector-verified Git-push proof and latest composed inventory.
+# Actual fallback: immediate local packaging/upload/push; connector heartbeat dispatch.
 python3 scripts/watch-seine-publication.py data/jobs/seine-full-20261107 \
   --base-inventory data/validation/paris-full-route-20261107/publications/branch-watcher/groundshift-seine-route-watcher-20261107.tar.inventory.json \
-  --autodeploy-proof data/jobs/seine-full-20261107/static-publication/branch-autodeploy-verified.json
+  --autodeploy-proof data/jobs/seine-full-20261107/static-publication/branch-autodeploy-blocked.json \
+  --connector-fallback
 ```
 
-At this source commit, the controlled push rollout verification and detached
-worker start are pending. They must be recorded from actual execution below;
-PREPARED metadata, a PID intention or a successful Git push alone is insufficient.
+The local worker handles completed native snapshots. Failure/provisional changes
+without a new export use the same five-minute thread heartbeat: inspect
+`route-run.json` and stage evidence, sanitize the actual blocker into the existing
+report/timeline, then publish a metadata-only overlay using the current composed
+inventory and healthy connector. Raw exception logs, paths and private URLs stay
+local. This fallback is explicit; it is not an event-driven failure-report watcher.
+At this source revision detached worker startup and the manual connector dispatch
+for the UI package are pending actual execution. A PID intention, PREPARED record
+or successful Git push alone is not live delivery.
 
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Publish completed local Seine exports through the existing branch-follow service.
 
-Requires an independently verified Git-push Railway rollout. Never reads provider
+Requires a verified Git-push rollout or an explicit connector queue. The latter
+cannot trigger Railway itself. Never reads provider
 credentials, runs reconstruction, or claims browser/GPU acceptance. Run one owner
 only; stop this process before any manual publication or branch push.
 """
@@ -215,6 +216,15 @@ def advance(coordinator, state, state_path):
         run([GIT, 'push', 'origin', f'HEAD:refs/heads/{BRANCH}'], log, timeout=180)
         active.update(phase='PUSHED', dispatchedAt=now(), railwayProviderStatus='NOT RUN by background worker',
                       browserRendering='NOT RUN', globalGeometry='NOT ACCEPTED')
+        if state.get('deliveryMode') == 'CONNECTOR QUEUE':
+            active['status'] = 'DISPATCH_PENDING'
+            publication.atomic_json(coordinator / 'publication-dispatch' / f'{active["segments"]:03d}.json',
+                {**active, 'requiredNextAction': 'Healthy Railway connector must trigger this exact pointer, then verify actual rollout and public hashes. Git push alone is not Railway dispatch.',
+                 'target': dict(link_id='link_6aa0e4f20e58819184c9a6f6974fcfaa',
+                                projectId='db649cd6-49db-4750-b86d-c3c4d14b213d',
+                                serviceId='2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69',
+                                environmentId='43346592-217f-414e-b2ad-334e09b37599', repo=REPO, branch=BRANCH),
+                 'heartbeatMaximumPlannedMinutes': 5})
         state['submissions'][str(active['segments'])] = dict(active)
         state['baseInventory'] = active['overlay']['assembledInventory']
         state['active'] = None
@@ -262,9 +272,11 @@ def main(args):
     with (coordinator / '.static-publication.lock').open('a+') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         proof = publication.read(args.autodeploy_proof)
-        if (proof.get('status') != 'PASS' or proof.get('branch') != BRANCH
-                or proof.get('serviceId') != '2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69'
-                or proof.get('sourceCommitSha') is not None or proof.get('trigger') != 'git-push-observed'):
+        target_matches = (proof.get('branch') == BRANCH
+                          and proof.get('serviceId') == '2c6ac4d5-37bb-4ea8-aee0-1e75a1abdf69')
+        verified = proof.get('status') == 'PASS' and proof.get('sourceCommitSha') is None and proof.get('trigger') == 'git-push-observed'
+        fallback = args.connector_fallback and proof.get('status') == 'BLOCKED' and proof.get('trigger') == 'connector-heartbeat-queue'
+        if not target_matches or not (verified or fallback):
             raise ValueError('Require actual branch-follow push/rollout verification')
         worker = coordinator / 'static-publication'
         worker.mkdir(exist_ok=True)
@@ -275,6 +287,7 @@ def main(args):
         if not run([GIT, 'remote', 'get-url', 'origin'], log).strip().removesuffix('.git').endswith('github.com/' + REPO):
             raise ValueError('Wrong publication repository')
         state = publication.read(state_path) if state_path.exists() else dict(baseInventory=str(args.base_inventory.resolve()), submissions={}, active=None)
+        state['deliveryMode'] = 'CONNECTOR QUEUE' if fallback else 'VERIFIED GIT AUTODEPLOY'
         while True:
             try:
                 check_submissions(coordinator, state, state_path)
@@ -295,6 +308,7 @@ def main(args):
             publication.atomic_json(worker / 'heartbeat.json', dict(pid=os.getpid(), at=now(), status=status,
                 error=error, pollSeconds=args.poll_seconds, baseInventory=state['baseInventory'],
                 submittedSegments=sorted(map(int, state['submissions'])), active=state['active'],
+                deliveryMode=state['deliveryMode'],
                 publicBrowser='NOT RUN by worker', railwayStatus='NOT RUN by worker; public hashes checked independently'))
             if args.once:
                 break
@@ -306,6 +320,7 @@ if __name__ == '__main__':
     parser.add_argument('coordinator', type=Path)
     parser.add_argument('--base-inventory', type=Path, required=True)
     parser.add_argument('--autodeploy-proof', type=Path, required=True)
+    parser.add_argument('--connector-fallback', action='store_true', help='Upload/push immediately; queue DISPATCH_PENDING for the separately running connector heartbeat.')
     parser.add_argument('--poll-seconds', type=float, default=5)
     parser.add_argument('--once', action='store_true')
     main(parser.parse_args())
