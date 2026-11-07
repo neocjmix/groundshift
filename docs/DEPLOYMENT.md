@@ -2923,3 +2923,9 @@ heartbeat are recorded in `static-publication/process.json` and `heartbeat.json`
 It continues CONNECTOR QUEUE mode: five-second export detection/preparation,
 followed by active-agent/five-minute-heartbeat connector dispatch and actual
 public hash verification. Git push alone still does not imply Railway dispatch.
+
+<!-- seine-snapshot-003 -->
+
+### Automated route snapshot 003
+
+Release `viewer-seine-route-003-1794052259957780000`, archive `groundshift-seine-route-003-1794052274047471000.tar.gz`, 41,892,526bytes, SHA-256 `f311182027c3ea12599afd10b1480906f0347223166bd4e08879776d560b4be0`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 31 changed files; 1368 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
