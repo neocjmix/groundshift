@@ -353,6 +353,13 @@ RUN wget -q -O /tmp/seine_evidence_004.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/seine_evidence_004.tar.gz -C /out
 
+# Immutable completed route snapshot; new boundary GPU acceptance remains NOT RUN.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_snapshot_005
+RUN wget -q -O /tmp/seine_snapshot_005.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-005-1794056635089623000/groundshift-seine-route-005-1794056646223927000.tar.gz \
+ && echo '0c43778abf636b0bf20bfe8074ec799e62ea2ee68275e3e6b509edf02a678470  /tmp/seine_snapshot_005.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_snapshot_005.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -403,5 +410,6 @@ COPY --from=seine_snapshot_003 /out/www /srv
 COPY --from=seine_evidence_003 /out/www /srv
 COPY --from=seine_snapshot_004 /out/www /srv
 COPY --from=seine_evidence_004 /out/www /srv
+COPY --from=seine_snapshot_005 /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

@@ -3080,3 +3080,9 @@ coverage refresh) and`cc54a72` (per-snapshot browser scope/preview preservation)
 Current PID/freshness live in its process/heartbeat files. CONNECTOR QUEUE and
 the active-agent/five-minute-heartbeat dispatch remain actual behavior. No extra
 GPU/browser campaign or self-referential artifact deployment is performed.
+
+<!-- seine-snapshot-005 -->
+
+### Automated route snapshot 005
+
+Release `viewer-seine-route-005-1794056635089623000`, archive `groundshift-seine-route-005-1794056646223927000.tar.gz`, 42,194,232bytes, SHA-256 `0c43778abf636b0bf20bfe8074ec799e62ea2ee68275e3e6b509edf02a678470`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 30 changed files; 1418 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
