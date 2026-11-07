@@ -94,6 +94,35 @@ separately from new MPS inference and do not inherit a fabricated current timing
 Immutable duplicate files can share hardlinks; changes to frozen publication
 paths must use atomic replacement, never write through a shared inode.
 
+New completed route jobs share byte-identical PNGs across overlap windows and
+stage copies. Native PLY viewing derivatives share the original export bytes.
+After publishing an atomic scene snapshot, `seine_depth_archive.py` losslessly
+archives only that new completed job's depth NPY files. A reversible byte shuffle
+followed by zlib compression preserves every original NPY byte, with its SHA-256
+and alias manifest. It verifies persisted archive bytes before removing raw
+aliases; interrupted operations remain readable/restorable. Previous experiments
+and active jobs are excluded. Cache hits transparently recover the exact original
+prediction bytes; this changes storage only, not model precision or geometry.
+
+The checked-in codec was actually executed read-only on all 480 baseline NPYs:
+1,132,523,520 B became 532,989,536 B (47.062%), with every exact-byte round trip
+verified, in 34.02 s and 39.85 MB maximum process RSS. No baseline NPY was changed.
+The approximately 19.45 GB full-route depth figure is extrapolation, not measured
+full-route storage. Actual new-job archival still awaits completed training.
+
+```sh
+# Restore all exact original NPY paths in one archived new segment, if needed.
+data/tools/venv/bin/python scripts/seine_depth_archive.py \
+  data/jobs/seine-full-20261107/segment-1004-1027 --restore
+```
+
+An additional frozen-publication-only deduplication verified matching encoded
+bytes, owner, mode, flags, xattrs and ACLs, then atomically shared 7,969 copies.
+Free filesystem space increased by 13,500,645,376 B during that operation;
+concurrent filesystem activity means this net change is not an isolated savings
+benchmark. A subsequent audit found no remaining eligible replacements. Sources,
+native job artifacts, archives, logs and active staging were excluded.
+
 ## Reproduce
 
 Use the existing locally installed tools from the baseline setup. The selected

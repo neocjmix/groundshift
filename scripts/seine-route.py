@@ -18,6 +18,7 @@ import time
 
 import numpy as np
 from seine_alignment import compose_alignment, transform_pose
+from seine_depth_archive import archive_completed_depth
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = ROOT/'data/jobs/paris-streaming-20261107'
@@ -244,6 +245,10 @@ def execute(root, limit=None):
     if state['sourceManifestSha256']!=sha(SOURCE_ROUTE):raise ValueError('Source manifest changed')
     state['status']='RUNNING';write(path,state);completed=0
     if len(state['records'])>1 and not any(item['segments']==len(state['records']) for item in state['exports']):snapshot(root,state)
+    for record in state['records']:
+        if record.get('reusedExistingBaseline'):continue
+        job=Path(record['job'])
+        if not (job/'depth-storage.json').exists():write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
     for first in windows():
         if any(r['first']==first and r['status']=='PASS' for r in state['records']):continue
         if limit is not None and completed>=limit:break
@@ -292,7 +297,11 @@ def execute(root, limit=None):
             state['records'].append(dict(first=first,firstRank=ranks[0],lastRank=ranks[1],job=str(job),world=str(world),rawToBaseline=raw_transform,referenceFirst=reference['first'],alignmentSha256=sha(job/'alignment.json'),status='PASS'))
             runner=read(job/'runner.json');runner['status']='PASS';write(job/'runner.json',runner)
             write(path,state)
-            snapshot(root,state);completed+=1
+            snapshot(root,state)
+            # The complete scene is already publishable. Storage maintenance
+            # proceeds while publication/browser checks run independently.
+            write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
+            completed+=1
         except BaseException as error:
             state.update(status='FAIL',failedWindow=dict(first=first,ranks=ranks),error=str(error));write(path,state);raise
     state['status']='PASS' if len(state['records'])==len(windows()) else 'PARTIAL';write(path,state);return state

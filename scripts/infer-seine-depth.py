@@ -9,6 +9,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -24,6 +25,9 @@ BACKEND = Path(__file__).with_name('infer-relative-depth.py')
 SPEC = importlib.util.spec_from_file_location('seine_depth_backend', BACKEND)
 BASE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BASE)
+ARCHIVE_SPEC = importlib.util.spec_from_file_location('seine_depth_storage', Path(__file__).with_name('seine_depth_archive.py'))
+ARCHIVE = importlib.util.module_from_spec(ARCHIVE_SPEC)
+ARCHIVE_SPEC.loader.exec_module(ARCHIVE)
 MODEL, REVISION = BASE.MODEL, BASE.REVISION
 MEANING = 'Relative inverse-depth-like prediction; not meters, calibrated distance, measured depth or a reconstructed world'
 TENSOR_SHAPE = [1, 3, 518, 518]
@@ -89,13 +93,17 @@ def verify_entry(entry, requested):
         raise ValueError('Cached original source bytes or dimensions differ')
     stem = f'view-{index:02d}'
     paths = {kind: ordinary(folder / f'{stem}-{suffix}') for kind, suffix in
-             [('relative', 'relative.npy'), ('visual', 'visual.png'), ('source', 'source.png')]}
-    for kind, field in [('relative', 'relativeNpySha256'), ('visual', 'visualSha256')]:
+             [('visual', 'visual.png'), ('source', 'source.png')]}
+    paths['relative'] = folder / f'{stem}-relative.npy'
+    prediction = ARCHIVE.read_npy_bytes(paths['relative'])
+    if hashlib.sha256(prediction).hexdigest() != record['relativeNpySha256']:
+        raise ValueError('Cached prediction checksum differs')
+    for kind, field in [('visual', 'visualSha256')]:
         if sha(paths[kind]) != record[field]:
             raise ValueError(f'Cached {kind} checksum differs')
     if record.get('sourcePreviewSha256') and sha(paths['source']) != record['sourcePreviewSha256']:
         raise ValueError('Cached source preview checksum differs')
-    values = np.load(paths['relative'], allow_pickle=False)
+    values = np.load(io.BytesIO(prediction), allow_pickle=False)
     expected_shape = tuple(reversed(requested['size']))
     if (values.dtype != np.dtype('float32') or values.shape != expected_shape
             or not np.isfinite(values).all() or float(values.max()) <= float(values.min())
@@ -189,7 +197,10 @@ def run(output, inputs_json, reuse=()):
                 temporary.replace(paths['source'])
             stem = f'view-{index:02d}'
             for kind, suffix in [('relative', 'relative.npy'), ('visual', 'visual.png'), ('source', 'source.png')]:
-                os.link(paths[kind], output / f'{stem}-{suffix}')
+                target=output / f'{stem}-{suffix}'
+                if kind=='relative' and not paths[kind].exists():
+                    target.write_bytes(ARCHIVE.read_npy_bytes(paths[kind]))
+                else:os.link(paths[kind], target)
             origin = dict(report=str((entry['folder'] / 'report.json').resolve()), reportSha256=entry['reportSha256'],
                           imageIndex=entry['index'], torchVersion=entry['torchVersion'],
                           inferenceSeconds=entry['record'].get('inferenceSeconds'),

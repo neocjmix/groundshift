@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -158,6 +159,20 @@ class SeineDepthTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'exists'):
             D.run(output, self.inputs, [self.cache])
         self.assertEqual((output / 'report.json').read_text(), 'untouched')
+
+    def test_losslessly_archived_cache_restores_exact_prediction_without_inference(self):
+        job=self.root.resolve()/'data/jobs/seine-full-20261107/segment-1004-1027'
+        (job/'training').mkdir(parents=True);(job/'training/job.json').write_text('{"status":"PASS"}')
+        cached=job/'depth';shutil.copytree(self.cache,cached)
+        original=(cached/'view-00-relative.npy').read_bytes()
+        D.ARCHIVE.archive_completed_depth(job,repo=self.root,apply=True)
+        self.assertFalse((cached/'view-00-relative.npy').exists())
+        reader=D.ARCHIVE.read_npy_bytes
+        with patch.object(D.ARCHIVE,'read_npy_bytes',side_effect=lambda path:reader(path,repo=self.root)), patch.object(D,'invoke_backend',side_effect=AssertionError('Archive reuse is not new inference')):
+            report=D.run(self.root/'restored-output',self.inputs,[cached])
+        self.assertEqual((self.root/'restored-output/view-00-relative.npy').read_bytes(),original)
+        self.assertEqual(report['execution']['backendStatus'],'NOT RUN');self.assertEqual(report['reused'],1)
+        self.assertFalse((cached/'view-00-relative.npy').exists())
 
 
 if __name__ == '__main__':
