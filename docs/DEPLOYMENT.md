@@ -3470,3 +3470,37 @@ follow actual connector dispatch. Ordinary restoration61PASS4.204804s and
 62PASS4.115702s rechecked prior files/new pin/all1,517final files, with atomic
 hardlink-safe replacement/no extra full copy or archive download.
 Private evidence: `data/jobs/seine-full-20261107/publication-evidence-009-1794062536472934000/`.
+
+Final stopped-scope pointer `32f33b059932fab65a300626700b458ce8bb1096`:
+deployment `4e8fa150-47f3-401e-ad10-74b023f0d4be` created14:47:23.215Z,
+**SUCCESS**14:48:34.516Z. All six final public sizes/SHA-256 PASS at
+14:48:41.968014Z:
+
+- report145782bytes `90fb4ae8341b7e96d42c262dcaae37968ac3990c298cf5e6750f88d13082a299`
+- timeline45956bytes `6943522707f0548f30dd847f9fd34b59102871478ec3e489da1b8360544a095c`
+- catalog23848bytes `55029b64992d5fe6e3d6746145f395b8794d0b8e26b641d7658918916372079d`
+- preview provenance1507bytes `3efe1ee32ca6a39f93efa047dcf7de2cd76a9a51d60c0f0c38e720155ae47fd0`
+- actual ninth-segment PNG2796076bytes and JPEG386200bytes match the inspected/
+  derivative hashes above.
+
+Public polling55.608099s includes rollout wait, not a transfer benchmark. Final
+62archive/1,517file restore PASS retains every prior observation and original
+rollback package. Native009's29-file public receipt and final six-file evidence
+receipt remain linked in `publication-receipts/009.json`; final provider/hash/
+restore/browser/cleanup proof in `publication-status/snapshot-009-evidence.json`.
+Five owned process IDs were rechecked absent after publication; publisher state
+is STOPPED BY USER/automaticContinuation=false. No watcher or training restart,
+extra GS/browser campaign or additional artifact rollout is part of the final
+documentation-only push. The last actual GS boundary acceptance remains the
+single009WebKit case, with physicaliPhone/global geometry/full target unverified.
+
+Final observation-page DOM/screenshot check PASS on that same live pointer:
+visible STOPPED9GS/152sources/GPS376.81m, acquisition876PASS and uncompleted
+55-segment/2.185km target. Scene manifest/index return200 with9segments;
+actual009PNG200/exactSHA above/1206×2043decoded dimensions. Renderer/canvas0,
+GSrequests0/pageerrors0; this did not repeat the GS/Fly test. Screenshots directly
+inspected by the assigned browser agent, browser exited. Artifacts:
+`data/validation/seine-route-20261107/browser-public-final-closure/evidence.json`,
+`stopped-overview.png`, `stopped-stage.png`, `actual-009-preview-link.png`.
+These checks update private receipts and this document only; no new asset
+release/deployment or continuation process is started.
