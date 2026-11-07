@@ -107,5 +107,43 @@ class SeineRouteTests(unittest.TestCase):
             (a/'old-name.png').write_bytes(b'changed source');(b/'additional.png').write_bytes(b'immutable pixels')
             with self.assertRaisesRegex(ValueError,'changed'):R.deduplicate_completed_images(root,b)
 
+    def test_png_cache_index_only_accepts_a_recorded_exact_eviction(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder).resolve();job=root/'segment-1004-1027';image=job/'dataset/images/p00-t00.png'
+            digest=hashlib.sha256(b'original').hexdigest();key=digest+':33188:0:0'
+            R.write(root/'image-cache.json',{key:str(image)})
+            with self.assertRaisesRegex(ValueError,'lacks verified'):R.prune_evicted_image_cache(root)
+            proof=job/'png-cache-proof-1/manifest.json'
+            value=dict(status='PASS',state='EVICTING',job=str(job),files={'dataset/images/p00-t00.png':dict(sha256='wrong')})
+            R.write(proof,value)
+            with self.assertRaisesRegex(ValueError,'lacks verified'):R.prune_evicted_image_cache(root)
+            value['files']['dataset/images/p00-t00.png']['sha256']=digest;R.write(proof,value)
+            self.assertEqual(R.prune_evicted_image_cache(root),1);self.assertEqual(R.read(root/'image-cache.json'),{})
+
+    def test_png_frontier_retains_baseline_and_next_backward_reference(self):
+        # After completing the right half, the next window starts to the left
+        # of baseline; the latest right endpoint must not become its reference.
+        starts=R.windows();turn=next(i for i,p in enumerate(starts) if p<180)
+        records=[dict(first=p,job=f'/route/{p}',reusedExistingBaseline=p==180) for p in starts[:turn]]
+        keep=R.retained_png_frontier(dict(records=records))
+        self.assertEqual(keep,{Path('/route/180'),Path(f'/route/{starts[turn-1]}')})
+        records.append(dict(first=starts[turn],job='/route/left'))
+        self.assertEqual(R.retained_png_frontier(dict(records=records)),{Path('/route/180'),Path('/route/left')})
+
+    def test_png_storage_no_eviction_without_pressure_and_resumes_interruption(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder).resolve();records=[dict(first=x,firstRank=x+808,lastRank=x+831,job=str(root/f'segment-{x+808}-{x+831}'),reusedExistingBaseline=x==180) for x in [180,196,212]]
+            state=dict(records=records);old=Path(records[1]['job'])
+            ample=R.shutil._ntuple_diskusage(100,0,100)
+            with patch.object(R.shutil,'disk_usage',return_value=ample),patch.object(R,'prove_png_cache') as prove,patch.object(R,'evict_verified_pngs',return_value=dict(status='PASS')) as evict:
+                R.maintain_png_storage(root,state,threshold=20)
+                prove.assert_not_called();evict.assert_not_called()
+                proof=old/'png-cache-proof-1/manifest.json';R.write(proof,dict(status='PASS',state='EVICTING'))
+                R.maintain_png_storage(root,state,threshold=20)
+                prove.assert_not_called();evict.assert_called_once()
+                self.assertEqual(evict.call_args.args,(proof,))
+                self.assertNotIn(old,evict.call_args.kwargs['keep_jobs'])
+                self.assertIn(Path(records[-1]['job']),evict.call_args.kwargs['keep_jobs'])
+
 
 if __name__=='__main__':unittest.main()

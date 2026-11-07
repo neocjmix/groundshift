@@ -110,10 +110,29 @@ verified, in 34.02 s and 39.85 MB maximum process RSS. No baseline NPY was chang
 The approximately 19.45 GB full-route depth figure is extrapolation, not measured
 full-route storage. Actual new-job archival still awaits completed training.
 
+Below 20 GiB free, the coordinator can evict an older completed **new** segment's
+reproducible PNG working cache. It retains the baseline, newest segment and the
+next window's shared-image reference. Before removing any candidate it regenerates
+the exact PNG bytes from preserved ERP originals, verifies every SHA and retains
+the projection code, library versions and restoration manifest. Original JPEGs,
+depth bytes/visualizations, SfM databases and poses, logs and native exports are
+excluded. Interrupted eviction is resumable; unrelated missing cache files still
+fail rather than being silently ignored.
+
+The real read-only baseline proof regenerated 1,104 recipes covering 2,832 PNG
+aliases: all encoded SHA-256 values and sizes matched. It took 249.392120 s with
+1,387,151,360 B maximum process RSS. Actual new-job PNG eviction is **NOT RUN**;
+this is a regeneration proof, not a measured storage-saving result. Evidence:
+`data/validation/paris-full-route-20261107/storage/png-baseline-proof/manifest.json`.
+
 ```sh
 # Restore all exact original NPY paths in one archived new segment, if needed.
 data/tools/venv/bin/python scripts/seine_depth_archive.py \
   data/jobs/seine-full-20261107/segment-1004-1027 --restore
+
+# Restore exact generated PNGs after an actual verified cache eviction.
+data/tools/venv/bin/python scripts/seine_png_cache.py restore \
+  data/jobs/seine-full-20261107/segment-RANK-RANK/png-cache-proof-TIMESTAMP/manifest.json
 ```
 
 An additional frozen-publication-only deduplication verified matching encoded
@@ -168,15 +187,29 @@ Never publish the raw coordinator/job directories.
 
 Runtime values are actual one-off wall times with concurrent development and
 brief browser work on the same M2, not isolated benchmarks. The old 1,018-second
-baseline suggests roughly 15.3 hours of training alone for 54 more jobs; this is
-an estimate, not an observed full-route result. Source preparation, depth,
-exports and failure recovery add time. Storage is also bounded: unique full
+baseline is not a reliable ETA: this added window is already taking materially
+longer on the current machine. The whole route may require more than a day;
+no full-route runtime is measured yet. Source preparation, depth, exports and
+failure recovery add time. Storage is also bounded: unique full
 float32 depth predictions alone would approach 41 GB for all 876×20 crops.
 Frozen publication staging was deduplicated by verified identical bytes while
 preserving paths and rollback packages; this is not deletion of source evidence.
 
-Automated planning/coordinate/failure/cache tests currently pass 18 alignment
-and route tests plus eight cached-depth tests and nine source-route tests.
+Automated planning/coordinate/failure/cache checks include 22 alignment/route
+tests, nine cached-depth tests, nine depth-archive tests, eight exact PNG-cache
+tests and nine source-route tests.
 They do not establish native training, rendering, collision geometry or
 surveyed street accuracy. Live viewer and execution evidence will be appended
 as those operations actually finish.
+
+### Unattended continuation
+
+The native coordinator and source acquisition continue locally. A separate
+locked publisher watches atomic exports every five seconds, immediately prepares
+and uploads the checksum-pinned incremental package, and queues the exact branch
+pointer. The existing Railway environment's GitHub auto-deploy UI currently says
+**Auto deploy unavailable**; a Git push alone is not deployment proof. The
+authorized thread follow-up checks every five minutes and uses the existing
+healthy Railway connector for pending dispatches. Public status/hash checks and
+browser acceptance remain separate. Queue ownership, receipts and the manual
+metadata-overlay procedure are documented in [DEPLOYMENT.md](DEPLOYMENT.md).

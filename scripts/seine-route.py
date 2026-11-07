@@ -19,6 +19,7 @@ import time
 import numpy as np
 from seine_alignment import compose_alignment, transform_pose
 from seine_depth_archive import archive_completed_depth
+from seine_png_cache import prove_png_cache, evict_verified_pngs
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = ROOT/'data/jobs/paris-streaming-20261107'
@@ -68,6 +69,74 @@ def link_or_copy(source, target):
     return target
 
 
+def prune_evicted_image_cache(root):
+    """Recover an eviction/index-write interruption, not arbitrary data loss."""
+    path=root/'image-cache.json'
+    if not path.exists():return 0
+    index=read(path);removed=0;proofs={}
+    for key, value in list(index.items()):
+        candidate=Path(value)
+        if candidate.exists():continue
+        try:
+            relative=candidate.relative_to(root);job=root/relative.parts[0]
+            alias=candidate.relative_to(job).as_posix()
+        except (ValueError,IndexError):raise ValueError('Missing image cache outside this route')
+        if job not in proofs:
+            proofs[job]=[read(p) for p in sorted(job.glob('png-cache-proof-*/manifest.json'))]
+        if not any(p.get('status')=='PASS' and p.get('state') in ('EVICTING','EVICTED')
+                   and p.get('job')==str(job) and p.get('files',{}).get(alias,{}).get('sha256')==key.split(':')[0]
+                   for p in proofs[job]):
+            raise ValueError('Missing immutable image cache lacks verified eviction evidence')
+        del index[key];removed+=1
+    if removed:write(path,index)
+    return removed
+
+
+def retained_png_frontier(state):
+    """Keep current/next real shared-image reference plus the untouched baseline."""
+    records=state['records'];keep={Path(records[-1]['job'])}
+    keep.update(Path(r['job']) for r in records if r.get('reusedExistingBaseline'))
+    pending=next((first for first in windows() if not any(r['first']==first for r in records)),None)
+    if pending is not None:
+        reference=max(records,key=lambda r:len(set(range(pending,pending+24))&set(range(r['first'],r['first']+24))))
+        keep.add(Path(reference['job']))
+    return keep
+
+
+def maintain_png_storage(root, state, threshold=20*1024**3):
+    """Evict only exactly regenerable, completed NEW working caches if needed.
+
+    Original ERPs, depth bytes/visualizations, SfM databases/poses, native exports
+    and logs remain. Retained recipe/code/SHA evidence restores every PNG byte.
+    """
+    keep=retained_png_frontier(state);report=dict(status='PASS',actions=[],retainedJobs=sorted(map(str,keep)))
+    for record in state['records']:
+        job=Path(record['job'])
+        if record.get('reusedExistingBaseline') or job in keep:continue
+        proofs=sorted(job.glob('png-cache-proof-*/manifest.json'))
+        proof=proofs[-1] if proofs else None
+        previous=read(proof) if proof else None
+        if previous and previous['status']!='PASS':
+            raise ValueError(f'PNG regeneration proof failed/incomplete; preserve and diagnose {proof}')
+        interrupted=previous and previous.get('state')=='EVICTING'
+        if previous and previous.get('state')=='EVICTED':continue
+        if not interrupted and shutil.disk_usage(root).free>=threshold:continue
+        if proof is None:
+            directory=job/('png-cache-proof-'+str(time.time_ns()))
+            acquired=root/f"acquisition-{record['firstRank']}-{record['lastRank']}"
+            prove_png_cache(job,acquired,directory);proof=directory/'manifest.json'
+        before=shutil.disk_usage(root).free
+        action=evict_verified_pngs(proof,keep_jobs=sorted(keep),apply=True)
+        action.update(job=str(job),proof=str(proof),filesystemFreeBefore=before,filesystemFreeAfter=shutil.disk_usage(root).free)
+        report['actions'].append(action)
+        # Recoverable even if interrupted after unlink and before this write.
+        prune_evicted_image_cache(root)
+        write(job/'png-storage.json',action)
+    report['prunedIndexEntries']=prune_evicted_image_cache(root)
+    write(root/'png-storage.json',report)
+    return report
+
+
 def deduplicate_completed_images(root, job):
     """Share exact immutable PNG bytes across new completed route jobs.
 
@@ -76,6 +145,7 @@ def deduplicate_completed_images(root, job):
     no original photographs, arrays, previous experiments or active files do.
     """
     if read(job/'training/job.json')['status']!='PASS':raise ValueError('Cannot freeze an active native job')
+    prune_evicted_image_cache(root)
     index_path=root/'image-cache.json';index=read(index_path) if index_path.exists() else {}
     report=dict(status='RUNNING',files=0,links=0,logicalBytesShared=0)
     for path in sorted(job.rglob('*.png')):
@@ -252,6 +322,8 @@ def execute(root, limit=None):
             if record.get('reusedExistingBaseline'):continue
             job=Path(record['job'])
             if not (job/'depth-storage.json').exists():write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
+        maintenance='png-storage-resume'
+        maintain_png_storage(root,state)
     except BaseException as error:
         state.update(status='FAIL',failedStage=maintenance,error=str(error));write(path,state);raise
     for first in windows():
@@ -309,6 +381,7 @@ def execute(root, limit=None):
             # The complete scene is already publishable. Storage maintenance
             # proceeds while publication/browser checks run independently.
             write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
+            maintain_png_storage(root,state)
             completed+=1
         except BaseException as error:
             state.update(status='FAIL',failedWindow=dict(first=first,ranks=ranks),error=str(error));write(path,state);raise
