@@ -2833,3 +2833,32 @@ target/archive/composed integrity PASS in6.052617s for1,345files. No fresh GPU
 operation is needed for a metadata status update. Rollout/readback are pending
 at this pointer commit; later actual results are recorded separately. Packaging
 evidence:`data/jobs/seine-full-20261107/publication-verified-002-1794048544116608000/`.
+
+Final pointer`2b7ccd6a9aa8ce8debf3487f33851178cc02bb14` dispatches through the
+existing connector as`97809a8c-f481-455d-9c5e-5b63ce81932d`: created10:50:38.571Z,
+**SUCCESS** at10:53:12.932Z. All3changed public JSON sizes/SHA-256 PASS after23
+readiness attempts/128.477673s including rollout wait. Final summary54,091bytes,
+SHA`da2d87652af1f008a48d1b124145a23903f5f8042ecc8ed23b14a291a887faae`.
+The ordinary restoration extends45→46archives: prior files/new pin/all1,345final
+sizes/SHA-256 PASS in3.929612s, using atomic hardlink-safe replacement with no
+extra full copy/download. No scene/runtime/preview bytes change and no extra
+GPU/browser rerun is inferred or needed for these exact status-only replacements.
+
+The actual public browser is headless desktop WebKit27.2 with iPhone16Pro
+viewport/input profile and explicit fullscreen-unavailable fixture; it is not
+physical-iPhone evidence. Max two segment roots/14pages are retained, actual
+SPZ comparison and return position/quaternion errors are0 with unchangedFOV,
+and captured browser errors are empty. Concurrent native work excludes a speed
+benchmark claim. Original observations, user-reported device feedback and new
+world geometry limitations remain separately scoped.
+
+The first real watcher→curation→release→queued pointer→connector→public-hash
+cycle has now actually executed for002. Completed native work alone did not
+create a LIVE receipt. Queue/delivery receipts retain initial native/export and
+later provider/public-browser proof, plus both follow-up publication lineages.
+The publisher adopts the verified46archive composed inventory and the updated
+completed-segment preparer`7aef8ac`, then resumes five-second scanning in CONNECTOR
+QUEUE mode. Current PID/command/freshness are in the owned process/heartbeat
+files, not inferred from oldPIDs. Five-minute heartbeat/active deployment agent
+continues to invoke the healthy connector; Git autodeploy is still unavailable.
+Future archives preserve all40current scenes and all earlier report/image paths.
