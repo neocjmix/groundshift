@@ -3367,3 +3367,29 @@ actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
 Complete base/target/archive/composed integrity PASS in9.312307s for1,493files;
 anonymous release/hash PASS. Provider/public hashes follow actual dispatch.
 Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-008-1794061060319858000/`.
+
+Final evidence pointer `fc60513b1fa632c201ca6956b7f0454dd6da7461`:
+deployment `235346ba-bac1-4b6a-9eaf-a3654c727778` created14:19:17.828Z,
+**SUCCESS**14:20:49.296Z. All six changed public sizes/SHA-256 PASS:
+report130205bytes `a4ec4e1d14efbffb350a6db1a221f364335f94ec4476f6fc2cef0f1b0c30d17a`,
+timeline44174bytes `b6f2b45230857517c9fd72e5f5a775aecc0560b08e2a7361431f7f700e452646`,
+catalog24019bytes `d1d4c155aaef48a9a8608e8cff6ab9f447dfe5a9fdd0480446974bd056f923fb`,
+preview provenance1472bytes `48e2823a60beddbbcab6d699cf8a33ae3fc51dd8f4ec9668443c25e6da987357`,
+actualPNG2701042bytes and JPEG370402bytes match the inspected/derived hashes above.
+Public polling took61.615601s including rollout wait; this is delivery evidence,
+not a transfer benchmark. No additional GPU/browser campaign was run for this
+six-file evidence overlay; the actual008new-boundary browser proof remains scoped
+as recorded above.
+
+Ordinary restoration58→59archives: prior files/new pin/all1,493final files PASS
+in4.961705s, with hardlink-safe atomic replacement, no additional full copy and
+no additional archive download. Both native00829-file and evidence0086-file
+readbacks are retained in `publication-receipts/008.json`; final proof is in
+`publication-status/snapshot-008-evidence.json`. All876source acquisition and
+002–007historical proofs, including007FAIL/SKIPPED/recovery, remain preserved.
+PhysicaliPhone008acceptance, full target coverage and metric geometry remain
+NOT RUN/NOT ACCEPTED. The idle owned publisher is stopped briefly for this
+final documentation-only push, then restarted at the verified59archive inventory;
+current process/heartbeat records identify its PID and health. CONNECTOR QUEUE
+remains the actual dispatch mechanism. No native/service configuration changes,
+extra asset rollout or owned browser process is introduced by this final step.
