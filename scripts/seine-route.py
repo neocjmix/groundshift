@@ -67,6 +67,33 @@ def link_or_copy(source, target):
     return target
 
 
+def deduplicate_completed_images(root, job):
+    """Share exact immutable PNG bytes across new completed route jobs.
+
+    Crop direction/local image index may differ across windows, so identity is
+    the encoded SHA, never a filename. Only newly completed job paths change;
+    no original photographs, arrays, previous experiments or active files do.
+    """
+    if read(job/'training/job.json')['status']!='PASS':raise ValueError('Cannot freeze an active native job')
+    index_path=root/'image-cache.json';index=read(index_path) if index_path.exists() else {}
+    report=dict(status='RUNNING',files=0,links=0,logicalBytesShared=0)
+    for path in sorted(job.rglob('*.png')):
+        if path.is_symlink() or not path.is_file():raise ValueError('Generated PNG cache requires ordinary files')
+        stat=path.stat();digest=sha(path);key=f'{digest}:{stat.st_mode}:{stat.st_uid}:{stat.st_gid}'
+        previous=Path(index[key]) if key in index else None
+        if previous and previous!=path:
+            if previous.is_symlink() or not previous.is_file() or sha(previous)!=digest:
+                raise ValueError('Immutable generated image cache changed')
+            if previous.stat().st_ino!=stat.st_ino:
+                temporary=path.with_suffix('.cache-link')
+                os.link(previous,temporary);temporary.replace(path)
+                report['links']+=1;report['logicalBytesShared']+=stat.st_size
+        else:index[key]=str(path)
+        report['files']+=1
+    report['status']='PASS';write(index_path,index);write(job/'image-cache.json',report)
+    return report
+
+
 def quaternion_matrix(value):
     q=np.asarray(value,dtype=float)
     if q.shape!=(4,) or not np.isfinite(q).all() or not np.isclose(np.linalg.norm(q),1,atol=1e-7):raise ValueError('Require a unit XYZW quaternion')
@@ -261,6 +288,7 @@ def execute(root, limit=None):
             run_stage(job,'rad',[LOD,'--quality','--csplat','--max-sh=1','--rad-chunked','scene.ply'],cwd=rad)
             world=job/'lod-world'
             if not world.exists():paged_world(job,world)
+            deduplicate_completed_images(root,job)
             state['records'].append(dict(first=first,firstRank=ranks[0],lastRank=ranks[1],job=str(job),world=str(world),rawToBaseline=raw_transform,referenceFirst=reference['first'],alignmentSha256=sha(job/'alignment.json'),status='PASS'))
             runner=read(job/'runner.json');runner['status']='PASS';write(job/'runner.json',runner)
             write(path,state)

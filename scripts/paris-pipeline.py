@@ -42,8 +42,8 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def immutable_image_copy(source, target):
-    """Generated crops/masks are immutable; preserve bytes without another copy."""
+def immutable_copy(source, target):
+    """Generated crops and exports are immutable; preserve bytes without copies."""
     try:os.link(source,target)
     except OSError:shutil.copy2(source,target)
     return target
@@ -171,7 +171,7 @@ def fusion(job):
         sparse=read(job/'anchors/sparse.json');take=np.linspace(0,len(xyz)-1,min(180000,len(xyz)),dtype=int)
         seed=np.r_[np.array([r['xyz'] for r in sparse]),xyz[take]];color=np.r_[np.array([r['rgb'] for r in sparse],np.uint8),rgb[take]]
         dataset=job/'dataset';dataset.mkdir(exist_ok=False)
-        for folder in ['images','masks']:shutil.copytree(job/'tangent-inputs'/folder,dataset/folder,copy_function=immutable_image_copy)
+        for folder in ['images','masks']:shutil.copytree(job/'tangent-inputs'/folder,dataset/folder,copy_function=immutable_copy)
         write(dataset/'transforms.json',dict(camera_model='PINHOLE',ply_file_path='init.ply',frames=posed))
         shutil.copyfile(job/'provenance.json',dataset/'provenance.json')
         (dataset/'LICENSE').write_text('Source: Immergis pour la Ville de Paris / Panoramax IGN, Open Licence2.0 (etalab-2.0). Captured2025-05-08, accessed2026-11-07. https://github.com/etalab/licence-ouverte/blob/master/open-licence.md\n')
@@ -202,7 +202,7 @@ def finalize(job, source=SOURCE):
     write(out/'world.json',world)
     write(out/'cameras.json',dict(schemaVersion=1,cameraConvention='OpenGL: +X right, +Y up, -Z forward',worldConvention='right-handed Y-up, arbitrary units',frames=frames,
         sequenceNotes=f'One shared image-derived rig reconstruction of {count} consecutive Panoramax captures, ranks {ranks[0]}-{ranks[-1]}. Provider adjacency verified at acquisition. Source GPS length is approximate; world scale arbitrary. Straight viewing interpolation, not surveyed path/floor.'))
-    for name in ['scene.ply','SOURCE_LICENSE']:shutil.copyfile(native/name,out/name)
+    for name in ['scene.ply','SOURCE_LICENSE']:immutable_copy(native/name,out/name)
     write(job/'view-export.json',dict(status='PASS',nativeSceneSha256=sha(native/'scene.ply'),viewerSceneSha256=sha(out/'scene.ply'),physicalPathPoses=count,background=False))
 
 

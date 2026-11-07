@@ -95,5 +95,17 @@ class SeineRouteTests(unittest.TestCase):
             self.assertEqual(record['stages'][0]['status'],'FAIL')
             with self.assertRaisesRegex(RuntimeError,'preserve'):R.run_stage(job,'native',['missing'])
 
+    def test_png_cache_uses_bytes_and_rejects_active_or_changed_evidence(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);a=root/'a';b=root/'b'
+            for job in [a,b]:(job/'training').mkdir(parents=True);R.write(job/'training/job.json',dict(status='RUNNING'))
+            with self.assertRaisesRegex(ValueError,'active'):R.deduplicate_completed_images(root,a)
+            R.write(a/'training/job.json',dict(status='PASS'));R.write(b/'training/job.json',dict(status='PASS'))
+            (a/'old-name.png').write_bytes(b'immutable pixels');(b/'different-index.png').write_bytes(b'immutable pixels')
+            R.deduplicate_completed_images(root,a);r=R.deduplicate_completed_images(root,b)
+            self.assertEqual(r['links'],1);self.assertEqual((a/'old-name.png').stat().st_ino,(b/'different-index.png').stat().st_ino)
+            (a/'old-name.png').write_bytes(b'changed source');(b/'additional.png').write_bytes(b'immutable pixels')
+            with self.assertRaisesRegex(ValueError,'changed'):R.deduplicate_completed_images(root,b)
+
 
 if __name__=='__main__':unittest.main()
