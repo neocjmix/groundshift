@@ -280,3 +280,10 @@ authorized thread follow-up checks every five minutes and uses the existing
 healthy Railway connector for pending dispatches. Public status/hash checks and
 browser acceptance remain separate. Queue ownership, receipts and the manual
 metadata-overlay procedure are documented in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+Publication now keeps the last selected GS preview instead of reverting each
+increment to the baseline image. It remains labeled as a prior reference, not
+proof of the new snapshot. Earlier browser checks move into snapshot-keyed
+history, while the new current snapshot starts at **NOT RUN**. Eight publication
+boundary tests and five watcher tests passed after this metadata correction;
+those fixtures do not establish rendering.

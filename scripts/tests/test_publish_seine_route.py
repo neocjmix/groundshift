@@ -79,6 +79,7 @@ class PublicationTests(unittest.TestCase):
         self.assertIn(dict(title='retained failure', status='FAIL'), summary['stages'])
         self.assertEqual(summary['deviceFeedback']['status'], 'USER_REPORTED_RESOLVED')
         self.assertEqual(summary['expansion']['fullRouteBrowserAcceptance'], 'NOT RUN')
+        self.assertEqual(summary['expansion']['currentSnapshotBrowserEvidence']['status'], 'NOT RUN')
         self.assertEqual(publisher.prepare(self.repo, self.coordinator, self.source), report)
         self.assertEqual(publisher.digest(self.source / 'world.json'), publisher.digest(Path(report['sourceWorld']) / 'world.json'))
 
@@ -105,6 +106,32 @@ class PublicationTests(unittest.TestCase):
         publisher.public_text(json.dumps(expansion).encode())
         native['status']='RUNNING';publisher.atomic_json(job/'training/job.json',native)
         with self.assertRaisesRegex(ValueError,'successful native'):publisher.completed_segment_evidence(self.repo,state,expansion)
+
+    def test_new_snapshot_preserves_older_checks_without_inheriting_pass(self):
+        prior = dict(segments=2, sourceCount=40, public=dict(status='PASS', cases=3))
+        older = dict(segments=2, sourceCount=40, public=dict(status='NOT RUN'))
+        expansion = dict(currentSnapshotBrowserEvidence=prior, browserEvidenceBySnapshot={'002': older})
+        coverage = dict(segments=3, sourceCount=56, sourceGpsCoverageMeters=139.26)
+        publisher.advance_browser_evidence(expansion, coverage)
+        self.assertEqual(expansion['browserEvidenceBySnapshot']['002'], prior)
+        self.assertIn(older, expansion['supersededSnapshotBrowserEvidence'])
+        current = expansion['currentSnapshotBrowserEvidence']
+        self.assertEqual((current['status'], current['segments'], current['sourceCount']), ('NOT RUN', 3, 56))
+        current['public'] = dict(status='PASS', cases=1)
+        publisher.advance_browser_evidence(expansion, coverage)
+        self.assertEqual(expansion['currentSnapshotBrowserEvidence']['public']['cases'], 1)
+        self.assertEqual(len(expansion['supersededSnapshotBrowserEvidence']), 1)
+
+    def test_new_export_retains_selected_route_preview_without_claiming_rendering(self):
+        previous = self.repo / 'public/worlds/seine-full-route/preview.jpg'
+        previous.parent.mkdir(parents=True)
+        previous.write_bytes(b'previous selected route frame, not new render proof')
+        report = publisher.prepare(self.repo, self.coordinator, self.source)
+        self.assertEqual((Path(report['sourceWorld']) / 'preview.jpg').read_bytes(), previous.read_bytes())
+        self.assertEqual(report['previewSha256'], publisher.digest(previous))
+        summary = publisher.read(self.repo / 'public/experiments/tourist-streaming/summary.json')
+        self.assertIn('retained GS reference image', summary['result']['detail'])
+        self.assertIn('NOT RUN', summary['result']['detail'])
 
 
 if __name__ == '__main__':

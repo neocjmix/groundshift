@@ -155,6 +155,26 @@ def completed_segment_evidence(repo, state, expansion):
     expansion.setdefault('routeViewer',{})['newRouteArtifact']='PASS'
 
 
+def advance_browser_evidence(expansion, coverage):
+    """Keep prior checks, but never carry their acceptance into a new export."""
+    previous = expansion.get('currentSnapshotBrowserEvidence')
+    if previous and (previous.get('segments'), previous.get('sourceCount')) == (coverage['segments'], coverage['sourceCount']):
+        return
+    if previous:
+        history = expansion.setdefault('browserEvidenceBySnapshot', {})
+        key = f'{previous["segments"]:03d}'
+        older = history.get(key)
+        if older and older != previous:
+            versions = expansion.setdefault('supersededSnapshotBrowserEvidence', [])
+            if older not in versions:
+                versions.append(older)
+        history[key] = previous
+    expansion['currentSnapshotBrowserEvidence'] = dict(
+        status='NOT RUN', segments=coverage['segments'], sourceCount=coverage['sourceCount'],
+        sourceGpsCoverageMeters=coverage['sourceGpsCoverageMeters'], physicalIPhone='NOT RUN',
+        scope='This exported snapshot requires its own actual browser check; earlier checks are historical.')
+
+
 def prepare(repo, coordinator, snapshot, preview=None):
     repo, coordinator = repo.resolve(), coordinator.resolve()
     source = snapshot.resolve()
@@ -176,9 +196,11 @@ def prepare(repo, coordinator, snapshot, preview=None):
         if report['snapshot'] != str(source) or report['selectedFiles'] != selected or not Path(report['sourceWorld']).is_dir():
             raise ValueError('Pending publication lineage mismatch')
         return report
-    # A selected original baseline render is an explicit placeholder, not proof
-    # that the new route rendered. Later actual browser evidence replaces it.
-    preview = preview or repo / 'public/worlds/paris-58m-lod-compact/preview.jpg'
+    # Retain the latest selected GS image; do not regress a verified preview to
+    # the baseline when the next export arrives. Neither proves new rendering.
+    if preview is None:
+        previous_preview = destination / 'preview.jpg'
+        preview = previous_preview if previous_preview.is_file() else repo / 'public/worlds/paris-58m-lod-compact/preview.jpg'
     if not preview.is_file():
         raise ValueError('Require an explicitly selected licensed preview')
     publication = coordinator / ('publication-' + source.name + '-' + str(time.time_ns()))
@@ -194,7 +216,7 @@ def prepare(repo, coordinator, snapshot, preview=None):
     shutil.copyfile(preview, frozen / 'preview.jpg')
     now = datetime.now(timezone.utc).isoformat()
     count, meters = coverage['sourceCount'], coverage['sourceGpsCoverageMeters']
-    finding = f'{coverage["segments"]} trained segments, {count}/876 source cameras, source GPS coverage {meters:.2f}m/2185.31m. New route browser/boundary rendering NOT RUN; global geometry NOT ACCEPTED. Preview is the retained baseline GS render, not new-route rendering proof.'
+    finding = f'{coverage["segments"]} trained segments, {count}/876 source cameras, source GPS coverage {meters:.2f}m/2185.31m. New route browser/boundary rendering NOT RUN; global geometry NOT ACCEPTED. Preview is a retained GS reference image, not proof of rendering this new snapshot.'
     catalog_path = repo / 'public/worlds/catalog.json'
     catalog = read(catalog_path)
     previous = next((x for x in catalog['scenes'] if x['id'] == IDENT), None)
@@ -214,6 +236,7 @@ def prepare(repo, coordinator, snapshot, preview=None):
     expansion = summary.setdefault('expansion', {})
     expansion.update(status='RUNNING' if count < 876 else 'NATIVE EXPORT COMPLETE / BROWSER NOT RUN', currentReconstructedSourceRecords=count, currentApproximateReconstructedGpsLengthM=meters, fullRouteExportStatus='PASS' if count == 876 else 'NOT RUN full target; partial export PASS', fullRouteBrowserAcceptance='NOT RUN')
     completed_segment_evidence(repo,state,expansion)
+    advance_browser_evidence(expansion, coverage)
     snapshots = expansion.setdefault('snapshots', [])
     if not any(x['segments'] == coverage['segments'] for x in snapshots):
         snapshots.append({**coverage, 'coverageSha256': digest(source / 'coverage.json'), 'routeIndexSha256': digest(source / 'route/index.json')})
@@ -236,7 +259,7 @@ def prepare(repo, coordinator, snapshot, preview=None):
     for path, value in [(catalog_path, catalog), (timeline_path, timeline), (summary_path, summary), (spec_path, spec)]:
         atomic_json(path, value)
     copies = (repo / 'deploy/Dockerfile.github').read_text().count('COPY --from=')
-    report = dict(status='PREPARED', snapshot=str(source), sourceWorld=str(frozen), coverage=coverage, selectedFiles=selected, metadataFiles=[str(x.relative_to(repo)) for x in (catalog_path, timeline_path, summary_path, spec_path)], previewKind='retained baseline GS placeholder; new-route GPU NOT RUN', preparedAt=now, currentFinalCopyLayers=copies, consolidatePinnedLayersSoon=copies >= 90, next='Fresh build/full explicit curation, existing incremental overlay, release/checksum/pointer/connector dispatch, then public checks; preserve rollback layers.')
+    report = dict(status='PREPARED', snapshot=str(source), sourceWorld=str(frozen), coverage=coverage, selectedFiles=selected, metadataFiles=[str(x.relative_to(repo)) for x in (catalog_path, timeline_path, summary_path, spec_path)], previewKind='retained GS reference image; new-route GPU NOT RUN', previewSha256=digest(frozen / 'preview.jpg'), preparedAt=now, currentFinalCopyLayers=copies, consolidatePinnedLayersSoon=copies >= 90, next='Fresh build/full explicit curation, existing incremental overlay, release/checksum/pointer/connector dispatch, then public checks; preserve rollback layers.')
     atomic_json(publication / 'prepared.json', report)
     atomic_json(pending, report)
     return report
