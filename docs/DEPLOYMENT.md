@@ -126,6 +126,34 @@ All39 scenes, reports, sources and camera/provenance bytes remain unchanged.
 Corrected interaction checks run independently after this dispatch. Publication
 evidence remains under `data/validation/fly-20261107/publications/lifecycle-fix/`.
 
+Lifecycle pointer `fb944e02d6433363f923f1c71fb9d64d7d3c6644` deploys as
+`07e2520b-e38c-4344-aee9-a91a4bb13983`: created2026-11-07T00:08:27.785Z,
+**SUCCESS** at00:09:24.843Z. Anonymous complete archive readback verifies its
+size/SHA in1.345970s. All5 changed public files match exact sizes/SHA-256 in
+3.523859s; root HTML SHA-256 is
+`91bdab7155d8376687980fedddd1c2828f0643e680740e35ea5eb130c4e47711`.
+Fresh ordered extraction verifies all27 immutable archive SHA pins and all1,254
+composed file sizes/hashes in12.877001s. Every prior observation and all39 worlds
+remain retained. The frozen lifecycle package passes3Fly cases in27.3s; an
+additional focused forced-context-loss/Exit/Retry check passes3/3 in23.2s with no
+page errors. Actual desktop/portrait/landscape screenshots are inspected, with
+no overlap/overflow. Final public recovery acceptance is verified separately;
+local results do not erase the retained third public failure.
+
+Final actual public lifecycle/Fly checks **PASS3/3 in35.2s** on the unchanged
+SUCCESS deployment: native desktop fullscreen/pointer lock/WASD/mouse, forced
+context loss followed by Exit and Retry without page errors, and simultaneous
+mobile CDP sticks in portrait/landscape with the explicit fullscreen-denial
+fallback fixture. Evidence stays under
+`data/validation/fly-20261107/browser-public-r4/`. Actual public desktop, portrait
+and landscape screenshots are inspected with no UI overlap/overflow; the sample
+evidence records no page errors and successful context-loss Exit/Retry. API-denial
+fixtures and CDP mobile emulation are distinguished from real-device platform acceptance; physical
+iOS/Safari and Android hardware remain **NOT RUN**. No collision, geometry or
+reconstruction quality claim follows from these viewer tests. Final source/test/
+evidence documentation commits are pushed without another artifact deployment;
+Railway remains pinned to the tested lifecycle pointer and exact same bytes.
+
 ## Paris reconstruction and spatial serving progress — 2026-11-07
 
 The first real pipeline result is published immediately while crop/depth and
