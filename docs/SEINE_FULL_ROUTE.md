@@ -308,6 +308,34 @@ facade edges. Physical iPhone, perceptual seamlessness and full-route geometry
 remain unverified. Evidence:
 `data/validation/seine-route-20261107/public-route-004-browser-summary.json`.
 
+### Further completed increments
+
+Each row is an actual unchanged 8,000-step/800,000-Gaussian Metal run. Source
+counts are unique physical panoramas across the connected snapshot; GPS length
+is not reconstructed metric accuracy. Detailed source, pose, depth, native and
+archive receipts remain in the matching `segment-FIRST-LAST/` job directory.
+
+| Snapshot | Added ranks | Connected sources / GPS path | Native wrapper seconds | SPZ / RAD bytes | New public boundary |
+| --- | --- | --- | --- | --- | --- |
+| 005 | 1052–1075 | 88 / 214.834239 m | 1,062.463517 | 15,959,587 / 26,167,680 | PASS one public WebKit case |
+
+For 005, SfM registered all 144 crops (6,105 points, 0.590331 px reprojection
+error); all eight shared poses and both transform-withheld checks passed.
+DAV2 inferred 320 maps on MPS in 44.448657 s, reused 160 exact maps and took
+83.739180 s overall. Calibration retained 343/480 maps and 185,472 seed points.
+Native maximum RSS was 724,254,720 B and peak footprint 2,901,608,944 B.
+Exact depth archival passed in 23.948872 s (440,303,176 encoded bytes,
+292,218,400 new blob bytes). The large wall-time variation across jobs is an
+observation, not evidence of a model/configuration change or isolated speed gain.
+The focused public005 Fly check crossed fourth to fifth segment and returned at
+recorded view 67. It preserved camera position/orientation/FOV, stayed within two
+resident segments/fourteen pages, and settled with empty queues, no page errors
+or eager whole-SPZ requests. Actual frames show a recognizable road/intersection
+with persistent road smearing, vehicle ghosts and distorted facade/tree edges.
+Evidence: `data/validation/seine-route-20261107/public-route-005-browser-summary.json`.
+This remains desktop WebKit with an iPhone profile; physical iPhone and global
+geometry acceptance are not established.
+
 ### Unattended continuation
 
 The native coordinator continues locally using the completed source cache. A separate
