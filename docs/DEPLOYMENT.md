@@ -123,6 +123,51 @@ PASS in7.136973s:6compiled/HTML/report changes,1,187target public files and
 new actual two-segment rendering remains NOT RUN. Private evidence:
 `data/validation/paris-full-route-20261107/publications/route-viewer/`.
 
+Route-viewer pointer`23bb1ccb1d921682567dd609293cdb91c38bf455` deploys as
+`c1eeed01-3ca2-42cc-af1f-3637f45c3b67`: created2026-11-07T09:04:26.866Z,
+**SUCCESS** at09:05:15.117Z. Anonymous complete archive readback passes in1.206115s;
+all6changed public sizes/SHA-256 pass in3.814280s after10readiness polls. RootHTML
+SHA-256 is`fd96a72157264adf861b837d1b224bd4c9e1ba53d1cba37796afbde379e36d9b`.
+The ordinary tree extends39→40layers,with prior-file checks,new archive pin and
+all1,283final paths/sizes/SHA-256 PASS in3.852642s. Changed files use hardlink-safe
+atomic replacement; no extra bulk copy/download. Public existing-compact WebKit
+regression is started only after this live/hash signal; actual two-segment GPU
+boundary/appearance checks remain NOT RUN until the new real scene exists.
+
+After rollout, actual desktop WebKit27.2 with the iPhone-profile fixture passes
+the existing public compact2/2 in59.9s: Fly/same-position SPZ/pose/FOV/export and
+return691,107selected/14pages; held52,874/1→recovered687,069/14,22,757,488bytes,
+15requests,pending0,allqueues0,allstagesidle,errors0. The collapsed-inspector PNG
+is directly inspected: windows/tree detail visible,stretched-road/ghosting remains.
+This is concurrent with native training,not a speed benchmark or instrumented
+physical-iPhone acceptance. All owned browser processes exit. Actual two-segment
+boundary/appearance remains NOT RUN. Evidence:`route-viewer/browser-public-compact/`.
+
+### Late route work: mechanical ownership repair; native training starts
+
+Source`5534b09` prevents retired route pages from accepting late Spark work that
+could recreate disposed GPU resources. Targeted9route tests,TypeScript and
+changed-source lint PASS; real two-segment GPU lifecycle/boundary checks remain
+NOT RUN until exports exist. A fresh production build PASS in3.59s. All39scenes,
+all257worldfiles and17inert historical files stay byte-identical. The later mobile
+route-panel source`7bbe9aa` arrives after this freeze and is not in this archive.
+
+The rolling report also records actual1004–1027 tangent inputs98.908328s,
+depth362.371952s,fusion24.074309s PASS,then native Metal training RUNNING. Declared
+768px/8ksteps/800kcap are targets,not completed counts. New GS export/two-segment
+rendering remains NOT RUN; actual rendered coverage stays58m. The previous9ccc
+public compact2/2 result is explicitly tied to that source/concurrent native
+load,not mislabeled as real two-segment or instrumented-device acceptance.
+
+Release `viewer-seine-route-ownership-fix-2026-11-07`, archive
+`groundshift-seine-route-ownership-fix-20261107.tar.gz`: **1,087,885bytes**, SHA-256
+`a8a5af893f7d24a5eafb5aaa08ceaf003f3eea6fa3b17e61c7b9baa481c3daac`.
+Apply after40preceding layers. Complete base/target/archive/composed integrity
+PASS in7.140109s:6compiled/HTML/report files,1,187target public and1,286composed
+files. No native export is overwritten. Privacy/curation checks PASS; actual new
+route GPU checks are NOT RUN at dispatch. Private evidence:
+`data/validation/paris-full-route-20261107/publications/route-ownership-fix/`.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
@@ -1165,7 +1210,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the seventeen viewer/observation updates, in order. The command below includes all forty
+reconstruction/paging layers and the eighteen viewer/observation updates, in order. The command below includes all forty-one
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1307,6 +1352,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-seine-route-viewer-2026-11-07 \
     groundshift-seine-route-viewer-20261107.tar.gz \
     7906cf0aadbeb3925138ce1ccfdced31c882e440ae359c84baa5ec134607c731
+  gs_restore_layer viewer-seine-route-ownership-fix-2026-11-07 \
+    groundshift-seine-route-ownership-fix-20261107.tar.gz \
+    a8a5af893f7d24a5eafb5aaa08ceaf003f3eea6fa3b17e61c7b9baa481c3daac
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

@@ -276,6 +276,13 @@ RUN wget -q -O /tmp/seine-route-viewer.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/seine-route-viewer.tar.gz -C /out
 
+# Retired-route ownership guard and current native-training evidence.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_route_ownership_fix
+RUN wget -q -O /tmp/seine-route-ownership-fix.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-ownership-fix-2026-11-07/groundshift-seine-route-ownership-fix-20261107.tar.gz \
+ && echo 'a8a5af893f7d24a5eafb5aaa08ceaf003f3eea6fa3b17e61c7b9baa481c3daac  /tmp/seine-route-ownership-fix.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine-route-ownership-fix.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -315,5 +322,6 @@ COPY --from=safari_worker_verified /out/www /srv
 COPY --from=paris_route_started /out/www /srv
 COPY --from=seine_alignment /out/www /srv
 COPY --from=seine_route_viewer /out/www /srv
+COPY --from=seine_route_ownership_fix /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
