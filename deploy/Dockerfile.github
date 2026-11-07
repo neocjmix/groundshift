@@ -213,6 +213,13 @@ RUN wget -q -O /tmp/lod-detail-evidence.tar.gz https://github.com/neocjmix/groun
  && mkdir /out \
  && tar -xzf /tmp/lod-detail-evidence.tar.gz -C /out
 
+# Core public Fly/LoD checks; two JSON files only, report-browser stage still pending.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS lod_detail_verified
+RUN wget -q -O /tmp/lod-detail-verified.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-lod-detail-verified-2026-11-07/groundshift-lod-detail-verified-20261107.tar.gz \
+ && echo '3379a9c32e88fb006fcc5b92e510ad623ebede6a7e9b83e824a8c884a53b47a7  /tmp/lod-detail-verified.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/lod-detail-verified.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -243,5 +250,6 @@ COPY --from=mobile_fly_ui /out/www /srv
 COPY --from=lod_detail_refinement /out/www /srv
 COPY --from=control_clearance /out/www /srv
 COPY --from=lod_detail_evidence /out/www /srv
+COPY --from=lod_detail_verified /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

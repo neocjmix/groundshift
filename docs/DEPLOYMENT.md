@@ -113,6 +113,36 @@ retains all prior inert compiled assets; it does not replace the full39-scene ca
 with the accidentally created local sample-only package. Evidence stays under
 `data/validation/fly-mobile-detail-20261107/publications/report-evidence/`.
 
+Clearance pointer `f7b16eaa821e2e3f5c9917a80dbcd6568ef3cef3` deploys as
+`45d4c7a1-db85-424f-afa3-9401797dd83f`: created2026-11-07T01:32:14.863Z,
+**SUCCESS** at01:35:18.509Z. Anonymous archive readback passes in0.827319s.
+All6 changed public sizes/SHA-256 values match in6.654712s; root HTML SHA-256 is
+`5fb77b6ede58a34ba633dd4382065fa357f1a8aef58ee1bbb9207fc6e72c1c13`.
+Actual public Fly checks begin after this confirmation; public refinement follows
+once that headed browser closes, avoiding concurrent GPU/input interference.
+
+Provisional evidence pointer `33d194932022a479166c51e3e3a18f4b108ab939` deploys as
+`d56187f2-51b2-4932-8d47-f43bd0813c15`: created2026-11-07T01:35:13.615Z,
+**SUCCESS** at01:41:42.817Z (6min29.202s). Build/image push completed earlier,
+but the container-start stage remained pending with no app logs. A bounded60-poll
+public-readiness check fails before the rollout finishes; the exact pending/timeout
+evidence is retained. Environment inspection reports0 warnings/criticals and0 recent
+failures, exposing no underlying startup cause. A fresh post-SUCCESS readback then
+verifies all5 exact public file sizes/SHA-256 in12.835168s. Anonymous complete
+archive readback passes in1.514465s. The deployment delay is not a browser/quality
+PASS or an invented app failure; core clearance remains available during the wait.
+
+A two-JSON increment immediately records actual core public Fly/LoD **6/6PASS**,
+keeping dedicated report-browser checks explicitly **NOT RUN** pending execution.
+Release `viewer-lod-detail-verified-2026-11-07`, archive
+`groundshift-lod-detail-verified-20261107.tar.gz`: **14,769 bytes**, SHA-256
+`3379a9c32e88fb006fcc5b92e510ad623ebede6a7e9b83e824a8c884a53b47a7`.
+Apply after31 preceding layers. JSON/privacy and base/target/archive/composed
+integrity pass in6.147005s; exactly2JSON files change,1,271 composed files retained.
+The accepted production build,all39 worlds,the3new comparison PNGs,source images
+and all previous observations remain unchanged. Evidence stays under
+`data/validation/fly-mobile-detail-20261107/publications/verified/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -814,7 +844,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the eight viewer/observation updates, in order. The command below includes all thirty-one
+reconstruction/paging layers and the nine viewer/observation updates, in order. The command below includes all thirty-two
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -929,6 +959,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-lod-detail-evidence-2026-11-07 \
     groundshift-lod-detail-evidence-20261107.tar.gz \
     14e0c0b77e9c1626d5d83eedbfebc0082afa0a7550c6738e65d027b2f1e1540b
+  gs_restore_layer viewer-lod-detail-verified-2026-11-07 \
+    groundshift-lod-detail-verified-20261107.tar.gz \
+    3379a9c32e88fb006fcc5b92e510ad623ebede6a7e9b83e824a8c884a53b47a7
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
