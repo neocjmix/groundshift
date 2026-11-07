@@ -91,6 +91,41 @@ R3 public interaction and actual context-loss checks are **NOT RUN** at dispatch
 R2 passed runtime evidence remains preserved. Private publication records stay
 under `data/validation/fly-20261107/publications/ui-recovery/`.
 
+Third viewer pointer `76680889784db07885b7fb2bfcce2585098441da` deploys as
+`21106896-4152-4a9c-965c-f6bc725bfc76`: created2026-11-06T23:58:04.666Z,
+**SUCCESS** at2026-11-07T00:00:32.046Z. Anonymous full archive readback verifies
+size/SHA in1.723770s. All6 changed public files match exact sizes/SHA-256 in
+3.712296s; final root HTML SHA-256 is
+`39850adc602922f126b07cca4a32118b20d32693bb3941c3b70bb835b1a60c7c`.
+Fresh ordinary extraction verifies every one of26 pinned archives and all1,250
+composed file sizes/hashes in12.440227s. All39 scenes and17 inactive historical
+background files remain preserved; no source HD/model weights/private logs ship.
+
+Final frozen-package browser checks pass4/4 in37.7s, including the camera-path
+regression and actual forced WebGL context-loss, Exit Fly and Retry recovery.
+TypeScript, lint and212 JavaScript tests pass. Physical iPhone/Safari and Android
+hardware remain **NOT RUN**. Viewer movement uses world-unit heuristics and has
+no collision/floor/metric-speed guarantee. See [Fly usage and retained failures](FLY.md).
+
+The third public Fly run records2PASS/1FAIL in34.4s: desktop/native input and
+mobile dual-touch pass, but the sample's forced context-loss recovery exposes a
+pending Spark-owner lifecycle failure. The failed screenshot/trace/log is retained
+under `data/validation/fly-20261107/browser-public-final/`. Local recovery passing
+does not override this public failure. A fourth mechanical increment disposes the
+Spark renderer owner immediately after stopping animation on error, so pending
+jobs observe a disposed owner before Retry. Its corrected public behavior is
+**NOT RUN** until freshly exercised.
+
+Lifecycle recovery release `viewer-fly-lifecycle-fix-2026-11-07`, archive
+`groundshift-fly-lifecycle-fix-20261107.tar.gz`: **1,058,517 bytes**, SHA-256
+`607d60c095a32b64cf0c48fafa7262729cc81ec06899c2910e7b20281846a9c1`.
+Apply after the first26 layers. Fresh production build passes in3.92s; explicit
+curation and base/target/archive/composed integrity checks pass in12.394072s.
+Only5 compiled/HTML files change;1,185 target public and1,254 composed files.
+All39 scenes, reports, sources and camera/provenance bytes remain unchanged.
+Corrected interaction checks run independently after this dispatch. Publication
+evidence remains under `data/validation/fly-20261107/publications/lifecycle-fix/`.
+
 ## Paris reconstruction and spatial serving progress — 2026-11-07
 
 The first real pipeline result is published immediately while crop/depth and
@@ -653,7 +688,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the three Fly controls/recovery layers, in order. The command below includes all twenty-six
+reconstruction/paging layers and the four Fly controls/recovery layers, in order. The command below includes all twenty-seven
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -753,6 +788,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-fly-ui-recovery-2026-11-07 \
     groundshift-fly-ui-recovery-20261107.tar.gz \
     028f4272ef68c8756312a0a20ea8fe53b96e811620d2afe6d880bec928c99f43
+  gs_restore_layer viewer-fly-lifecycle-fix-2026-11-07 \
+    groundshift-fly-lifecycle-fix-20261107.tar.gz \
+    607d60c095a32b64cf0c48fafa7262729cc81ec06899c2910e7b20281846a9c1
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
