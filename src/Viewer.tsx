@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SparkRenderer, SplatMesh, SplatFileType,PagedSplats } from "@sparkjsdev/spark";
-import type { LoadedWorld } from "./load-world";
+import { loadWorld,type LoadedWorld } from "./load-world";
 import { advanceCameraPath, cameraPathGap, sampleCameraPath } from "./camera-path";
 import "./Viewer.css";
 import { ChunkStream,type StreamStats } from './streaming';
@@ -10,6 +10,8 @@ import {radFetcher,type RadTransfer} from './rad-fetcher';
 import {FlyNavigation,flySpeed} from './fly-navigation';
 import FlyControls from './FlyControls';
 import {snapshotPagingDiagnostics,type PagingDiagnostics} from './paging-diagnostics';
+import {RouteStream,routeAssetTransform,routeOwner,type RouteStats} from './route-stream';
+import {resolveAssetUrl} from './world';
 
 const diagnosticVersion='safari-paging-20261107-v2';
 const pagingPhaseLabel={network:'파일 수신 중',decode:'해독 또는 재시도 대기',lod:'세부 선택 중',upload:'GPU 전송 중',display:'화면 갱신 중',settled:'대기 작업 없음',initializing:'초기화 중',unknown:'상태 확인 중'};
@@ -83,6 +85,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
   const retryChunks=useRef<()=>void>(()=>{});
   const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;pending:number;errors:string[]}|null>(null);
+  const [routeStats,setRouteStats]=useState<RouteStats|null>(null);
+  const routeSelection=useRef<string|null>(null);
+  const pagingBudget=world.manifest.route??world.manifest.paging;
 
   const switchLoadingMode=()=>{
     savedView.current=saveView.current();
@@ -97,6 +102,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       view:view?{position:view.position.toArray(),quaternion:view.quaternion.toArray(),fov:view.fov,mode:view.navigation.mode,cursor:view.navigation.cursor}:null,
       renderer:metrics?.gpu??null,drawingBuffer:metrics?[metrics.width,metrics.height]:null,
       samples:diagnosticHistory.current,scope:'Device-local observations only. No upload. No visual-quality or completed-loading guarantee.'};
+    if(world.route)Object.assign(report,{route:routeStats,mode:streamEnabled?'route-lod':'current-segment-whole'});
     const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));
     const a=document.createElement('a');a.href=url;a.download='groundshift-paging-diagnostics.json';a.click();
     window.setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -150,6 +156,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let previousDiagnostic:PagingDiagnostics|null=null;
     diagnosticHistory.current=[];
     let stream:ChunkStream<SplatMesh>|undefined;
+    type RouteResource={mesh:SplatMesh;world:LoadedWorld;transfer:RadTransfer;dispose:()=>void};
+    let route:RouteStream<RouteResource>|undefined;
     const radStats:RadTransfer={requested:0,bytes:0,pending:0,errors:[]};
     let resize: ResizeObserver | undefined;
     let failCleanup: (() => void) | undefined;
@@ -160,6 +168,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         failed = true;
         abort.abort();
         stream?.dispose();
+        route?.dispose();
         fly.current?.clear();
         mesh?.paged?.dispose();
         renderer?.setAnimationLoop(null);
@@ -431,7 +440,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         camera.position.copy(controls.target).add(offset);
         controls.update();
       };
-      spark = new SparkRenderer({ renderer,...(world.paging&&streamEnabled?{maxPagedSplats:world.manifest.paging!.maxPagedSplats,lodSplatCount:world.manifest.paging!.lodSplatCount,numLodFetchers:2}:{} )});
+      spark = new SparkRenderer({ renderer,...(pagingBudget&&streamEnabled?{maxPagedSplats:pagingBudget.maxPagedSplats,lodSplatCount:pagingBudget.lodSplatCount,numLodFetchers:2,...(world.route?{lodCleanupTimeoutMs:0}:{})}:{} )});
       scene.add(spark);
       resize = new ResizeObserver(() => {
         if (!renderer) return;
@@ -442,7 +451,49 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       });
       resize.observe(container);
       let count=0,received=0;
-      if(world.paging&&streamEnabled){
+      let assetWorld=world;
+      let assetMatrix:THREE.Matrix4|undefined;
+      if(world.route&&!streamEnabled){
+        const segment=world.route.index.segments.find(s=>s.id===routeSelection.current)??routeOwner(world.route.index,camera.position.toArray());
+        assetWorld=await loadWorld(resolveAssetUrl(world.route.baseUrl,segment.world),abort.signal);
+        if(assetWorld.route||assetWorld.streaming||!assetWorld.paging||assetWorld.manifest.assets[0].format!=='spz'||assetWorld.manifest.coordinates.unit!==world.manifest.coordinates.unit)throw new Error('Route segments require standalone RAD/SPZ worlds in the same declared units');
+        assetMatrix=routeAssetTransform(segment,assetWorld.manifest.coordinates.assetToWorld);
+        routeSelection.current=segment.id;
+      }
+      if(world.route&&streamEnabled){
+        setPagingStats(null);setStreamStats(null);
+        const source=world.route;
+        route=new RouteStream(source.index,{
+          load:async(segment,signal)=>{
+            const loaded=await loadWorld(resolveAssetUrl(source.baseUrl,segment.world),signal);
+            if(loaded.route||loaded.streaming||!loaded.paging||loaded.manifest.assets[0].format!=='spz'||loaded.manifest.coordinates.unit!==world.manifest.coordinates.unit)throw new Error('Route segments require standalone RAD/SPZ worlds in the same declared units');
+            const transfer:RadTransfer={requested:0,bytes:0,pending:0,errors:[]};
+            const fetcher=radFetcher(loaded.paging.index,loaded.paging.baseUrl,transfer);
+            const prior={requested:0,bytes:0,pending:0};
+            const aggregate=()=>{for(const key of ['requested','bytes','pending'] as const){const n=transfer[key]-prior[key];radStats[key]+=n;prior[key]=transfer[key];}for(const error of transfer.errors)if(!radStats.errors.includes(error))radStats.errors.push(error);radStats.errors=radStats.errors.slice(-5);};
+            const track=async<T,>(operation:()=>Promise<T>)=>{const promise=operation();aggregate();try{return await promise;}finally{aggregate();}};
+            const paged=new PagedSplats({fileType:SplatFileType.RAD,fetchSource:{
+              fetchRange:(...args)=>track(()=>fetcher.fetchRange(...args)),
+              fetchChunkFile:(...args)=>track(()=>fetcher.fetchChunkFile(...args)),
+              fetchChunkById:(...args)=>track(()=>fetcher.fetchChunkById(...args)),
+            }});
+            const resource=new SplatMesh({paged});
+            let released=false;
+            const disposeResource=()=>{if(released)return;released=true;paged.dispose();spark?.pager?.removeSplats(paged);scene.remove(resource);resource.dispose();};
+            signal.addEventListener('abort',disposeResource,{once:true});
+            try{
+              await Promise.all([resource.initialized,paged.getRadMeta()]);signal.throwIfAborted();
+              resource.applyMatrix4(routeAssetTransform(segment,loaded.manifest.coordinates.assetToWorld));
+              return {mesh:resource,world:loaded,transfer,dispose:()=>{signal.removeEventListener('abort',disposeResource);disposeResource();}};
+            }catch(error){signal.removeEventListener('abort',disposeResource);disposeResource();throw error;}
+          },
+          show:r=>scene.add(r.mesh),hide:r=>scene.remove(r.mesh),opacity:(r,value)=>{r.mesh.opacity=value;},
+          ready:r=>r.transfer.pending===0&&r.mesh.numSplats>=Math.min(131072,r.world.paging!.index.sourceSplats*.2),
+          changed:stats=>{if(disposed||failed)return;routeSelection.current=stats.active;setRouteStats(stats);},
+        },routeSelection.current??undefined);
+        retryChunks.current=()=>route?.retry();
+        route.update(camera.position.toArray(),performance.now());
+      }else if(world.paging&&streamEnabled){
         setPagingStats(null);setStreamStats(null);
         mesh=new SplatMesh({paged:new PagedSplats({fileType:SplatFileType.RAD,fetchSource:radFetcher(world.paging.index,world.paging.baseUrl,radStats)})});
         meshPending=true;try{await mesh.initialized;}finally{meshPending=false;if(disposed||failed)mesh.dispose();}
@@ -477,7 +528,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         stream.update(camera.position.toArray());
       }else{
       setStreamStats(null);
-      const response = await fetch(world.assetUrl, { signal: abort.signal });
+      const response = await fetch(assetWorld.assetUrl, { signal: abort.signal });
       if (!response.ok)
         throw new Error(
           `Scene asset: HTTP ${response.status}. Download the sample or check the asset path.`,
@@ -516,14 +567,14 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       });
       mesh = new SplatMesh({
         fileBytes: bytes,
-        fileName: world.manifest.assets[0].path,
+        fileName: assetWorld.manifest.assets[0].path,
         fileType: {
           ply: SplatFileType.PLY,
           spz: SplatFileType.SPZ,
           splat: SplatFileType.SPLAT,
           ksplat: SplatFileType.KSPLAT,
           sog: SplatFileType.PCSOGSZIP,
-        }[world.manifest.assets[0].format],
+        }[assetWorld.manifest.assets[0].format],
       });
       meshPending = true;
       try {
@@ -538,10 +589,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       count = mesh.splats?.getNumSplats() ?? 0;
       if (count === 0)
         throw new Error("The asset contains no renderable Gaussians.");
-      const transform = world.manifest.coordinates.assetToWorld;
-      mesh.position.fromArray(transform.position);
-      mesh.quaternion.fromArray(transform.quaternion);
-      mesh.scale.setScalar(transform.scale);
+      const transform = assetWorld.manifest.coordinates.assetToWorld;
+      if(assetMatrix)mesh.applyMatrix4(assetMatrix);
+      else{mesh.position.fromArray(transform.position);mesh.quaternion.fromArray(transform.quaternion);mesh.scale.setScalar(transform.scale);}
       scene.add(mesh);
       }
       const gl = renderer.getContext();
@@ -579,11 +629,16 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             stream.update(camera.position.toArray());
             renderer.domElement.dataset.stream=JSON.stringify(stream.stats());
           }
+          if(route){
+            route.update(camera.position.toArray(),now);
+            renderer.domElement.dataset.route=JSON.stringify({...route.stats(),segments:route.entries().map(e=>({id:e.segment.id,selected:e.resource.mesh.numSplats,opacity:e.resource.mesh.opacity}))});
+          }
           renderer.render(scene, camera);
-          if(world.paging&&streamEnabled){
+          if(pagingBudget&&streamEnabled){
             count=spark?.activeSplats??0;received=radStats.bytes;
             const residentChunks=spark?.pager?.pageToSplatsChunk.flatMap(page=>page?[page.chunk]:[])??[];
-            const stats={selected:count,pages:residentChunks.length,residentChunks,selectionTarget:world.manifest.paging!.lodSplatCount,bytes:radStats.bytes,pending:radStats.pending,requested:radStats.requested,errors:[...radStats.errors],capacity:world.manifest.paging!.maxPagedSplats,sourceSplats:world.paging.index.sourceSplats};
+            const stats={selected:count,pages:residentChunks.length,residentChunks,selectionTarget:pagingBudget.lodSplatCount,bytes:radStats.bytes,pending:radStats.pending,requested:radStats.requested,errors:[...radStats.errors],capacity:pagingBudget.maxPagedSplats,sourceSplats:world.paging?.index.sourceSplats??route?.entries().reduce((sum,e)=>sum+e.resource.world.paging!.index.sourceSplats,0)??0,
+              ...(route?{segmentPages:route.entries().map(e=>({id:e.segment.id,chunks:spark?.pager?.pageToSplatsChunk.flatMap(p=>p&&p.splats===e.resource.mesh.paged?[p.chunk]:[])??[]}))}:{})};
             renderer.domElement.dataset.paging=JSON.stringify(stats);
             if(totalFrames%30===0)setPagingStats(stats);
           }
@@ -620,9 +675,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         }
       });
     };
-    const diagnosticTimer=world.paging&&streamEnabled?window.setInterval(()=>{
+    const diagnosticTimer=pagingBudget&&streamEnabled?window.setInterval(()=>{
       if(disposed)return;
-      const sample=snapshotPagingDiagnostics({spark,paged:mesh?.paged,network:radStats,nowMs:performance.now(),
+      const sample=snapshotPagingDiagnostics({spark,paged:route?.primary()?.resource.mesh.paged??mesh?.paged,network:radStats,nowMs:performance.now(),
         frameCount:totalFrames,lastFrameMs:lastRenderedMs,visibility:document.visibilityState,previous:previousDiagnostic});
       previousDiagnostic=sample;
       diagnosticHistory.current.push(sample);
@@ -636,6 +691,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       if(diagnosticTimer!==undefined)window.clearInterval(diagnosticTimer);
       abort.abort();
       stream?.dispose();
+      route?.dispose();
       renderer?.setAnimationLoop(null);
       resize?.disconnect();
       controls?.dispose();
@@ -652,7 +708,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       navigate.current = () => {};
       retryChunks.current=()=>{};
     };
-  }, [world, attempt,streamEnabled]);
+  }, [world, attempt,streamEnabled,pagingBudget]);
 
   const pathGap = world.cameraPath ? cameraPathGap(world.cameraPath,
     navigation.direction > 0 ? Math.floor(navigation.cursor) + 1 : Math.ceil(navigation.cursor)) : null;
@@ -660,23 +716,35 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   return (
     <div ref={shell} className={'scene-shell'+(navigation.mode==='fly'?' is-fly':'')} data-phase={status.phase}>
       {navigation.mode==='fly'&&<FlyControls getMotion={getFly} onExit={exitFly} onReset={()=>reset.current()}
-        disabled={status.phase!=='ready'} detail={world.paging&&pagingStats?.pending?'주변 세부 불러오는 중…':metrics?`자유 이동 · ${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
+        disabled={status.phase!=='ready'} detail={pagingBudget&&pagingStats?.pending?'주변 세부 불러오는 중…':metrics?`자유 이동 · ${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
       <div ref={mount} className="canvas-mount" />
-      {world.paging&&<details className="paging-inspector" aria-label="Loading diagnostics">
+      {pagingBudget&&<details className="paging-inspector" aria-label="Loading diagnostics">
         <summary>로딩 상태 · {streamEnabled?pagingStats?.selected.toLocaleString()??'…':'전체'}{streamEnabled?'점':''}</summary>
         <div className="paging-inspector-body">
           <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
+          {world.route&&<><p>현재 구간: {routeStats?.active??routeSelection.current??'준비 중'}{routeStats?.incoming?` → ${routeStats.incoming}`:''}</p>
+            <small>최대 두 구간·{pagingBudget.maxPagedSplats/65536}페이지 공용 풀. 현재 구간의 먼 GS를 유지하며, 전체 경로의 먼 풍경을 모두 상주시키지는 않습니다.</small>
+            {routeStats?.errors.map(error=><p role="alert" key={error}>{error}</p>)}
+            {streamEnabled&&Boolean(routeStats?.errors.length)&&<button onClick={()=>retryChunks.current()}>구간 다시 시도</button>}</>}
           {streamEnabled&&diagnostics&&<>
             <p>{pagingPhaseLabel[diagnostics.phase]} · {diagnostics.heartbeat.state==='rendering'?'화면 갱신 중':diagnostics.heartbeat.state==='hidden'?'백그라운드':diagnostics.heartbeat.state==='paused'?'화면 갱신 대기':'첫 화면 대기'}</p>
             <p>수신 {(diagnostics.network.bytes! / 1e6).toFixed(2)}MB · 상주 {diagnostics.selection.residentPages??'?'} / {(diagnostics.runtime.maxPagedSplats??0)/65536}페이지</p>
             <p>선택 {diagnostics.selection.traversed?.toLocaleString()??'?'} · 표시 {diagnostics.selection.active?.toLocaleString()??'?'}</p>
             {Object.values(diagnostics.stages).some(s=>s.state==='waiting')&&<p role="status">10초 이상 진행 변화가 없습니다. 느린 처리인지 오류인지는 아직 확정할 수 없습니다.</p>}
           </>}
-          <button disabled={status.phase==='loading'} onClick={switchLoadingMode}>{streamEnabled?'같은 위치 · 전체 SPZ 비교':'같은 위치 · LoD로 복귀'}</button>
+          <button disabled={status.phase==='loading'||Boolean(world.route&&streamEnabled&&!routeStats?.active)} onClick={switchLoadingMode}>{streamEnabled?(world.route?'같은 위치 · 현재 구간 SPZ 비교':'같은 위치 · 전체 SPZ 비교'):'같은 위치 · LoD로 복귀'}</button>
           <button onClick={downloadDiagnostics}>진단 JSON 저장</button>
           <small>대기 작업이 없어도 원본 장면의 흐림은 남을 수 있습니다. 진단은 이 기기에 저장하며 자동 전송하지 않습니다. {diagnosticVersion}</small>
         </div>
       </details>}
+      {world.route&&<div className="stream-panel" aria-label="Route streaming status">
+        <strong>{streamEnabled?'연속 경로 · 구간 LoD':'현재 구간 전체 SPZ 비교'}</strong>
+        <span>현재 {routeStats?.active??routeSelection.current??'준비 중'} · {world.route.index.segments.length}개 실제 장면</span>
+        {streamEnabled&&routeStats&&<span>{routeStats.pending||routeStats.incoming?'다음 구간 준비 중':'현재 구간 유지'} · 전환 {routeStats.transitions}회 · 상주 {routeStats.resident}/2구간</span>}
+        {streamEnabled&&pagingStats&&<span>표시 {pagingStats.selected.toLocaleString()}점 · {pagingStats.pages}/{pagingBudget!.maxPagedSplats/65536}페이지 · {(pagingStats.bytes/1e6).toFixed(2)}MB 수신</span>}
+        <small>독립 재구성의 접합부는 어긋날 수 있습니다. 비교는 현재 구간만 대상으로 합니다.</small>
+        {Boolean(routeStats?.errors.length)&&<><p role="alert">{routeStats!.errors.join('; ')}</p><button onClick={()=>retryChunks.current()}>구간 다시 시도</button></>}
+      </div>}
       {world.paging&&<div className="stream-panel" aria-label="Native LoD paging status">
         <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
         <button onClick={switchLoadingMode}>{streamEnabled?'전체 SPZ로 비교':'LoD 스트리밍으로 전환'}</button>

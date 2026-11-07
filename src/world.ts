@@ -29,6 +29,8 @@ const provenanceUrl = nonBlank.refine((value) => {
 const quaternion = z.tuple([finiteNumber, finiteNumber, finiteNumber, finiteNumber])
   .refine((value) => Math.abs(Math.hypot(...value) - 1) <= 0.00001,
     'Quaternion must be normalized (length within 0.00001 of 1)');
+const similarity = z.object({position:vector3,quaternion,scale:finiteNumber.positive()}).strict();
+const pagingBudget = {maxPagedSplats:z.number().int().min(65536).max(2097152).refine(n=>n%65536===0),lodSplatCount:z.number().int().positive()};
 
 const cameraSchema = z.object({
   position: vector3,
@@ -95,6 +97,7 @@ const worldManifestSchema = z.object({
   background: z.object({ path: relativePathSchema }).strict().optional(),
   streaming: z.object({ path: relativePathSchema }).strict().optional(),
   paging: z.object({path:relativePathSchema,maxPagedSplats:z.number().int().min(65536).max(2097152).refine(n=>n%65536===0),lodSplatCount:z.number().int().positive()}).strict().optional(),
+  route:z.object({path:relativePathSchema,...pagingBudget}).strict().optional(),
   provenance: z.object({
     sourceType: z.enum(['images', 'video', 'sample']),
     sourceUrl: provenanceUrl,
@@ -104,7 +107,11 @@ const worldManifestSchema = z.object({
     backend: nonBlank,
     notes: nonBlank.optional(),
   }).strict(),
-}).strict();
+}).strict().superRefine((value,context)=>{
+  if(value.route&&(value.paging||value.streaming))context.addIssue({code:'custom',path:['route'],message:'Route delivery cannot also use single-world paging or partition streaming'});
+  const budget=value.route??value.paging;
+  if(budget&&budget.lodSplatCount>budget.maxPagedSplats)context.addIssue({code:'custom',message:'Selection budget must fit the page pool'});
+});
 
 const point=z.tuple([z.number().finite(),z.number().finite(),z.number().finite()]);
 const positive=z.number().int().positive();
@@ -118,6 +125,17 @@ export const parseStreamIndex=(input:unknown):StreamIndex=>schema.parse(input);
 const pagedIndex=z.object({schemaVersion:z.literal(1),kind:z.literal('spark-rad'),root:relativePathSchema,sourceSplats:positive,files:z.array(z.object({path:relativePathSchema,bytes:positive,sha256:z.string().regex(/^[a-f0-9]{64}$/)}).strict()).min(1).max(2048)}).strict().superRefine((v,c)=>{if(new Set(v.files.map(f=>f.path)).size!==v.files.length||!v.files.some(f=>f.path===v.root))c.addIssue({code:'custom',message:'RAD files must be unique and include the root'});});
 export type PagedIndex=z.infer<typeof pagedIndex>;
 export const parsePagedIndex=(input:unknown):PagedIndex=>pagedIndex.parse(input);
+
+// Independently reconstructed worlds, not unique-ownership partitions of one GS.
+const routeIndex=z.object({schemaVersion:z.literal(1),coordinateSpace:z.literal('viewer-world'),
+  segments:z.array(z.object({id:nonBlank,world:relativePathSchema,transform:similarity,anchors:z.array(vector3).min(1).max(2048)}).strict()).min(1).max(128),
+}).strict().superRefine((value,context)=>{
+  if(new Set(value.segments.map(s=>s.id)).size!==value.segments.length||new Set(value.segments.map(s=>s.world)).size!==value.segments.length)
+    context.addIssue({code:'custom',message:'Route segment identities and world paths must be unique'});
+});
+export type RouteIndex=z.infer<typeof routeIndex>;
+export type RouteSegment=RouteIndex['segments'][number];
+export const parseRouteIndex=(input:unknown):RouteIndex=>routeIndex.parse(input);
 
 export type WorldManifest = z.infer<typeof worldManifestSchema>;
 

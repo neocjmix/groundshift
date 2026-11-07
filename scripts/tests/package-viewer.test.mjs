@@ -70,6 +70,21 @@ async function observationFixture() {
 }
 
 describe('curated viewer packaging', () => {
+  it.each([false,true])('packages only declared nested route worlds and pins RAD bytes (corrupt=%s)',async corrupt=>{
+    const {root,output,put,spec,manifest,world}=await observationFixture();
+    manifest.assets[0]={kind:'gaussian-splat',format:'spz',path:'scene.spz'};spec.worlds[0].asset='scene.spz';spec.worlds[0].format='spz';
+    const child=structuredClone(manifest);child.id='segment';child.paging={path:'rad/index.json',maxPagedSplats:917504,lodSplatCount:800000};
+    manifest.route={path:'route/index.json',maxPagedSplats:917504,lodSplatCount:800000};
+    await put(`dist/worlds/${world}/world.json`,manifest);await put(`dist/worlds/${world}/scene.spz`,'synthetic baseline');
+    await put(`dist/worlds/${world}/route/index.json`,{schemaVersion:1,coordinateSpace:'viewer-world',segments:[{id:'a',world:'segments/a/world.json',transform:child.coordinates.assetToWorld,anchors:[[1,2,3]]}]});
+    const base=`dist/worlds/${world}/route/segments/a`;await put(base+'/world.json',child);
+    for(const file of ['scene.spz','cameras.json','SOURCE_LICENSE'])await put(base+'/'+file,'synthetic '+file);
+    const page='synthetic RAD bytes';await put(base+'/rad/a.rad',page);
+    await put(base+'/rad/index.json',{schemaVersion:1,kind:'spark-rad',sourceSplats:1,root:'a.rad',files:[{path:'a.rad',bytes:Buffer.byteLength(page),sha256:corrupt?'0'.repeat(64):createHash('sha256').update(page).digest('hex')}]});
+    await put(base+'/private.log','never publish');await put(base+'/rad/unlisted.radc','never publish');
+    if(corrupt){await expect(packageViewer({root,output,includeExperiments:true,observationSpec:spec})).rejects.toThrow('Route LoD integrity mismatch');await expect(access(output)).rejects.toThrow();}
+    else{await packageViewer({root,output,includeExperiments:true,observationSpec:spec});const dest=path.join(output,`www/worlds/${world}/route/segments/a`);expect(await readFile(dest+'/rad/a.rad','utf8')).toBe(page);await expect(access(dest+'/private.log')).rejects.toThrow();await expect(access(dest+'/rad/unlisted.radc')).rejects.toThrow();}
+  });
   it.each([false,true])('pins only declared RAD files before packaging (corrupt=%s)',async corrupt=>{
     const {root,output,put,spec,manifest,world}=await observationFixture();
     const data='synthetic native page; not rendering evidence';

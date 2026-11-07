@@ -54,6 +54,23 @@ function pathManifest(): WorldManifest {
 
 const syntheticIndex={schemaVersion:1,coordinateSpace:'viewer-world',totalSplats:10,maxResidentChunks:1,chunks:[{id:'one',path:'one.spz',bytes:100,splats:10,sha256:'a'.repeat(64),anchors:[[0,0,0]]}]};
 
+describe('independent reconstruction route boundary',()=>{
+  const input={...manifest(),route:{path:'route/index.json',maxPagedSplats:917504,lodSplatCount:800000}};
+  const index={schemaVersion:1,coordinateSpace:'viewer-world',segments:[{id:'a',world:'segments/a/world.json',transform:manifest().coordinates.assetToWorld,anchors:[[1,2,3]]}]};
+  it('loads only the route index, never every nested world or binary',async()=>{
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    const request=vi.fn().mockResolvedValueOnce(jsonResponse(input,'https://example.com/redirect/world.json')).mockResolvedValueOnce(jsonResponse(index,'https://example.com/route/index.json'));vi.stubGlobal('fetch',request);
+    const world=await loadWorld('/world.json',new AbortController().signal);
+    expect(request).toHaveBeenCalledTimes(2);expect(world.route?.baseUrl).toBe('https://example.com/route/index.json');expect(world.route?.index.segments[0].anchors).toEqual([[1,2,3]]);
+  });
+  it('rejects cancelled route metadata and unsupported local folders',async()=>{
+    vi.stubGlobal('window',{location:{href:'https://example.com/'}});
+    const abort=new AbortController();vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(jsonResponse(input,'https://example.com/world.json')).mockResolvedValueOnce({ok:true,url:'https://example.com/index.json',json:async()=>{abort.abort();return index;}}));
+    await expect(loadWorld('/world.json',abort.signal)).rejects.toThrow();
+    await expect(loadLocalWorld([localFile('route/world.json',JSON.stringify(input))])).rejects.toThrow('require HTTP');
+  });
+});
+
 describe('native paging metadata boundary',()=>{
   const input={...manifest(),paging:{path:'rad/index.json',maxPagedSplats:524288,lodSplatCount:350000}};
   const index={schemaVersion:1,kind:'spark-rad',sourceSplats:10,root:'scene.rad',files:[{path:'scene.rad',bytes:100,sha256:'a'.repeat(64)}]};

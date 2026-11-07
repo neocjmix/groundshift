@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile, readdir, lstat, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseWorldManifest,parseStreamIndex,parsePagedIndex } from '../src/world.ts';
+import { parseWorldManifest,parseStreamIndex,parsePagedIndex,parseRouteIndex } from '../src/world.ts';
 import { parseBackground, parseBackgroundMesh } from '../src/background.ts';
 import { parseSceneCatalog } from '../src/catalog.ts';
 
@@ -209,6 +209,37 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
       const name=relativePath(manifest.paging.path),bytes=await read(`${prefix}/${name}`);assertPublicMetadata(bytes.toString('utf8'),worldName);
       const index=parsePagedIndex(JSON.parse(bytes.toString('utf8'))),base=path.posix.dirname(name);plan(`www/worlds/${worldName}/${name}`,bytes);
       for(const f of index.files){const file=path.posix.join(base,relativePath(f.path));if(!/\.(rad|radc)$/.test(file))throw new Error('Unexpected native LoD asset');const data=await read(`${prefix}/${file}`);if(data.length!==f.bytes||createHash('sha256').update(data).digest('hex')!==f.sha256)throw new Error('Native LoD integrity mismatch');plan(`www/worlds/${worldName}/${file}`,data);}
+    }
+    if(manifest.route){
+      const name=relativePath(manifest.route.path),bytes=await read(`${prefix}/${name}`);
+      assertPublicMetadata(bytes.toString('utf8'),worldName);
+      const index=parseRouteIndex(JSON.parse(bytes.toString('utf8'))),base=path.posix.dirname(name);
+      plan(`www/worlds/${worldName}/${name}`,bytes);
+      for(const segment of index.segments){
+        const segmentFile=path.posix.join(base,relativePath(segment.world)),segmentBase=path.posix.dirname(segmentFile);
+        const manifestBytes=await read(`${prefix}/${segmentFile}`);assertPublicMetadata(manifestBytes.toString('utf8'),segment.id);
+        const child=parseWorldManifest(JSON.parse(manifestBytes.toString('utf8')));
+        if(child.route||child.streaming||!child.paging||child.assets[0].format!=='spz'||child.coordinates.unit!==manifest.coordinates.unit)throw new Error('Route segments require standalone RAD/SPZ worlds in matching units');
+        if([child.provenance.sourceUrl,child.provenance.licenseUrl].some(url=>new URL(url).protocol!=='https:'))throw new Error('Route segment provenance must use public HTTPS');
+        plan(`www/worlds/${worldName}/${segmentFile}`,manifestBytes);
+        const metadata=['SOURCE_LICENSE',...(child.navigation.camerasPath?[relativePath(child.navigation.camerasPath)]:[])];
+        for(const file of metadata){const data=await read(`${prefix}/${segmentBase}/${file}`);assertPublicMetadata(data.toString('utf8'),segment.id);plan(`www/worlds/${worldName}/${segmentBase}/${file}`,data);}
+        const asset=path.posix.join(segmentBase,relativePath(child.assets[0].path));
+        if(!asset.endsWith('.spz'))throw new Error('Route segment control must be SPZ');
+        const assetBytes=await read(`${prefix}/${asset}`),destination=`www/worlds/${worldName}/${asset}`;
+        if(destinations.has(destination)){if(!planned.find(p=>p.destination===destination)?.bytes.equals(assetBytes))throw new Error('Conflicting route control asset');}
+        else plan(destination,assetBytes);
+        const pagedFile=path.posix.join(segmentBase,relativePath(child.paging.path)),pagedBytes=await read(`${prefix}/${pagedFile}`);
+        assertPublicMetadata(pagedBytes.toString('utf8'),segment.id);
+        const paged=parsePagedIndex(JSON.parse(pagedBytes.toString('utf8')));plan(`www/worlds/${worldName}/${pagedFile}`,pagedBytes);
+        for(const file of paged.files){
+          const relative=path.posix.join(path.posix.dirname(pagedFile),relativePath(file.path));
+          if(!/\.(rad|radc)$/.test(relative))throw new Error('Unexpected route LoD asset');
+          const data=await read(`${prefix}/${relative}`);
+          if(data.length!==file.bytes||createHash('sha256').update(data).digest('hex')!==file.sha256)throw new Error('Route LoD integrity mismatch');
+          plan(`www/worlds/${worldName}/${relative}`,data);
+        }
+      }
     }
   }
   for (const file of observations.files) {
