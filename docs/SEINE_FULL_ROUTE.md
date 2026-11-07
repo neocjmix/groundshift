@@ -1,5 +1,14 @@
 # Seine route expansion — 2026-11-07
 
+**Stopped at the user's request, 2026-11-07 14:43 UTC.** The retained result is
+snapshot009: **nine completed native windows, 152 unique physical panoramas,
+ranks 988–1139, 376.806486 m of source GPS path**. It is publicly viewable with
+bounded lazy loading. Every added boundary has a scoped public desktop WebKit
+crossing-and-return PASS; physical iPhone testing remains NOT RUN and global
+geometry NOT ACCEPTED. The original full-route target below is incomplete.
+No further native reconstruction or automatic publication is running. Resume
+expansion only after a new explicit user request; see the closure record below.
+
 The requested target is the previously selected **876 consecutive public ERP
 photographs, ranks 808–1683**, approximately **2,185.31 m of source GPS polyline**
 along the Paris Seine south bank and connected streets. This is the selected
@@ -148,6 +157,12 @@ native job artifacts, archives, logs and active staging were excluded.
 
 ## Reproduce
 
+The following commands describe the historical execution. **Do not resume the
+stopped campaign without a new user request.** Its next window has a deliberately
+preserved cancelled training stage, which the coordinator refuses to overwrite.
+A future resumption must create an explicit new training attempt and record its
+lineage; the completed windows, source acquisition, poses and depth remain reusable.
+
 Use the existing locally installed tools from the baseline setup. The selected
 route manifest is `data/jobs/tourist-streaming-20261107/route.json`; the completed
 baseline is `data/jobs/paris-streaming-20261107/`. The coordinator deliberately
@@ -190,7 +205,7 @@ Never publish the raw coordinator/job directories.
 | Independent two-segment local rendering/interaction | PASS Chrome 3/3 and desktop WebKit 3/3; actual Fly boundary, reversal, current-segment SPZ, metadata/RAD failure retention and retry |
 | Independent two-segment public rendering | PASS desktop WebKit 3/3 against actual Railway snapshot002; maximum two resident segments and fourteen pages, settled queues empty, no page errors |
 | Physical iPhone boundary/long-session test | NOT RUN |
-| Entire 876-source reconstruction | RUNNING, not complete |
+| Entire 876-source reconstruction | STOPPED BY USER at nine windows / 152 sources; original target not complete |
 | Global metric accuracy / long-route drift | NOT ACCEPTED / NOT RUN |
 
 The first new native run completed without restart or configuration changes:
@@ -321,6 +336,7 @@ archive receipts remain in the matching `segment-FIRST-LAST/` job directory.
 | 006 | 1068–1091 | 104 / 255.782957 m | 1,040.793582 | 16,019,693 / 26,124,281 | PASS one public WebKit case |
 | 007 | 1084–1107 | 120 / 296.555364 m | 993.279200 | 16,009,419 / 26,037,776 | PASS one public WebKit case |
 | 008 | 1100–1123 | 136 / 336.807284 m | 1,125.313094 | 16,001,031 / 25,967,712 | PASS one public WebKit case |
+| 009 | 1116–1139 | 152 / 376.806486 m | 1,054.719863 | 16,032,981 / 26,021,224 | PASS one public WebKit case |
 
 For 005, SfM registered all 144 crops (6,105 points, 0.590331 px reprojection
 error); all eight shared poses and both transform-withheld checks passed.
@@ -405,15 +421,58 @@ moving-object ghosts remain. Evidence:
 This is desktop WebKit with an iPhone profile: physical iPhone **NOT RUN**,
 global geometry **NOT ACCEPTED**.
 
-### Unattended continuation
+For 009, all 144 SfM crops registered (11,767 points, 0.561324 px reprojection
+error). Eight shared poses and both transform-withheld checks passed: relative
+scale 0.99703717, maximum center residual 0.006913 reference steps and orientation
+residual 0.014399 degrees. DAV2 inferred 320 maps on MPS in 54.426845 s, reused
+160 exact maps and took 104.814650 s in the wrapper. Calibration retained
+353/480 maps and 188,907 seed points. Native maximum RSS was 765,984,768 B and
+peak footprint 2,894,465,280 B. Lossless depth archival passed in 24.946753 s
+(428,442,692 encoded bytes, 285,992,423 new blob bytes). The unchanged coordinator
+continued to ranks 1132–1155; no configuration changes or retraining were needed.
+The public009 check passed one eighth-to-ninth-and-back Fly case at recorded
+view 131. Selected counts were 538,486 → 664,277 → 602,364, with at most two
+resident segments/fourteen pages, empty settled queues, no page errors or eager
+whole-SPZ requests, and preserved handoff camera position/orientation/FOV.
+Inspected frames show street/storefronts, a van and the pink roadside strip;
+distant facade stretching, near-edge blur and vehicle/road smearing persist.
+Evidence: `data/validation/seine-route-20261107/public-route-009-browser-summary.json`.
+This remains a desktop WebKit/iPhone-profile test, not a physical-phone result.
 
-The native coordinator continues locally using the completed source cache. A separate
-locked publisher watches atomic exports every five seconds, immediately prepares
-and uploads the checksum-pinned incremental package, and queues the exact branch
+### User-requested closure
+
+The user requested finishing with the currently expanded route. The owned
+publication watcher was stopped while idle. The existing reconstruction wrapper's
+SIGTERM handler then stopped its own native process group and wrote **CANCELLED**
+for ranks 1132–1155: 257.797189 s elapsed, exit -15, last refinement log at step
+1,801 with 362,032 splats. That partial run produced no exported scene and adds
+no coverage. Its preparation, camera poses, depth predictions, dataset and logs
+remain intact. No original or completed reconstruction was deleted.
+
+The coordinator exited after that cancellation. Its automatic FAIL records were
+preserved verbatim before annotating the current route as **STOPPED BY USER** and
+the current runner as **CANCELLED**; an intentional cancellation is not a new
+technical reconstruction failure. The coordinator, wrapper, native Brush process
+and watcher PIDs were verified absent. The app follow-up automation `automation`
+is **PAUSED**, confirmed through the app and saved configuration.
+
+Private closure evidence is `data/jobs/seine-full-20261107/user-stop.json` and
+`user-stop-20261107T144305Z/` (request, raw before/after records and closure).
+All 876 original JPEGs remain acquired; 724 source positions are outside the
+retained reconstructed coverage. Final publication updates the observation
+surface and actual ninth-segment preview; it does not restart native work or
+the publication watcher. Further expansion requires explicit authorization.
+
+### Historical unattended continuation (now stopped)
+
+The native coordinator used the completed source cache. A separate
+locked publisher watched atomic exports every five seconds, immediately prepared
+and uploaded the checksum-pinned incremental package, and queued the exact branch
 pointer. The existing Railway environment's GitHub auto-deploy UI currently says
 **Auto deploy unavailable**; a Git push alone is not deployment proof. The
-authorized thread follow-up checks every five minutes and uses the existing
-healthy Railway connector for pending dispatches. Public status/hash checks and
+thread follow-up checked every five minutes and used the existing
+healthy Railway connector for pending dispatches. That follow-up is now paused.
+Public status/hash checks and
 browser acceptance remain separate. Queue ownership, receipts and the manual
 metadata-overlay procedure are documented in [DEPLOYMENT.md](DEPLOYMENT.md).
 

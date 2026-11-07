@@ -8,7 +8,19 @@ rise/descend buttons; desktop uses
 WASD + mouse, Q/E height and Shift boost. No collisions or inferred floor.
 [Controls,actual checks and device limits](docs/FLY.md).
 
-**Latest actual result:** [Paris · first58m and native LoD streaming](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
+**Latest actual result:** [Seine · 377m partial route](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
+· [Explore the connected route](https://groundshift-viewer-production.up.railway.app/?world=/worlds/seine-full-route/world.json).
+Nine independently trained local windows connect 152 real Panoramax source
+positions over 376.81 m of source GPS path. Each added boundary passed a public
+desktop WebKit Fly crossing and return within the shared two-segment/fourteen-page
+budget. Road smearing, moving-object ghosts and distant facade distortion remain;
+physical iPhone testing of these boundaries and global geometry acceptance are
+not established. **The user stopped expansion at this result.** Native work,
+publication watching and the follow-up automation are stopped; all 876 acquired
+originals and completed/cancelled evidence remain local. The original 2.185 km
+target was not completed. [Final scope and evidence](docs/SEINE_FULL_ROUTE.md).
+
+**Preserved streaming baseline:** [Paris · first58m and native LoD streaming](https://groundshift-viewer-production.up.railway.app/experiments/tourist-streaming/)
 · [Explore3D](https://groundshift-viewer-production.up.railway.app/?world=/worlds/paris-58m-lod/world.json).
 24real12K panoramas → image-estimated poses → calibrated DAV2 → M2 Metal GS:
 800k Gaussians in16min58s,15.92MB whole SPZ. Native LoD loads visible precision
