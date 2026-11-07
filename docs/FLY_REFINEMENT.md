@@ -235,3 +235,13 @@ and are not evidence of passing a5s responsiveness target.
 
 Evidence: `data/validation/fly-detail-20261107/browser-report-public-r3/`,
 with earlier failures in `browser-report-public/` and `browser-report-public-r2/`.
+
+## Follow-up: physical iPhone blur remains unresolved
+
+The user's subsequent iPhone16Pro Safari report is tracked in
+[Safari paging diagnostics](SAFARI_PAGING_DIAGNOSTICS.md). Available MacSafari,
+desktopWebKit mobile profiles and iOSSimulator initial-view observations do not
+reproduce a permanently coarse page set. This does not establish physical-device
+acceptance. The follow-up fixes comparison-camera resets and exposes download,
+decode, selection, upload and display diagnostics inside Fly; it does not claim
+to repair the as-yet-unreproduced iPhone defect.
