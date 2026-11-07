@@ -37,6 +37,41 @@ files and1,259 composed files. Rollout/public-file/browser checks follow dispatc
 Private publication evidence stays under
 `data/validation/fly-mobile-detail-20261107/publications/mobile-ui/`.
 
+Interim pointer `3cee4375c5cd7a310864b0f4b42b396c09aeb5a7` deploys as
+`b6bd2198-4fb2-4bc3-a646-6b0f44c61a44`: created2026-11-07T01:15:53.020Z,
+**SUCCESS** at01:16:48.435Z. Anonymous complete archive readback verifies size/SHA
+in1.166859s. All6 changed public files match exact sizes/SHA-256 in4.023456s;
+root HTML SHA-256 is
+`d62284bd83afaa4e769ce231f40928f310e38d517f77f9fad6fd42f48b32d3aa`.
+Full ordinary restoration is deferred to the final stable increment to avoid
+unnecessary duplicate local copies; all minimum overlay/composed integrity checks
+already pass. Browser interaction and detailed LoD findings remain separately
+pending until executed, not inferred from this successful rollout.
+
+The next increment publishes the near-detail refinement candidate immediately:
+both existing Paris LoD manifests now declare14 pages /917,504 slots with an
+800,000 selection target. The viewer adds residency diagnostics, a readable
+“주변 세부 불러오는 중” state and a GPU-readback error ownership guard. Preliminary
+local four-view diagnostics observe restored near/central detail; public app
+checks and broader appearance acceptance are **NOT RUN** at dispatch. The earlier
+8-page/350k-selection trial and its failures remain preserved in evidence and
+immutable rollback releases. This is serving-policy recovery, not new training.
+
+Release `viewer-lod-detail-refinement-2026-11-07`, archive
+`groundshift-lod-detail-refinement-20261107.tar.gz`: **1,060,573 bytes**, SHA-256
+`2957babd5ee4eee05b003c607a8e900a978da8078d5c13f9113944481aaeda94`.
+Apply after28 preceding layers. Fresh production build passes in12.88s; authorized
+curation and full base/target/archive/composed integrity pass in4.995145s, with7
+changed compiled/HTML/explicit manifest files,1,185 selected public files and1,263
+composed files. The only changed world files are the two LoD `world.json` files;
+all255 other selected world files, including every SPZ/RAD binary, remain exactly
+byte-identical. All39 scenes/reports/source images are retained. An early package
+preflight ran before this agent's asynchronous build had finished and failed on
+missing `dist/index.html`; no archive was created. The exact failure stays local,
+and the retry after actual build completion passes without source changes.
+Evidence stays under
+`data/validation/fly-mobile-detail-20261107/publications/detail-refinement/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -738,7 +773,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the five Fly controls/mobile layers, in order. The command below includes all twenty-eight
+reconstruction/paging layers and the six viewer/Fly detail updates, in order. The command below includes all twenty-nine
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -844,6 +879,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-mobile-fly-ui-2026-11-07 \
     groundshift-mobile-fly-ui-20261107.tar.gz \
     10264d84cb6989df04a21a5c22654313c9955ad18c92ff8aa1eb50226607feab
+  gs_restore_layer viewer-lod-detail-refinement-2026-11-07 \
+    groundshift-lod-detail-refinement-20261107.tar.gz \
+    2957babd5ee4eee05b003c607a8e900a978da8078d5c13f9113944481aaeda94
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

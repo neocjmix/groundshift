@@ -192,6 +192,13 @@ RUN wget -q -O /tmp/mobile-fly-ui.tar.gz https://github.com/neocjmix/groundshift
  && mkdir /out \
  && tar -xzf /tmp/mobile-fly-ui.tar.gz -C /out
 
+# Restore near-detail residency/selection; existing scene binaries are unchanged.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS lod_detail_refinement
+RUN wget -q -O /tmp/lod-detail-refinement.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-lod-detail-refinement-2026-11-07/groundshift-lod-detail-refinement-20261107.tar.gz \
+ && echo '2957babd5ee4eee05b003c607a8e900a978da8078d5c13f9113944481aaeda94  /tmp/lod-detail-refinement.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/lod-detail-refinement.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -219,5 +226,6 @@ COPY --from=fly_capture_fix /out/www /srv
 COPY --from=fly_ui_recovery /out/www /srv
 COPY --from=fly_lifecycle_fix /out/www /srv
 COPY --from=mobile_fly_ui /out/www /srv
+COPY --from=lod_detail_refinement /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
