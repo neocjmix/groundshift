@@ -318,7 +318,7 @@
     },
     {
       "id": "seine-full-route",
-      "source": "data/jobs/seine-full-20261107/publication-route-world-002-1794047703291995000/world",
+      "source": "data/jobs/seine-full-20261107/publication-evidence-002-1794048239680427000/world",
       "asset": "scene.spz",
       "format": "spz",
       "credits": [
@@ -1228,6 +1228,8 @@
     "experiments/tourist-streaming/vertical-gs.jpg",
     "experiments/tourist-streaming/baseline-start.png",
     "experiments/tourist-streaming/refined-start.png",
-    "experiments/tourist-streaming/whole-start.png"
+    "experiments/tourist-streaming/whole-start.png",
+    "experiments/tourist-streaming/seine-snapshot-002.png",
+    "experiments/tourist-streaming/seine-snapshot-002-preview.json"
   ]
 }

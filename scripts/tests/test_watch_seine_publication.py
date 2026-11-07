@@ -12,6 +12,13 @@ spec.loader.exec_module(watcher)
 
 
 class WatcherTests(unittest.TestCase):
+    def test_generated_docs_keep_queued_pointer_distinct_from_dispatch(self):
+        note = watcher.dispatch_description('CONNECTOR QUEUE')
+        self.assertIn('DISPATCH_PENDING', note)
+        self.assertIn('Git push alone is not Railway dispatch', note)
+        self.assertNotIn('verified branch-follow', note)
+        self.assertIn('still requires independent verification', watcher.dispatch_description('VERIFIED GIT AUTODEPLOY'))
+
     def test_git_push_queues_connector_work_without_claiming_delivery(self):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)

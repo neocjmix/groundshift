@@ -35,6 +35,12 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def dispatch_description(mode):
+    if mode == 'CONNECTOR QUEUE':
+        return 'Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch.'
+    return 'Git push uses the previously verified branch-follow service; this particular provider rollout still requires independent verification.'
+
+
 def run(command, log, timeout=1800):
     env = {**os.environ, 'GIT_TERMINAL_PROMPT': '0', 'GH_PROMPT_DISABLED': '1'}
     with log.open('ab') as output:
@@ -203,7 +209,7 @@ def advance(coordinator, state, state_path):
                            f'Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. '
                            f'{active["overlay"]["overlayFiles"]} changed files; '
                            f'{active["overlay"]["assembledFiles"]} composed files. '
-                           'Git push dispatches the verified branch-follow service asynchronously. '
+                           f'{dispatch_description(state["deliveryMode"])} '
                            'Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; '
                            'private publication receipts record later actual readback without inventing acceptance.\n')
         paths = ['deploy/Dockerfile.github', 'docs/DEPLOYMENT.md', 'scripts/observation-worlds.json', 'public/worlds/catalog.json']

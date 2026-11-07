@@ -2761,4 +2761,45 @@ Current references: [Railway CLI root/ignore behavior](https://docs.railway.com/
 
 ### Automated route snapshot 002
 
-Release `viewer-seine-route-002-1794047703065085000`, archive `groundshift-seine-route-002-1794047723732148000.tar.gz`, 99,960,013bytes, SHA-256 `ba0f7dc4c6f8b4bc58141622e92c3237b70c42defcf0f4f7bc28346cff45b120`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 55 changed files; 1343 composed files. Git push dispatches the verified branch-follow service asynchronously. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+Release `viewer-seine-route-002-1794047703065085000`, archive `groundshift-seine-route-002-1794047723732148000.tar.gz`, 99,960,013bytes, SHA-256 `ba0f7dc4c6f8b4bc58141622e92c3237b70c42defcf0f4f7bc28346cff45b120`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 55 changed files; 1343 composed files. Git push creates DISPATCH_PENDING; the existing healthy connector heartbeat or deployment agent must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at the original source commit; private publication receipts record later actual readback without inventing acceptance.
+
+After confirming no matching deployment was already in flight, the existing
+connector dispatches exact pointer`d77d254b375115f398bb5c883aa3ea39256ff26e` as
+`7eda5bfc-df44-4a57-bb1a-9a3f9b3200ba`: created10:40:08.773Z, **SUCCESS**
+10:41:16.924Z. The actual background worker verifies all55changed public sizes/
+SHA-256 and writes its delivered receipt at10:41:55.062Z. Provider status is then
+audited into that receipt, retaining the worker's original provider-NOT-RUN field.
+An independent small check confirms world/index/coverage pins. Native coverage is
+40source centers/ranks988–1027 and98.749536m source GPS polyline, not measured
+3D length or full2.185km completion. Global geometry remains NOT ACCEPTED.
+The ordinary tree extends43→44archives: prior files/new pin/all1,343final sizes
+and hashes PASS in5.023506s with hardlink-safe replacement and no bulk duplicate.
+Actual new public-browser evidence follows separately; native/export status does
+not promote it automatically. The generator's earlier incorrect Git-autodeploy
+sentence is corrected and covered by a fifth watcher boundary test.
+
+### Actual two-segment frame and provisional execution evidence
+
+Release`viewer-seine-route-002-preview-1794048239680427000`, archive
+`groundshift-seine-route-002-preview-1794048239680427000.tar.gz`:2,291,323bytes,
+SHA-256`bcbcc36db5ed97487e3dafce3a51003a74f9ad50c16dbcfb1970cc7454106e99`.
+Apply after44preceding archives. Fresh build/full explicit40-scene curation,
+catalog schema/privacy and complete base/overlay/composed integrity PASS in
+6.004570s for1,345composed files. Exactly6public files change: catalog/JPEG
+thumbnail,byte-exact actual GS PNG/sanitized provenance,report and timeline.
+All scene/SPZ/RAD/camera/index binaries and metadata remain unchanged.
+
+The PNG is the actual Chrome156 frame after Fly crosses into1004–1027 and returns
+from the same-position current-segment SPZ comparison. Only viewer UI is hidden;
+no photo backdrop,generation,retouching or geometry enhancement. Original PNG
+1,907,237bytes,SHA`17bf8b2cbb6b4b530bbdda0457e24e2ce9aaaa4895a777b81ad049d3b0ccee78`
+is published unchanged. Catalog JPEG346,902bytes is its format-converted thumbnail.
+The frame is directly inspected: street/tree/buildings visible, with existing
+blur/smearing/ghosting; it is view evidence, not geometric accuracy. Public
+provenance retains actual camera values and drops local source paths. Local
+Chrome3/WebKit3 execution PASS, actual native5502s/800k export and lossless depth
+archive evidence are included with full-route/global-geometry/physical-phone
+limits. Public browser checks are NOT RUN in this frozen increment; later
+completed public tests belong in a separate small evidence update. Publication
+does not wait for those checks. Previous provisional/failed observations remain.
+Private packaging evidence:`data/jobs/seine-full-20261107/publication-evidence-002-1794048239680427000/release/`.

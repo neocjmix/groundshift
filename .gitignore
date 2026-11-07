@@ -54,3 +54,4 @@ public/worlds/scooter-nodepth-context/
 # Derived street worlds are curated into release attachments, not Git.
 public/worlds/street-*/
 public/worlds/paris-*/
+public/worlds/seine-full-route/
