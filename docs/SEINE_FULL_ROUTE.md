@@ -108,7 +108,11 @@ The checked-in codec was actually executed read-only on all 480 baseline NPYs:
 1,132,523,520 B became 532,989,536 B (47.062%), with every exact-byte round trip
 verified, in 34.02 s and 39.85 MB maximum process RSS. No baseline NPY was changed.
 The approximately 19.45 GB full-route depth figure is extrapolation, not measured
-full-route storage. Actual new-job archival still awaits completed training.
+full-route storage. The first new completed job has now actually archived all
+480 exact NPY files: 1,132,523,520 B became 492,364,393 B in 50.896771 s. The
+persisted archives passed original-byte SHA verification before raw aliases were
+removed. Concurrent reconstruction, source downloads and publishing mean the
+filesystem free-space delta is not an isolated savings measurement.
 
 Below 20 GiB free, the coordinator can evict an older completed **new** segment's
 reproducible PNG working cache. It retains the baseline, newest segment and the
@@ -180,15 +184,29 @@ Never publish the raw coordinator/job directories.
 | Transform-only held-pose check | PASS both withheld poses; not independent SfM truth |
 | First added DAV2 execution | PASS 480 actual MPS predictions, wrapper 362.371952 s |
 | First added calibrated seed | PASS 308/480 supported fits, 186,839 initial points; 172 maps excluded; wrapper 24.074309 s |
-| First added native GS export | RUNNING; no successful export claimed yet |
-| Independent two-segment public rendering | NOT RUN until the new native export exists |
+| First added native GS export | PASS 8,000 steps on Apple M2 Metal, 800,000 Gaussians; 73,600,652 B PLY |
+| First added delivery derivatives | PASS 15,945,260 B SPZ; 26,045,905 B chunked RAD including its index |
+| First connected export | PASS two independently trained segments, 40 actual source poses, ranks 988–1027; 98.749536 m source GPS coverage |
+| Independent two-segment local rendering/interaction | PASS Chrome 3/3 and desktop WebKit 3/3; actual Fly boundary, reversal, current-segment SPZ, metadata/RAD failure retention and retry |
+| Independent two-segment public rendering | NOT RUN at this documentation update; first snapshot dispatched for separate public checks |
+| Physical iPhone boundary/long-session test | NOT RUN |
 | Entire 876-source reconstruction | RUNNING, not complete |
 | Global metric accuracy / long-route drift | NOT ACCEPTED / NOT RUN |
 
+The first new native run completed without restart or configuration changes:
+5,502 s reported by Brush, 5,511.631969 s wrapper wall time, 567,656,448 B maximum
+RSS and 2,885,208,344 B peak process footprint. A long gap in refinement logs
+coincided with heavy host memory compression/decompression and approximately
+13 GB swap usage; process-specific GPU counters still advanced. Refinement then
+resumed through 8,000 steps. Those observations do not establish a single cause.
+Private diagnostic evidence is retained in
+`data/validation/seine-full-20261107/brush-slowdown-diagnostic.json` and
+`brush-progress-after-slowdown.json`.
+
 Runtime values are actual one-off wall times with concurrent development and
 brief browser work on the same M2, not isolated benchmarks. The old 1,018-second
-baseline is not a reliable ETA: this added window is already taking materially
-longer on the current machine. The whole route may require more than a day;
+baseline is not a reliable ETA: this added window took materially longer on the
+current machine. The whole route may require more than a day;
 no full-route runtime is measured yet. Source preparation, depth, exports and
 failure recovery add time. Storage is also bounded: unique full
 float32 depth predictions alone would approach 41 GB for all 876×20 crops.
@@ -197,7 +215,12 @@ preserving paths and rollback packages; this is not deletion of source evidence.
 
 Automated planning/coordinate/failure/cache checks include 22 alignment/route
 tests, nine cached-depth tests, nine depth-archive tests, eight exact PNG-cache
-tests and nine source-route tests.
+tests and nine source-route tests. The full Python run before first publication
+executed 317 tests: 312 PASS and five skipped, in 12.024 s. Browser suites against
+the first real two-segment frozen export passed in 110.817168 s (Chrome) and
+86.534011 s (WebKit); those are suite wall times, not rendering benchmarks.
+Evidence: `data/validation/seine-route-20261107/browser-real-batch.json` and its
+retained engine logs/screenshots.
 They do not establish native training, rendering, collision geometry or
 surveyed street accuracy. Live viewer and execution evidence will be appended
 as those operations actually finish.
