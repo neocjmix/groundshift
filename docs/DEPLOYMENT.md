@@ -72,6 +72,30 @@ and the retry after actual build completion passes without source changes.
 Evidence stays under
 `data/validation/fly-mobile-detail-20261107/publications/detail-refinement/`.
 
+Detail pointer `0c316fc8e428cbe34fe4ce2f87e4fd7c0a620ff8` deploys as
+`b4258d63-8297-4f83-9c15-1095cbc172cb`: created2026-11-07T01:24:04.382Z,
+**SUCCESS** at01:25:00.076Z. Anonymous complete archive readback verifies its
+size/SHA in1.106555s. All7 changed public files match exact sizes/SHA-256 in
+4.204022s, including both explicit14-page/800k manifests. Root HTML SHA-256 is
+`a98d2c4cb7dd7bb368468e4cd62ed0252302a1c881aa907a50fedc9dda3063f5`.
+Actual public behavior and broader measured appearance checks follow this
+successful delivery; they are not inferred from these hash checks.
+
+Actual interaction traces show stream diagnostics intercepting Zoom clicks. The
+next mechanical increment moves that panel from bottom5rem to8rem; corrected
+browser interaction remains **NOT RUN** at dispatch. Release
+`viewer-control-clearance-2026-11-07`, archive
+`groundshift-viewer-control-clearance-20261107.tar.gz`: **1,060,931 bytes**, SHA-256
+`fce177d808f18bf6d9e1c112f5bd5f6deaf9b111913f979f1bbbf812eeb7556d`.
+Apply after29 preceding layers. Fresh build passes in14.70s; explicit full39-scene
+curation with all include flags and complete overlay/composed integrity pass in
+5.864386s (6 compiled/HTML changes,1,185 target public files,1,268 composed files).
+All257 selected world files, including both14-page manifests and every scene
+binary, remain byte-identical. Reports/source images and every prior observation
+are retained. The unrelated accidental sample-only local package is not used.
+Private evidence remains under
+`data/validation/fly-mobile-detail-20261107/publications/control-clearance/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -773,7 +797,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the six viewer/Fly detail updates, in order. The command below includes all twenty-nine
+reconstruction/paging layers and the seven viewer/observation updates, in order. The command below includes all thirty
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -882,6 +906,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-lod-detail-refinement-2026-11-07 \
     groundshift-lod-detail-refinement-20261107.tar.gz \
     2957babd5ee4eee05b003c607a8e900a978da8078d5c13f9113944481aaeda94
+  gs_restore_layer viewer-control-clearance-2026-11-07 \
+    groundshift-viewer-control-clearance-20261107.tar.gz \
+    fce177d808f18bf6d9e1c112f5bd5f6deaf9b111913f979f1bbbf812eeb7556d
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
