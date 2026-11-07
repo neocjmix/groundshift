@@ -2982,3 +2982,24 @@ against the next-export preparer's historical-evidence contract before pointer
 publication. Anonymous readback/provider/public hashes are recorded after actual
 execution; no extra GPU rerun is needed for this evidence/image update.
 Private proof:`data/jobs/seine-full-20261107/publication-evidence-003-1794052736872823000/`.
+
+Final evidence pointer`310dda140791ed18398175ba773dcba175bf877c` is dispatched
+through the same connector as`cfd0b274-34fc-47c7-9fe1-be29a8278f46`: created
+12:02:26.288Z, **SUCCESS** at12:03:27.743Z. Anonymous full archive/checksum
+readback PASS in1.384874s. All6changed public file sizes/SHA-256 PASS after7
+readiness attempts/37.175832s including rollout wait. Final report75,201bytes,
+SHA`1ab9c965bb26d1064acdf89bc9e56db7daf7373f5c5b80756725ecfb874c99c5`;
+the public exact PNG matches its inspected source checksum above. Ordinary
+restoration extends48→49archives: prior48files/new pin/all1,370final files PASS
+in4.213426s, with atomic hardlink-safe replacement and no extra full copy or
+archive download. These are delivery checks, not another GPU/browser campaign.
+
+The final follow-up receipt retains the original003provider/31public hashes,
+adds the actual one-case boundary evidence and this six-file publication, and
+preserves snapshot002proof under an explicit historical key. The idle owned
+publisher is briefly stopped for the documentation push, then restarted with
+the verified49archive inventory and preparer`cc54a72`, which preserves the
+current rendered preview and creates separate browser scope for each future
+native snapshot. Current owned PID/freshness remain in the process/heartbeat
+files. CONNECTOR QUEUE/five-minute heartbeat dispatch remains the actual mode;
+Git autodeploy is not claimed.
