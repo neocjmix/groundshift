@@ -279,6 +279,27 @@ identity/rank coverage, actual sizes/SHA-256 and JPEG headers/dimensions in
 Evidence: `data/jobs/seine-full-20261107/source-acquisition-complete.json`.
 Source acquisition is complete; reconstruction of the entire route is not.
 
+### Fourth connected segment
+
+Ranks 1036–1059 completed the unchanged 8,000-step/800,000-Gaussian configuration
+on Metal. Snapshot004 joins four segments and 72 physical source poses over
+179.310725 m of source GPS path. Native wrapper time was 2,453.837004 s
+(Brush reported 2,448 s), maximum RSS 805,617,664 B and peak footprint
+2,915,420,608 B. This differing concurrent-run duration does not establish a
+training speed improvement.
+
+All 144 SfM crops registered (5,274 points, 0.597475 px mean reprojection error).
+Eight shared poses and both transform-withheld checks passed; maximum shared
+center/orientation residuals were 0.014499 reference steps / 0.068385 degrees.
+DAV2 inferred 320 new crops in 251.490545 s and reused 160 exact archived maps;
+the whole depth stage took 301.289096 s. Calibration retained 287/480 maps and
+184,453 seed points. Export sizes are 73,600,652 B PLY, 15,928,193 B SPZ and
+26,091,792 B RAD including its index. Exact depth archival passed in 23.440312 s,
+with 426,695,447 encoded bytes for 480 unique predictions (287,183,836 new blob
+bytes). Evidence remains under `data/jobs/seine-full-20261107/segment-1036-1059/`.
+The immutable snapshot's browser receipt starts at **NOT RUN**; snapshot003's
+public PASS remains historical. Global geometry is still **NOT ACCEPTED**.
+
 ### Unattended continuation
 
 The native coordinator continues locally using the completed source cache. A separate
