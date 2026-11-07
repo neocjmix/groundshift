@@ -23,7 +23,12 @@ async function samePose(page,expected){
 }
 async function ready(page){await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:90000});}
 async function refined(page){
- await expect.poll(async()=>{const s=await state(page);return s.paging?.selected>500000&&s.paging.pending===0;},{timeout:60000}).toBe(true);
+ await expect.poll(async()=>{
+  const s=await state(page),d=s.diagnostics;
+  return s.paging?.selected>500000&&s.paging.pending===0&&d?.phase==='settled'
+   &&Object.values(d.queues).every(count=>count===0)
+   &&Object.values(d.stages).every(stage=>stage.state==='idle');
+ },{timeout:60000}).toBe(true);
  const frame=(await state(page)).frames;
  await expect.poll(async()=>(await state(page)).frames,{timeout:15000}).toBeGreaterThan(frame+30);
  return state(page);
@@ -94,6 +99,7 @@ test('desktop WebKit mobile profile preserves a moved Fly view across same-posit
  await page.screenshot({path:info.outputPath('webkit-whole-same-pose.png')});
  await panel.getByRole('button',{name:'같은 위치 · LoD로 복귀',exact:true}).tap();await ready(page);await refined(page);
  const returned=await samePose(page,moved);await page.screenshot({path:info.outputPath('webkit-return-same-pose.png')});
+ await panel.locator('summary').tap();await page.screenshot({path:info.outputPath('webkit-return-collapsed.png')});
  expect(errors).toEqual([]);
  await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',browser:browser.version(),platform:'Actual desktop WebKit with iPhone16Pro emulation; physical iPhone NOT RUN',fullscreen:'Explicit API-unavailable fixture',input:'Native tap, keyboard movement and mouse drag look; physical touch swipe NOT RUN',latencyFixtureMs:200,first,moved,whole,returned,progression,requests,errors,diagnosticFile:'diagnostic-lod.json'},null,2));
 });

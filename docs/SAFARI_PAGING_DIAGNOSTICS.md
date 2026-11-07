@@ -9,9 +9,50 @@ from the earlier fix was insufficient acceptance for this report.
 The current14-page/800k-target viewer refines normally in the available Safari
 and WebKit environments below. These results neither disprove the user report nor
 establish physical-device acceptance. No new page budget, model, reconstruction,
-compression, asset or source-image changes were made.
+compression, asset or source-image changes were made. A subsequent reproducible
+WebKit decoder wait was repaired as described below; the physical compact
+report still needs device confirmation.
 
-## Executed reproduction attempts
+## Reproduced decoder wait and deployed workaround
+
+After the initial observations, a controlled delay exposed a real failure in
+**gsplat**: allow the first coarse chunk, hold detail responses11s, then release
+them. Network transfer and checksums finish, but one worker never returns chunk2.
+After35s it remains at416,335points/13pages; after another camera movement it
+remains coarse. Render frames continue. The user later supplied the exact
+**compact/csplat** URL and a private screenshot with conspicuous Gaussian blur;
+the same delayed compact run recovered normally. Do not equate these causes.
+
+RPC-only observation narrowed the gsplat failure: chunk2's1,667,136bytes arrive,
+worker reports `loaded=total`, then no result/error for35,029ms. A different
+worker completes the remaining chunks. Stream-boundary logging itself removes
+the failure, so the exact stalled instruction is not proven.
+
+With only the buffered-input branch changed to direct `decoder.push(fileBytes)`
+and `decoder.finish()`, the same chunk returns65,536Gaussians in25ms and the view
+reaches680,013points/14pages with all queues idle. This25ms is one instrumented
+RPC observation, not a device benchmark. Matching before/after PNGs show restored
+nearby window/road detail. Original, instrumented and candidate runs remain in
+`worker-rpc/`, `worker-boundary/`, `worker-stream/`, `worker-direct/`
+under the ignored validation root. The private user screenshot is not published.
+
+The application now applies this narrow workaround at Vite load time, without
+editing node_modules or WASM. It pins the exact Spark2.4.0 ESM SHA-256 and known
+worker branch, failing builds on upstream drift. It affects already-buffered
+inputs (including RAD and SPZ), leaving actual URL/chunked streaming code
+unchanged. The same hook applies in dev and production. Existing MIT attribution
+is retained; Groundshift's modification is in `build/spark-buffered-decode.ts`.
+
+**Uninstrumented production-build WebKit regression: PASS4/4** — gsplat2/2
+in50.4s, compact2/2 in44.7s. These run the actual app without worker wrappers or
+extra worker messages. They verify moved/rotated Fly pose and FOV preservation,
+local diagnostic export, progressive refinement, delayed-response indication
+and recovery. The formerly failing gsplat case recovers from52,788/1page to
+680,013/14pages; compact recovers to687,069/14pages. All queues idle and no page
+errors. Explicit network-delay/fullscreen-unavailable fixtures are labeled;
+physical touch swipes and physical iPhone GPU acceptance remain NOT RUN.
+
+## Initial reproduction attempts
 
 Public source version before this change: `a0400878b074157319c50bb592415625b19f8bf0`.
 All counts below are observed displayed/selected Gaussians, not a percentage of
@@ -68,7 +109,7 @@ waiting for decoding, LoD traversal, GPU upload or sorting. A10s unchanged stage
 is labeled a wait, **not a confirmed hang**. Hidden-page throttling is distinct.
 Idle queues/`settled` do not mean full detail or acceptable image quality.
 
-Diagnostic build marker: `safari-paging-20261107-v1`.
+Diagnostic build marker: `safari-paging-20261107-v2` (initial diagnostic-only release was v1).
 
 ## Source findings
 
@@ -80,7 +121,8 @@ budget increase or foveation change was justified by these observations.
 [Upstream Spark issue481](https://github.com/sparkjsdev/spark/issues/481) reports
 a bufferedRAD worker freeze in an iPhone immersiveAppClip. Our pinned decoder
 contains the discussed bufferedReadableStream path, but applicability to ordinary
-Safari here is unconfirmed. It was not patched speculatively.
+Safari on the user's compact scene is unconfirmed. A later independent WebKit
+reproduction justified testing and adopting its buffered-input workaround; see above.
 
 DesktopWebKit device emulation is not iOS hardware testing; see
 [Playwright browser documentation](https://playwright.dev/docs/browsers) and
@@ -88,10 +130,33 @@ DesktopWebKit device emulation is not iOS hardware testing; see
 
 ## Validation and reproduction
 
-- PASS: TypeScript, ESLint,220unit tests, production build.
+- PASS: TypeScript, ESLint, all 224 unit tests (including four decoder-patch tests)
+  and the production build. ESLint explicitly covers the new build helper and
+  Vite/Vitest configuration. The final production build took 12.72s on this Mac.
+- PASS: actual Vite dev HTTP module loading, including its cache-query module ID;
+  raw distribution hash verification runs before Vite strips the source-map comment.
 - PASS:5new diagnostic tests distinguish network completion from decode waiting,
   display stalls, hidden pages, unknown fields and healthy low selected counts.
-- Browser regression and public deployment evidence: pending below until executed.
+- PASS: local production-build WebKit4/4 (gsplat2, compact2), including delayed-detail recovery.
+- PASS: Chrome LoD regression (55.4s), actual forward/reverse page replacement and
+  matched-pose SPZ comparison. RGB MAE 1.23159/255, central MAE 1.95758/255 and
+  central edge ratio 0.96643; return-to-start pixel difference 0. The first run
+  failed because sidebar text changed canvas height from 1177 to 1179px. That
+  evidence is retained; the comparison now declares a fixed 800px canvas-height
+  fixture so pixel comparisons use identical projections.
+- PASS: Railway decoder-patch deployment
+  `a563306e-26f6-48f8-a349-aa7d8ad9e050`, with all five changed public files
+  matching the packaged sizes and SHA-256 checksums.
+- PASS: public compact WebKit regression 2/2 (43.1s and 25.1s; suite 1.2m).
+  The strengthened test waits for `settled`, every queue at zero and every
+  processing stage idle. The held-detail case recovers from 52,874 points/1 page
+  to 687,069 points/14 pages; 22,757,488 bytes, 15 requests, no pending requests
+  or page errors. Moved/rotated Fly view and SPZ comparison return to exactly the
+  same pose/FOV, displaying 691,095 points. The collapsed-inspector screenshot
+  visibly retains window and tree detail; stretched road surfaces remain.
+  Evidence: `platform/browser-v2-public-compact-r2/`. The first public run was
+  deliberately interrupted to strengthen the queue assertions; its interrupted
+  and NOT RUN records are preserved, not reported as an application failure.
 - Physical iPhone16Pro acceptance: **NOT RUN**.
 
 ```sh
@@ -102,6 +167,9 @@ npm run build
 # Official Playwright WebKit runtime required; uses Apple GPU on this Mac.
 npx playwright install webkit
 HEADLESS=1 npx playwright test tests/browser/safari-paging.pw.mjs
+# Exercise the user's exact compact world as well.
+HEADLESS=1 GS_SAFARI_WORLD=/worlds/paris-58m-lod-compact/world.json \
+  npx playwright test tests/browser/safari-paging.pw.mjs
 ```
 
 To isolate the reported device, open the deployed ParisLoD world, enter Fly,
