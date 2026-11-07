@@ -318,6 +318,7 @@ archive receipts remain in the matching `segment-FIRST-LAST/` job directory.
 | Snapshot | Added ranks | Connected sources / GPS path | Native wrapper seconds | SPZ / RAD bytes | New public boundary |
 | --- | --- | --- | --- | --- | --- |
 | 005 | 1052–1075 | 88 / 214.834239 m | 1,062.463517 | 15,959,587 / 26,167,680 | PASS one public WebKit case |
+| 006 | 1068–1091 | 104 / 255.782957 m | 1,040.793582 | 16,019,693 / 26,124,281 | PASS one public WebKit case |
 
 For 005, SfM registered all 144 crops (6,105 points, 0.590331 px reprojection
 error); all eight shared poses and both transform-withheld checks passed.
@@ -335,6 +336,27 @@ with persistent road smearing, vehicle ghosts and distorted facade/tree edges.
 Evidence: `data/validation/seine-route-20261107/public-route-005-browser-summary.json`.
 This remains desktop WebKit with an iPhone profile; physical iPhone and global
 geometry acceptance are not established.
+
+For 006, all 144 SfM crops registered (7,353 points, 0.638448 px reprojection
+error). All eight shared poses passed alignment, with scale 1.13660548,
+maximum center residual 0.006298 reference steps and orientation residual
+0.046252 degrees; both transform-withheld checks passed. These are internal
+alignment diagnostics, not independent street geometry. DAV2 inferred 320 maps
+on MPS in 44.542876 s and reused 160 exact maps; the depth wrapper took
+81.644144 s. Calibration retained 326/480 maps and 186,476 seed points.
+Native maximum RSS was 850,722,816 B and peak footprint 2,911,373,760 B.
+Exact depth archival passed in 23.343513 s (421,966,768 encoded bytes,
+276,869,696 new blob bytes). The coordinator continued to ranks 1084–1107
+without restarting training or changing the declared configuration.
+The public006 check passed one focused fifth-to-sixth-and-back Fly case at
+recorded view 83. Selected counts were 580,096 → 694,110 → 626,430; residency
+stayed within two segments/fourteen pages, settled queues were empty and there
+were no page errors or eager whole-SPZ requests. Camera position/orientation/FOV
+were preserved across ownership changes. The inspected public frame shows an
+intersection, crossing, signs and buildings, with strong road/vehicle smearing
+and distorted facade/pole edges. Evidence:
+`data/validation/seine-route-20261107/public-route-006-browser-summary.json`.
+Physical iPhone testing remains **NOT RUN**; global geometry **NOT ACCEPTED**.
 
 ### Unattended continuation
 
