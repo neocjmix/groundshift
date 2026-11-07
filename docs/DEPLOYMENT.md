@@ -3154,3 +3154,9 @@ actual dispatch behavior, with no extra GPU/browser campaign or metadata-only
 self-referential deployment. Current50COPY stages remain below110cap; continued
 per-native/evidence increments require a later checkpoint consolidation before
 that cap, preserving all rollback archives. No consolidation is performed here.
+
+<!-- seine-snapshot-006 -->
+
+### Automated route snapshot 006
+
+Release `viewer-seine-route-006-1794057949740372000`, archive `groundshift-seine-route-006-1794057961400361000.tar.gz`, 42,212,232bytes, SHA-256 `59bd04f601a86fb7443c1f2514695a4fa6da92d169649a1bb60da185f016ee86`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 30 changed files; 1443 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
