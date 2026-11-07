@@ -5,7 +5,7 @@ import {PNG} from 'pngjs';
 test.use({actionTimeout:15000});
 const world='/worlds/paris-58m-lod/world.json';
 const paging=async page=>JSON.parse((await page.locator('canvas').getAttribute('data-paging'))||'{}');
-const pose=async page=>page.locator('canvas').evaluate(c=>({position:c.dataset.cameraPosition,quaternion:c.dataset.cameraQuaternion,progress:c.dataset.pathProgress}));
+const pose=async page=>page.locator('canvas').evaluate(c=>({position:c.dataset.cameraPosition,quaternion:c.dataset.cameraQuaternion,progress:c.dataset.pathProgress,fov:c.dataset.cameraFov}));
 async function settled(page){
  let signature='',since=Date.now();
  await expect.poll(async()=>{
@@ -76,12 +76,11 @@ test('native LoD progressively restores nearby detail, reselects pages and match
  expect([...reverse.residentChunks].sort()).not.toEqual([...end.residentChunks].sort());
  const returned=await capture(page,info,'refined-return'),returnDifference=compare(returned,initial);expect.soft(returnDifference.mae).toBeLessThan(.2);
  await writeFile(info.outputPath('interim-evidence.json'),JSON.stringify({first,end,reverse,returnDifference,progression,requests,errors},null,2));
- // Actual UI zoom, then identical UI zoom after switching control. No private camera mutation.
+ // Actual UI zoom; switching must preserve this exact viewpoint and zoom.
  await page.getByRole('button',{name:'Zoom in',exact:true}).click();await page.getByRole('button',{name:'Zoom in',exact:true}).click();
  const zoomed=await settled(page),lodPose=await pose(page),lod=await capture(page,info,'refined-zoom');
  expect(requests.some(p=>p.endsWith('.spz'))).toBe(false);
  await page.getByRole('button',{name:'전체 SPZ로 비교',exact:true}).click();await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:120000});
- await page.getByRole('button',{name:'Zoom in',exact:true}).click();await page.getByRole('button',{name:'Zoom in',exact:true}).click();
  const frame=Number(await page.locator('canvas').getAttribute('data-frame-count'));await expect.poll(()=>page.locator('canvas').getAttribute('data-frame-count').then(Number)).toBeGreaterThan(frame+30);
  const wholePose=await pose(page);expect(wholePose).toEqual(lodPose);
  const whole=await capture(page,info,'whole-zoom'),difference=compare(lod,whole);

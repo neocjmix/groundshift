@@ -9,6 +9,11 @@ import { ChunkStream,type StreamStats } from './streaming';
 import {radFetcher,type RadTransfer} from './rad-fetcher';
 import {FlyNavigation,flySpeed} from './fly-navigation';
 import FlyControls from './FlyControls';
+import {snapshotPagingDiagnostics,type PagingDiagnostics} from './paging-diagnostics';
+
+const diagnosticVersion='safari-paging-20261107-v1';
+const pagingPhaseLabel={network:'파일 수신 중',decode:'해독 또는 재시도 대기',lod:'세부 선택 중',upload:'GPU 전송 중',display:'화면 갱신 중',settled:'대기 작업 없음',initializing:'초기화 중',unknown:'상태 확인 중'};
+
 
 type NavigationState = {
   mode: 'orbit' | 'camera-path' | 'fly';
@@ -31,6 +36,12 @@ function initialNavigation(world: LoadedWorld): NavigationState {
     cursor: 0, playing: false, speed: 1, direction: 1,
   };
 }
+
+type SavedView = {
+  navigation: NavigationState;
+  position: THREE.Vector3; quaternion: THREE.Quaternion; target: THREE.Vector3;
+  fov: number; yaw: number; pitch: number; flySpeed: number;
+};
 
 type Status = {
   phase: "loading" | "ready" | "error";
@@ -55,6 +66,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const cancelFullscreen=useCallback(()=>++fullscreenAttempt.current,[]);
   const getFly=useCallback(()=>fly.current,[]);
   const reset = useRef<() => void>(() => {});
+  const savedView = useRef<SavedView|null>(null);
+  const saveView = useRef<() => SavedView|null>(()=>null);
   const zoom = useRef<(direction: number) => void>(() => {});
   const navigate = useRef<(action: NavigationAction) => void>(() => {});
   const [navigation, setNavigation] = useState(() => initialNavigation(world));
@@ -63,11 +76,29 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     message: "Loading scene…",
   });
   const [metrics, setMetrics] = useState<Metrics | null>(null);
+  const [diagnostics,setDiagnostics]=useState<PagingDiagnostics|null>(null);
+  const diagnosticHistory=useRef<PagingDiagnostics[]>([]);
   const [attempt, setAttempt] = useState(0);
   const [streamEnabled,setStreamEnabled]=useState(()=>new URLSearchParams(window.location.search).get('stream')!=='off');
   const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
   const retryChunks=useRef<()=>void>(()=>{});
   const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;pending:number;errors:string[]}|null>(null);
+
+  const switchLoadingMode=()=>{
+    savedView.current=saveView.current();
+    setStatus({phase:'loading',message:'Switching scene loading mode at the same viewpoint…'});
+    setMetrics(null);setPagingStats(null);setDiagnostics(null);setStreamEnabled(v=>!v);
+  };
+
+  const downloadDiagnostics=()=>{
+    const report={version:diagnosticVersion,worldId:world.manifest.id,mode:streamEnabled?'lod':'whole',
+      userAgent:navigator.userAgent,devicePixelRatio:window.devicePixelRatio,viewport:[window.innerWidth,window.innerHeight],
+      renderer:metrics?.gpu??null,drawingBuffer:metrics?[metrics.width,metrics.height]:null,
+      samples:diagnosticHistory.current,scope:'Device-local observations only. No upload. No visual-quality or completed-loading guarantee.'};
+    const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));
+    const a=document.createElement('a');a.href=url;a.download='groundshift-paging-diagnostics.json';a.click();
+    window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+  };
 
   const exitFly=useCallback(()=>{
     cancelFullscreen();
@@ -113,6 +144,9 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     let spark: SparkRenderer | undefined;
     let mesh: SplatMesh | undefined;
     let meshPending = false;
+    let totalFrames=0,lastRenderedMs:number|null=null;
+    let previousDiagnostic:PagingDiagnostics|null=null;
+    diagnosticHistory.current=[];
     let stream:ChunkStream<SplatMesh>|undefined;
     const radStats:RadTransfer={requested:0,bytes:0,pending:0,errors:[]};
     let resize: ResizeObserver | undefined;
@@ -205,11 +239,12 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       resetOrbit();
       controls.saveState();
       const path = world.cameraPath;
-      const nav = initialNavigation(world);
+      const saved=savedView.current;savedView.current=null;
+      const nav = saved ? {...saved.navigation,playing:false} : initialNavigation(world);
       const flight=new FlyNavigation(camera,flySpeed(path,camera.position.distanceTo(controls.target)));
       fly.current=flight;
-      let yaw = 0;
-      let pitch = 0;
+      let yaw = saved?.yaw ?? 0;
+      let pitch = saved?.pitch ?? 0;
       const look = new THREE.Quaternion();
       const lookEuler = new THREE.Euler(0, 0, 0, 'YXZ');
       const publishNavigation = () => {
@@ -225,6 +260,15 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       };
       controls.enabled = nav.mode === 'orbit';
       applyPath();
+      if(saved){
+        camera.position.copy(saved.position);camera.quaternion.copy(saved.quaternion);
+        camera.fov=saved.fov;camera.updateProjectionMatrix();controls.target.copy(saved.target);
+        flight.speed=saved.flySpeed;
+        if(nav.mode==='fly')flight.enter();
+        publishNavigation();
+      }
+      saveView.current=()=>({navigation:{...nav},position:camera.position.clone(),quaternion:camera.quaternion.clone(),
+        target:controls!.target.clone(),fov:camera.fov,yaw,pitch,flySpeed:flight.speed});
       reset.current = () => {
         if (disposed || failed) return;
         if (nav.mode === 'orbit') resetOrbit();
@@ -509,7 +553,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       let lastFrame = last;
       let lastNavigationUpdate = last;
       let frames = 0;
-      let totalFrames = 0;
+
       renderer.setAnimationLoop(() => {
         if (!renderer || disposed || failed) return;
         try {
@@ -541,7 +585,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             renderer.domElement.dataset.paging=JSON.stringify(stats);
             if(totalFrames%30===0)setPagingStats(stats);
           }
-          totalFrames++;
+          totalFrames++;lastRenderedMs=now;
           // A render submission is not visual acceptance; acceptance uses screenshots.
           if (!readyPublished&&totalFrames >= 3&&count>0){
             readyPublished=true;loadMs=performance.now()-started;
@@ -567,15 +611,27 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           renderer.domElement.dataset.frameCount = String(totalFrames);
           renderer.domElement.dataset.cameraQuaternion = camera.quaternion.toArray().join(',');
           renderer.domElement.dataset.navigationMode = nav.mode;
+          renderer.domElement.dataset.cameraFov = String(camera.fov);
           renderer.domElement.dataset.pathProgress = String(nav.cursor);
         } catch (error) {
           fail(error);
         }
       });
     };
+    const diagnosticTimer=world.paging&&streamEnabled?window.setInterval(()=>{
+      if(disposed)return;
+      const sample=snapshotPagingDiagnostics({spark,paged:mesh?.paged,network:radStats,nowMs:performance.now(),
+        frameCount:totalFrames,lastFrameMs:lastRenderedMs,visibility:document.visibilityState,previous:previousDiagnostic});
+      previousDiagnostic=sample;
+      diagnosticHistory.current.push(sample);
+      if(diagnosticHistory.current.length>120)diagnosticHistory.current.shift();
+      if(renderer)renderer.domElement.dataset.pagingDiagnostics=JSON.stringify(sample);
+      setDiagnostics(sample);
+    },500):undefined;
     void run().catch(fail);
     return () => {
       disposed = true;
+      if(diagnosticTimer!==undefined)window.clearInterval(diagnosticTimer);
       abort.abort();
       stream?.dispose();
       renderer?.setAnimationLoop(null);
@@ -588,6 +644,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       renderer?.dispose();
       renderer?.forceContextLoss();
       renderer?.domElement.remove();
+      saveView.current = () => null;
       reset.current = () => {};
       zoom.current = () => {};
       navigate.current = () => {};
@@ -603,16 +660,31 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
       {navigation.mode==='fly'&&<FlyControls getMotion={getFly} onExit={exitFly} onReset={()=>reset.current()}
         disabled={status.phase!=='ready'} detail={world.paging&&pagingStats?.pending?'주변 세부 불러오는 중…':metrics?`자유 이동 · ${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
       <div ref={mount} className="canvas-mount" />
+      {world.paging&&<details className="paging-inspector" aria-label="Loading diagnostics">
+        <summary>로딩 상태 · {streamEnabled?pagingStats?.selected.toLocaleString()??'…':'전체'}{streamEnabled?'점':''}</summary>
+        <div className="paging-inspector-body">
+          <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
+          {streamEnabled&&diagnostics&&<>
+            <p>{pagingPhaseLabel[diagnostics.phase]} · {diagnostics.heartbeat.state==='rendering'?'화면 갱신 중':diagnostics.heartbeat.state==='hidden'?'백그라운드':diagnostics.heartbeat.state==='paused'?'화면 갱신 대기':'첫 화면 대기'}</p>
+            <p>수신 {(diagnostics.network.bytes! / 1e6).toFixed(2)}MB · 상주 {diagnostics.selection.residentPages??'?'} / {(diagnostics.runtime.maxPagedSplats??0)/65536}페이지</p>
+            <p>선택 {diagnostics.selection.traversed?.toLocaleString()??'?'} · 표시 {diagnostics.selection.active?.toLocaleString()??'?'}</p>
+            {Object.values(diagnostics.stages).some(s=>s.state==='waiting')&&<p role="status">10초 이상 진행 변화가 없습니다. 느린 처리인지 오류인지는 아직 확정할 수 없습니다.</p>}
+          </>}
+          <button disabled={status.phase==='loading'} onClick={switchLoadingMode}>{streamEnabled?'같은 위치 · 전체 SPZ 비교':'같은 위치 · LoD로 복귀'}</button>
+          <button onClick={downloadDiagnostics}>진단 JSON 저장</button>
+          <small>대기 작업이 없어도 원본 장면의 흐림은 남을 수 있습니다. 진단은 이 기기에 저장하며 자동 전송하지 않습니다. {diagnosticVersion}</small>
+        </div>
+      </details>}
       {world.paging&&<div className="stream-panel" aria-label="Native LoD paging status">
         <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
-        <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 SPZ로 비교':'LoD 스트리밍으로 전환'}</button>
+        <button onClick={switchLoadingMode}>{streamEnabled?'전체 SPZ로 비교':'LoD 스트리밍으로 전환'}</button>
         {streamEnabled&&pagingStats&&<><span>표시 {pagingStats.selected.toLocaleString()}점 · 상주 {pagingStats.pages}페이지 / {world.manifest.paging!.maxPagedSplats/65536}페이지 한도</span><span>파일 수신합 {(pagingStats.bytes/1e6).toFixed(2)}MB · 요청 {pagingStats.requested}회 · 원본 {world.paging.index.sourceSplats.toLocaleString()}점</span>
         {pagingStats.errors.length>0&&<><p role="alert">최근 페이지 오류: {pagingStats.errors.join('; ')}</p><button onClick={()=>{setStatus({phase:'loading',message:'Reconnecting LoD pages…'});setAttempt(v=>v+1);}}>페이지 다시 연결</button></>}</>}
         <small>먼 영역은 거친 GS로 유지하고 가까운 영역을 정밀하게 읽습니다. 사진 배경이 아닙니다.</small>
       </div>}
       {world.streaming&&<div className="stream-panel" aria-label="Spatial streaming status">
         <strong>{streamEnabled?'구간 로딩':'전체 로딩 비교'}</strong>
-        <button onClick={()=>{setStatus({phase:'loading',message:'Switching scene loading mode…'});setNavigation(initialNavigation(world));setMetrics(null);setStreamEnabled(v=>!v);}}>{streamEnabled?'전체 로딩으로 비교':'구간 로딩으로 전환'}</button>
+        <button onClick={switchLoadingMode}>{streamEnabled?'전체 로딩으로 비교':'구간 로딩으로 전환'}</button>
         {streamEnabled&&streamStats&&<><span>상주 {streamStats.resident}/{world.streaming.index.chunks.length}구간 · {streamStats.splats.toLocaleString()}점 · 누적 전송 {(streamStats.transferredBytes/1e6).toFixed(2)}MB</span><span>해제 {streamStats.evicted}회 · {streamStats.pending?'주변 구간 불러오는 중…':'주변 구간 준비됨'} · 파일 합 {(streamStats.residentBytes/1e6).toFixed(2)}MB (GPU 메모리 아님)</span>
         {streamStats.errors.length>0&&<><p role="alert">구간 오류: {streamStats.errors.join('; ')}</p><button onClick={()=>retryChunks.current()}>구간 다시 시도</button></>}</>}
         <small>가까운 구간과 인접 구간만 표시합니다. 멀리 보이는 장면은 빠질 수 있습니다.</small>
