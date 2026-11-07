@@ -100,6 +100,29 @@ dedup hardlinks. No extra bulk copy/download is used. New report-browser
 acceptance remains NOT RUN; no new GS rendering/coverage is inferred from this
 metadata publication. Existing scene/runtime checks remain preserved.
 
+### Bounded aligned-route viewer, before new native export
+
+Source`9ccc74f` adds optional route worlds with image-derived common coordinates,
+camera-driven owner selection,one Spark renderer/shared page budget and at most
+two resident segment roots. Incoming work retains the previous primary until
+ready,with failure/retry,stale-request disposal and same-position current-segment
+wholeSPZ comparison. This is code readiness, **not real two-segment GPU boundary
+or appearance acceptance**; those checks remain NOT RUN until actual new exports.
+All39current worlds and all257world files(including catalog)remain byte-identical.
+
+Release `viewer-seine-route-viewer-2026-11-07`, archive
+`groundshift-seine-route-viewer-20261107.tar.gz`: **1,086,815bytes**, SHA-256
+`7906cf0aadbeb3925138ce1ccfdced31c882e440ae359c84baa5ec134607c731`.
+Apply after39preceding layers. A fresh production build PASS in3.41s; explicit
+full curation retains17inert historical background files. ExistingSafari v2
+compiled marker/direct-buffer workaround remain present. Parent-verified unit,
+TypeScript,ESLint and2local existing-Safari regressions PASS; static results do
+not prove real route rendering. Complete base/target/archive/composed integrity
+PASS in7.136973s:6compiled/HTML/report changes,1,187target public files and
+1,283composed files. Public existing-scene regression checks follow dispatch;
+new actual two-segment rendering remains NOT RUN. Private evidence:
+`data/validation/paris-full-route-20261107/publications/route-viewer/`.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
@@ -1142,7 +1165,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the sixteen viewer/observation updates, in order. The command below includes all thirty-nine
+reconstruction/paging layers and the seventeen viewer/observation updates, in order. The command below includes all forty
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1281,6 +1304,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-seine-alignment-1004-1027-2026-11-07 \
     groundshift-seine-alignment-1004-1027-20261107.tar.gz \
     27d9025a187b24357ea749da7763528d2e48db19ca74036257e7a3c1f999d5e4
+  gs_restore_layer viewer-seine-route-viewer-2026-11-07 \
+    groundshift-seine-route-viewer-20261107.tar.gz \
+    7906cf0aadbeb3925138ce1ccfdced31c882e440ae359c84baa5ec134607c731
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
