@@ -229,9 +229,10 @@ are avoided. After dispatch,write
 SHA,commit/deployment IDs and actual status,then append public-hash/browser results.
 This is local publication bookkeeping,not a service/queue/framework.
 
-The helper counts final Docker COPY layers and warns at90 so a verified static
-checkpoint can consolidate active deployment layers before further growth.
-This is a conservative workflow threshold,not an asserted Railway hard limit.
+The helper counts final Docker COPY layers and warns at90. The publisher's hard
+ceiling is110COPY instructions, not90: this bounded55-window campaign is expected
+to finish at94COPY instructions. This is a conservative workflow threshold,not
+an asserted Railway hard limit.
 All previous release archives remain rollback evidence after consolidation.
 Five focused publication-boundary tests PASS. An initial macOS temporary-path
 normalization fixture fails and is corrected by resolving both compared roots;
@@ -291,8 +292,14 @@ build/curation. All attempt logs, PID/heartbeat, retry state, pending records an
 delivery receipts stay in the ignored local job. Failed packaging/upload/push or
 public readback retains the pending lineage; it never retrains or fabricates a
 successful delivery. Rollback archives remain unchanged. Ninety final COPY
-instructions trigger an explicit consolidation blocker rather than guessing a
-provider limit.
+instructions warn;110require a verified consolidation checkpoint. The43current
+archives use40COPY instructions because historical archives share one stage.
+Adding54new snapshots yields94COPY, plus one Caddyfile COPY and five pinned
+Caddy filesystem layers:100image layers for the planned campaign. A bounded
+manifest audit confirms five base filesystem layers on both amd64/arm64; the110
+COPY ceiling leaves room within Docker overlay2's documented128lower-layer range.
+This corrects the old90gate that would prematurely stop snapshots052–055. It does
+not claim an experimentally tested Railway maximum or expand reconstruction scope.
 
 `--reuse-inventory` verifies matching current content against the older on-disk
 size/SHA before hardlinking immutable files. Changed files get separate inodes.

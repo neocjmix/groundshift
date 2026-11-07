@@ -106,7 +106,7 @@ def add_pointer(text, stage, tag, archive, sha):
             raise ValueError('Existing snapshot pointer differs')
         return text
     marker = f'FROM {IMAGE}\nCOPY deploy/Caddyfile'
-    if text.count(marker) != 1 or text.count('COPY --from=') >= 90:
+    if text.count(marker) != 1 or text.count('COPY --from=') >= 110:
         raise ValueError('Deployment checkpoint consolidation required before adding layers')
     addition = (f'# Immutable completed route snapshot; new boundary GPU acceptance remains NOT RUN.\n'
                 f'FROM {IMAGE} AS {stage}\n'

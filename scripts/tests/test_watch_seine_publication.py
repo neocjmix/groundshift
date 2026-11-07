@@ -55,8 +55,9 @@ class WatcherTests(unittest.TestCase):
         self.assertEqual(watcher.add_pointer(result, 'seine_snapshot_002', 'release-002', 'scene.tar.gz', 'a' * 64), result)
         with self.assertRaisesRegex(ValueError, 'differs'):
             watcher.add_pointer(result, 'seine_snapshot_002', 'release-002', 'scene.tar.gz', 'b' * 64)
+        self.assertIn('AS seine_snapshot_052', watcher.add_pointer(base + 'COPY --from=x\n' * 89, 'seine_snapshot_052', 'r', 'a.tar.gz', 'a' * 64))
         with self.assertRaisesRegex(ValueError, 'consolidation'):
-            watcher.add_pointer(base + 'COPY --from=x\n' * 90, 'seine_snapshot_003', 'r', 'a.tar.gz', 'a' * 64)
+            watcher.add_pointer(base + 'COPY --from=x\n' * 110, 'seine_snapshot_003', 'r', 'a.tar.gz', 'a' * 64)
 
     def test_missing_observations_fail_instead_of_silently_disappearing(self):
         with tempfile.TemporaryDirectory() as name:
