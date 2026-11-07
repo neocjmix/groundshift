@@ -15,6 +15,28 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Mobile Fly refinement and near-detail investigation — 2026-11-07
+
+The first increment is **interim mobile UI**, while blurry near-detail LoD loading
+remains under investigation. It adjusts knob centering, adds a floating left
+movement stick, replaces the right stick with direct scene touch-drag look and
+places lift controls on the right. This increment makes no LoD detail/quality
+acceptance claim. Browser checks are **NOT RUN** at dispatch; the main agent tests
+an immutable curated package while loading investigation continues separately.
+All39 scenes,17 inert historical background files and every prior observation
+remain retained. No scene/report/source-image/camera/provenance bytes change;
+no reconstruction, training or new hosting service is introduced.
+
+Release `viewer-mobile-fly-ui-2026-11-07`, archive
+`groundshift-mobile-fly-ui-20261107.tar.gz`: **1,060,799 bytes**, SHA-256
+`10264d84cb6989df04a21a5c22654313c9955ad18c92ff8aa1eb50226607feab`.
+Apply after the27 preceding layers. Fresh production build passes in3.63s;
+explicit authorized curation and full base/target/archive/composed size/hash
+integrity pass in5.276609s:6 changed compiled assets/HTML,1,185 target public
+files and1,259 composed files. Rollout/public-file/browser checks follow dispatch.
+Private publication evidence stays under
+`data/validation/fly-mobile-detail-20261107/publications/mobile-ui/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -716,7 +738,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the four Fly controls/recovery layers, in order. The command below includes all twenty-seven
+reconstruction/paging layers and the five Fly controls/mobile layers, in order. The command below includes all twenty-eight
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -819,6 +841,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-fly-lifecycle-fix-2026-11-07 \
     groundshift-fly-lifecycle-fix-20261107.tar.gz \
     607d60c095a32b64cf0c48fafa7262729cc81ec06899c2910e7b20281846a9c1
+  gs_restore_layer viewer-mobile-fly-ui-2026-11-07 \
+    groundshift-mobile-fly-ui-20261107.tar.gz \
+    10264d84cb6989df04a21a5c22654313c9955ad18c92ff8aa1eb50226607feab
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
