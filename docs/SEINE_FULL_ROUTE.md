@@ -257,6 +257,16 @@ export receipt records browser rendering **NOT RUN**; later public checks must
 identify this snapshot explicitly rather than inherit snapshot002's PASS.
 Global geometry remains **NOT ACCEPTED**. Native evidence is retained under
 `data/jobs/seine-full-20261107/segment-1020-1043/` and `route-world-003/`.
+The subsequent actual public snapshot003 check **PASS**ed one focused desktop
+WebKit 27.2 case: Fly from the second to third segment and back at recorded view
+35. At most two segments and fourteen pages were resident; settled endpoints had
+empty work queues, no page errors and no eager whole-SPZ requests. The handoff
+preserved position, orientation and 80-degree FOV in both directions. Actual
+frames show the street and buildings, with road/car blur and distorted facades.
+This is an iPhone viewport/input profile on desktop, not a physical iPhone, a
+full-route test or a perceptual seamlessness measurement. Evidence:
+`data/validation/seine-route-20261107/public-route-003-browser-summary.json`.
+
 The job's exact depth archive passed verification for 800 aliases of 480 unique
 NPYs: 1,132,523,520 raw bytes correspond to 426,718,928 encoded bytes, of which
 280,171,044 bytes were new blobs. It took 33.746636 s and retained recoverability.
