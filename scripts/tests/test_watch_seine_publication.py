@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('watcher', Path(__file__).parents[1] / 'watch-seine-publication.py')
 watcher = importlib.util.module_from_spec(spec)
@@ -11,6 +12,28 @@ spec.loader.exec_module(watcher)
 
 
 class WatcherTests(unittest.TestCase):
+    def test_git_push_queues_connector_work_without_claiming_delivery(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            active = dict(segments=2, phase='COMMITTED', attempt=name, commit='a' * 40,
+                          overlay=dict(assembledInventory='next.inventory.json', changedFiles=[dict(path='www/worlds/seine-full-route/coverage.json', bytes=1, sha256='b' * 64)]))
+            state = dict(active=active, submissions={}, deliveryMode='CONNECTOR QUEUE', baseInventory='before')
+            with patch.object(watcher, 'run', return_value=''):
+                watcher.advance(root, state, root / 'state.json')
+            queued = json.loads((root / 'publication-dispatch/002.json').read_text())
+            self.assertEqual(queued['status'], 'DISPATCH_PENDING')
+            self.assertEqual(queued['commit'], 'a' * 40)
+            self.assertNotIn('dispatchedAt', queued)
+            self.assertFalse((root / 'publication-receipts/002.json').exists())
+            with patch.object(watcher, 'public_hash', side_effect=ValueError('not live')):
+                watcher.check_submissions(root, state, root / 'state.json')
+            self.assertFalse((root / 'publication-receipts/002.json').exists())
+            with patch.object(watcher, 'public_hash', side_effect=lambda value: value):
+                watcher.check_submissions(root, state, root / 'state.json')
+            receipt = json.loads((root / 'publication-receipts/002.json').read_text())
+            self.assertEqual(receipt['status'], 'DELIVERED PUBLIC HASHES')
+            self.assertEqual(receipt['railwayProviderStatus'], 'NOT RUN by background worker')
+
     def test_only_completed_atomic_exports_are_selected_in_order(self):
         with tempfile.TemporaryDirectory() as name:
             root = Path(name)

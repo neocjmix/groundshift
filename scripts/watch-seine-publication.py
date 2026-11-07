@@ -214,7 +214,7 @@ def advance(coordinator, state, state_path):
         checkpoint('COMMITTED', commit=run([GIT, 'rev-parse', 'HEAD'], log).strip())
     if active['phase'] == 'COMMITTED':
         run([GIT, 'push', 'origin', f'HEAD:refs/heads/{BRANCH}'], log, timeout=180)
-        active.update(phase='PUSHED', dispatchedAt=now(), railwayProviderStatus='NOT RUN by background worker',
+        active.update(phase='PUSHED', pushedAt=now(), railwayProviderStatus='NOT RUN by background worker',
                       browserRendering='NOT RUN', globalGeometry='NOT ACCEPTED')
         if state.get('deliveryMode') == 'CONNECTOR QUEUE':
             active['status'] = 'DISPATCH_PENDING'
@@ -287,6 +287,15 @@ def main(args):
         if not run([GIT, 'remote', 'get-url', 'origin'], log).strip().removesuffix('.git').endswith('github.com/' + REPO):
             raise ValueError('Wrong publication repository')
         state = publication.read(state_path) if state_path.exists() else dict(baseInventory=str(args.base_inventory.resolve()), submissions={}, active=None)
+        if args.adopt_base_inventory:
+            if state.get('active') is not None:
+                raise ValueError('Cannot adopt a manual publication base during an unfinished transaction')
+            base = publication.read(args.base_inventory)
+            for name, item in records(base).items():
+                source = Path(base['output']) / name
+                if not source.is_file() or source.is_symlink() or source.stat().st_size != item['bytes'] or publication.digest(source) != item['sha256']:
+                    raise ValueError('Adopted composed inventory integrity mismatch')
+            state['baseInventory'] = str(args.base_inventory.resolve())
         state['deliveryMode'] = 'CONNECTOR QUEUE' if fallback else 'VERIFIED GIT AUTODEPLOY'
         while True:
             try:
@@ -321,6 +330,7 @@ if __name__ == '__main__':
     parser.add_argument('--base-inventory', type=Path, required=True)
     parser.add_argument('--autodeploy-proof', type=Path, required=True)
     parser.add_argument('--connector-fallback', action='store_true', help='Upload/push immediately; queue DISPATCH_PENDING for the separately running connector heartbeat.')
+    parser.add_argument('--adopt-base-inventory', action='store_true', help='After stopping for manual metadata publication, verify and adopt its latest composed inventory.')
     parser.add_argument('--poll-seconds', type=float, default=5)
     parser.add_argument('--once', action='store_true')
     main(parser.parse_args())

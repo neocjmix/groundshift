@@ -282,7 +282,9 @@ verify retained immutable segment bytes rather than claiming old metadata was li
 
 The worker holds `data/jobs/seine-full-20261107/.static-publication.lock` for its
 lifetime. **Stop it before manual publication or any competing branch push**,
-then adopt the latest composed inventory and restart. Native jobs use a separate
+then restart with `--adopt-base-inventory --base-inventory <new-composed-inventory>`.
+The worker verifies all files and refuses adoption during an unfinished transaction.
+Native jobs use a separate
 lock and continue. Uncommitted runtime/build/curator source blocks publication;
 unrelated native Python work does not. Runtime bytes are checked before/after
 build/curation. All attempt logs, PID/heartbeat, retry state, pending records and
@@ -297,9 +299,10 @@ size/SHA before hardlinking immutable files. Changed files get separate inodes.
 The controlled package shares1,184files/1,373,079,702bytes with the verified base;
 it does not create another historical1.4GB copy per new segment. The assembled
 overlay also shares old immutable files. Do not edit frozen package bytes in place.
-Forty packaging tests and three watcher boundary tests PASS, including corrupt-base
+Forty packaging tests and four watcher boundary tests PASS, including corrupt-base
 rejection, unchanged inode reuse, changed metadata isolation, ordered completed
-exports, idempotent pointers and preservation of missing historical observations.
+exports, idempotent pointers, preservation of missing historical observations and
+proof that Git push alone creates only a pending queue, never a delivery receipt.
 These fixtures do not prove native/GPU/browser behavior.
 
 ```sh
@@ -316,9 +319,28 @@ without a new export use the same five-minute thread heartbeat: inspect
 report/timeline, then publish a metadata-only overlay using the current composed
 inventory and healthy connector. Raw exception logs, paths and private URLs stay
 local. This fallback is explicit; it is not an event-driven failure-report watcher.
-At this source revision detached worker startup and the manual connector dispatch
-for the UI package are pending actual execution. A PID intention, PREPARED record
-or successful Git push alone is not live delivery.
+Actual connector dispatch of pointer`a2ea732d800f19995da612c9f883e9929f26819e`
+creates`81c7310b-3799-4412-83bf-cd5d40a630be` at09:48:12.793Z, reaches
+**SUCCESS** at09:49:49.157Z. All3changed public file sizes/SHA-256 PASS after four
+readiness attempts/20.043312s; this duration includes waiting for rollout, not a
+download benchmark. The ordinary tree extends42→43archives: prior files are
+rechecked, the new archive pin and all1,291final paths/sizes/SHA-256 PASS in
+5.656241s, with no additional full copy/download. The deployed tourist bundle is
+9,030bytes,SHA`1a37ec5c69b1423df49bd4bd341fd929ba5f52abd90ff00f85e26a12339b58e6`.
+This is manual connector deployment, **not proof of Git autodeploy**. An initial
+invalid full-SHA argument is rejected without a deployment; the exact Git-read
+SHA above succeeds. No native/route GPU status is changed by these file checks.
+
+The worker actually executes an initial one-shot scan and then starts detached
+at09:47:55Z (initialPID34483), producing fresh five-second WAITING heartbeats,
+no error and delivery mode`CONNECTOR QUEUE`. A bounded maintenance stop loads the
+queue-gate test and safe base-adoption option. The current owned PID/start command
+is retained in`data/jobs/seine-full-20261107/static-publication/process.json`,
+and actual freshness/status in`heartbeat.json`; do not infer process liveness from
+the old PID alone. No completed new export exists at this check, so the real
+snapshot→release path is NOT RUN despite passing boundary fixtures. The239JS
+tests,40packaging subset,4watcher tests and5publication helper tests PASS; new
+native training and route acceptance remain independent.
 
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
