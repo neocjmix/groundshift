@@ -244,11 +244,16 @@ def execute(root, limit=None):
     state=read(path) if path.exists() else dict(schemaVersion=1,status='RUNNING',configuration=dict(window=24,stride=16,cropSize=768,directions=20,steps=8000,maxSplats=800000,model='Depth Anything V2 Small',training='Brush0.3.0 Metal'),sourceManifestSha256=sha(SOURCE_ROUTE),records=[baseline_record()],exports=[])
     if state['sourceManifestSha256']!=sha(SOURCE_ROUTE):raise ValueError('Source manifest changed')
     state['status']='RUNNING';write(path,state);completed=0
-    if len(state['records'])>1 and not any(item['segments']==len(state['records']) for item in state['exports']):snapshot(root,state)
-    for record in state['records']:
-        if record.get('reusedExistingBaseline'):continue
-        job=Path(record['job'])
-        if not (job/'depth-storage.json').exists():write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
+    maintenance='snapshot-resume'
+    try:
+        if len(state['records'])>1 and not any(item['segments']==len(state['records']) for item in state['exports']):snapshot(root,state)
+        maintenance='depth-storage-resume'
+        for record in state['records']:
+            if record.get('reusedExistingBaseline'):continue
+            job=Path(record['job'])
+            if not (job/'depth-storage.json').exists():write(job/'depth-storage.json',archive_completed_depth(job,apply=True))
+    except BaseException as error:
+        state.update(status='FAIL',failedStage=maintenance,error=str(error));write(path,state);raise
     for first in windows():
         if any(r['first']==first and r['status']=='PASS' for r in state['records']):continue
         if limit is not None and completed>=limit:break
@@ -313,6 +318,13 @@ if __name__=='__main__':
     with (args.root/'coordinator.lock').open('a') as lock:
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:raise SystemExit('Another coordinator owns this run; no duplicate work started')
-        result=execute(args.root,args.limit)
+        try:result=execute(args.root,args.limit)
+        except BaseException as error:
+            failure=dict(status='FAIL',error=str(error),at=datetime.now(timezone.utc).isoformat())
+            write(args.root/('coordinator-failure-'+str(time.time_ns())+'.json'),failure)
+            state_path=args.root/'route-run.json'
+            if state_path.exists():
+                state=read(state_path);state.update(status='FAIL',error=str(error));write(state_path,state)
+            raise
     print(json.dumps({k:result[k] for k in ('status','configuration')},indent=2))
     raise SystemExit(0 if result['status'] in ('PASS','PARTIAL') else 1)
