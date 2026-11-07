@@ -16,7 +16,11 @@ async function settled(page,id){
  const frame=(await state(page)).frames;await expect.poll(async()=>(await state(page)).frames).toBeGreaterThan(frame+30);return state(page);
 }
 async function inspect(page,info,name){
- const bytes=await page.locator('canvas').screenshot({path:info.outputPath(name+'.png')}),png=PNG.sync.read(bytes);let colored=0;
+ // A locator screenshot includes DOM overlays above the canvas. Remove only
+ // their visibility so green status controls cannot satisfy the pixel check.
+ const overlay=await page.addStyleTag({content:'.scene-shell>*:not(.canvas-mount){visibility:hidden!important}.scene-shell::after{visibility:hidden!important}'});
+ let bytes;try{bytes=await page.locator('canvas').screenshot({path:info.outputPath(name+'.png')});}finally{await overlay.evaluate(node=>node.remove());}
+ const png=PNG.sync.read(bytes);let colored=0;
  for(let i=0;i<png.data.length;i+=4)if(Math.max(...png.data.subarray(i,i+3))-Math.min(...png.data.subarray(i,i+3))>12)colored++;
  expect(colored).toBeGreaterThan(10000);return {width:png.width,height:png.height,coloredPixels:colored};
 }
