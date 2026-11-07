@@ -43,7 +43,7 @@ export class RouteStream<T extends Resource>{
   constructor(private index:RouteIndex,private operations:{
     load:(segment:RouteSegment,signal:AbortSignal)=>Promise<T>;
     show:(resource:T)=>void;hide:(resource:T)=>void;opacity:(resource:T,value:number)=>void;
-    ready:(resource:T)=>boolean;changed?:(stats:RouteStats)=>void;
+    ready:(resource:T)=>boolean;error?:(resource:T)=>string|undefined;changed?:(stats:RouteStats)=>void;
   },private initialOwner?:string){}
   primary(){return this.active;}
   entries(){return [this.active,this.incoming].filter((v):v is Entry<T>=>v!==undefined);}
@@ -55,6 +55,10 @@ export class RouteStream<T extends Resource>{
       if(this.pending&&this.pending.segment.id!==wanted.id&&!this.pending.abort.signal.aborted){this.pending.abort.abort();this.cancelled++;}
       if(this.incoming&&this.incoming.segment.id!==wanted.id)this.dropIncoming();
       this.emit();
+    }
+    if(this.incoming){
+      const error=this.operations.error?.(this.incoming.resource);
+      if(error){this.failures.set(this.incoming.segment.id,error);this.dropIncoming();this.emit();}
     }
     if(this.incoming){
       if(this.loadedAt===0)this.loadedAt=now;

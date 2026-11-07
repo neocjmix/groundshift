@@ -490,6 +490,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           },
           show:r=>scene.add(r.mesh),hide:r=>scene.remove(r.mesh),opacity:(r,value)=>{r.mesh.opacity=value;},
           ready:r=>r.transfer.pending===0&&r.mesh.numSplats>=Math.min(131072,r.world.paging!.index.sourceSplats*.2),
+          error:r=>r.transfer.errors[0],
           changed:stats=>{if(disposed||failed)return;routeSelection.current=stats.active;setRouteStats(stats);},
         },routeSelection.current??undefined);
         retryChunks.current=()=>route?.retry();

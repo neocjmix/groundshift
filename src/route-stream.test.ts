@@ -52,4 +52,14 @@ describe('route ownership and independent-frame delivery, synthetic resources',(
     const next=s.entries()[1].resource;s.update([10,0,0],2);s.update([10,0,0],102);s.update([0,0,0],103);
     expect(next.dispose).toHaveBeenCalledOnce();expect(s.primary()!.resource.alpha).toBe(1);expect(s.stats().resident).toBe(1);s.dispose();
   });
+  it('retains primary if incoming RAD fails after metadata succeeded, including mid-fade',async()=>{
+    const failure={message:undefined as string|undefined};const op={...operations(),error:()=>failure.message},s=new RouteStream(index,op);
+    s.update([0,0,0],0);await tick();const first=s.primary()!.resource;
+    s.update([10,0,0],1);await tick();const incoming=s.entries()[1].resource;
+    s.update([10,0,0],2);s.update([10,0,0],102);expect(first.alpha).toBeLessThan(1);
+    failure.message='RAD checksum mismatch';s.update([10,0,0],103);
+    expect(incoming.dispose).toHaveBeenCalledOnce();expect(first.dispose).not.toHaveBeenCalled();expect(first.alpha).toBe(1);
+    expect(s.stats()).toMatchObject({active:'0',incoming:null,resident:1,transitions:0,phase:'error'});
+    expect(s.stats().errors[0]).toContain('checksum');s.dispose();
+  });
 });
