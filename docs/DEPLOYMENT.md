@@ -2803,3 +2803,33 @@ limits. Public browser checks are NOT RUN in this frozen increment; later
 completed public tests belong in a separate small evidence update. Publication
 does not wait for those checks. Previous provisional/failed observations remain.
 Private packaging evidence:`data/jobs/seine-full-20261107/publication-evidence-002-1794048239680427000/release/`.
+
+Preview pointer`dc62e851903178978143d87e3f627825586a13d6` deploys as
+`c6d428d3-b902-4e9a-b30d-bdf9de45b861`: created10:47:31.968Z, **SUCCESS**
+10:48:27.945Z. Anonymous full archive readback PASS in3.643969s; all6changed
+public sizes/SHA-256 PASS after six readiness attempts/35.491127s including
+rollout wait. The original PNG remains exact`17bf8b2c…0ccee78`. Ordinary
+44→45archive restoration rechecks all1,345final files/pins in4.216602s, with no
+bulk duplicate or download. This increment intentionally retains public checks
+NOT RUN at freeze; subsequent actual acceptance follows below.
+
+### Snapshot002 public checks: three metadata files only
+
+Actual public WebKit3/3 PASS verifies boundary crossing/reversal, real Fly/W and
+same-pose/FOV current-segment SPZ comparison, plus injected metadata/RADC503
+retention/retry. Actual screenshots are inspected: street rendering remains
+visible with known blur/smearing. Local Chrome3/WebKit3 PASS remain separately
+scoped. Physical-iPhone execution and the full876source/2.185km target remain
+NOT RUN; global geometry is NOT ACCEPTED. The source record's earlier export-time
+browser NOT RUN is preserved rather than modifying the immutable native export.
+
+Release`viewer-seine-route-002-verified-1794048544116608000`, archive
+`groundshift-seine-route-002-verified-1794048544116608000.tar.gz`:32,363bytes,
+SHA-256`bc0d8575718d682f962009d4b71ea5a316299af170b4d1528555d10985edfafc`.
+Apply after45preceding archives. Exactly3JSON files change: report,timeline,
+catalog. The already built/live runtime and all scene/preview/camera/RAD bytes
+are reused unchanged; finite JSON/privacy/catalog validation and complete base/
+target/archive/composed integrity PASS in6.052617s for1,345files. No fresh GPU
+operation is needed for a metadata status update. Rollout/readback are pending
+at this pointer commit; later actual results are recorded separately. Packaging
+evidence:`data/jobs/seine-full-20261107/publication-verified-002-1794048544116608000/`.

@@ -393,12 +393,12 @@
     {
       "id": "seine-full-route",
       "title": "Seine · 99m of 2.185km",
-      "description": "실제 GS2구간 · 로컬 경계 탐색6통과 · 공개 확인 대기",
+      "description": "실제 GS2구간 · 로컬6/공개 WebKit3 경계 탐색 통과",
       "category": "experiment",
       "manifestPath": "/worlds/seine-full-route/world.json",
       "thumbnailPath": "/worlds/seine-full-route/preview.jpg",
       "createdAt": "2026-11-07T10:35:03.319296+00:00",
-      "detail": "2 trained segments, 40/876 source cameras, source GPS coverage 98.75m/2185.31m. Public route browser/boundary rendering NOT RUN at this increment; global geometry NOT ACCEPTED. Preview is an actual Chrome156 GS render after crossing into segment1004–1027; only viewer UI hidden, no photo background/generation/retouching. Local Chrome3/WebKit3 real-boundary execution PASS; public browser checks pending. Global geometry is not accepted."
+      "detail": "2 trained segments, 40/876 source cameras, source GPS coverage 98.75m/2185.31m. Public WebKit3 real boundary/reverse/Fly/SPZ/failure-retry execution PASS; global geometry NOT ACCEPTED. Preview is an actual Chrome156 GS render after crossing into segment1004–1027; only viewer UI hidden, no photo background/generation/retouching. Local Chrome3/WebKit3 real-boundary execution PASS; public WebKit3 execution PASS, physical iPhone NOT RUN. Global geometry is not accepted."
     }
   ]
 }

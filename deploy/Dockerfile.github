@@ -311,6 +311,13 @@ RUN wget -q -O /tmp/seine_preview_002.tar.gz https://github.com/neocjmix/grounds
  && mkdir /out \
  && tar -xzf /tmp/seine_preview_002.tar.gz -C /out
 
+# ThreeJSON actualpublic evidence update; same scene/runtime/preview bytes.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_verified_002
+RUN wget -q -O /tmp/seine_verified_002.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-002-verified-1794048544116608000/groundshift-seine-route-002-verified-1794048544116608000.tar.gz \
+ && echo 'bc0d8575718d682f962009d4b71ea5a316299af170b4d1528555d10985edfafc  /tmp/seine_verified_002.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_verified_002.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -355,5 +362,6 @@ COPY --from=seine_route_recovery /out/www /srv
 COPY --from=seine_route_watcher /out/www /srv
 COPY --from=seine_snapshot_002 /out/www /srv
 COPY --from=seine_preview_002 /out/www /srv
+COPY --from=seine_verified_002 /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
