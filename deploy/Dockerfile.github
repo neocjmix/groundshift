@@ -241,6 +241,13 @@ RUN wget -q -O /tmp/safari-worker-evidence.tar.gz https://github.com/neocjmix/gr
  && mkdir /out \
  && tar -xzf /tmp/safari-worker-evidence.tar.gz -C /out
 
+# Version-pinned buffered decode workaround; physical-device cause remains unconfirmed.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS safari_worker_fix
+RUN wget -q -O /tmp/safari-worker-fix.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-safari-worker-fix-2026-11-07/groundshift-safari-worker-fix-20261107.tar.gz \
+ && echo '9861fcfc0d56b739751665026dd7c71ca011b13b0519ba1a5224ab6cfec1ff94  /tmp/safari-worker-fix.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/safari-worker-fix.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -275,5 +282,6 @@ COPY --from=lod_detail_verified /out/www /srv
 COPY --from=lod_report_verified /out/www /srv
 COPY --from=safari_diagnostics /out/www /srv
 COPY --from=safari_worker_evidence /out/www /srv
+COPY --from=safari_worker_fix /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

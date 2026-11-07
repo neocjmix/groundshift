@@ -88,6 +88,31 @@ integrity passes in8.262488s for1,276files; anonymous archive readback passes
 in0.586250s. All39scenes and prior observations remain. Evidence stays private
 under`data/validation/iphone-safari-20261107/publications/worker-evidence/`.
 
+### Buffered-worker workaround and diagnostics v2
+
+The next source increment bypasses the synthetic ReadableStream only when the
+worker already owns complete `fileBytes`: status,decoder push and finish use the
+same original decoder. Actual URL streaming stays unchanged. The original
+Spark2.4.0 distribution SHA and exactly one known branch are required; upstream
+drift fails the build. Diagnostic v2 includes actual camera pose/FOV/mode/cursor
+in a device-local downloaded JSON, with no automatic upload. No source image,
+training parameter,Gaussian/camera/world-manifest bytes change.
+
+Release `viewer-safari-worker-fix-2026-11-07`, archive
+`groundshift-safari-worker-fix-20261107.tar.gz`: **1,061,445 bytes**, SHA-256
+`9861fcfc0d56b739751665026dd7c71ca011b13b0519ba1a5224ab6cfec1ff94`.
+Apply after35 preceding layers. Root's completed production build14.03s and
+223unit/typecheck/lint PASS are reused at source`bc25334`; the actual compiled
+v2 marker and direct buffered branch are verified. Full39-scene explicit curation
+retains17inert background files. All256non-catalog worldfiles remain byte-identical.
+Complete base/target/archive/composed integrity passes in8.785584s:5 compiled/HTML
+changes,1,188target public files and1,280composed files. An initial supplemental
+text probe expects an invented marker and fails; the corrected exact compiled
+branch probe passes without a source change. Packaged/public workaround checks
+are NOT RUN at dispatch. Physical iPhone16Pro compact cause/resolution remains
+unconfirmed and NOT RUN, regardless of desktop fixture recovery.
+Private evidence: `data/validation/iphone-safari-20261107/publications/worker-fix/`.
+
 ## Mobile Fly refinement and near-detail investigation — 2026-11-07
 
 The first increment is **interim mobile UI**, while blurry near-detail LoD loading
@@ -960,7 +985,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the twelve viewer/observation updates, in order. The command below includes all thirty-five
+reconstruction/paging layers and the thirteen viewer/observation updates, in order. The command below includes all thirty-six
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1087,6 +1112,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-safari-worker-evidence-2026-11-07 \
     groundshift-safari-worker-evidence-20261107.tar.gz \
     784aa1bdcccc215f46d30b46cc007ea9452b3527c6336dcf4beee64a19c02e6b
+  gs_restore_layer viewer-safari-worker-fix-2026-11-07 \
+    groundshift-safari-worker-fix-20261107.tar.gz \
+    9861fcfc0d56b739751665026dd7c71ca011b13b0519ba1a5224ab6cfec1ff94
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
