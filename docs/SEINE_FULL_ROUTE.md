@@ -188,7 +188,7 @@ Never publish the raw coordinator/job directories.
 | First added delivery derivatives | PASS 15,945,260 B SPZ; 26,045,905 B chunked RAD including its index |
 | First connected export | PASS two independently trained segments, 40 actual source poses, ranks 988–1027; 98.749536 m source GPS coverage |
 | Independent two-segment local rendering/interaction | PASS Chrome 3/3 and desktop WebKit 3/3; actual Fly boundary, reversal, current-segment SPZ, metadata/RAD failure retention and retry |
-| Independent two-segment public rendering | NOT RUN at this documentation update; first snapshot dispatched for separate public checks |
+| Independent two-segment public rendering | PASS desktop WebKit 3/3 against actual Railway snapshot002; maximum two resident segments and fourteen pages, settled queues empty, no page errors |
 | Physical iPhone boundary/long-session test | NOT RUN |
 | Entire 876-source reconstruction | RUNNING, not complete |
 | Global metric accuracy / long-route drift | NOT ACCEPTED / NOT RUN |
@@ -221,6 +221,15 @@ the first real two-segment frozen export passed in 110.817168 s (Chrome) and
 86.534011 s (WebKit); those are suite wall times, not rendering benchmarks.
 Evidence: `data/validation/seine-route-20261107/browser-real-batch.json` and its
 retained engine logs/screenshots.
+Public evidence is `public-route-browser-summary.json` in the same directory.
+It uses desktop WebKit with an iPhone viewport/input profile and an explicit
+fullscreen-unavailable fixture, not a physical phone. Actual public Fly movement
+selected 673,596 splats in the new segment; same-camera whole-SPZ comparison and
+return preserved position, orientation and FOV. Both intentionally injected
+single-request HTTP 503 failures retained the old segment and recovered through
+retry. Recognizable road/facades/sidewalk/trees/intersection are visible, with
+road/car smearing and stretched or duplicated thin structures. Settled frames
+do not establish a perceptually seamless transition or surveyed street geometry.
 They do not establish native training, rendering, collision geometry or
 surveyed street accuracy. Live viewer and execution evidence will be appended
 as those operations actually finish.
