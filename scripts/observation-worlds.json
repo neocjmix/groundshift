@@ -315,6 +315,16 @@
       "credits": [
         "SOURCE_LICENSE"
       ]
+    },
+    {
+      "id": "seine-full-route",
+      "source": "data/jobs/seine-full-20261107/publication-route-world-002-1794047703291995000/world",
+      "asset": "scene.spz",
+      "format": "spz",
+      "credits": [
+        "SOURCE_LICENSE",
+        "coverage.json"
+      ]
     }
   ],
   "files": [

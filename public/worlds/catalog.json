@@ -389,6 +389,16 @@
       "thumbnailPath": "/worlds/paris-58m-lod-compact/preview.jpg",
       "createdAt": "2026-11-06T17:42:09.792102+00:00",
       "detail": "현재14페이지(917,504슬롯)·80만 점 선택 목표. 사용자가 실제 iPhone16Pro Safari에서 지속 흐림 해결과 그럴듯한 장면을 확인했습니다(USER REPORTED); 계측 실기기 PASS는 아닙니다. 공개 WebKit2/2·Chrome 회귀와 이전8페이지 실패는 별도 증거로 보존합니다.25.95MB/1.19% 저장 절약은 동일GS 비교이며 이 장면의 실제 범위는 첫58m입니다."
+    },
+    {
+      "id": "seine-full-route",
+      "title": "Seine · 99m of 2.185km",
+      "description": "2개 실제 GS · 40/876소스 · 새 경계 GPU검증 NOT RUN",
+      "category": "experiment",
+      "manifestPath": "/worlds/seine-full-route/world.json",
+      "thumbnailPath": "/worlds/seine-full-route/preview.jpg",
+      "createdAt": "2026-11-07T10:35:03.319296+00:00",
+      "detail": "2 trained segments, 40/876 source cameras, source GPS coverage 98.75m/2185.31m. New route browser/boundary rendering NOT RUN; global geometry NOT ACCEPTED. Preview is the retained baseline GS render, not new-route rendering proof."
     }
   ]
 }

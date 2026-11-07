@@ -2756,3 +2756,9 @@ Public-browser checks used the Codex in-app Chromium browser on this M2 Mac, 128
 Raw HTTP hashes, browser details/camera positions and Railway build/runtime logs are retained locally in `data/validation/deployment/railway-{http,browser,logs}.json`. Earlier local Caddy validation remains in `local.json`. TypeScript, lint, 86 unit tests and the production build passed during package preparation; the subsequent packaging-only adjustment passed syntax and inventory checks, with unchanged `www/` hashes.
 
 Current references: [Railway CLI root/ignore behavior](https://docs.railway.com/cli/up), [Railway Caddy deployment](https://railway.com/guides/caddy), [IaC and Config as Code deprecation](https://docs.railway.com/infrastructure-as-code), [Caddy file server](https://caddyserver.com/docs/caddyfile/directives/file_server). The Docker image is pinned to the verified available `2.11.7-alpine` manifest digest; Caddy's current release was 2.11.8 when checked, but that Docker tag was not yet available.
+
+<!-- seine-snapshot-002 -->
+
+### Automated route snapshot 002
+
+Release `viewer-seine-route-002-1794047703065085000`, archive `groundshift-seine-route-002-1794047723732148000.tar.gz`, 99,960,013bytes, SHA-256 `ba0f7dc4c6f8b4bc58141622e92c3237b70c42defcf0f4f7bc28346cff45b120`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 55 changed files; 1343 composed files. Git push dispatches the verified branch-follow service asynchronously. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
