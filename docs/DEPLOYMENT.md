@@ -3230,3 +3230,26 @@ change, extra GPU/browser campaign or self-referential artifact deployment.
 ### Automated route snapshot 007
 
 Release `viewer-seine-route-007-1794059234849587000`, archive `groundshift-seine-route-007-1794059247455255000.tar.gz`, 42,119,820bytes, SHA-256 `9a262f8325abc71eff8d6789a4bc506b8a9550fb3db5100ba8b8421d9a21af36`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 29 changed files; 1467 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+### Snapshot007 initial build failure and bounded diagnostic retry
+
+The original007pointer`d01dffad9b5601a195747c236233cb8e46084fb5` dispatches as
+`8e51b5a2-3879-46d2-9542-51e29feac7b0`, created13:52:31.120Z, **FAILED**
+13:52:53.535Z. The build reports historical tangent-verified download/checksum/
+extract chain exit1; other stages are context-cancelled137. No distinct wget,
+tar, checksum, corruption or OOM explanation is present, so none is inferred.
+Independent anonymous historical archive download PASS:12,479bytes, original
+SHA`d8de6034d83f9fb3abdd1f0a99db148a1ea1d11a244c4a4bcaea329502cc4842`
+in0.535967s; this does not prove the builder's failure cause.007ordinary restoration
+55→56archives/all1,467files PASS6.369483s. Existing006remains publicly live.
+
+The same-pointer connector retry`935af005-136d-4aa8-b729-a79edad91eb0` is
+SKIPPED13:54:19.548Z: no changes detected in watch paths; no second build is
+executed. The failed build cannot be redeployed as an existing successful image.
+A bounded watched Docker edit removes quiet mode only from that historical wget
+to expose any future actual error and trigger a fresh build. Every asset URL,
+checksum, extraction command, final COPY order and served byte remains unchanged.
+No service/GPU/native configuration changes or new release archive are introduced.
+Raw failure/skip evidence stays local; a sanitized failed-stage observation will
+remain in the007report even after recovery. Private logs/readback:
+`data/jobs/seine-full-20261107/static-publication/snapshot-007-1794059234849587000/`.
