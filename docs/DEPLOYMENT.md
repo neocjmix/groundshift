@@ -88,6 +88,12 @@ integrity passes in8.262488s for1,276files; anonymous archive readback passes
 in0.586250s. All39scenes and prior observations remain. Evidence stays private
 under`data/validation/iphone-safari-20261107/publications/worker-evidence/`.
 
+Provisional pointer`732cdd27a981bff5b99f8623ddc89ddb086dfe01` deploys as
+`23ae0a97-c245-4782-af55-e71b9030b93f`: created2026-11-07T07:43:42.197Z,
+**SUCCESS** at07:44:41.392Z. Both changed public JSON files match their exact
+sizes/SHA-256 in1.132692s. The following app patch is dispatched without waiting
+for any complete experiment conclusion.
+
 ### Buffered-worker workaround and diagnostics v2
 
 The next source increment bypasses the synthetic ReadableStream only when the
@@ -112,6 +118,53 @@ branch probe passes without a source change. Packaged/public workaround checks
 are NOT RUN at dispatch. Physical iPhone16Pro compact cause/resolution remains
 unconfirmed and NOT RUN, regardless of desktop fixture recovery.
 Private evidence: `data/validation/iphone-safari-20261107/publications/worker-fix/`.
+
+Anonymous complete archive readback passes in1.342025s. The ordinary tree is
+extended from34 to36 layers after rechecking all prior files; both added archive
+pins and every final1,280path,size/SHA-256 pass in4.114088s. No additional bulk
+copy or download is used. Evidence:`ordinary-restore-36.json`. New public-browser
+acceptance remains a separate check after rollout.
+
+Workaround pointer`3b65f9fa03ee453d5162f7f9a769a431f00d90c1` deploys as
+`a563306e-26f6-48f8-a349-aa7d8ad9e050`: created2026-11-07T07:45:41.782Z;
+the healthcheck passes at07:49:48.134Z and Railway reports SUCCESS. All5changed
+public files match exact size/SHA-256 in3.130459s after43readiness polls. Root
+HTML SHA-256 is
+`3f98a6a7231a21761c353b50e3dde423c49b685734ecb10f2db291d0e9555b3c`.
+The rollout includes full image export/registry publication; no infrastructure
+configuration is changed. Fresh public compact browser checks follow this live
+and hash-verified signal, not the initial source dispatch.
+
+### Executed workaround checks and final report
+
+The final evidence increment records actual uninstrumented desktop WebKit gsplat
+2/2PASS(50.4s) and compact2/2PASS(44.7s), including held-network recovery and idle
+queues. The live compact page then passes2/2(43.1s+25.1s; suite1.2min): initial
+679,484selected/14pages; moved/returned691,095/14; held52,874/1→recovered687,069/14,
+22,757,488bytes/15requests,pending0,allqueues0,allstagesidle,errors0. The final
+collapsed-inspector screenshot is actually inspected: nearby windows/trees are
+visible; original stretched-road GS defects remain. The first public attempt is
+intentionally interrupted to strengthen the idle criteria and stays NOT RUN/
+interrupted, not an application FAIL. Physical iPhone16Pro compact same-cause and
+resolution remain unconfirmed/NOT RUN.
+
+Actual Chrome page replacement/return and matched SPZ comparison pass in55.4s
+with a fixed800pxcanvas:MAE1.23159/255,center1.95758,edge0.96643,returnpixelMAE0.
+The first fixture fails because sidebar text changes canvas1177→1179px; it is
+retained and corrected by the declared fixed-size fixture. All224unit,
+TypeScript,ESLint,production build and actual Vite HTTP dev-patch checks pass.
+Dev-hook/lint/test changes`88971ac`,`77bb7f3`,`d00c2ba` produce exactly the same
+5compiled/HTML sizes/SHA as live v2; no new runtime archive is necessary.
+
+Release `viewer-safari-worker-verified-2026-11-07`, archive
+`groundshift-safari-worker-verified-20261107.tar.gz`: **17,654 bytes**, SHA-256
+`6c61e70512b742cc1481e7504b2f9dab0b8f4c9871e701c4b00483979fb999f0`.
+Apply after36 preceding layers. Exactly2sanitized report/timeline JSON files
+change; all1,280composed files and all39worlds remain retained. Complete base/
+target/archive/composed integrity passes in10.433036s. App,world,image,camera and
+source data bytes are unchanged. A repeat browser suite is not required for this
+metadata-only increment; final rollout and exact public JSON checks follow
+dispatch. Private evidence:`data/validation/iphone-safari-20261107/publications/verified/`.
 
 ## Mobile Fly refinement and near-detail investigation — 2026-11-07
 
@@ -985,7 +1038,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the thirteen viewer/observation updates, in order. The command below includes all thirty-six
+reconstruction/paging layers and the fourteen viewer/observation updates, in order. The command below includes all thirty-seven
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1115,6 +1168,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-safari-worker-fix-2026-11-07 \
     groundshift-safari-worker-fix-20261107.tar.gz \
     9861fcfc0d56b739751665026dd7c71ca011b13b0519ba1a5224ab6cfec1ff94
+  gs_restore_layer viewer-safari-worker-verified-2026-11-07 \
+    groundshift-safari-worker-verified-20261107.tar.gz \
+    6c61e70512b742cc1481e7504b2f9dab0b8f4c9871e701c4b00483979fb999f0
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/

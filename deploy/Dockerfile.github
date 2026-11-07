@@ -248,6 +248,13 @@ RUN wget -q -O /tmp/safari-worker-fix.tar.gz https://github.com/neocjmix/grounds
  && mkdir /out \
  && tar -xzf /tmp/safari-worker-fix.tar.gz -C /out
 
+# Final actual WebKit/Chrome evidence; two JSON files, same tested runtime assets.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS safari_worker_verified
+RUN wget -q -O /tmp/safari-worker-verified.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-safari-worker-verified-2026-11-07/groundshift-safari-worker-verified-20261107.tar.gz \
+ && echo '6c61e70512b742cc1481e7504b2f9dab0b8f4c9871e701c4b00483979fb999f0  /tmp/safari-worker-verified.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/safari-worker-verified.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -283,5 +290,6 @@ COPY --from=lod_report_verified /out/www /srv
 COPY --from=safari_diagnostics /out/www /srv
 COPY --from=safari_worker_evidence /out/www /srv
 COPY --from=safari_worker_fix /out/www /srv
+COPY --from=safari_worker_verified /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
