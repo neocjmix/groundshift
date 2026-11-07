@@ -53,6 +53,9 @@ test('native LoD progressively restores nearby detail, reselects pages and match
  });
  const response=page.waitForResponse(r=>new URL(r.url()).pathname===world);
  await page.goto('/?world='+world);manifest=await(await response).json();
+ // Fix the comparison viewport: sidebar status text can change the desktop
+ // grid height by a few pixels, which changes projection and invalidates MAE.
+ await page.addStyleTag({content:'.scene-shell:not(.is-fly){height:800px;min-height:800px}'});
  await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready',{timeout:120000});
  const first=await settled(page),initialRequests=[...requests];
  await page.evaluate(()=>clearInterval(window.__lodRefinementTimer));const progression=await page.evaluate(()=>window.__lodRefinement);
@@ -85,6 +88,6 @@ test('native LoD progressively restores nearby detail, reselects pages and match
  const wholePose=await pose(page);expect(wholePose).toEqual(lodPose);
  const whole=await capture(page,info,'whole-zoom'),difference=compare(lod,whole);
  const quality=difference.mae<=4&&difference.centerMae<=3&&difference.centralEdgeRatio>=.9?'PASS':'FAIL';
- await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'Completed actual rendering and interaction',quality,thresholds:{mae:4,centerMae:3,centralEdgeRatio:.9},difference,returnDifference,first,end,reverse,zoomed,totalChunks,initialRequests,requests,progression,lodPose,wholePose,errors,browser:browser.version(),headed:process.env.HEADLESS!=='1',cacheDisabled:true,latencyFixtureMs:250,scope:'Actual bounded58m paging and same-camera whole-SPZ detail check. No independent geometry, physicalmobiledevice or kilometer-scale acceptance.'},null,2));
+ await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'Completed actual rendering and interaction',quality,thresholds:{mae:4,centerMae:3,centralEdgeRatio:.9},difference,returnDifference,first,end,reverse,zoomed,totalChunks,initialRequests,requests,progression,lodPose,wholePose,errors,browser:browser.version(),headed:process.env.HEADLESS!=='1',cacheDisabled:true,latencyFixtureMs:250,canvasHeightFixturePx:800,scope:'Actual bounded58m paging and same-camera whole-SPZ detail check. No independent geometry, physicalmobiledevice or kilometer-scale acceptance.'},null,2));
  expect(quality).toBe('PASS');expect(errors).toEqual([]);
 });
