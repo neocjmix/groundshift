@@ -3160,3 +3160,47 @@ that cap, preserving all rollback archives. No consolidation is performed here.
 ### Automated route snapshot 006
 
 Release `viewer-seine-route-006-1794057949740372000`, archive `groundshift-seine-route-006-1794057961400361000.tar.gz`, 42,212,232bytes, SHA-256 `59bd04f601a86fb7443c1f2514695a4fa6da92d169649a1bb60da185f016ee86`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 30 changed files; 1443 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+Exact006pointer`8a8327d04525e6cd2fcee8feb8314e052baa9e92` is dispatched via
+the existing connector after matching-inflight check. Deployment
+`01f271f6-76ab-4a54-9508-1cce74222588`: created13:27:58.699Z, **SUCCESS**
+at13:29:17.013Z. All30changed public file sizes/SHA-256 PASS independently at
+13:29:31.477617Z. Ordinary restoration53→54archives: prior files/new pin/all
+1,443final files PASS in4.202540s, atomic hardlink-safe replacement/no extra
+full copy or archive download. Actual6GS/104sources/ranks988–1091/sourceGPS
+255.782957m is partial; full876source acquisition remains PASS and local,
+complete2.185km/geometric acceptance incomplete. Current006browser scope shows
+NOT RUN, histories002–005are preserved, poster retains the actual005GS frame.
+Provider/delivery checks do not imply new-boundary GPU acceptance. Private proof:
+`data/jobs/seine-full-20261107/publication-{dispatch,receipts}/006.json` and
+`static-publication/snapshot-006-1794057949740372000/ordinary-restore-54.json`.
+
+### Snapshot006 actual added-boundary evidence and sixth-segment frame
+
+One focused public desktopWebKit27.2/iPhone16Pro-profile case passes fifth→
+sixth→fifth Fly with KeyW/KeyS. Selection580,096→694,110→626,430, max2roots/
+14pages, idlequeues/no pageerrors. Position/quaternion handoff change0 and
+FOV80retained. This is one new boundary case, separate from002–005evidence.
+PhysicaliPhone, perceptual frame-by-frame seamlessness and global metric geometry
+remain NOT RUN/NOT ACCEPTED; concurrent native work excludes speed benchmarks.
+
+Inspected unchanged sixth-segment PNG:
+`/experiments/tourist-streaming/seine-snapshot-006.png`, SHA-256
+`d3bc369de54f9bbd2a683ab9f96a55c4845ce4a8e3f6724b490dd0a2d000f161`.
+UI overlays hidden only at capture; no source-photo substitution, generation or
+retouching. Its JPEG90derivative is350751bytes, SHA-256
+`0290a41318d548571064266939f0aa896788c7814adb69ef4aa60486ed866804`.
+The public provenance pins this exact PNG→JPEG chain. Recognizable intersection,
+zebra crossing/signs/buildings coexist with strong roadway/vehicle smear, ghosts
+and stretched facade/pole edges. Current6GS/104sources/GPS255.78m remains
+partial, distinct from876original acquisition and full2.185km acceptance.
+Prior002–005proof/stages/PNG evidence remain intact.
+
+Release`viewer-seine-route-006-evidence-1794058371134529000`, archive
+`groundshift-seine-route-006-evidence-1794058371134529000.tar.gz`:2,917,357bytes,
+SHA-256`e1fbb741e39a7e746461ccb63fc3ccb54789326862a1eb47965ea6d630ea5da2`.
+Apply after54preceding archives. Six selected files: report/timeline/catalog,
+actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
+Complete base/target/archive/composed integrity PASS in7.805944s for1,445files;
+anonymous archive/hash PASS. Provider/public hashes follow actual dispatch.
+Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-006-1794058371134529000/`.
