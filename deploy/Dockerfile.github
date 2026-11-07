@@ -220,6 +220,13 @@ RUN wget -q -O /tmp/lod-detail-verified.tar.gz https://github.com/neocjmix/groun
  && mkdir /out \
  && tar -xzf /tmp/lod-detail-verified.tar.gz -C /out
 
+# Final dedicated report-browser result; preserve earlier timeout evidence.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS lod_report_verified
+RUN wget -q -O /tmp/lod-report-verified.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-lod-report-verified-2026-11-07/groundshift-lod-report-verified-20261107.tar.gz \
+ && echo '3eef3f791015567e37a3b3263f203e123665e1603f1d1bc1fbd1cec3937ceb4d  /tmp/lod-report-verified.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/lod-report-verified.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -251,5 +258,6 @@ COPY --from=lod_detail_refinement /out/www /srv
 COPY --from=control_clearance /out/www /srv
 COPY --from=lod_detail_evidence /out/www /srv
 COPY --from=lod_detail_verified /out/www /srv
+COPY --from=lod_report_verified /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

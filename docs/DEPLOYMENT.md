@@ -143,6 +143,34 @@ The accepted production build,all39 worlds,the3new comparison PNGs,source images
 and all previous observations remain unchanged. Evidence stays under
 `data/validation/fly-mobile-detail-20261107/publications/verified/`.
 
+Core-status pointer `2346527975e645f851829a7b1191ab83fe4dd9db` deploys as
+`59c687ac-1563-4435-9fcb-6e5fbda7600b`: created2026-11-07T01:45:59.142Z,
+**SUCCESS** at01:46:52.546Z. Anonymous complete archive readback passes in0.673912s;
+all2 changed public JSON sizes/SHA-256 match in0.897086s. A fresh ordinary32-layer
+restore verifies all archive SHA pins and every1,271 file size/hash in10.999922s,
+using1,416,495,610 bytes of extracted files and0 additional archive download bytes.
+A fresh disk-space gate sees5,189,746,688 bytes available before extraction; no
+original data,evidence or rollback archive is removed.
+
+The final one-JSON increment records actual dedicated report-browser **2/2PASS in
+14s** and preserves two earlier5s network-wait timeout FAILs. The30s wait correction
+changes only the test allowance; report/app content remains unchanged. Together
+with the6core cases, all8 distinct final public cases have passing evidence.
+Release `viewer-lod-report-verified-2026-11-07`, archive
+`groundshift-lod-report-verified-20261107.tar.gz`: **7,037 bytes**, SHA-256
+`3eef3f791015567e37a3b3263f203e123665e1603f1d1bc1fbd1cec3937ceb4d`.
+Apply after32 preceding layers. JSON/privacy and full base/target/archive/composed
+integrity pass in4.490703s; exactly1summary JSON changes,1,271 composed files
+retained. All39 worlds,the viewer,timeline,source imagery and3comparison PNGs stay
+byte-identical. The final layer will be applied to the same tree that began as a fresh
+empty32-layer restore, then every final file reverified; this final ordinary check
+is **NOT RUN** at dispatch and needs no second bulk copy.
+No repeat GPU/browser suite is implied by this status-only publication. Physical
+phone/Safari hardware and kilometer-scale reconstruction remain **NOT RUN**;
+serving recovery does not establish independent geometry or a new16-view quality pass.
+Private evidence stays under
+`data/validation/fly-mobile-detail-20261107/publications/report-verified/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -844,7 +872,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the nine viewer/observation updates, in order. The command below includes all thirty-two
+reconstruction/paging layers and the ten viewer/observation updates, in order. The command below includes all thirty-three
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -962,6 +990,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-lod-detail-verified-2026-11-07 \
     groundshift-lod-detail-verified-20261107.tar.gz \
     3379a9c32e88fb006fcc5b92e510ad623ebede6a7e9b83e824a8c884a53b47a7
+  gs_restore_layer viewer-lod-report-verified-2026-11-07 \
+    groundshift-lod-report-verified-20261107.tar.gz \
+    3eef3f791015567e37a3b3263f203e123665e1603f1d1bc1fbd1cec3937ceb4d
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
