@@ -93,11 +93,16 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
   const reuse = reuseInventory ? JSON.parse(await readFile(reuseInventory, 'utf8')) : null;
   const reusable = new Map((reuse?.files ?? []).map(item => [item.path, item]));
   const planned = [];
+  // Weak keys do not retain input buffers. After preflight, keep only the source
+  // path/content pin; reread one file at a time when writing the frozen package.
+  const readSources = new WeakMap();
   const destinations = new Set();
   function plan(destination, bytes) {
     if (destinations.has(destination)) throw new Error(`Duplicate package destination: ${destination}`);
     destinations.add(destination);
-    planned.push({ destination, bytes });
+    const record = { path: destination, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
+    const source = readSources.get(bytes);
+    planned.push({ destination, record, ...(source ? { source } : { bytes }) });
   }
 
   // Reject both file and parent-directory symlinks; a safe-looking manifest path
@@ -119,7 +124,9 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
   }
 
   async function read(relative) {
-    return readFile(await ordinaryPath(relative));
+    const bytes = await readFile(await ordinaryPath(relative));
+    readSources.set(bytes, relative);
+    return bytes;
   }
 
   async function add(source, destination = source.replace(/^dist\//u, 'www/')) {
@@ -229,7 +236,7 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
         const asset=path.posix.join(segmentBase,relativePath(child.assets[0].path));
         if(!asset.endsWith('.spz'))throw new Error('Route segment control must be SPZ');
         const assetBytes=await read(`${prefix}/${asset}`),destination=`www/worlds/${worldName}/${asset}`;
-        if(destinations.has(destination)){if(!planned.find(p=>p.destination===destination)?.bytes.equals(assetBytes))throw new Error('Conflicting route control asset');}
+        if(destinations.has(destination)){if(planned.find(p=>p.destination===destination)?.record.sha256!==createHash('sha256').update(assetBytes).digest('hex'))throw new Error('Conflicting route control asset');}
         else plan(destination,assetBytes);
         const pagedFile=path.posix.join(segmentBase,relativePath(child.paging.path)),pagedBytes=await read(`${prefix}/${pagedFile}`);
         assertPublicMetadata(pagedBytes.toString('utf8'),segment.id);
@@ -258,10 +265,11 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
   await mkdir(path.dirname(output), { recursive: true });
   await mkdir(output);
   const files = [];
-  for (const { destination, bytes } of planned) {
+  let reusedFiles = 0;
+  let reusedBytes = 0;
+  for (const { destination, record, source, bytes: generatedBytes } of planned) {
     const target = path.join(output, destination);
     await mkdir(path.dirname(target), { recursive: true });
-    const record = { path: destination, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
     const old = reusable.get(destination);
     if (old?.bytes === record.bytes && old.sha256 === record.sha256) {
       const previous = path.join(reuse.output, destination);
@@ -273,13 +281,21 @@ export async function packageViewer({ root, output, worlds = ['sample'], include
         throw new Error('Reusable package integrity mismatch');
       }
       await link(previous, target);
+      reusedFiles++;
+      reusedBytes += record.bytes;
     } else {
+      const bytes = source ? await read(source) : generatedBytes;
+      if (bytes.length !== record.bytes || createHash('sha256').update(bytes).digest('hex') !== record.sha256) {
+        throw new Error('Package source changed after preflight');
+      }
       await writeFile(target, bytes, { flag: 'wx' });
     }
     files.push(record);
   }
   const totalBytes = files.reduce((sum, file) => sum + file.bytes, 0);
-  const result = { output, fileCount: files.length, totalBytes, worlds: scenes.map(scene => scene.id) };
+  const result = { output, fileCount: files.length, totalBytes, worlds: scenes.map(scene => scene.id), reusedFiles, reusedBytes,
+    retainedGeneratedBufferBytes: planned.reduce((sum, item) => sum + (item.bytes?.length ?? 0), 0),
+    sourceFilesPinnedWithoutRetainedBuffers: planned.filter(item => item.source).length };
   // Inventory stays local, outside the directory sent to Railway.
   await writeFile(`${output}.inventory.json`, JSON.stringify({ ...result, files }, null, 2) + '\n', { flag: 'wx' });
   return result;

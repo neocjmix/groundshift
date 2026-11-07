@@ -133,7 +133,10 @@ describe('curated viewer packaging', () => {
     await packageViewer({ root, output });
     await put('dist/index.html', 'new compiled entry');
     const second = path.join(root, 'second');
-    await packageViewer({ root, output: second, reuseInventory: `${output}.inventory.json` });
+    const secondResult = await packageViewer({ root, output: second, reuseInventory: `${output}.inventory.json` });
+    expect(secondResult.reusedFiles).toBeGreaterThan(0);
+    expect(secondResult.retainedGeneratedBufferBytes).toBeLessThan(secondResult.totalBytes);
+    expect(secondResult.sourceFilesPinnedWithoutRetainedBuffers).toBeGreaterThan(0);
     const name = 'www/worlds/sample/plant.splat';
     expect((await stat(path.join(output, name))).ino).toBe((await stat(path.join(second, name))).ino);
     expect(await readFile(path.join(output, 'www/index.html'), 'utf8')).toBe('synthetic build');
