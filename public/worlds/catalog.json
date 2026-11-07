@@ -363,32 +363,32 @@
     {
       "id": "paris-58m-spz",
       "title": "Paris · 첫58m와 구간 로딩",
-      "description": "노트르담 남쪽 실제24파노라마 · M2 Metal GS · 전체/공간 SPZ 비교",
+      "description": "실제 24파노라마 · 전체 SPZ 기준과 최근접 영역 선택 실패 비교",
       "category": "experiment",
       "manifestPath": "/worlds/paris-58m-spz/world.json",
       "thumbnailPath": "/worlds/paris-58m-spz/preview.jpg",
       "createdAt": "2026-11-06T17:19:26.762517+00:00",
-      "detail": "첫 실제GS 렌더 확인.6개SPZ영역 분할·3개상주 구현.실제 구간전환·공개검증과 정밀 비교는 진행 중."
+      "detail": "전체 SPZ는 같은 80만 점 GS의 비교 기준입니다. 최근접 3개 영역만 보이는 설정은 먼 건물·하늘 누락으로 화질 FAIL; 전체 영역 합집합은 원본과 일치했습니다. 해당 실패와 전체 로딩 비교를 보존합니다. 새 재구성이나 iPhone 해결 검증은 아닙니다."
     },
     {
       "id": "paris-58m-lod",
       "title": "Paris · LoD 스트리밍",
-      "description": "실제24파노라마 · 같은 M2 GS · 먼영역은거친GS,가까운영역은정밀GS",
+      "description": "현재 14페이지 · 80만 점 선택 목표 · iPhone Safari 흐림 재현 조사",
       "category": "experiment",
       "manifestPath": "/worlds/paris-58m-lod/world.json",
       "thumbnailPath": "/worlds/paris-58m-lod/preview.jpg",
       "createdAt": "2026-11-06T17:33:15.236531+00:00",
-      "detail": "Native LoD 실제로컬1/1PASS.첫뷰35만표시·8페이지상한,전체SPZ대비평균RGB오차3.21/255,시작/끝/역이동PASS.첫수신14.88MB로전체15.92MB대비전송이득은작음.추가방향·공개검증진행중."
+      "detail": "현재 상한은 14페이지(917,504슬롯), 선택 목표는 80만 점이며 표시 수는 시점·로딩에 따라 달라집니다. 공개 Chrome의 세부 로딩·왕복 검증은 PASS. iPhone 16 Pro Safari의 지속 흐림 제보는 조사 중이며 실기기 재현·해결은 NOT RUN입니다. 예전 8페이지·35만 목표의 측정과 엄격한 16뷰 FAIL은 보고서에 과거 자료로 보존합니다."
     },
     {
       "id": "paris-58m-lod-compact",
       "title": "Paris · LoD 스트리밍 · compact",
-      "description": "실제24파노라마 · 같은 M2 GS · 먼영역은거친GS,가까운영역은정밀GS",
+      "description": "현재 14페이지 · 같은 GS의 compact 전달 비교 · 실기기 미확인",
       "category": "experiment",
       "manifestPath": "/worlds/paris-58m-lod-compact/world.json",
       "thumbnailPath": "/worlds/paris-58m-lod-compact/preview.jpg",
       "createdAt": "2026-11-06T17:42:09.792102+00:00",
-      "detail": "같은GS의nativecsplatLoD 비교.실제16방향 평균RGB오차3.55/255,최대6.04여서엄격한개별뷰5기준FAIL.페이지풀8상한PASS.파일합25.95MB로gsplat26.26MB대비1.19%절약.재학습없음."
+      "detail": "현재 compact도 14페이지(917,504슬롯)·80만 점 선택 목표입니다. 공개 Chrome 실행 PASS이며 실제 표시 수는 시점에 따라 달라집니다. 파일 합 25.95MB, gsplat 대비 1.19% 절약. 이전 8페이지 16뷰 평균 3.55/최대 6.04·엄격 기준 FAIL은 과거 관찰입니다. iPhone 실기기 재현·해결은 NOT RUN; 재학습은 없습니다."
     }
   ]
 }
