@@ -128,6 +128,33 @@ def atomic_json(path, value):
     atomic_bytes(path, (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n').encode())
 
 
+def completed_segment_evidence(repo, state, expansion):
+    """Refresh provisional native status without promoting browser acceptance."""
+    rows=expansion.setdefault('segments',[])
+    for record in state.get('records',[]):
+        if record.get('reusedExistingBaseline'):continue
+        job=Path(record['job']).resolve()
+        if not job.is_relative_to(repo.resolve()/'data/jobs'):
+            raise ValueError('Native evidence must remain within local job scope')
+        native=read(job/'training/job.json')
+        if record['status']!='PASS' or native['status']!='PASS':
+            raise ValueError('Completed route segment requires actual successful native evidence')
+        ranks=[record['firstRank'],record['lastRank']]
+        item=next((row for row in rows if row.get('sourceRanks')==ranks),None)
+        if item is None:
+            item=dict(sourceRanks=ranks,sourceFirstIndex=record['first'],sourceCount=ranks[1]-ranks[0]+1)
+            rows.append(item)
+        item.update(pipelineStatus='PASS',nativeTrainingStatus='PASS',newGsExportStatus='PASS')
+        item.setdefault('newGsRenderingStatus','NOT RUN')
+        item['nativeTraining']={key:native[key] for key in ('status','toolVersion','imageCount','options','elapsedSeconds','maximumResidentSetBytes','peakMemoryFootprintBytes','artifact','finishedAt') if key in native}
+        # Do not copy raw command lines, local paths, logs or arbitrary metadata.
+        item['nativeTraining']['artifact']={key:native['artifact'][key] for key in ('splats','bytes','sha256')}
+        report=job/('pipeline.json' if (job/'pipeline.json').exists() else 'runner.json')
+        if report.exists():
+            item['stages']=[{key:stage[key] for key in ('name','status','seconds','exitCode') if key in stage} for stage in read(report)['stages']]
+    expansion.setdefault('routeViewer',{})['newRouteArtifact']='PASS'
+
+
 def prepare(repo, coordinator, snapshot, preview=None):
     repo, coordinator = repo.resolve(), coordinator.resolve()
     source = snapshot.resolve()
@@ -186,6 +213,7 @@ def prepare(repo, coordinator, snapshot, preview=None):
         summary['stages'].insert(0, dict(title=stage_id, status='PASS native export / NOT RUN new route GPU boundary', detail=finding))
     expansion = summary.setdefault('expansion', {})
     expansion.update(status='RUNNING' if count < 876 else 'NATIVE EXPORT COMPLETE / BROWSER NOT RUN', currentReconstructedSourceRecords=count, currentApproximateReconstructedGpsLengthM=meters, fullRouteExportStatus='PASS' if count == 876 else 'NOT RUN full target; partial export PASS', fullRouteBrowserAcceptance='NOT RUN')
+    completed_segment_evidence(repo,state,expansion)
     snapshots = expansion.setdefault('snapshots', [])
     if not any(x['segments'] == coverage['segments'] for x in snapshots):
         snapshots.append({**coverage, 'coverageSha256': digest(source / 'coverage.json'), 'routeIndexSha256': digest(source / 'route/index.json')})

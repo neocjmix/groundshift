@@ -91,6 +91,21 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(source.read_bytes(), original)
         self.assertEqual(target.read_bytes(), b'new bytes')
 
+    def test_actual_export_clears_old_running_status_without_claiming_rendering(self):
+        job=self.coordinator/'segment-1004-1027'
+        native=dict(status='PASS',artifact=dict(splats=800000,bytes=73600652,sha256='a'*64,privatePath='/Users/private'),command=['/Users/private/tool'],dataset='/Users/private/data',elapsedSeconds=5500)
+        publisher.atomic_json(job/'training/job.json',native)
+        publisher.atomic_json(job/'pipeline.json',dict(stages=[dict(name='training',status='PASS',seconds=5500,command=['/Users/private/tool'])]))
+        expansion=dict(segments=[dict(sourceRanks=[1004,1027],pipelineStatus='RUNNING',nativeTrainingStatus='RUNNING',newGsExportStatus='NOT RUN',newGsRenderingStatus='NOT RUN',alignment=dict(status='PASS'))])
+        state=dict(records=[dict(first=196,firstRank=1004,lastRank=1027,job=str(job),status='PASS')])
+        publisher.completed_segment_evidence(self.repo,state,expansion)
+        row=expansion['segments'][0]
+        self.assertEqual(row['pipelineStatus'],'PASS');self.assertEqual(row['nativeTrainingStatus'],'PASS');self.assertEqual(row['newGsExportStatus'],'PASS')
+        self.assertEqual(row['newGsRenderingStatus'],'NOT RUN');self.assertEqual(row['alignment']['status'],'PASS')
+        publisher.public_text(json.dumps(expansion).encode())
+        native['status']='RUNNING';publisher.atomic_json(job/'training/job.json',native)
+        with self.assertRaisesRegex(ValueError,'successful native'):publisher.completed_segment_evidence(self.repo,state,expansion)
+
 
 if __name__ == '__main__':
     unittest.main()
