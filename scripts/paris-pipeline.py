@@ -41,22 +41,30 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(job):
+def acquisition(source):
+    record = read(source/'acquisition.json')
+    if record['status'] != 'PASS' or not 3 <= len(record['frames']) <= 64:
+        raise ValueError('Require a complete pinned acquisition of 3..64 panoramas')
+    ranks = [frame['rank'] for frame in record['frames']]
+    if ranks != list(range(ranks[0], ranks[0] + len(ranks))):
+        raise ValueError('Require consecutive ordered source ranks')
+    return record
+
+
+def prepare(job, source=SOURCE):
     out = job/'tangent-inputs'; out.mkdir(exist_ok=False); start = time.monotonic()
     report = dict(status='RUNNING', stage='real20direction768crop', sources=[])
     try:
         for k in ['images', 'masks']:(out/k).mkdir()
-        acquisition = read(SOURCE/'acquisition.json')
-        if acquisition['status'] != 'PASS' or len(acquisition['frames']) != 24:
-            raise ValueError('Require the complete pinned24-source acquisition')
+        acquired = acquisition(source)
         size, fov = 768, 80
         intr = C.intrinsics(size, fov); views=[]; frames=[]; paths=[]
         for i, normal in enumerate(icosahedron_normals()):
             yaw,pitch=view_angles(normal)
             views.append(dict(id=i,yaw=yaw,pitch=pitch,rotation=C.crop_rotation(yaw,pitch).tolist()))
-        for index, source in enumerate(acquisition['frames']):
-            path=SOURCE/source['file']
-            if sha(path)!=source['sha256']:raise ValueError('Original source checksum mismatch')
+        for index, frame_source in enumerate(acquired['frames']):
+            path=source/frame_source['file']
+            if sha(path)!=frame_source['sha256']:raise ValueError('Original source checksum mismatch')
             with Image.open(path) as im:rgb=np.array(im.convert('RGB'))
             for view in views:
                 name=f'p{index:02d}-t{view["id"]:02d}.png'
@@ -67,10 +75,10 @@ def prepare(job):
                 Image.fromarray(image).save(out/'images'/name)
                 Image.fromarray(mask.astype(np.uint8)*255).save(out/'masks'/name)
                 frame=dict(file_path='images/'+name,w=size,h=size,fl_x=intr['fx'],fl_y=intr['fy'],cx=size/2,cy=size/2,
-                    physical=index,rank=source['rank'],view=view['id'],rotation=view['rotation'])
+                    physical=index,rank=frame_source['rank'],view=view['id'],rotation=view['rotation'])
                 frames.append(frame);paths.append(str((out/'images'/name).resolve()))
-            report['sources'].append(dict(rank=source['rank'],sha256=source['sha256'],file=Path(source['file']).name))
-            write(out/'report.json',report);print('Cropped',source['rank'],flush=True)
+            report['sources'].append(dict(rank=frame_source['rank'],sha256=frame_source['sha256'],file=Path(frame_source['file']).name))
+            write(out/'report.json',report);print('Cropped',frame_source['rank'],flush=True)
         write(out/'frames.json',frames);write(out/'inference-inputs.json',paths)
         shutil.copyfile(job/'provenance.json',out/'provenance.json')
         report.update(status='PASS',images=len(frames),size=size,fovDegrees=fov,viewsPerPhysical=20,generatedRgb=False)
@@ -85,7 +93,7 @@ def anchors(job):
     try:
         sfm=read(job/'sfm/report.json')
         if sfm['status']!='PASS' or sfm['fullRegistration']!='PASS':
-            raise ValueError('Require all24 physical centers in the same actual rig reconstruction')
+            raise ValueError('Require every physical center in the same actual rig reconstruction')
         model=pycolmap.Reconstruction(job/'sfm/dataset/sparse')
         crops=read(job/'sfm-inputs/crops.json')['crops'];by_name={Path(c['file']).name:c for c in crops}
         groups={};poses={}
@@ -165,28 +173,34 @@ def fusion(job):
     finally:report['seconds']=time.monotonic()-start;write(out/'report.json',report)
 
 
-def finalize(job):
+def finalize(job, source=SOURCE):
     """Separate presentation derivative: keep all original native exports intact."""
     R=module('paris_native','reconstruct.py');native=job/'training/world'
     status=read(job/'training/job.json')
     if status['status']!='PASS':raise ValueError('Require completed actual native export')
     out=job/'view-world';out.mkdir(exist_ok=False)
     world=read(native/'world.json');physical=read(job/'anchors/physical.json')
+    acquired=acquisition(source);count=len(acquired['frames']);ranks=[f['rank'] for f in acquired['frames']]
+    if set(physical) != {str(i) for i in range(count)}:raise ValueError('Acquisition and estimated physical centers disagree')
     quaternion=world['coordinates']['assetToWorld']['quaternion'];frames=[]
-    for p in range(24):
+    for p in range(count):
         pose=np.array(physical[str(p)]['pose'])@np.diag([1,-1,-1,1]);columns=[R.rotate(pose[:3,k].tolist(),quaternion) for k in range(4)]
         matrix=[[columns[k][i] for k in range(4)] for i in range(3)]+[[0,0,0,1]]
-        frames.append(dict(image=f'panorama-rank-{988+p}',cameraToWorld=matrix,componentId='paris-rig-0',continuousFromPrevious=p>0))
+        frames.append(dict(image=f'panorama-rank-{ranks[p]}',cameraToWorld=matrix,componentId=world['id']+'-rig',continuousFromPrevious=p>0))
     first=np.array(frames[0]['cameraToWorld']);camera=world['navigation']['camera'];camera.update(position=first[:3,3].tolist(),target=(first[:3,3]-first[:3,2]*5).tolist(),up=first[:3,1].tolist(),fov=80)
     world['navigation']['mode']='camera-path'
-    world['provenance']['notes']+=' Viewer camera path selects one analytic ERP-center direction at each of the24 actual registered physical centers in source rank order988-1011. Same component; source prev adjacency verified. Straight interpolation is presentation, not a recovered road or collision surface.20direction768px actual RGB, calibrated309of480 DAV2 depth maps; rejected depths never used as metric geometry. No source-photo backdrop.'
+    fusion_report=read(job/'fusion/report.json')
+    world['provenance']['notes']+=f' Viewer camera path selects one analytic ERP-center direction at each of the {count} actual registered physical centers in source rank order {ranks[0]}-{ranks[-1]}. Same component; source prev adjacency verified at acquisition. Straight interpolation is presentation, not a recovered road or collision surface. 20-direction 768px actual RGB, calibrated {fusion_report["calibratedImages"]} of {fusion_report["trainingImages"]} DAV2 depth maps; rejected depths never used as metric geometry. No source-photo backdrop.'
     write(out/'world.json',world)
     write(out/'cameras.json',dict(schemaVersion=1,cameraConvention='OpenGL: +X right, +Y up, -Z forward',worldConvention='right-handed Y-up, arbitrary units',frames=frames,
-        sequenceNotes='One shared image-derived rig reconstruction of24 consecutive Panoramax captures,ranks988-1011. Provider adjacency verified. GPS~58m only approximate source length; world scale arbitrary. Straight viewing interpolation, not surveyed path/floor.'))
+        sequenceNotes=f'One shared image-derived rig reconstruction of {count} consecutive Panoramax captures, ranks {ranks[0]}-{ranks[-1]}. Provider adjacency verified at acquisition. Source GPS length is approximate; world scale arbitrary. Straight viewing interpolation, not surveyed path/floor.'))
     for name in ['scene.ply','SOURCE_LICENSE']:shutil.copyfile(native/name,out/name)
-    write(job/'view-export.json',dict(status='PASS',nativeSceneSha256=sha(native/'scene.ply'),viewerSceneSha256=sha(out/'scene.ply'),physicalPathPoses=24,background=False))
+    write(job/'view-export.json',dict(status='PASS',nativeSceneSha256=sha(native/'scene.ply'),viewerSceneSha256=sha(out/'scene.ply'),physicalPathPoses=count,background=False))
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('stage',choices=['prepare','anchors','fusion','finalize']);p.add_argument('job',type=Path);a=p.parse_args()
-    globals()[a.stage](a.job.resolve())
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('stage',choices=['prepare','anchors','fusion','finalize']);p.add_argument('job',type=Path)
+    p.add_argument('--source',type=Path,default=SOURCE,help='Complete verified acquisition; originals remain unchanged')
+    a=p.parse_args()
+    if a.stage in ('prepare','finalize'):globals()[a.stage](a.job.resolve(),a.source.resolve())
+    else:globals()[a.stage](a.job.resolve())

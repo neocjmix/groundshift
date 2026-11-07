@@ -283,6 +283,7 @@ the [HDR-capable local FFmpeg](docs/HDR_TOOL.md), selected through `--ffmpeg`;
 unsupported HDR input fails explicitly. [Frame extraction evidence](docs/VIDEO.md).
 
 ## Documentation
+- [Full selected Seine route expansion, shared-pose alignment and bounded segment paging](docs/SEINE_FULL_ROUTE.md)
 - [Actual Paris GS,native LoD,failed proximity streaming and measurements](docs/PARIS_STREAMING.md)
 - [Paris tourist source selection and bounded lazy-serving experiment](docs/TOURIST_STREAMING.md)
 - [SPZ compression, actual size/appearance evidence and reproduction](docs/COMPRESSION.md)

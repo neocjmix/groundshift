@@ -1,0 +1,153 @@
+# Seine route expansion — 2026-11-07
+
+The requested target is the previously selected **876 consecutive public ERP
+photographs, ranks 808–1683**, approximately **2,185.31 m of source GPS polyline**
+along the Paris Seine south bank and connected streets. This is the selected
+route, not the whole river. Source GPS length is not metric reconstruction
+accuracy. The original [58 m experiment](PARIS_STREAMING.md), all historical
+worlds, source bytes and native exports remain intact.
+
+## Execution design
+
+Reuse the completed ranks 988–1011 reconstruction. Extend in bounded windows of
+24 real panoramas, advancing 16 centers with eight shared sources. Cover the
+remaining forward route, then extend backwards from the baseline. Endpoint
+windows overlap further as needed. The deterministic plan covers all 876
+sources in 55 windows, including the existing baseline: 54 new native jobs.
+
+Each job preserves the already executed Paris configuration: six 512 px,
+100-degree crops for fixed-rig PyCOLMAP 4.2.1 CPU camera estimation; twenty
+768 px, 80-degree real RGB crops per center; pinned Depth Anything V2 Small
+on local MPS; per-crop robust affine inverse-camera-Z calibration to observed
+SfM points; dense seeding; Brush 0.3.0 Metal with 8,000 steps, 768 px, an
+800,000 Gaussian ceiling, SH degree 1 and seed 42. No diffusion, synthesized
+views, GPS-derived camera poses or panorama/depth-shell background is used.
+Unsupported depth fits remain excluded. The former nine-panorama quality
+campaign remains closed.
+
+The upstream versions, model revision, licenses and actual interfaces are
+recorded in [the baseline report](PARIS_STREAMING.md). The source remains
+Immergis pour la Ville de Paris / Panoramax IGN, captured 2025-05-08, under
+[Open Licence 2.0](https://github.com/etalab/licence-ouverte/blob/master/open-licence.md).
+Public source metadata and original checksums are retained; original HD images,
+model weights and raw execution logs are local only.
+
+### Coordinate connection
+
+`seine_alignment.py` matches identical source identities and SHA-256 values,
+then aligns the independently estimated physical camera poses. Shared camera
+orientations determine relative rotation; centers determine positive scale and
+translation. This avoids the poorly constrained roll of a center-only fit on
+a nearly straight street. It does not replace estimated poses with GPS.
+
+At least six shared physical cameras are required. The engineering gate uses
+75% consensus, center residual at most 0.25 of the reference median camera step,
+and orientation residual at most 3 degrees. A deterministic quarter of shared
+poses is excluded from transform fitting, checked, and then the inlier poses
+are refitted. Those images still participated in SfM: this is an internal
+alignment diagnostic, not held-out imagery or independent geometry truth.
+
+The raw SfM similarity transforms are composed into the baseline frame. For
+rendering, the segment-viewer-to-route-viewer transform is explicitly
+`baselineAssetToWorld * rawAlignment * inverse(segmentAssetToWorld)`.
+Camera orientations are rotated without scaling their basis. Global anchors
+and camera-path positions are transformed once. A failed alignment stops the
+connection and retains its evidence rather than inventing a continuous road.
+Accumulated drift along the complete chain is still unmeasured.
+
+### Streaming and publication
+
+Every completed native export gets a whole SPZ and an official Spark 2.4.0
+quality/SH1/csplat chunked RAD derivative. Each immutable route snapshot includes
+only completed, aligned, consecutive source coverage. The viewer keeps one
+active segment and at most one incoming segment in a shared fourteen-page
+(917,504-slot) pool, targeting 800,000 selected splats. It loads segment roots
+on demand, preserves the previous segment if loading fails, and uses a short
+complementary opacity transition. Camera ownership has hysteresis. Whole-SPZ
+comparison refers to the current segment at the same camera and field of view.
+
+This keeps storage and active residency separate: it does not keep all 55 roots
+resident or claim that every distant feature along the entire route is present
+in the active local reconstruction. Selection readiness is not proof of fully
+decoded, displayed detail. Actual independently trained boundary rendering is
+checked separately from unit tests and synthetic lifecycle fixtures.
+
+As soon as a scene or observation becomes deployable, publish it through the
+existing checksum-pinned Railway package, concurrently with remaining work.
+Preserve all prior observations, label incomplete stages, and verify live file
+hashes and public rendering after dispatch. See [deployment rules](DEPLOYMENT.md).
+
+### Resume and storage
+
+The coordinator records every native command, exit code and elapsed time. A
+completed stage is reused; a failed or interrupted native stage is not silently
+overwritten. Route exports are assembled in a distinct temporary directory and
+renamed atomically, so an export interruption can be retried without retraining.
+A process lock prevents duplicate coordinators. Six GiB free is the minimum
+before acquiring the next window; insufficient space is an explicit blocker.
+
+Originals are reused only after actual checksum/JPEG validation. Depth reuse
+also verifies the exact model/revision, default 518×518 neural input, original
+crop bytes, finite float32 prediction, shape/range and output checksums. Cached
+predictions remain relative inverse-depth-like values. Cache hits are recorded
+separately from new MPS inference and do not inherit a fabricated current timing.
+Immutable duplicate files can share hardlinks; changes to frozen publication
+paths must use atomic replacement, never write through a shared inode.
+
+## Reproduce
+
+Use the existing locally installed tools from the baseline setup. The selected
+route manifest is `data/jobs/tourist-streaming-20261107/route.json`; the completed
+baseline is `data/jobs/paris-streaming-20261107/`. The coordinator deliberately
+requires these original provenance records and actual baseline outputs.
+
+```sh
+# Build one additional window and a new immutable route snapshot.
+data/tools/venv/bin/python scripts/seine-route.py \
+  data/jobs/seine-full-20261107 --limit 1
+
+# Continue the remaining fixed windows, preserving completed work.
+data/tools/venv/bin/python scripts/seine-route.py \
+  data/jobs/seine-full-20261107
+
+# Test planning, coordinates, source/depth cache integrity and failure retention.
+data/tools/venv/bin/python -m unittest discover -s scripts/tests -p 'test_seine*.py' -v
+data/tools/venv/bin/python -m unittest discover -s scripts/tests -p 'test_infer_seine_depth.py' -v
+```
+
+`route-run.json` contains overall status, completed segment lineage and snapshot
+paths. Each segment has `runner.json` (the first pilot has `pipeline.json`),
+`alignment.json`, depth/fusion reports and the native `training/job.json`.
+Snapshots contain sanitized `coverage.json`, the route index, explicit segment
+transforms, source-camera path, licensed metadata and selected renderable assets.
+Never publish the raw coordinator/job directories.
+
+## Actual observations so far
+
+| Check | Result |
+| --- | --- |
+| Added ranks 1004–1027 acquisition | PASS 24 original JPEGs, 188,213,148 B, 202.955850 s; eight overlap the baseline |
+| New fixed-rig SfM | PASS 144/144 crops, 8,069 sparse points, 0.616063 px mean reprojection error; wrapper 126.461858 s |
+| First shared-pose alignment | PASS 8/8 inliers; scale 1.00909535; maximum center error 0.00507274 reference steps and orientation error 0.0691011 degrees |
+| Transform-only held-pose check | PASS both withheld poses; not independent SfM truth |
+| First added DAV2 execution | PASS 480 actual MPS predictions, wrapper 362.371952 s |
+| First added calibrated seed | PASS 308/480 supported fits, 186,839 initial points; 172 maps excluded; wrapper 24.074309 s |
+| First added native GS export | RUNNING; no successful export claimed yet |
+| Independent two-segment public rendering | NOT RUN until the new native export exists |
+| Entire 876-source reconstruction | RUNNING, not complete |
+| Global metric accuracy / long-route drift | NOT ACCEPTED / NOT RUN |
+
+Runtime values are actual one-off wall times with concurrent development and
+brief browser work on the same M2, not isolated benchmarks. The old 1,018-second
+baseline suggests roughly 15.3 hours of training alone for 54 more jobs; this is
+an estimate, not an observed full-route result. Source preparation, depth,
+exports and failure recovery add time. Storage is also bounded: unique full
+float32 depth predictions alone would approach 41 GB for all 876×20 crops.
+Frozen publication staging was deduplicated by verified identical bytes while
+preserving paths and rollback packages; this is not deletion of source evidence.
+
+Automated planning/coordinate/failure/cache tests currently pass 18 alignment
+and route tests plus eight cached-depth tests and nine source-route tests.
+They do not establish native training, rendering, collision geometry or
+surveyed street accuracy. Live viewer and execution evidence will be appended
+as those operations actually finish.
