@@ -3059,3 +3059,24 @@ byte-identical. Complete base/target/archive/composed integrity PASS in7.214179s
 for1,395files; anonymous release checksum PASS. Actual provider/public hashes
 follow dispatch. Private proof:
 `data/jobs/seine-full-20261107/publication-evidence-004-1794055822147564000/`.
+
+Evidence pointer`e59a860c4e5fdc3ee031e88c1e18e1d53ef3ec0c` dispatches through
+the same connector as`ee675817-f644-4179-be52-59e887838121`: created
+12:53:15.602Z, **SUCCESS** at12:54:11.179Z. Anonymous full archive/hash PASS
+in2.248034s. All6changed public file sizes/SHA-256 PASS after6readiness attempts/
+31.004985s including rollout wait. Final report85,836bytes, SHA-256
+`36363a4a37422072893b9c2ad6dc7db840c32426ce423c2f09c2b2a12baa078a`;
+actual public004PNG matches the inspected source checksum above. Ordinary
+restoration extends50→51archives: prior files/new pin/all1,395final files PASS
+in4.275472s, atomic hardlink-safe replacement/no extra full copy or download.
+
+Original004native provider/30public hashes and the later six-file evidence
+publication are retained in the same lineage; the actual public one-case proof
+does not imply new full-route geometry or physical-iPhone acceptance. Final
+receipt:`data/jobs/seine-full-20261107/publication-status/snapshot-004-evidence.json`.
+The idle owned publisher is stopped for the final documentation push, then
+restarted at the verified51archive inventory with preparer`4bde1f0` (computed
+coverage refresh) and`cc54a72` (per-snapshot browser scope/preview preservation).
+Current PID/freshness live in its process/heartbeat files. CONNECTOR QUEUE and
+the active-agent/five-minute-heartbeat dispatch remain actual behavior. No extra
+GPU/browser campaign or self-referential artifact deployment is performed.
