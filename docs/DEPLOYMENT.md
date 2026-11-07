@@ -42,6 +42,22 @@ private attachment,raw log or weight is included. New metadata public-browser
 checks are NOT RUN at dispatch; existing runtime acceptance is retained. Private
 evidence:`data/validation/paris-full-route-20261107/publications/started/`.
 
+Start pointer`dd736e625fe044906f242552d3cbcfe26f71fae3` deploys as
+`07d23486-9978-4e05-b9f7-9ccd825328de`: created2026-11-07T08:47:23.868Z,
+**SUCCESS** at08:48:15.980Z. Anonymous full archive readback passes in0.587402s.
+All3changed public JSON sizes/SHA-256 pass in1.437501s after11readiness polls;
+parsed report status confirms user-reported recovery and full-route export
+NOT RUN. Summary is28,165bytes,SHA-256
+`addd405531e79e409f244844cd326cdc12eeb4d737ccfeb33dfa3bd703a9c262`;
+catalog is23,156bytes,SHA-256
+`ce92d8645d6b98c456c64c9736cf9e545cd9d535bbfd15226403cc2e2537946a`.
+The same previously empty-born ordinary restoration tree extends from37 to38
+layers: every prior file rechecked, new archive pin verified, all1,280final
+paths/sizes/SHA-256 PASS in3.714803s. No additional bulk copy or download is used.
+New metadata browser acceptance remains NOT RUN here; unchanged v2 runtime
+retains its already executed WebKit/Chrome checks. New native exports follow
+as independent increments instead of waiting for complete route reconstruction.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
