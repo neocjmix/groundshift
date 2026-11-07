@@ -175,6 +175,17 @@ def advance_browser_evidence(expansion, coverage):
         scope='This exported snapshot requires its own actual browser check; earlier checks are historical.')
 
 
+def refresh_coverage_measurement(summary, coverage):
+    label = '현재 전체경로 확장 · 실제산출물'
+    measurement = dict(
+        id='seine-current-coverage', label=label,
+        value=f'{coverage["segments"]}구간 · {coverage["sourceCount"]}/{coverage["targetSourceCount"]}소스 · GPS{coverage["sourceGpsCoverageMeters"]:.2f}m',
+        detail='원본 확보와 실제 GS 범위는 별도입니다. GPS 길이는 기하 실측이 아니며, 이 새 스냅샷의 공개 브라우저 검증은 NOT RUN입니다.')
+    summary['measurements'] = [measurement] + [
+        item for item in summary.get('measurements', [])
+        if item.get('id') != measurement['id'] and item.get('label') != label]
+
+
 def prepare(repo, coordinator, snapshot, preview=None):
     repo, coordinator = repo.resolve(), coordinator.resolve()
     source = snapshot.resolve()
@@ -237,6 +248,7 @@ def prepare(repo, coordinator, snapshot, preview=None):
     expansion.update(status='RUNNING' if count < 876 else 'NATIVE EXPORT COMPLETE / BROWSER NOT RUN', currentReconstructedSourceRecords=count, currentApproximateReconstructedGpsLengthM=meters, fullRouteExportStatus='PASS' if count == 876 else 'NOT RUN full target; partial export PASS', fullRouteBrowserAcceptance='NOT RUN')
     completed_segment_evidence(repo,state,expansion)
     advance_browser_evidence(expansion, coverage)
+    refresh_coverage_measurement(summary, coverage)
     snapshots = expansion.setdefault('snapshots', [])
     if not any(x['segments'] == coverage['segments'] for x in snapshots):
         snapshots.append({**coverage, 'coverageSha256': digest(source / 'coverage.json'), 'routeIndexSha256': digest(source / 'route/index.json')})

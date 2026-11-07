@@ -318,3 +318,7 @@ proof of the new snapshot. Earlier browser checks move into snapshot-keyed
 history, while the new current snapshot starts at **NOT RUN**. Eight publication
 boundary tests and five watcher tests passed after this metadata correction;
 those fixtures do not establish rendering.
+The current coverage measurement row also advances directly from each completed
+snapshot, so it cannot retain an older source count or distance beside the new
+overview. Nine publication tests passed after adding this regression check;
+snapshot-specific past browser measurements remain unchanged.

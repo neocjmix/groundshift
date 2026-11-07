@@ -133,6 +133,17 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('retained GS reference image', summary['result']['detail'])
         self.assertIn('NOT RUN', summary['result']['detail'])
 
+    def test_current_coverage_measurement_advances_without_changing_history(self):
+        historical = dict(label='Snapshot003 경계 · 공개WebKit', value='1검사 PASS')
+        summary = dict(measurements=[dict(label='현재 전체경로 확장 · 실제산출물', value='3구간 · 56소스'), historical])
+        coverage = dict(segments=4, sourceCount=72, targetSourceCount=876, sourceGpsCoverageMeters=179.310725)
+        publisher.refresh_coverage_measurement(summary, coverage)
+        self.assertEqual(summary['measurements'][0]['value'], '4구간 · 72/876소스 · GPS179.31m')
+        self.assertIn('NOT RUN', summary['measurements'][0]['detail'])
+        self.assertEqual(summary['measurements'][1], historical)
+        publisher.refresh_coverage_measurement(summary, coverage)
+        self.assertEqual(len(summary['measurements']), 2)
+
 
 if __name__ == '__main__':
     unittest.main()
