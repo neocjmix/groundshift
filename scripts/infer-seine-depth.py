@@ -180,6 +180,13 @@ def run(output, inputs_json, reuse=()):
         for index, (requested, entry) in enumerate(zip(inputs, chosen)):
             paths = verify_entry(entry, requested)
             computed_this_run = entry['folder'] == output / 'computed'
+            # Only this run's generated previews are changed, and only when
+            # every encoded byte is identical to its immutable tangent crop.
+            # Prior cache evidence and arbitrary input-image encodings stay put.
+            if computed_this_run and sha(paths['source']) == requested['sourceSha256']:
+                temporary = paths['source'].with_suffix('.link')
+                os.link(requested['source'], temporary)
+                temporary.replace(paths['source'])
             stem = f'view-{index:02d}'
             for kind, suffix in [('relative', 'relative.npy'), ('visual', 'visual.png'), ('source', 'source.png')]:
                 os.link(paths[kind], output / f'{stem}-{suffix}')

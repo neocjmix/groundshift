@@ -230,7 +230,10 @@ def execute(root, limit=None):
         if overlap<6:raise ValueError('No already reconstructed shared-pose neighbor')
         try:
             if not acquired.exists():
-                reuse=[ORIGINALS,*sorted(root.glob('acquisition-*'))]
+                # A separate bounded acquisition process may be downloading
+                # ahead. Only complete manifests are eligible cache evidence.
+                candidates=[*sorted(root.glob('acquisition-*')),*sorted((root/'source-cache').glob('acquisition-*'))]
+                reuse=[ORIGINALS,*[p for p in candidates if (p/'acquisition.json').exists() and read(p/'acquisition.json').get('status')=='PASS']]
                 run_stage(job,'acquisition',[PY,'scripts/acquire-tourist-route.py',SOURCE_ROUTE,acquired,'--first',first,'--count',24,*[arg for p in reuse for arg in ('--reuse-acquisition',p)]])
             if read(acquired/'acquisition.json')['status']!='PASS':raise ValueError('Incomplete source acquisition')
             # Import the already-running first real pilot without rerunning it.
