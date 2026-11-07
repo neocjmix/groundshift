@@ -43,7 +43,7 @@ test('Fly is available without camera metadata and drag look survives denied poi
  await canvas.evaluate(c=>c.getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','error');
  await page.getByRole('button',{name:'Exit Fly'}).click();await expect(page.locator('.scene-shell')).not.toHaveClass(/is-fly/);await expect.poll(()=>page.evaluate(()=>document.fullscreenElement===null)).toBe(true);
  await page.getByRole('button',{name:'Retry scene',exact:true}).click();await expect(page.locator('.scene-shell')).toHaveAttribute('data-phase','ready');expect(errors).toEqual([]);
- await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',scene:'Actual Houseplant without camera metadata',pointerLock:'Test-only denied API; actual fallback drag exercised',escape:true,errors},null,2));
+ await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',scene:'Actual Houseplant without camera metadata',pointerLock:'Test-only denied API; actual fallback drag exercised',escape:true,forcedWebglContextLoss:true,exitWhileRendererFailed:true,retryRendering:true,errors},null,2));
 });
 
 test('two simultaneous mobile touch sticks move and look, release safely and support viewport fullscreen fallback',async({browser},info)=>{

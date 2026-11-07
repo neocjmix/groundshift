@@ -127,6 +127,10 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
         fly.current?.clear();
         mesh?.paged?.dispose();
         renderer?.setAnimationLoop(null);
+        // Stop Spark's pending worker/update jobs immediately on failure.
+        // Leaving them alive until Retry can reject against a lost GL context.
+        spark?.dispose();
+        spark=undefined;
         setStatus({
           phase: "error",
           message: error instanceof Error ? error.message : String(error),
