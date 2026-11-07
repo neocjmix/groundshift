@@ -61,6 +61,10 @@ test('real independently reconstructed route crosses and reverses with bounded p
  await panel.getByRole('button',{name:'같은 위치 · LoD로 복귀',exact:true}).click();const returned=await settled(page,next.id);
  expect(distance(returned.position,moved.position)).toBeLessThan(1e-8);expect(distance(returned.quaternion,moved.quaternion)).toBeLessThan(1e-8);expect(returned.fov).toBe(moved.fov);
  await panel.locator('summary').click();await page.screenshot({path:info.outputPath('route-fly-return.png')});expect(errors).toEqual([]);
+ // Catalog preview of the actual GS frame at this recorded-route neighborhood.
+ // Hide only overlaid controls; pose, dimensions and reconstructed pixels stay.
+ const previewStyle=await page.addStyleTag({content:'.is-fly>.fly-ui,.is-fly>.paging-inspector{visibility:hidden!important}'});
+ await canvas.screenshot({path:info.outputPath('route-observation-preview.png')});await previewStyle.evaluate(node=>node.remove());
  await writeFile(info.outputPath('evidence.json'),JSON.stringify({status:'PASS',browser:browser.version(),world,first,end,reverse,beforeFly,stopped,moved,whole,returned,flyInput:{seamView,key,target:next.id},trace,requests,errors,scope:'Actual declared reconstructed segments only; source route metadata is not GS coverage. Physical iPhone NOT RUN. Zero-opacity incoming and300ms fade use shared800k/14page budget; not a geometry or performance benchmark.'},null,2));
  expect(await canvas.getAttribute('data-navigation-mode')).toBe('fly');
 });
