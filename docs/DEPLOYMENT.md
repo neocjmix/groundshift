@@ -3399,3 +3399,74 @@ extra asset rollout or owned browser process is introduced by this final step.
 ### Automated route snapshot 009
 
 Release `viewer-seine-route-009-1794062014814657000`, archive `groundshift-seine-route-009-1794062028096153000.tar.gz`, 42,132,245bytes, SHA-256 `997101af82473d7affd9339804d58ecbd319d5ec8fa4d75c1b80a551f2e2c55b`. Apply after every previously pinned archive, in Docker COPY order. Explicit curation, complete base/overlay/composed checks and anonymous full archive readback PASS. 29 changed files; 1515 composed files. Git push creates DISPATCH_PENDING; the existing connector heartbeat must trigger this exact pointer. Git push alone is not Railway dispatch. Provider status, public hashes and new GPU boundary/browser checks are NOT RUN at this source commit; private publication receipts record later actual readback without inventing acceptance.
+
+Exact009pointer`d6f2dd727b751979f5f281be13a14e66d4a900f3` dispatches through
+the existing connector after matching-inflight check. Deployment
+`88fbcefd-a7ec-4933-b62a-32e2e590f4dc`: created14:35:10.314Z, **SUCCESS**
+at14:36:43.157Z. All29changed public file sizes/SHA-256 PASS independently
+at14:37:04.654919Z. Ordinary restoration59→60archives: prior files/new pin/
+all1,515final files PASS in6.838671s, atomic hardlink-safe replacement/no extra
+full copy or download. Actual9GS/152sources/ranks988–1139/sourceGPS376.806486m
+remains partial. Source876acquisition,002–008historical browser proof and007's
+failed/skipped/recovered delivery observation are preserved. Current009browser
+is NOT RUN until its own actual check; poster retains the actual008GS frame.
+No native/service configuration change. Private proof:
+`data/jobs/seine-full-20261107/publication-{dispatch,receipts}/009.json` and
+`static-publication/snapshot-009-1794062014814657000/ordinary-restore-60.json`.
+
+### Snapshot009 final public proof and user-stopped scope
+
+User requested closure at the currently published route. Native009 remains9GS,
+152source centers/ranks988–1139/sourceGPS376.806486m; all876originals acquisition
+PASS is separate from the uncompleted55-segment/2.185km reconstruction target.
+One focused public desktopWebKit27.2/iPhone16Pro-profile case passes eighth→
+ninth→eighth Fly. Selection538,486→664,277→602,364, max2roots/14pages,
+idlequeues/no pageerrors; handoff position/quaternion difference0, FOV80retained.
+This is one new boundary, separate from all002–008checks. PhysicaliPhone,
+frame-by-frame perceptual seamlessness and global metric geometry remain
+NOT RUN/NOT ACCEPTED. Actual ninth-segment GS PNG personally inspected:
+`/experiments/tourist-streaming/seine-snapshot-009.png`, SHA-256
+`69f06b7fc17017997c6495a272b128073a6ce66538e27c79c0c4561912f47cda`.
+JPEG90derivative386200bytes, SHA-256
+`50ae5b817a85bfe90894f9f87094e3362907a98d937ab899a2c1843c5d4d6dd8`.
+Public provenance pins both. Only UI overlays hidden; no retouching, generation
+or source-photo substitution. Street/storefront/van/pink strip render with
+stretched distant facades, moving-car ghosts and road/foreground smearing.
+
+The initial six-file proof/STOPPED presentation archive was already prepared
+when final process-exit proof arrived. One final rollout composes these two
+fresh checksum-pinned releases, preserving both packages and the ordinary restore:
+
+- `viewer-seine-route-009-evidence-1794062536472934000`:
+  `groundshift-seine-route-009-evidence-1794062536472934000.tar.gz`,
+  3,232,250bytes, SHA-256
+  `b235d4a6b0db77dbb512502fd79743cfd0f75b18346c5d78c5c2e2a10680b95f`.
+  Six selected files; base60→61archives/1,517composed files. Complete base,
+  target/archive/composed integrity PASS5.544902s; anonymous release/hash PASS.
+- `viewer-seine-route-009-closure-1794062536472934000`:
+  `groundshift-seine-route-009-closure-1794062536472934000.tar.gz`,
+  39,521bytes, SHA-256
+  `6ba232f50202a0019bc4ebe7229aef97fe0bf2333da24c69fde8a22f68f947d3`.
+  Two JSON files; base61→62archives/1,517composed files. Complete base,
+  target/archive/composed integrity PASS5.495611s; anonymous release/hash PASS.
+
+No runtime, scene, pose or RAD asset changed. Final current title/report/catalog
+say STOPPED BY USER at377m; stale58m/Safari presentation is retained explicitly
+as history. Source876proof, every002–008browser observation and007's initial
+FAIL/no-buildSKIPPED/recovered delivery remain intact. The public report records
+controlled next-window1132–1155cancellation: native exit-15,257.797189s,
+last logged1801iterations/362032splats, no scene export; inputs/depth/poses/logs
+preserved. Coordinator/native wrapper/Brush/publication watcher are verified
+absent; continuation automation PAUSED. This is user cancellation, not an
+unexplained reconstruction failure. Owned idle publisher72862was stopped at
+14:41:38.502613Z and will NOT restart without a new user request.
+
+A first closure-release creation returnedHTTP422 because a newly committed
+parent docs revision was not yet pushed. The bounded retry used the existing
+verified remote native009pointer as release target; archive bytes unchanged.
+This packaging-command failure and recovery are retained privately; no Railway
+build was triggered by that failed command. Final deployment/public hashes
+follow actual connector dispatch. Ordinary restoration61PASS4.204804s and
+62PASS4.115702s rechecked prior files/new pin/all1,517final files, with atomic
+hardlink-safe replacement/no extra full copy or archive download.
+Private evidence: `data/jobs/seine-full-20261107/publication-evidence-009-1794062536472934000/`.

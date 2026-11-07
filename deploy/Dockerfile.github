@@ -416,6 +416,20 @@ RUN wget -q -O /tmp/seine_snapshot_009.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/seine_snapshot_009.tar.gz -C /out
 
+# Final snapshot009 evidence; expansion STOPPED BY USER, actual added boundary PASS.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_evidence_009
+RUN wget -q -O /tmp/seine_evidence_009.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-009-evidence-1794062536472934000/groundshift-seine-route-009-evidence-1794062536472934000.tar.gz \
+ && echo 'b235d4a6b0db77dbb512502fd79743cfd0f75b18346c5d78c5c2e2a10680b95f  /tmp/seine_evidence_009.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_evidence_009.tar.gz -C /out
+
+# Final snapshot009 evidence; expansion STOPPED BY USER, actual added boundary PASS.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_closure_009
+RUN wget -q -O /tmp/seine_closure_009.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-route-009-closure-1794062536472934000/groundshift-seine-route-009-closure-1794062536472934000.tar.gz \
+ && echo '6ba232f50202a0019bc4ebe7229aef97fe0bf2333da24c69fde8a22f68f947d3  /tmp/seine_closure_009.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_closure_009.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -475,5 +489,7 @@ COPY --from=seine_evidence_007 /out/www /srv
 COPY --from=seine_snapshot_008 /out/www /srv
 COPY --from=seine_evidence_008 /out/www /srv
 COPY --from=seine_snapshot_009 /out/www /srv
+COPY --from=seine_evidence_009 /out/www /srv
+COPY --from=seine_closure_009 /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
