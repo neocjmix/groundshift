@@ -162,14 +162,29 @@ Release `viewer-lod-report-verified-2026-11-07`, archive
 Apply after32 preceding layers. JSON/privacy and full base/target/archive/composed
 integrity pass in4.490703s; exactly1summary JSON changes,1,271 composed files
 retained. All39 worlds,the viewer,timeline,source imagery and3comparison PNGs stay
-byte-identical. The final layer will be applied to the same tree that began as a fresh
-empty32-layer restore, then every final file reverified; this final ordinary check
-is **NOT RUN** at dispatch and needs no second bulk copy.
+byte-identical. The final ordinary check is **NOT RUN** at dispatch. After dispatch, applying
+the last layer to the same tree that began as a fresh empty32-layer restore and
+rechecking every final file **PASS**:33 archive SHA pins and all1,271 file sizes/
+hashes. The last layer plus complete file recheck takes2.027580s, following the
+10.999922s initial32-layer extraction/check. No second bulk copy or download is
+used. Evidence is retained in `ordinary-restore-33.json`.
 No repeat GPU/browser suite is implied by this status-only publication. Physical
 phone/Safari hardware and kilometer-scale reconstruction remain **NOT RUN**;
 serving recovery does not establish independent geometry or a new16-view quality pass.
 Private evidence stays under
 `data/validation/fly-mobile-detail-20261107/publications/report-verified/`.
+
+Final pointer `e1c0d67a79aaf38ac3926f182e1324db0db16fa1` deploys as
+`aba39123-a62d-4126-a6b4-a4146cfb24e2`: created2026-11-07T01:50:04.467Z,
+**SUCCESS** at01:50:52.359Z. Anonymous complete archive readback passes in0.578187s.
+The exact final public summary matches16,849 bytes and SHA-256
+`98008859d2aadc6f69fe8e17482882d74b4e5026d061d073873aa36abb43a2d9`
+in0.489568s. Prior compiled/world/image/timeline bytes remain unchanged from the
+already executed public checks. All8 final distinct public browser cases pass,
+with retained earlier failures;33 archive pins and all1,271 restored file sizes/
+hashes pass. Final documentation is committed without another artifact rollout,
+so Railway stays pinned to these tested bytes. Implementation is recorded by
+`400e053` and final evidence/tests by`0d0724f`.
 
 ## Fullscreen Fly viewer controls — 2026-11-07
 
