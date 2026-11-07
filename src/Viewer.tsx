@@ -67,7 +67,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   const [streamEnabled,setStreamEnabled]=useState(()=>new URLSearchParams(window.location.search).get('stream')!=='off');
   const [streamStats,setStreamStats]=useState<StreamStats|null>(null);
   const retryChunks=useRef<()=>void>(()=>{});
-  const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;errors:string[]}|null>(null);
+  const [pagingStats,setPagingStats]=useState<{selected:number;pages:number;bytes:number;requested:number;pending:number;errors:string[]}|null>(null);
 
   const exitFly=useCallback(()=>{
     cancelFullscreen();
@@ -139,6 +139,17 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
     };
     const run = async () => {
       renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+      // A pending GPU readback can reject before webglcontextlost is delivered.
+      // Fail/dispose its owner before Spark observes that rejection; otherwise
+      // it escapes the render-loop try/catch as an unhandled promise rejection.
+      const readback=renderer.readRenderTargetPixelsAsync.bind(renderer);
+      renderer.readRenderTargetPixelsAsync=async(...args)=>{
+        try{return await readback(...args);}
+        catch(error){
+          fail(error instanceof Error?error:new Error('GPU readback failed. Retry the scene to restore rendering.',{cause:error}));
+          throw error;
+        }
+      };
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setClearColor("#111614", 1);
       renderer.domElement.setAttribute(
@@ -525,7 +536,8 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
           renderer.render(scene, camera);
           if(world.paging&&streamEnabled){
             count=spark?.activeSplats??0;received=radStats.bytes;
-            const stats={selected:count,pages:spark?.pager?.pageToSplatsChunk.filter(Boolean).length??0,bytes:radStats.bytes,pending:radStats.pending,requested:radStats.requested,errors:[...radStats.errors],capacity:world.manifest.paging!.maxPagedSplats,sourceSplats:world.paging.index.sourceSplats};
+            const residentChunks=spark?.pager?.pageToSplatsChunk.flatMap(page=>page?[page.chunk]:[])??[];
+            const stats={selected:count,pages:residentChunks.length,residentChunks,selectionTarget:world.manifest.paging!.lodSplatCount,bytes:radStats.bytes,pending:radStats.pending,requested:radStats.requested,errors:[...radStats.errors],capacity:world.manifest.paging!.maxPagedSplats,sourceSplats:world.paging.index.sourceSplats};
             renderer.domElement.dataset.paging=JSON.stringify(stats);
             if(totalFrames%30===0)setPagingStats(stats);
           }
@@ -589,7 +601,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
   return (
     <div ref={shell} className={'scene-shell'+(navigation.mode==='fly'?' is-fly':'')} data-phase={status.phase}>
       {navigation.mode==='fly'&&<FlyControls getMotion={getFly} onExit={exitFly} onReset={()=>reset.current()}
-        disabled={status.phase!=='ready'} detail={world.paging&&pagingStats?`${pagingStats.selected.toLocaleString()} GS · ${pagingStats.pages} pages`:metrics?`${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
+        disabled={status.phase!=='ready'} detail={world.paging&&pagingStats?.pending?'주변 세부 불러오는 중…':metrics?`자유 이동 · ${metrics.fps.toFixed(0)} fps`:world.manifest.title}/>}
       <div ref={mount} className="canvas-mount" />
       {world.paging&&<div className="stream-panel" aria-label="Native LoD paging status">
         <strong>{streamEnabled?'LoD 스트리밍':'전체 SPZ 비교'}</strong>
