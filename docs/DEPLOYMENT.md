@@ -2862,3 +2862,38 @@ QUEUE mode. Current PID/command/freshness are in the owned process/heartbeat
 files, not inferred from oldPIDs. Five-minute heartbeat/active deployment agent
 continues to invoke the healthy connector; Git autodeploy is still unavailable.
 Future archives preserve all40current scenes and all earlier report/image paths.
+
+### All876original sources acquired; reconstruction remains partial
+
+All14source-cache acquisition reports and prefetch report are PASS. Independent
+checks match876unique source identities/ranks808–1683, the exact pinned source
+manifest`ffc8d549ffb5c11869c29fc5da889f55131d4a794fc1d7a5b827e0cbe6732aa3`,
+every reported file size and14report checksum pins. Root's separate streaming
+audit verifies actual file SHA-256 plus JPEG headers/dimensions for all876files:
+6,521,351,364bytes, all12,288×6,144. Full pixel decode remains NOT RUN. Forty
+previously verified originals are reused. Acquisition elapsed6871.478156s mixes
+download/reuse; independent file audit6.125874s is an actual cached/local audit,
+not an inference, GPU or pure network benchmark. Every original JPEG stays local.
+The provider/source licenses are the already selected public Panoramax collection
+under etalab2.0; no new source/model/configuration is introduced.
+
+Actual public reconstruction remains2native GS segments/40source centers and
+98.749536m source GPS polyline. Full876source/2.185km reconstruction, full-route
+geometric acceptance and physical-iPhone execution remain NOT RUN; next native
+training continues independently. Existing local6/publicWebKit3 checks, initial
+24-image acquisition evidence, device feedback, previews, failed/provisional
+stages and every previous observation are preserved. Source completion is shown
+as its own report stage and chronological entry, separately from native coverage.
+
+Release`viewer-seine-source-complete-1794050021104118000`, archive
+`groundshift-seine-source-complete-1794050021104118000.tar.gz`:28,315bytes,
+SHA-256`3e109fee85c6507b6814b6cf0e15b9fcf0dafffb4c0898d89e6f4aa7cf1b9eb8`.
+Apply after46preceding archives. Exactly2sanitized JSON files change: report and
+timeline, containing aggregate acquisition evidence without originals, source
+download URLs, local paths or raw logs. The existing built/live runtime and all
+40scenes remain byte-identical. Finite JSON/privacy/current report shape/source-
+versus-native checks and complete base/target/archive/composed integrity PASS in
+5.548305s for1,345files. This metadata-only update requires no redundant GPU/browser
+run. Provider status and public readback follow dispatch, not Git push alone.
+Private proof:`data/jobs/seine-full-20261107/{source-acquisition-complete.json,
+publication-acquisition-check.json,publication-source-complete-1794050021104118000/}`.

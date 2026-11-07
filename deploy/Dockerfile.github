@@ -318,6 +318,13 @@ RUN wget -q -O /tmp/seine_verified_002.tar.gz https://github.com/neocjmix/ground
  && mkdir /out \
  && tar -xzf /tmp/seine_verified_002.tar.gz -C /out
 
+# Complete local876source acquisition; same two native GS segments/rendered coverage.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS seine_sources_complete
+RUN wget -q -O /tmp/seine_sources_complete.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-seine-source-complete-1794050021104118000/groundshift-seine-source-complete-1794050021104118000.tar.gz \
+ && echo '3e109fee85c6507b6814b6cf0e15b9fcf0dafffb4c0898d89e6f4aa7cf1b9eb8  /tmp/seine_sources_complete.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/seine_sources_complete.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -363,5 +370,6 @@ COPY --from=seine_route_watcher /out/www /srv
 COPY --from=seine_snapshot_002 /out/www /srv
 COPY --from=seine_preview_002 /out/www /srv
 COPY --from=seine_verified_002 /out/www /srv
+COPY --from=seine_sources_complete /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
