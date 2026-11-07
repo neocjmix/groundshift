@@ -2897,3 +2897,29 @@ versus-native checks and complete base/target/archive/composed integrity PASS in
 run. Provider status and public readback follow dispatch, not Git push alone.
 Private proof:`data/jobs/seine-full-20261107/{source-acquisition-complete.json,
 publication-acquisition-check.json,publication-source-complete-1794050021104118000/}`.
+
+Pointer`185d0dcfa4ae491e73d30419a82a965cda436e81` dispatched through the existing
+Railway connector as`68a8b5b5-7005-496e-9254-9a36e259da08`: created11:15:42.181Z,
+**SUCCESS** at11:16:40.409Z. Anonymous archive download/checksum PASS in0.550338s.
+Both changed public JSON files match exact packaged sizes/SHA-256 after7readiness
+attempts/34.340626s including rollout wait; this is not a transfer benchmark:
+
+- Report:59,875bytes,
+  SHA`3104fde362222b27b28493b2d8cb067173f4b205650b8e3db8deebb42b2f85cf`.
+- Timeline:38,558bytes,
+  SHA`db8ded9d0fe9c5d0b75d48b5dabeabf0c7aa8cf982906f42daa73006d43530cf`.
+
+Ordinary restoration extends46→47archives: prior files/new archive pin/all1,345
+final file sizes/SHA-256 PASS in4.016072s, using atomic hardlink-safe replacement
+with no additional full copy or archive download. Final receipt is
+`data/jobs/seine-full-20261107/publication-status/source-acquisition-complete.json`.
+No redundant GPU/browser rerun is inferred from metadata-only readback; existing
+publicWebKit3/localChrome3+WebKit3 remain scoped to the actual two-segment scene.
+Source acquisition PASS does not expand native/rendered coverage beyond40sources.
+
+The idle owned publisher is stopped for the final documentation push, then
+restarted against the verified47archive inventory. Its current PID and fresh
+heartbeat are recorded in `static-publication/process.json` and `heartbeat.json`.
+It continues CONNECTOR QUEUE mode: five-second export detection/preparation,
+followed by active-agent/five-minute-heartbeat connector dispatch and actual
+public hash verification. Git push alone still does not imply Railway dispatch.
