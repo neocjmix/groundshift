@@ -16,6 +16,10 @@ export default tseslint.config(
     ],
   },
   {
+    files: ["build/**/*.ts", "vite.config.ts", "vitest.config.ts"],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+  },
+  {
     files: ["src/**/*.{ts,tsx}"],
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     plugins: { "react-hooks": reactHooks, "react-refresh": reactRefresh },
