@@ -319,6 +319,7 @@ archive receipts remain in the matching `segment-FIRST-LAST/` job directory.
 | --- | --- | --- | --- | --- | --- |
 | 005 | 1052–1075 | 88 / 214.834239 m | 1,062.463517 | 15,959,587 / 26,167,680 | PASS one public WebKit case |
 | 006 | 1068–1091 | 104 / 255.782957 m | 1,040.793582 | 16,019,693 / 26,124,281 | PASS one public WebKit case |
+| 007 | 1084–1107 | 120 / 296.555364 m | 993.279200 | 16,009,419 / 26,037,776 | PASS one public WebKit case |
 
 For 005, SfM registered all 144 crops (6,105 points, 0.590331 px reprojection
 error); all eight shared poses and both transform-withheld checks passed.
@@ -357,6 +358,31 @@ intersection, crossing, signs and buildings, with strong road/vehicle smearing
 and distorted facade/pole edges. Evidence:
 `data/validation/seine-route-20261107/public-route-006-browser-summary.json`.
 Physical iPhone testing remains **NOT RUN**; global geometry **NOT ACCEPTED**.
+
+For 007, all 144 SfM crops registered (10,763 points, 0.543122 px reprojection
+error). All eight shared poses and both transform-withheld checks passed:
+relative scale 0.98696440, maximum center residual 0.002708 reference steps and
+orientation residual 0.032658 degrees. DAV2 inferred 320 maps on MPS in
+46.843336 s, reused 160 exact maps and took 92.369522 s in the depth wrapper.
+Calibration retained 341/480 maps and 188,351 seed points. Native maximum RSS
+was 858,374,144 B and peak footprint 2,900,920,768 B. Lossless depth archival
+passed in 24.384549 s (426,193,613 encoded bytes, 285,147,537 new blob bytes).
+The unchanged coordinator continued to ranks 1100–1123; these measurements
+remain concurrent-run observations, not isolated performance benchmarks.
+The public007 check passed one sixth-to-seventh-and-back Fly case at recorded
+view 99 after deployment recovery. Selected counts were 604,171 → 666,484 →
+642,943, with at most two resident segments/fourteen pages, empty settled queues,
+no page errors or eager whole-SPZ requests, and unchanged handoff camera pose/FOV.
+Inspected frames show a recognizable street, building row and pink roadside
+strip; vehicle/pedestrian ghosts, stretched distant facades and road smearing
+remain. Evidence:
+`data/validation/seine-route-20261107/public-route-007-browser-summary.json`.
+The initial Railway build failed in an older pinned archive stage; the unchanged
+commit retry was skipped without executing a build. A one-line verbose-download
+diagnostic triggered a successful rebuild with identical scene/archive pins.
+The cause is unproven; failure, skipped retry and recovery remain separate
+delivery evidence in [DEPLOYMENT.md](DEPLOYMENT.md). Physical iPhone remains
+**NOT RUN**, global geometry **NOT ACCEPTED**.
 
 ### Unattended continuation
 
