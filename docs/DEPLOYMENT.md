@@ -3132,3 +3132,25 @@ actualPNG/sanitizedprovenance/JPEGpreview. Runtime,scene,cameras,RAD unchanged.
 Complete base/target/archive/composed integrity PASS in7.577460s for1,420files;
 anonymous release checksum PASS. Provider/public hashes follow actual dispatch.
 Private proof:`/Users/chanjinpark/groundshift/data/jobs/seine-full-20261107/publication-evidence-005-1794057175971390000/`.
+
+Evidence pointer`741f09bb0d0022710ba6b537a3d078b10352c24b` dispatches through
+the existing connector as`95631870-e8b4-4c13-82e5-2118d1f76e73`: created
+13:14:27.073Z, **SUCCESS** at13:15:10.181Z. Anonymous full archive/hash PASS
+in7.456552s. All6changed public file sizes/SHA-256 PASS after4readiness attempts/
+20.054806s including rollout wait. Final report96,150bytes, SHA-256
+`918c941a223dfa4f10ae767e584bba0c3f2b6f42e4f84f6b3dfac568ee44eb1d`;
+actual public005PNG matches its directly inspected source checksum above.
+Ordinary restoration52→53archives: prior files/new pin/all1,420final files PASS
+in4.382859s, atomic hardlink-safe replacement/no extra full copy or download.
+
+Original005native provider/30public hashes and later six-file evidence delivery
+are preserved in the same lineage. Current5GS/88source/214.83m sourceGPS scope
+remains distinct from876original-source acquisition and full-route acceptance.
+Receipt:`data/jobs/seine-full-20261107/publication-status/snapshot-005-evidence.json`.
+The idle owned publisher is briefly stopped for the final documentation push
+then restarted at the verified53archive inventory; current PID/freshness are
+recorded in process/heartbeat files. CONNECTOR QUEUE/five-minute fallback remains
+actual dispatch behavior, with no extra GPU/browser campaign or metadata-only
+self-referential deployment. Current50COPY stages remain below110cap; continued
+per-native/evidence increments require a later checkpoint consolidation before
+that cap, preserving all rollback archives. No consolidation is performed here.
