@@ -227,6 +227,13 @@ RUN wget -q -O /tmp/lod-report-verified.tar.gz https://github.com/neocjmix/groun
  && mkdir /out \
  && tar -xzf /tmp/lod-report-verified.tar.gz -C /out
 
+# Device-local Safari diagnostics; physical iPhone blur remains unresolved.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS safari_diagnostics
+RUN wget -q -O /tmp/safari-diagnostics.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-safari-diagnostics-2026-11-07/groundshift-safari-diagnostics-20261107.tar.gz \
+ && echo 'bcb1f2c28f75f623fe488f5e23824e00dcfc6017f39e386d84d37b29eca818da  /tmp/safari-diagnostics.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/safari-diagnostics.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -259,5 +266,6 @@ COPY --from=control_clearance /out/www /srv
 COPY --from=lod_detail_evidence /out/www /srv
 COPY --from=lod_detail_verified /out/www /srv
 COPY --from=lod_report_verified /out/www /srv
+COPY --from=safari_diagnostics /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

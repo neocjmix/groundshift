@@ -15,6 +15,41 @@ validation updates separately. Keep every prior observation in each incremental
 package and retain rollback archives. Verification below describes evidence
 collected after dispatch, not a reason to postpone the initial publication.
 
+## Safari reproduction and device-local diagnostics — 2026-11-07
+
+The user reports persistent blur on physical iPhone16Pro Safari. This release
+provides same-position LoD/whole-SPZ comparison and device-local diagnostic export;
+it is **not a proven root-cause fix**. Physical iPhone reproduction and resolution
+remain **NOT RUN**. The report and catalog now state the current14-page/917,504-slot
+pool and800k selection target, distinguishing view-dependent actual counts and
+historical8-page/350k measurements. No source image, training parameter, scene
+binary, camera or world manifest changes. All39 scenes and prior evidence remain.
+
+Actual M2 desktop Safari26.6.2 UI observation records685,467selected/14pages and a
+street render; responsive402×681/3× records680,013. Native Safari WebDriver remains
+NOT RUN because remote automation is disabled. Actual desktop Playwright WebKit27.2
+with iPhone-profile viewport/touch/DPR records680,013selected/14pages after50s,
+with no renderer errors. The initial path test fails on a30s slider-focus wait;
+its resumed mid/landscape/compact observations pass execution and preserve that
+failure. These desktop observations are not physical-iPhone GPU evidence.
+An installed iPhone17Pro/iOS26.3 Simulator opened through Safari's menu records
+672,170selected/14pages and a street render; Fly movement is still pending in this
+frozen report. CLI license/automation blockers and this separate Simulator UI
+execution are distinguished; the agent does not accept the Xcode license.
+
+Release `viewer-safari-diagnostics-2026-11-07`, archive
+`groundshift-safari-diagnostics-20261107.tar.gz`: **1,084,734 bytes**, SHA-256
+`bcb1f2c28f75f623fe488f5e23824e00dcfc6017f39e386d84d37b29eca818da`.
+Apply after33 preceding layers. Root's completed production build/typecheck/lint/
+220unit PASS are reused at source`255a9da`; the deployment agent verifies compiled
+version`safari-paging-20261107-v1` and does not rebuild shared`dist` while local
+WebKit tests run. Explicit full39-scene curation,authorized metadata and complete
+base/target/archive/composed integrity pass in13.544657s:9 changed compiled/HTML/
+metadata files,1,188 target public files,1,276 composed files. The17 inert historical
+background files remain retained. New diagnostic public-browser checks are
+**NOT RUN** at dispatch. Private evidence stays under
+`data/validation/iphone-safari-20261107/publications/diagnostics/`.
+
 ## Mobile Fly refinement and near-detail investigation — 2026-11-07
 
 The first increment is **interim mobile UI**, while blurry near-detail LoD loading
@@ -887,7 +922,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the ten viewer/observation updates, in order. The command below includes all thirty-three
+reconstruction/paging layers and the eleven viewer/observation updates, in order. The command below includes all thirty-four
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -1008,6 +1043,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-lod-report-verified-2026-11-07 \
     groundshift-lod-report-verified-20261107.tar.gz \
     3eef3f791015567e37a3b3263f203e123665e1603f1d1bc1fbd1cec3937ceb4d
+  gs_restore_layer viewer-safari-diagnostics-2026-11-07 \
+    groundshift-safari-diagnostics-20261107.tar.gz \
+    bcb1f2c28f75f623fe488f5e23824e00dcfc6017f39e386d84d37b29eca818da
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
