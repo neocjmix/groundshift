@@ -87,6 +87,19 @@ PASS in5.314833s for1,280files. All39scenes and historical evidence remain.
 Private evidence:`data/validation/paris-full-route-20261107/publications/alignment-1004-1027/`.
 Rollout,public hashes and new metadata-browser checks follow dispatch.
 
+Alignment pointer`4af187551abd0e5fb8bec8e689681b5c233b29d9` deploys as
+`2fe64945-4a7c-48b1-a59c-1ccbcdb4ad90`: created2026-11-07T08:59:15.507Z,
+**SUCCESS** at09:00:10.510Z. Anonymous complete archive readback passes in1.021727s;
+both changed public JSON sizes/SHA-256 pass in0.998499s after11readiness polls.
+Summary is40,877bytes,SHA-256
+`c468eaca65310d023271988f86d494625be994f505ab4d67f97a3019c036cdae`.
+The ordinary tree extends38→39layers with prior-file checks,archive pin and
+every1,280final path/size/SHA-256 PASS in3.691340s. Changed restore files are
+written to temporary siblings and atomically replaced, preserving any immutable
+dedup hardlinks. No extra bulk copy/download is used. New report-browser
+acceptance remains NOT RUN; no new GS rendering/coverage is inferred from this
+metadata publication. Existing scene/runtime checks remain preserved.
+
 ## Safari reproduction and device-local diagnostics — 2026-11-07
 
 The user reports persistent blur on physical iPhone16Pro Safari. This release
