@@ -230,13 +230,48 @@ single-request HTTP 503 failures retained the old segment and recovered through
 retry. Recognizable road/facades/sidewalk/trees/intersection are visible, with
 road/car smearing and stretched or duplicated thin structures. Settled frames
 do not establish a perceptually seamless transition or surveyed street geometry.
-They do not establish native training, rendering, collision geometry or
-surveyed street accuracy. Live viewer and execution evidence will be appended
-as those operations actually finish.
+The static tests alone do not establish native training or rendering; neither
+the tests nor the browser checks establish collision geometry or surveyed street
+accuracy. Further execution evidence is appended as operations finish.
+
+### Second added window and complete source acquisition
+
+Ranks 1020–1043 completed the same declared configuration without a restart.
+SfM registered 144/144 crops, with 5,991 points and 0.598966 px mean reprojection
+error. All eight shared poses passed alignment: scale 0.98944679, maximum center
+residual 0.003959 reference steps, maximum orientation residual 0.025457 degrees.
+Both transform-withheld poses passed; these remain internal SfM diagnostics.
+
+DAV2 actually inferred 320 new crops on MPS in 236.181894 s and reused 160
+byte-verified predictions from the neighboring job's lossless archive. The whole
+depth stage took 292.181844 s. Calibration accepted 291/480 crops and produced
+185,405 initial points; the other 189 maps were excluded. Brush finished 8,000
+steps and 800,000 Gaussians in 3,918 s reported training time, 3,928.416475 s
+wrapper time, with 537,264,128 B maximum RSS and 2,895,005,952 B peak footprint.
+The export is a 73,600,652 B PLY, a 15,761,921 B SPZ and 25,963,264 B chunked RAD
+including its index. These are concurrent-run measurements, not speed benchmarks.
+
+Snapshot003 contains three independently trained segments, 56 unique physical
+source poses, ranks 988–1043 and 139.263891 m of source GPS path. Its original
+export receipt records browser rendering **NOT RUN**; later public checks must
+identify this snapshot explicitly rather than inherit snapshot002's PASS.
+Global geometry remains **NOT ACCEPTED**. Native evidence is retained under
+`data/jobs/seine-full-20261107/segment-1020-1043/` and `route-world-003/`.
+The job's exact depth archive passed verification for 800 aliases of 480 unique
+NPYs: 1,132,523,520 raw bytes correspond to 426,718,928 encoded bytes, of which
+280,171,044 bytes were new blobs. It took 33.746636 s and retained recoverability.
+
+All 876 selected original JPEGs are now acquired locally in fourteen batches:
+6,521,351,364 B, each 12,288×6,144 pixels. An independent file audit passed
+identity/rank coverage, actual sizes/SHA-256 and JPEG headers/dimensions in
+6.125874 s; full pixel decoding was **NOT RUN**. Acquisition wall time was
+6,871.478156 s including forty reused originals, not a pure download benchmark.
+Evidence: `data/jobs/seine-full-20261107/source-acquisition-complete.json`.
+Source acquisition is complete; reconstruction of the entire route is not.
 
 ### Unattended continuation
 
-The native coordinator and source acquisition continue locally. A separate
+The native coordinator continues locally using the completed source cache. A separate
 locked publisher watches atomic exports every five seconds, immediately prepares
 and uploads the checksum-pinned incremental package, and queues the exact branch
 pointer. The existing Railway environment's GitHub auto-deploy UI currently says
