@@ -73,6 +73,50 @@ test('real independently reconstructed route crosses and reverses with bounded p
  expect(await canvas.getAttribute('data-navigation-mode')).toBe('fly');
 });
 
+test('latest real route extension crosses its new Fly boundary and returns within the shared budget',async({page,browser},info)=>{
+ test.setTimeout(150000);
+ const errors=[],requests=[],observations={};
+ page.on('pageerror',e=>errors.push(e.message));
+ page.on('request',r=>{const path=new URL(r.url()).pathname;if(/\.(rad|radc|spz)$/.test(path))requests.push(path);});
+ const index=await routeInfo(page);test.skip(index.segments.length<3,'An additional native route segment has not been exported.');
+ const from=index.segments.at(-2),to=index.segments.at(-1);
+ const response=await page.request.get(world),manifest=await response.json();
+ const cameras=await (await page.request.get(new URL(manifest.navigation.camerasPath,response.url()).href)).json();
+ const seam=from.anchors.at(-1),seamView=cameras.frames.findIndex(f=>distance(f.cameraToWorld.slice(0,3).map(r=>r[3]),seam)<1e-8);
+ expect(seamView).toBeGreaterThanOrEqual(0);
+ let status='FAIL';
+ try{
+  await initial(page);await settled(page,(await state(page)).route.active);
+  const slider=page.getByRole('slider',{name:'Recorded camera view'});await slider.focus();await slider.press('Home');
+  for(let i=0;i<seamView;i++)await slider.press('ArrowRight');
+  observations.seam=await settled(page,from.id);await inspect(page,info,'extension-before');
+  expect(requests.some(p=>p.includes('/'+to.world.replace(/world\.json$/,'')))).toBe(false);
+  await page.evaluate(()=>{window.__routeTrace=[];window.__routeTimer=setInterval(()=>{const c=document.querySelector('canvas');if(c?.dataset.route&&c?.dataset.paging)window.__routeTrace.push({route:JSON.parse(c.dataset.route),paging:JSON.parse(c.dataset.paging)});},50);});
+  await page.getByRole('button',{name:'Fly',exact:true}).click();observations.beforeFly=await state(page);
+  const up=new Vector3(...manifest.navigation.camera.up).normalize(),forward=new Vector3(0,0,-1).applyQuaternion(new Quaternion(...observations.beforeFly.quaternion)).projectOnPlane(up).normalize(),right=forward.clone().cross(up).normalize(),toward=new Vector3(...to.anchors[0]).sub(new Vector3(...observations.beforeFly.position));
+  const along=toward.dot(forward),across=toward.dot(right),key=Math.abs(along)>=Math.abs(across)?(along>=0?'KeyW':'KeyS'):(across>=0?'KeyD':'KeyA');
+  const reverseKey={KeyW:'KeyS',KeyS:'KeyW',KeyD:'KeyA',KeyA:'KeyD'}[key];
+  observations.input={seamView,key,reverseKey,from:from.id,to:to.id};
+  for(const [direction,target,input] of [['forward',to.id,key],['reverse',from.id,reverseKey]]){
+   try{await page.keyboard.down('Shift');await page.keyboard.down(input);await expect.poll(async()=>(await state(page)).route.wanted,{timeout:15000}).toBe(target);}
+   finally{await page.keyboard.up(input);await page.keyboard.up('Shift');}
+   const stopped=await state(page),loaded=await settled(page,target);observations[direction]={stopped,loaded};
+   expect(loaded.mode).toBe('fly');expect(distance(loaded.position,stopped.position)).toBeLessThan(1e-8);expect(distance(loaded.quaternion,stopped.quaternion)).toBeLessThan(1e-8);expect(loaded.fov).toBe(stopped.fov);
+   expect(loaded.route.errors).toEqual([]);expect(loaded.paging.capacity).toBe(917504);expect(loaded.paging.selectionTarget).toBe(800000);
+   await inspect(page,info,'extension-'+direction);await page.screenshot({path:info.outputPath('extension-'+direction+'-ui.png')});
+  }
+  const trace=await page.evaluate(()=>window.__routeTrace);
+  expect(trace.every(s=>s.route.resident<=2&&s.paging.pages<=14)).toBe(true);expect(trace.some(s=>s.route.resident===2)).toBe(true);
+  expect(trace.every(s=>s.route.segments.reduce((n,r)=>n+r.opacity,0)<=1.000001)).toBe(true);
+  expect(observations.reverse.loaded.route.transitions-observations.seam.route.transitions).toBeGreaterThanOrEqual(2);
+  expect(distance(observations.forward.loaded.position,observations.beforeFly.position)).toBeGreaterThan(.01);
+  expect(requests.some(p=>p.endsWith('.spz'))).toBe(false);expect(errors).toEqual([]);status='PASS';
+ }finally{
+  const trace=await page.evaluate(()=>{clearInterval(window.__routeTimer);return window.__routeTrace??[];}).catch(()=>[]);
+  await writeFile(info.outputPath('evidence.json'),JSON.stringify({status,browser:browser.version(),world,segmentCount:index.segments.length,from:from.id,to:to.id,...observations,trace,requests,errors,scope:'Actual added native segment and Fly boundary in both directions. Desktop WebKit iPhone profile when GS_ROUTE_WEBKIT=1; physical iPhone NOT RUN. Shared 800k selection target and14-page pool. Not a global geometry, seamlessness or performance acceptance.'},null,2));
+ }
+});
+
 for(const stage of ['metadata','RAD chunk'])test(`failed incoming route ${stage} retains the current rendered world and retries`,async({page},info)=>{
  test.setTimeout(120000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const index=await routeInfo(page),last=index.segments.at(-1);expect(index.segments.length).toBeGreaterThanOrEqual(2);
