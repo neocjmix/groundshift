@@ -6,7 +6,7 @@ if(process.env.GS_ROUTE_WEBKIT==='1'){
  const {defaultBrowserType,...iphone}=devices['iPhone 16 Pro'];
  test.use({...iphone,browserName:defaultBrowserType,channel:'',headless:true});
 }
-const world=process.env.GS_ROUTE_WORLD??'/worlds/paris-seine-route/world.json';
+const world=process.env.GS_ROUTE_WORLD??'/worlds/seine-full-route/world.json';
 const state=page=>page.locator('canvas').evaluate(c=>({route:c.dataset.route?JSON.parse(c.dataset.route):null,paging:c.dataset.paging?JSON.parse(c.dataset.paging):null,
  diagnostics:c.dataset.pagingDiagnostics?JSON.parse(c.dataset.pagingDiagnostics):null,position:c.dataset.cameraPosition?.split(',').map(Number),quaternion:c.dataset.cameraQuaternion?.split(',').map(Number),fov:Number(c.dataset.cameraFov),mode:c.dataset.navigationMode,frames:Number(c.dataset.frameCount)}));
 const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));

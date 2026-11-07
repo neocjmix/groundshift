@@ -10,7 +10,7 @@ import {radFetcher,type RadTransfer} from './rad-fetcher';
 import {FlyNavigation,flySpeed} from './fly-navigation';
 import FlyControls from './FlyControls';
 import {snapshotPagingDiagnostics,type PagingDiagnostics} from './paging-diagnostics';
-import {RouteStream,routeAssetTransform,routeOwner,type RouteStats} from './route-stream';
+import {RouteStream,routeAssetTransform,routeOwner,guardRoutePagedUpdates,type RouteStats} from './route-stream';
 import {resolveAssetUrl} from './world';
 
 const diagnosticVersion='safari-paging-20261107-v2';
@@ -479,6 +479,7 @@ export default function Viewer({ world }: { world: LoadedWorld }) {
             }});
             const resource=new SplatMesh({paged});
             let released=false;
+            guardRoutePagedUpdates(paged,()=>released);
             const disposeResource=()=>{if(released)return;released=true;paged.dispose();spark?.pager?.removeSplats(paged);scene.remove(resource);resource.dispose();};
             signal.addEventListener('abort',disposeResource,{once:true});
             try{

@@ -5,6 +5,13 @@ export type RouteStats={active:string|null;incoming:string|null;pending:string|n
 type Resource={dispose:()=>void};
 type Entry<T>={segment:RouteSegment;resource:T};
 
+/** Spark can finish an awaited LoD traversal after a route resource is released.
+ * Its late update must not recreate that resource's disposed index texture. */
+export function guardRoutePagedUpdates(paged:{update:(count:number,indices:Uint32Array)=>void;abortController:AbortController},released:()=>boolean){
+  const update=paged.update.bind(paged);
+  paged.update=(count,indices)=>{if(!released()&&!paged.abortController.signal.aborted)update(count,indices);};
+}
+
 /** Asset -> standalone viewer -> route viewer, including scale exactly once. */
 export function routeAssetTransform(segment:RouteSegment,asset:WorldManifest['coordinates']['assetToWorld']){
   const matrix=(t:typeof asset)=>new Matrix4().compose(new Vector3(...t.position),new Quaternion(...t.quaternion),new Vector3().setScalar(t.scale));
