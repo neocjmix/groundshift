@@ -221,3 +221,17 @@ Local raw evidence stays in ignored `data/validation/fly-mobile-20261107/` and
 `data/validation/fly-detail-20261107/`. The compact checked-in record excludes raw
 logs and machine paths. Previous worlds, original sources and rollback packages
 remain preserved; publication is separate from quality acceptance.
+
+## Public observation report
+
+The final public report and chronological lab checks passed2/2 in14.0s.
+They decoded all seven comparison images, switched original photographs,
+checked the876-point route and private-HD exclusion, and checked mobile overflow.
+Two preceding attempts exceeded the default5s expectation while a route body
+or source image was queued. Responses were HTTP200 and no application exception
+was recorded. The maintained report test now explicitly allows30s for network
+readiness; all semantic assertions are unchanged. The two5s failures are retained
+and are not evidence of passing a5s responsiveness target.
+
+Evidence: `data/validation/fly-detail-20261107/browser-report-public-r3/`,
+with earlier failures in `browser-report-public/` and `browser-report-public-r2/`.

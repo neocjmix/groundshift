@@ -1,5 +1,9 @@
-import { test,expect } from '@playwright/test';
+import { test,expect as baseExpect } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
+
+// Public report images share network connections with comparison PNGs. Readiness
+// may exceed 5 s; this bounds the wait without changing any content assertion.
+const expect=baseExpect.configure({timeout:30_000});
 
 test('real tourist source route, photograph switching and honest stage boundaries',async({page,browser},info)=>{
   const errors=[],sceneRequests=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(/\.(ply|spz|splat|ksplat|sog)$/.test(new URL(r.url()).pathname))sceneRequests.push(r.url());});

@@ -252,7 +252,15 @@
       "cases": 1,
       "elapsedSeconds": 43.9
     },
-    "publicScreenshotInspection": "PASS desktop,390x844portrait,844x390landscape; interaction captures may show ongoing detail loading"
+    "publicScreenshotInspection": "PASS desktop,390x844portrait,844x390landscape; interaction captures may show ongoing detail loading",
+    "publicReport": {
+      "status": "PASS",
+      "passed": 2,
+      "elapsedSeconds": 14.0,
+      "networkReadinessTimeoutSeconds": 30,
+      "contentAssertionsChanged": false,
+      "priorFiveSecondRuns": "FAIL twice: route body then queued source image; HTTP200/no application exception"
+    }
   },
   "browser": {
     "name": "Google Chrome",
@@ -264,7 +272,8 @@
     "Unchanged sample GPU context-loss recovery intermittently left uncaught undefined; exact real readback-loss timing reproduced3/3 before owner guard.",
     "First LoD window.fetch-only counter did not cover Spark native loader; its zero arrays are not network evidence.",
     "Actual application LoD test traced290Zoom click retries intercepted by the streaming panel. Panel moved above controls with bottom8rem; final actual UI zoom/comparison passed.",
-    "Earlier return image mean difference0.943 failed strict<0.2 despite matching camera,size,residentchunkset. Waiting30additionaldisplayframes yielded twoidenticalreturns; no thresholdrelaxation or productchange for this observation. Timingcause remainsinferred."
+    "Earlier return image mean difference0.943 failed strict<0.2 despite matching camera,size,residentchunkset. Waiting30additionaldisplayframes yielded twoidenticalreturns; no thresholdrelaxation or productchange for this observation. Timingcause remainsinferred.",
+    "Two public report runs exceeded default5s readiness while route body/source image were queued. With explicit30s network waits and unchanged content assertions, final2/2 passed in14.0s;5s responsiveness remains FAIL."
   ],
   "limits": [
     "14of16chunks means limited initial transfer savings on this small58m scene; hierarchy bytes can exceed wholeSPZ.",
