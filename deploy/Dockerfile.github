@@ -206,6 +206,13 @@ RUN wget -q -O /tmp/control-clearance.tar.gz https://github.com/neocjmix/grounds
  && mkdir /out \
  && tar -xzf /tmp/control-clearance.tar.gz -C /out
 
+# Actual before/after/control comparisons; final public checks remain pending here.
+FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5 AS lod_detail_evidence
+RUN wget -q -O /tmp/lod-detail-evidence.tar.gz https://github.com/neocjmix/groundshift/releases/download/viewer-lod-detail-evidence-2026-11-07/groundshift-lod-detail-evidence-20261107.tar.gz \
+ && echo '14e0c0b77e9c1626d5d83eedbfebc0082afa0a7550c6738e65d027b2f1e1540b  /tmp/lod-detail-evidence.tar.gz' | sha256sum -c - \
+ && mkdir /out \
+ && tar -xzf /tmp/lod-detail-evidence.tar.gz -C /out
+
 FROM caddy:2.11.7-alpine@sha256:e70b164da81ef698b3ad19af799ea6086ce6d9e48ed4079eb9fe26f6fbf14ee5
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=historical /out/www /srv
@@ -235,5 +242,6 @@ COPY --from=fly_lifecycle_fix /out/www /srv
 COPY --from=mobile_fly_ui /out/www /srv
 COPY --from=lod_detail_refinement /out/www /srv
 COPY --from=control_clearance /out/www /srv
+COPY --from=lod_detail_evidence /out/www /srv
 EXPOSE 8080
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

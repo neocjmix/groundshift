@@ -96,6 +96,23 @@ are retained. The unrelated accidental sample-only local package is not used.
 Private evidence remains under
 `data/validation/fly-mobile-detail-20261107/publications/control-clearance/`.
 
+A provisional five-file evidence update follows without rebuilding the viewer:
+the current report/timeline and three actual PNGs show the earlier8-page baseline,
+refined14-page rendering and whole-SPZ control. Old8-page measurements remain
+historical; final public rechecks are **NOT RUN** in this frozen observation. It
+explicitly states that only the first58m of the2.19km source route is reconstructed.
+
+Release `viewer-lod-detail-evidence-2026-11-07`, archive
+`groundshift-lod-detail-evidence-20261107.tar.gz`: **3,650,321 bytes**, SHA-256
+`14e0c0b77e9c1626d5d83eedbfebc0082afa0a7550c6738e65d027b2f1e1540b`.
+Apply after30 preceding layers. Accepted compiled files and all worlds remain
+unchanged. Explicit authorized JSON/privacy/PNG checks and complete base/target/
+archive/composed integrity pass in4.082055s:exactly5changed files,1,271 composed
+files. All39 scenes and earlier observations are retained. This report-only target
+retains all prior inert compiled assets; it does not replace the full39-scene catalog
+with the accidentally created local sample-only package. Evidence stays under
+`data/validation/fly-mobile-detail-20261107/publications/report-evidence/`.
+
 ## Fullscreen Fly viewer controls — 2026-11-07
 
 The viewer adds Fly alongside Orbit, fullscreen or viewport fallback, mobile dual
@@ -797,7 +814,7 @@ metadata-only inspection does not imply another full GPU run.
 Apply the four immutable final-quality layers in the preceding campaign's
 restoration table, followed by these **four** tangent layers, the two GS-only
 layers, the three SPZ layers, the two tourist-source layers and the eight Paris
-reconstruction/paging layers and the seven viewer/observation updates, in order. The command below includes all thirty
+reconstruction/paging layers and the eight viewer/observation updates, in order. The command below includes all thirty-one
 layers for the current surface. The complete native overlay supersedes
 the earlier tangent plan/input/depth/viewer overlays; those early archives remain
 available for rollback but are **not** required to restore the final surface.
@@ -909,6 +926,9 @@ available for rollback but are **not** required to restore the final surface.
   gs_restore_layer viewer-control-clearance-2026-11-07 \
     groundshift-viewer-control-clearance-20261107.tar.gz \
     fce177d808f18bf6d9e1c112f5bd5f6deaf9b111913f979f1bbbf812eeb7556d
+  gs_restore_layer viewer-lod-detail-evidence-2026-11-07 \
+    groundshift-lod-detail-evidence-20261107.tar.gz \
+    14e0c0b77e9c1626d5d83eedbfebc0082afa0a7550c6738e65d027b2f1e1540b
   mkdir -p public/worlds public/experiments
   cp -R "$gs_restore_dir/www/worlds/." public/worlds/
   cp -R "$gs_restore_dir/www/experiments/." public/experiments/
